@@ -986,5 +986,227 @@ public function deleteMalmatta($id) {
         return mysqli_num_rows($result) > 0;
     }
     
+    //bank master
+
+    function addBank($data) {
+    // Check if district code exists in session
+    if (!isset($_SESSION['district_code'])) {
+        return ['success' => false, 'message' => 'District code not found in session'];
+    }
+    
+    // Validate data
+    $errors = [];
+    if (empty($data['plan_name'])) $errors[] = 'Plan name is required';
+    if (empty($data['bank_name'])) $errors[] = 'Bank name is required';
+    if (empty($data['bank_branch'])) $errors[] = 'Bank branch is required';
+    if (empty($data['bank_address'])) $errors[] = 'Bank address is required';
+    if (empty($data['bank_no'])) $errors[] = 'Account number is required';
+    if (empty($data['bank_ifsc_code'])) $errors[] = 'IFSC code is required';
+    
+    if (!empty($errors)) {
+        return ['success' => false, 'message' => 'Validation failed', 'errors' => $errors];
+    }
+    
+    // Check if already 5 banks exist for this plan
+    $checkSql = "SELECT COUNT(*) as count FROM bank_master 
+                 WHERE plan_name = ? AND district_code = ?";
+    $stmt = $this->db->prepare($checkSql);
+    $stmt->bind_param("ss", $data['plan_name'], $_SESSION['district_code']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    
+    if ($row['count'] >= 5) {
+        return ['success' => false, 'message' => 'You can only add 5 banks per plan'];
+    }
+    
+    // Insert new bank
+    $sql = "INSERT INTO bank_master 
+            (plan_name, bank_name, bank_branch, bank_address, account_no, ifsc_code, district_code) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("sssssss", 
+        $data['plan_name'],
+        $data['bank_name'],
+        $data['bank_branch'],
+        $data['bank_address'],
+        $data['bank_no'],
+        $data['bank_ifsc_code'],
+        $_SESSION['district_code']
+    );
+    
+    if ($stmt->execute()) {
+        return ['success' => true, 'message' => 'Bank added successfully'];
+    } else {
+        return ['success' => false, 'message' => 'Failed to add bank: ' . $this->db->error];
+    }
+}
+
+// Get all banks for current district
+function getBanks() {
+    if (!isset($_SESSION['district_code'])) {
+        return ['success' => false, 'message' => 'District code not found in session'];
+    }
+    
+    $sql = "SELECT * FROM bank_master WHERE district_code = ? ORDER BY plan_name, bank_name";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $_SESSION['district_code']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $banks = [];
+    while ($row = $result->fetch_assoc()) {
+        $banks[] = $row;
+    }
+    
+    return ['success' => true, 'data' => $banks];
+}
+
+// Update bank
+function updateBank( $id, $data) {
+    // Validate data
+    $errors = [];
+    if (empty($data['plan_name'])) $errors[] = 'Plan name is required';
+    if (empty($data['bank_name'])) $errors[] = 'Bank name is required';
+    if (empty($data['bank_branch'])) $errors[] = 'Bank branch is required';
+    if (empty($data['bank_address'])) $errors[] = 'Bank address is required';
+    if (empty($data['bank_no'])) $errors[] = 'Account number is required';
+    if (empty($data['bank_ifsc_code'])) $errors[] = 'IFSC code is required';
+    
+    if (!empty($errors)) {
+        return ['success' => false, 'message' => 'Validation failed', 'errors' => $errors];
+    }
+    
+    $sql = "UPDATE bank_master SET 
+            plan_name = ?,
+            bank_name = ?,
+            bank_branch = ?,
+            bank_address = ?,
+            account_no = ?,
+            ifsc_code = ?
+            WHERE id = ? AND district_code = ?";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("ssssssis", 
+        $data['plan_name'],
+        $data['bank_name'],
+        $data['bank_branch'],
+        $data['bank_address'],
+        $data['bank_no'],
+        $data['bank_ifsc_code'],
+        $id,
+        $_SESSION['district_code']
+    );
+    
+    if ($stmt->execute()) {
+        return ['success' => true, 'message' => 'Bank updated successfully'];
+    } else {
+        return ['success' => false, 'message' => 'Failed to update bank: ' . $this->db->error];
+    }
+}
+
+// Delete bank
+function deleteBank( $id) {
+    if (!isset($_SESSION['district_code'])) {
+        return ['success' => false, 'message' => 'District code not found in session'];
+    }
+    
+    $sql = "DELETE FROM bank_master WHERE id = ? AND district_code = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("is", $id, $_SESSION['district_code']);
+    
+    if ($stmt->execute()) {
+        return ['success' => true, 'message' => 'Bank deleted successfully'];
+    } else {
+        return ['success' => false, 'message' => 'Failed to delete bank: ' . $this->db->error];
+    }
+}
+
+// checkbooks
+
+public function getCheckbooks($district_code) {
+    $sql = "SELECT * FROM checkbooks WHERE district_code = ? ORDER BY date DESC";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $district_code);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+/**
+ * Get bank name by ID
+ */
+public function getBankName($bank_id) {
+    $sql = "SELECT bank_name FROM bank_master WHERE id = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("i", $bank_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $bank = $result->fetch_assoc();
+    return $bank ? $bank['bank_name'] : 'Unknown';
+}
+
+/**
+ * Add new checkbook
+ */
+public function addCheckbook($data) {
+    $sql = "INSERT INTO checkbooks 
+            (plan_name, bank_id, checkbook_no, first_check_no, check_no, last_check_no, date, district_code) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("sisssiss", 
+        $data['plan_name'],
+        $data['bank_name'],
+        $data['checkbook_no'],
+        $data['first_check_no'],
+        $data['check_no'],
+        $data['last_check_no'],
+        $data['date'],
+        $data['district_code']
+    );
+    
+    return $stmt->execute();
+}
+
+/**
+ * Update checkbook
+ */
+public function updateCheckbook($id, $data) {
+    $sql = "UPDATE checkbooks SET 
+            plan_name = ?,
+            bank_id = ?,
+            checkbook_no = ?,
+            first_check_no = ?,
+            check_no = ?,
+            last_check_no = ?,
+            date = ?
+            WHERE id = ? AND district_code = ?";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("sisssissi", 
+        $data['plan_name'],
+        $data['bank_name'],
+        $data['checkbook_no'],
+        $data['first_check_no'],
+        $data['check_no'],
+        $data['last_check_no'],
+        $data['date'],
+        $id,
+        $data['district_code']
+    );
+    
+    return $stmt->execute();
+}
+
+/**
+ * Delete checkbook
+ */
+public function deleteCheckbook($id, $district_code) {
+    $sql = "DELETE FROM checkbooks WHERE id = ? AND district_code = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("is", $id, $district_code);
+    return $stmt->execute();
+}
 }
 ?>
