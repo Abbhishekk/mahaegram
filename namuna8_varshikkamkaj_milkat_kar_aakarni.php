@@ -136,7 +136,8 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">मागील कर आकारणी नुसार कर</label>
-                            <input type="text" class="form-control" placeholder="मागील कर">
+                            <input type="text" class="form-control" name="previous_year_tax" id="previous_year_tax"
+                                placeholder="मागील कर">
                         </div>
                     </div>
                     <div class="table-responsive mt-4">
@@ -149,17 +150,16 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
                                 <th>मजला</th>
                                 <th>लांबी</th>
                                 <th>रुंदी</th>
-                                <th>क्षेत्रफळ</th>
+                                <th>क्षेत्रफळ(Foot)</th>
+                                <th>क्षेत्रफळ(mt)</th>
                                 <th>बांधकाम वर्ष</th>
                                 <th>रेडीरेकनर दर</th>
                                 <th>बांधकाम दर</th>
                                 <th>घसारा दर</th>
                                 <th>भारांक</th>
-                                <th>इमारत मुल्यांकन</th>
+                                <th>भांडवली मुल्यांकन</th>
                                 <th>मिळकत कर दर</th>
                                 <th>इमारत कर</th>
-                                <th>Building_TaxNEW </th>
-                                <th>OldTaxDiff </th>
                             </tr>
                             </thead>
                             <tbody></tbody>
@@ -169,7 +169,7 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
                     <div class="row mb-3">
                         <div class="col-md-2">
                             <label class="form-label">इमारत कर</label>
-                            <input type="text" class="form-control" value="0.00">
+                            <input type="text" class="form-control" name="building_tax" id="building_tax" value="0.00">
                         </div>
                         <div class="col-md-2">
                             <label class="form-label" for="light_tax">दिवाबत्ती कर</label>
@@ -185,11 +185,12 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">पडसर/खुली कर</label>
-                            <input type="text" class="form-control" value="0.00">
+                            <input type="text" class="form-control" name="padsar_tax" id="padsar_tax" value="0.00">
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">भांडवली मूल्य</label>
-                            <input type="text" class="form-control" value="0.00">
+                            <input type="text" class="form-control" name="bhandavali_tax" id="bhandavali_tax"
+                                value="0.00">
                         </div>
                     </div>
 
@@ -197,15 +198,16 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
                     <div class="row mb-3">
                         <div class="col-md-3">
                             <label class="form-label">कर आकारणी प्रमाणे एकूण</label>
-                            <input type="text" class="form-control" value="0.00">
+                            <input type="text" class="form-control" name="total_tax" id="total_tax" value="0.00">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">% प्रमाणे कमी केलेली रक्कम(-)</label>
-                            <input type="text" class="form-control" value="0.00">
+                            <input type="text" class="form-control" name="discount" id="discount" value="0.00">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">एकूण कर</label>
-                            <input type="text" class="form-control" value="0.00">
+                            <input type="text" class="form-control" name="total_tax_amount" id="total_tax_amount"
+                                value="0.00">
                         </div>
                     </div>
 
@@ -305,6 +307,8 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
             alert("कृपया सर्व फील्ड भरा");
             return;
         }
+        const tbody = document.querySelector("#propertyTable tbody");
+        tbody.innerHTML = ""; // Clear previous data
 
         fetch('api/fetch_malmatta_details.php', {
                 method: 'POST',
@@ -325,11 +329,16 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
                     const waterTariff = data.water_tariff;
                     const tbody = document.querySelector("#propertyTable tbody");
                     const properties = info.properties;
+                    console.log(properties);
+                    let total_value = 0;
+                    let discount = 0;
                     properties.forEach((prop, index) => {
                         const length = parseFloat(prop.lenght || 0);
                         const width = parseFloat(prop.width || 0);
-                        const area = prop.area || (length * width).toFixed(2);
+                        const areaInMt = prop.areaInMt;
+                        const areaInFoot = prop.areaInFoot;
                         const depreciation = prop.construction_year === "22" ? 0.9 : 1;
+
 
                         const row = `
       <tr>
@@ -339,22 +348,32 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
         <td>${prop.floor}</td>
         <td>${length}</td>
         <td>${width}</td>
-        <td>${area}</td>
+        <td>${areaInFoot}</td>
+        <td>${areaInMt}</td>
         <td>${prop.construction_year}</td>
-        <td>${depreciation}</td>
-        <td>रहिवासी</td>
-        <td>${prop.tax_exempt}</td>
-        <td>${prop.property_tax_type}</td>
-        <td>${prop.directions}</td>
-        <td>${data.tax_rates.divabatti_kiman_rate}</td>
-        <td>${data.tax_rates.arogya_kiman_rate}</td>
-        <td>${data.water_tariff.fixed_rate}</td>
+        <td>${prop.yearly_tax}</td>
+        <td>${prop.construction_tax}</td>
+        <td>${prop.ghasara_tax}</td>
+        <td>${prop.bharank}</td>
+        <td>${prop.bhandavali}</td>
+        <td>${prop.milkat_fixed_tax}</td>
+        <td>${prop.building_value}</td>
+        
       </tr>
     `;
                         tbody.insertAdjacentHTML("beforeend", row);
                     });
                     console.log("info", info);
                     console.log(data.tax_rates);
+
+                    document.getElementById("previous_year_tax").value = info.previous_year_tax ?? 0;
+                    document.getElementById("previous_year_tax").readOnly = true;
+
+                    document.getElementById("building_tax").value = info.building_total_value;
+                    document.getElementById("building_tax").readOnly = true;
+
+                    document.getElementById("bhandavali_tax").value = info.total_bhandavali;
+                    document.getElementById("bhandavali_tax").readOnly = true;
 
                     document.getElementById('ward_no').value = info.ward_name;
                     console.log("info.ward_name", info.ward_name);
@@ -394,18 +413,24 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
                     console.log("waterTariff.fixed_rate", waterTariff.fixed_rate);
                     document.getElementById('water_tax').readOnly = true;
 
-                    document.getElementById('open_area_tax').value = info.open_area_tax;
-                    document.getElementById('open_area_tax').readOnly = true;
+                    document.getElementById('padsar_tax').value = info.padsar_total_value;
+                    console.log("padsar_total", info.padsar_total_value);
+                    document.getElementById('padsar_tax').readOnly = true;
 
-                    const total = [
-                        parseFloat(info.building_tax || 0),
-                        parseFloat(info.light_tax || 0),
-                        parseFloat(info.health_tax || 0),
-                        parseFloat(info.water_tax || 0),
-                        parseFloat(info.open_area_tax || 0)
-                    ].reduce((a, b) => a + b, 0);
+                    total = Number(info.padsar_total_value) + Number(info.building_total_value) +
+                        Number(taxRates.divabatti_prap_tharabaila_rate) + Number(taxRates
+                            .arogya_prap_tharabaila_rate) +
+                        Number(waterTariff.fixed_rate);
+                    total_tax = total - discount;
 
-                    document.getElementById('total_tax').value = total.toFixed(2);
+                    document.getElementById('total_tax').value = total;
+                    document.getElementById('total_tax').readOnly = true;
+
+                    document.getElementById('discount').value = discount;
+                    document.getElementById('discount').readOnly = true;
+
+                    document.getElementById('total_tax_amount').value = total_tax;
+                    document.getElementById('total_tax_amount').readOnly = true;
                 } else {
                     alert("माहिती सापडली नाही.");
                 }

@@ -163,11 +163,15 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna10_dainandin_bank_bharne.php">बँक भरणा</a>
                             <!-- <a class="collapse-item" href="Malmatta.php">मालमत्ता माहिती</a> -->
-                            <a class="collapse-item" href="namuna10_dainandin_khate_to_khate_transfar.php">खाते टू खाते ट्रान्सफर</a>
-                            <a class="collapse-item" href="namuna10_dainandin_jama_pavati_radd.php">जमा पावती रद्द करणे</a>
+                            <a class="collapse-item" href="namuna10_dainandin_khate_to_khate_transfar.php">खाते टू खाते
+                                ट्रान्सफर</a>
+                            <a class="collapse-item" href="namuna10_dainandin_jama_pavati_radd.php">जमा पावती रद्द
+                                करणे</a>
                             <a class="collapse-item" href="namuna10_dainandin_jama_pavati_kade.php">जमा पावती काढणे</a>
-                            <a class="collapse-item" href="namuna10_dainandin_ghar_patti_kar_vasuli.php">घरफाळा / घरपट्टी कर वसुली</a>
-                            <a class="collapse-item" href="namuna10_dainandin_chekchi_sathi.php">आलेल्या चेकची स्थिती</a>
+                            <a class="collapse-item" href="namuna10_dainandin_ghar_patti_kar_vasuli.php">घरफाळा /
+                                घरपट्टी कर वसुली</a>
+                            <a class="collapse-item" href="namuna10_dainandin_chekchi_sathi.php">आलेल्या चेकची
+                                स्थिती</a>
 
                         </div>
                     </div>
@@ -183,11 +187,12 @@
                         class="collapse <?php if ($subpage == 'varshik_kamkaj') { echo 'show'; } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item"
-                                href="namuna10_varshikkamkaj_shillak.php">वर्षाच्या सुरवातीची शिल्लक</a>
+                            <a class="collapse-item" href="namuna10_varshikkamkaj_shillak.php">वर्षाच्या सुरवातीची
+                                शिल्लक</a>
                             <a class="collapse-item" href="namuna10_varshikkamkaj_vasuli_khate.php">वसूल खाते ठरवणे</a>
-                            <a class="collapse-item" href="namuna10_varshikkamkaj_pavati_pustak_nond.php">पावती पुस्तक नोंदणी /वितरण</a>
-            
+                            <a class="collapse-item" href="namuna10_varshikkamkaj_pavati_pustak_nond.php">पावती पुस्तक
+                                नोंदणी /वितरण</a>
+
 
                         </div>
                     </div>
@@ -207,7 +212,7 @@
 
                             <a class="collapse-item" href="namuna10_master_chekbuk.php">धनादेश (चेकबुक) माहिती</a>
                             <a class="collapse-item" href="namuna10_master_vastu.php">वस्तूंची माहिती</a>
-                           
+
 
                         </div>
                     </div>

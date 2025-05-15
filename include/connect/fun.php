@@ -3,9 +3,33 @@
 class Fun
 {
     private $db;
+    public $milkatObject ;
+    public $ghasaraDarGroupA= [
+        100, 95,85,75,60,45,30,20,15
+    ];
+    public $ghasaraDarGroupB = [
+        100, 95,90,80,70,60,50,40,30
+    ];
+    public $propertyUseGroupA = [
+        "अर्ध पक्के घर (दगड विटांचे मातीचे घर)", "कच्चे घर (झोपडी किंवा मातीचे घर)"
+    ];
+    public $propertyUseGroupB = [
+        "आर सी सी पद्धतीचे बांधकाम", "इतर पक्के घर (दगड विटांचे चुना किंवा सिमेंटचे घर)"
+    ];
     function __construct($con)
     {
         $this->db = $con;
+
+        $this->milkatObject =  [
+    "आर सी सी पद्धतीचे बांधकाम" => "rcc",
+    "इतर पक्के घर (दगड विटांचे चुना किंवा सिमेंटचे घर)" =>"itar_pakke_ghar",
+    "अर्ध पक्के घर (दगड विटांचे मातीचे घर)"=> "ardha_pakke_ghar",
+    "कच्चे घर (झोपडी किंवा मातीचे घर)" => "kache_ghar",
+    "पडसर/खुली जागा" => "padsar",
+    "मनोरा तळ घर"=> "manora_type_ghar",
+    "मनोरा खुली जागा सर्वसाधारण किंवा डोंगराळ आदिवसी क्षेत्र असलेल्या ग्रामपंचायती"=>"manora_khuli_jaga_sarvasadharan",
+    "मनोरा खुली जागा महानगरपालिका किंवा नगरपालिका यांच्या लगतच्या ग्रामपंचायती"=> "manora_khuli_jaga_mnc"   
+        ];
 
     }
 
@@ -709,8 +733,8 @@ public function deleteMalmatta($id) {
         return $result;
     }
 
-    public function addMalmattaPropertyInfo($malmatta_id, $directions, $tax_exempt, $property_use, $property_tax_type, $redirecconar_parts, $construction_year_type, $construction_year, $floor, $measuring_unit, $lenght, $width, $area){
-        $query = "INSERT INTO `malmatta_property_info`(`malmatta_id`, `directions`, `tax_exempt`, `property_use`, `property_tax_type`, `redirecconar_parts`, `construction_year_type`, `construction_year`, `floor`, `measuring_unit`, `lenght`, `width`, `area`) VALUES ('$malmatta_id', '$directions', '$tax_exempt', '$property_use', '$property_tax_type', '$redirecconar_parts', '$construction_year_type', '$construction_year', '$floor', '$measuring_unit', '$lenght', '$width', '$area')";
+    public function addMalmattaPropertyInfo($malmatta_id, $directions, $tax_exempt, $property_use, $property_tax_type, $redirecconar_parts, $construction_year_type, $construction_year, $floor, $measuring_unit, $lenght, $width, $area, $malmatta_use){
+        $query = "INSERT INTO `malmatta_property_info`(`malmatta_id`, `directions`, `tax_exempt`, `property_use`, `property_tax_type`, `redirecconar_parts`, `construction_year_type`, `construction_year`, `floor`, `measuring_unit`, `lenght`, `width`, `area`, `malmatta_use`) VALUES ('$malmatta_id', '$directions', '$tax_exempt', '$property_use', '$property_tax_type', '$redirecconar_parts', '$construction_year_type', '$construction_year', '$floor', '$measuring_unit', '$lenght', '$width', '$area', '$malmatta_use')";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -721,8 +745,8 @@ public function deleteMalmatta($id) {
         return $result;
     }
 
-    public function updateMalmattaPropertyInfo($id,$malmatta_id, $directions, $tax_exempt, $property_use, $property_tax_type, $redirecconar_parts, $construction_year_type, $construction_year, $floor, $measuring_unit, $lenght, $width, $area){
-        $query = "UPDATE `malmatta_property_info` SET `malmatta_id`='$malmatta_id', `directions`='$directions', `tax_exempt`='$tax_exempt', `property_use`='$property_use', `property_tax_type`='$property_tax_type', `redirecconar_parts`='$redirecconar_parts', `construction_year_type`='$construction_year_type', `construction_year`='$construction_year', `floor`='$floor', `measuring_unit`='$measuring_unit', `lenght`='$lenght', `width`='$width', `area`='$area' WHERE `id` = '$id'";
+    public function updateMalmattaPropertyInfo($id,$malmatta_id, $directions, $tax_exempt, $property_use, $property_tax_type, $redirecconar_parts, $construction_year_type, $construction_year, $floor, $measuring_unit, $lenght, $width, $area, $malmatta_use){
+        $query = "UPDATE `malmatta_property_info` SET `malmatta_id`='$malmatta_id', `directions`='$directions', `tax_exempt`='$tax_exempt', `property_use`='$property_use', `property_tax_type`='$property_tax_type', `redirecconar_parts`='$redirecconar_parts', `construction_year_type`='$construction_year_type', `construction_year`='$construction_year', `floor`='$floor', `measuring_unit`='$measuring_unit', `lenght`='$lenght', `width`='$width', `area`='$area', `malmatta_use`='$malmatta_use' WHERE `id` = '$id'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -840,6 +864,7 @@ public function deleteMalmatta($id) {
                     left join new_name nno on mde.`owner_name` = nno.`id`
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
+                    left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type`
         WHERE mde.id = '$id'
         AND mde.lgdcode = '$lgdcode'
     ";
@@ -848,11 +873,31 @@ public function deleteMalmatta($id) {
     if (!$result) {
         return []; // or handle error
     }
+     $milkatTaxInfo = $this->getMilkatTaxInfoDarCons($_SESSION['district_code']);
+    if(mysqli_num_rows($milkatTaxInfo) > 0){
+        $milkatTaxInfo = mysqli_fetch_assoc($milkatTaxInfo);
+    }else{
+        $milkatTaxInfo = [];
+    }
+
+    $milkatTaxFixed = $this->getMilkatTaxInfoDarFixed($_SESSION['district_code']); 
+    if(mysqli_num_rows($milkatTaxFixed) > 0){
+        $milkatTaxFixed = mysqli_fetch_assoc($milkatTaxFixed);
+    }else{
+        $milkatTaxFixed = [];
+    }
 
     $malmattas = [];
+    $total_bhandavali = 0;
+    $building_total_value = 0;
+    $padsar_total_value = 0;
     while ($row = mysqli_fetch_assoc($result)) {
         $id = $row['id']; // malmatta id
-
+        $malmatta_use_tax = [
+            "रहिवाशी" => 1,
+            "वाणिज्य/व्यापार" => 1.2,
+            "औद्योगिक" => 1.5
+        ];
         if (!isset($malmattas[$id])) {
             $malmattas[$id] = [
                 'malmatta_id' => $id,
@@ -870,12 +915,53 @@ public function deleteMalmatta($id) {
                 'remarks' => $row['remarks'],
                 'lgdcode' => $row['lgdcode'],
                 'ward_name' => $row['ward_name'],
-                'properties' => []
+                'properties' => [],
+                'readyrec_type' => $row['readyrec_type'],
+                
             ];
         }
 
         // If property info exists
         if (!empty($row['property_id'])) {
+            $year = $row['construction_year'];
+            $group = (in_array($row['property_use'], $this->propertyUseGroupA)? $this->ghasaraDarGroupA : (
+                (in_array($row['property_use'], $this->propertyUseGroupB)? $this->ghasaraDarGroupB : [1,1,1,1,1,1,1,1,1])
+            ));
+            $ghasaraTax = 100;
+           if($year> 0 && $year <= 2){
+                $ghasaraTax = $group[0];
+           }else if($year >2 && $year <= 5){
+                $ghasaraTax = $group[1];
+           }
+              else if($year >5 && $year <= 10){
+                 $ghasaraTax = $group[2];
+              }else if($year >10 && $year <= 20){
+                 $ghasaraTax = $group[3];
+              }else if($year >20 && $year <= 30){
+                 $ghasaraTax = $group[4];
+                }else if($year >30 && $year <= 40){
+                    $ghasaraTax = $group[5];
+                }else if($year >40 && $year <= 50){
+                    $ghasaraTax = $group[6];
+                }else if($year >50 && $year <= 60){
+                    $ghasaraTax = $group[7];
+                }else if($year >60){
+                    $ghasaraTax = $group[8];
+                }
+                $area = ($row['measuring_unit'] == 'foot'? $row['area']/10.76 : $row['area']);
+                $areaInFoot = ($row['measuring_unit'] == 'foot'? $row['area'] : $row['area']*10.76);
+
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $bharank = $malmatta_use_tax[$row["malmatta_use"]];
+                $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax/100) * $bharank;
+                $building_value = ($bhandavali*$milkatFixedTax)/100;
+                $total_bhandavali += $bhandavali;
+                if($row['property_use'] == 'पडसर/खुली जागा'){
+                    $padsar_total_value += $building_value; 
+                }else{
+                    $building_total_value += $building_value;
+                }
             $malmattas[$id]['properties'][] = [
                 'property_id' => $row['property_id'],
                 'directions' => $row['directions'],
@@ -889,9 +975,21 @@ public function deleteMalmatta($id) {
                 'measuring_unit' => $row['measuring_unit'],
                 'lenght' => $row['lenght'],
                 'width' => $row['width'],
-                'area' => $row['area']
+                'areaInMt' => round($area,2),
+                'areaInFoot' => round($areaInFoot,2),
+                'yearly_tax' => $row['yearly_tax'],
+                'construction_tax' => $constructionTax,
+                'ghasara_tax'=> $ghasaraTax/100,
+                "bharank"=>$bharank,
+                "malmatta_use"=>$row["malmatta_use"],
+                "bhandavali"=>round($bhandavali,2),
+                "building_value" => round($building_value,2),
+                "milkat_fixed_tax" => $milkatFixedTax,
             ];
         }
+        $malmattas[$id]['total_bhandavali'] = round($total_bhandavali);
+        $malmattas[$id]['building_total_value'] = round($building_total_value);
+        $malmattas[$id]['padsar_total_value'] = round($padsar_total_value);
     }
 
     return array_values($malmattas);
@@ -1204,6 +1302,136 @@ public function updateCheckbook($id, $data) {
  */
 public function deleteCheckbook($id, $district_code) {
     $sql = "DELETE FROM checkbooks WHERE id = ? AND district_code = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("is", $id, $district_code);
+    return $stmt->execute();
+}
+
+// Materials
+
+// functions.php
+
+/**
+ * Get all materials for current district
+ */
+public function getMaterials($district_code) {
+    $sql = "SELECT * FROM materials WHERE district_code = ? ORDER BY material_name";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $district_code);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+/**
+ * Add new material
+ */
+public function addMaterial($data) {
+    $sql = "INSERT INTO materials (material_name, district_code) VALUES (?, ?)";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("ss", $data['material_name'], $data['district_code']);
+    return $stmt->execute();
+}
+
+/**
+ * Update material
+ */
+public function updateMaterial($id, $data) {
+    $sql = "UPDATE materials SET material_name = ? WHERE id = ? AND district_code = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("sis", $data['material_name'], $id, $data['district_code']);
+    return $stmt->execute();
+}
+
+/**
+ * Delete material
+ */
+public function deleteMaterial($id, $district_code) {
+    $sql = "DELETE FROM materials WHERE id = ? AND district_code = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("is", $id, $district_code);
+    return $stmt->execute();
+}
+
+//Year Start Remaining
+
+// functions.php
+
+/**
+ * Get year start balances for current district
+ */
+public function getYearStartBalances($district_code) {
+    $sql = "SELECT * FROM year_start_balances WHERE district_code = ? ORDER BY financial_year DESC, plan_name";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $district_code);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+/**
+ * Add new year start balance
+ */
+public function addYearStartBalance($data) {
+    $sql = "INSERT INTO year_start_balances 
+            (balance_type, financial_year, plan_name, bank_id, post_name, post_branch, 
+             account_no, ifsc_code, amount, district_code) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("sssissssds", 
+        $data['balance_type'],
+        $data['financial_year'],
+        $data['plan_name'],
+        $data['bank_id'],
+        $data['post_name'],
+        $data['post_branch'],
+        $data['account_no'],
+        $data['ifsc_code'],
+        $data['amount'],
+        $data['district_code']
+    );
+    
+    return $stmt->execute();
+}
+
+/**
+ * Update year start balance
+ */
+public function updateYearStartBalance($id, $data) {
+    $sql = "UPDATE year_start_balances SET 
+            balance_type = ?,
+            financial_year = ?,
+            plan_name = ?,
+            bank_id = ?,
+            post_name = ?,
+            post_branch = ?,
+            account_no = ?,
+            ifsc_code = ?,
+            amount = ?
+            WHERE id = ? AND district_code = ?";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("sssissssdis", 
+        $data['balance_type'],
+        $data['financial_year'],
+        $data['plan_name'],
+        $data['bank_id'],
+        $data['post_name'],
+        $data['post_branch'],
+        $data['account_no'],
+        $data['ifsc_code'],
+        $data['amount'],
+        $id,
+        $data['district_code']
+    );
+    
+    return $stmt->execute();
+}
+
+/**
+ * Delete year start balance
+ */
+public function deleteYearStartBalance($id, $district_code) {
+    $sql = "DELETE FROM year_start_balances WHERE id = ? AND district_code = ?";
     $stmt = $this->db->prepare($sql);
     $stmt->bind_param("is", $id, $district_code);
     return $stmt->execute();

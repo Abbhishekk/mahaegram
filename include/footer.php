@@ -5,7 +5,7 @@
                 <script>
                 document.write(new Date().getFullYear());
                 </script> - developed by
-                <b><a href="https://indrijunanda.gitlab.io/" target="_blank">Abcoedtech Pvt. Ltd.</a></b>
+                <b><a href="#" target="_blank">Namuna Tax</a></b>
             </span>
         </div>
     </div>

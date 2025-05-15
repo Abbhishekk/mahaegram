@@ -65,6 +65,8 @@ if (isset($_POST['add'])) {
         // Insert each dynamic property
         $all_properties_inserted = true;
         foreach ($income_data as $entry) {
+            print_r($entry);
+            
             $insert_property = $fun->addMalmattaPropertyInfo(
                 $malmatta_id,
                 $entry['incomeOtherInfo'] ?? '',
@@ -78,7 +80,8 @@ if (isset($_POST['add'])) {
                 $entry['selectedUnit'] ?? '',
                 $entry['height'] ?? '',
                 $entry['width'] ?? '',
-                $entry['area'] ?? ''
+                $entry['area'] ?? '',
+                $entry['propertyUse'] ?? '',
             );
             if (!$insert_property) {
                 $all_properties_inserted = false;
@@ -118,7 +121,7 @@ if (isset($_POST['add'])) {
         $_SESSION['message_type'] = "error";
     }
 
-    header("Location: ../Form_Malmatta_N8.php");
+     header("Location: ../Form_Malmatta_N8.php");
     exit();
 }
 
