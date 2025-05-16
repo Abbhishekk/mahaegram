@@ -149,6 +149,7 @@ class Fun
         $result = mysqli_query($this->db, $query);
         return $result;
     }
+
     public function getPeriodDetailsLastValue($lgd_code){
         $query = "SELECT `total_period`, `id` FROM `period_details` Where `lgd_code` = '$lgd_code' ORDER BY `id` DESC LIMIT 1";
         $result = mysqli_query($this->db, $query);
@@ -672,13 +673,33 @@ public function deleteMalmatta($id) {
                     left join new_name nno on mde.`owner_name` = nno.`id`
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
-                    Where mde.`lgdcode` = '$lgdcode' ;";
+                    Where mde.`lgdcode` = '$lgdcode' and mde.`approved` = '0' ;";
+        $result = mysqli_query($this->db, $query);
+        return $result;
+    }
+    public function getMalmattaDataEntryByPeriod($lgdcode, $period){
+        $query = "SELECT *, mde.`id` as `malmatta_id`, mde.`malmatta_no` as 'malmatta_number', nno.`person_name` as `owner_name`, nno1.`person_name` as `wife_name`, nno2.`person_name` as `occupant_name` FROM `malmatta_data_entry` mde
+                    Left Join malmatta_property_info mpi on mde.`id` = mpi.`malmatta_id`
+                    left join period_details pd on mde.`period` = pd.`id`
+                    left join malmatta_water_tax mw on mde.`id` = mw.`malmatta_id`
+                    left join road_details rd on mde.`road_name` = rd.`id`
+                    left join ward_details wd on mde.`ward_no`= wd.`id`
+                    left join new_name nno on mde.`owner_name` = nno.`id`
+                    left join new_name nno1 on mde.`wife_name` = nno1.`id`
+                    left join new_name nno2 on mde.`occupant_name` = nno2.`id`
+                    Where mde.`lgdcode` = '$lgdcode' and mde.`approved` = '0' and mde.`period` = '$period' ;";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
     public function getMalmattaDataEntryByLgdcode($lgdcode){
         $query = "SELECT * FROM `malmatta_data_entry` mde
                     Where mde.`lgdcode` = '$lgdcode' ;";
+        $result = mysqli_query($this->db, $query);
+        return $result;
+    }
+    public function getMalmattaDataEntryByLgdcodeApproved($lgdcode){
+        $query = "SELECT * FROM `malmatta_data_entry` mde
+                    Where mde.`lgdcode` = '$lgdcode' AND mde.`approved` = '1' AND mde.`verified` = '0' ;";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -725,6 +746,17 @@ public function deleteMalmatta($id) {
         return $result;
     }
 
+    public function approveMalmattaDataEntry($id){
+        $query = "UPDATE `malmatta_data_entry` SET `approved`='1' WHERE `id` = '$id'";
+        $result = mysqli_query($this->db, $query);
+        return $result;
+    }
+    public function verifyMalmattaDataEntry($id){
+        $query = "UPDATE `malmatta_data_entry` SET `verified`='1' WHERE `id` = '$id'";
+        $result = mysqli_query($this->db, $query);
+        return $result;
+    }
+
     // malmatta_property_info
 
     public function getMalmattaPropertyInfo(){
@@ -750,6 +782,7 @@ public function deleteMalmatta($id) {
         $result = mysqli_query($this->db, $query);
         return $result;
     }
+    
 
     public function deleteMalmattaPropertyInfo($id){
         $query = "DELETE FROM `malmatta_property_info` WHERE `id` = '$id'";
@@ -867,6 +900,7 @@ public function deleteMalmatta($id) {
                     left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type`
         WHERE mde.id = '$id'
         AND mde.lgdcode = '$lgdcode'
+        AND mde.approved = '1'
     ";
 
     $result = mysqli_query($this->db, $query);
@@ -993,6 +1027,74 @@ public function deleteMalmatta($id) {
     }
 
     return array_values($malmattas);
+}
+
+public function getMalmattaDetailsAll($malmattaId, $village){
+    
+
+  
+$response = ['success' => false];
+$milkatObject = [
+    "आर सी सी पद्धतीचे बांधकाम" => "rcc",
+    "इतर पक्के घर (दगड विटांचे चुना किंवा सिमेंटचे घर)" =>"itar_pakke_ghar",
+    "अर्ध पक्के घर (दगड विटांचे मातीचे घर)"=> "ardha_pakke_ghar",
+    "कच्चे घर (झोपडी किंवा मातीचे घर)" => "kache_ghar",
+    "पडसर/खुली जागा" => "padsar",
+    "मनोरा तळ घर"=> "manora_type_ghar",
+    "मनोरा खुली जागा सर्वसाधारण किंवा डोंगराळ आदिवसी क्षेत्र असलेल्या ग्रामपंचायती"=>"manora_khuli_jaga_sarvasadharan",
+    "मनोरा खुली जागा महानगरपालिका किंवा नगरपालिका यांच्या लगतच्या ग्रामपंचायती"=> "manora_khuli_jaga_mnc"   
+];
+if ($malmattaId) {
+    // Get full malmatta entry with properties + water tax
+    $malmattaData = $this->getMalmattaWithPropertiesWithId($malmattaId, $_SESSION['district_code']);
+    
+    // print_r($malmattaData);
+    if ($malmattaData) {
+        $response['success'] = true;
+        $response['info'] = $malmattaData;
+
+        // ✅ Extract total area from properties
+        $totalArea = 0;
+        $malmattaEntry = $malmattaData[0] ?? null;
+
+if ($malmattaEntry && isset($malmattaEntry['properties'])) {
+    foreach ($malmattaEntry['properties'] as $prop) {
+        $totalArea += (int) ($prop['areaInFoot'] ?? 0);
+    }
+}
+
+
+       
+        $taxQuery = "SELECT * FROM tax_info WHERE lgdcode = '{$_SESSION['district_code']}'";
+        $taxResult = $this->db->query($taxQuery);
+
+        $reedirecQuery = "SELECT * FROM readyrec_info WHERE revenue_village = '$village'";
+        $reedirecResult = $this->db->query($reedirecQuery);
+        if ($reedirecResult && $reedirecResult->num_rows > 0) {
+            $row = $reedirecResult->fetch_assoc();
+            $response['readyrec'] = $row;
+        }
+
+        if ($taxResult && $taxResult->num_rows > 0) {
+            while ($row = $taxResult->fetch_assoc()) {
+                if (preg_match('/(\d+)\s*to\s*(\d+)/u', $row['area_range'], $matches)) {
+                    $min = (int) $matches[1];
+                    $max = (int) $matches[2];
+                    if ($totalArea >= $min && $totalArea <= $max) {
+                        $response['tax_rates'] = $row;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // ✅ Water tariff (assuming one type for now)
+        $response["water_tariff"] = $this->getWaterTariffByDrainageType("सामान्य पाणीपट्टी", $_SESSION['district_code']);
+    }
+}
+
+// header('Content-Type: application/json');
+return $response;
 }
 
 
@@ -1435,6 +1537,162 @@ public function deleteYearStartBalance($id, $district_code) {
     $stmt = $this->db->prepare($sql);
     $stmt->bind_param("is", $id, $district_code);
     return $stmt->execute();
+}
+
+// functions.php
+
+/**
+ * Get property verifications for current district
+ */
+public function getPropertyVerifications($district_code) {
+    $sql = "SELECT * FROM property_verifications WHERE district_code = ? ORDER BY verification_date DESC";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $district_code);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+/**
+ * Add new property verification
+ */
+public function addPropertyVerification($data) {
+    $sql = "INSERT INTO property_verifications 
+            (formula, village_code, period_id, malmatta_id, ward_no, owner_name, 
+             road_name, group_no, occupant_name, previous_tax, building_tax, 
+             light_tax, health_tax, water_tax, padsar_tax, capital_value, 
+             total_tax, discount, final_tax, verification_date, district_code) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("ssiisssssddddddddddss", 
+        $data['formula'],
+        $data['village_code'],
+        $data['period_id'],
+        $data['malmatta_id'],
+        $data['ward_no'],
+        $data['owner_name'],
+        $data['road_name'],
+        $data['group_no'],
+        $data['occupant_name'],
+        $data['previous_tax'],
+        $data['building_tax'],
+        $data['light_tax'],
+        $data['health_tax'],
+        $data['water_tax'],
+        $data['padsar_tax'],
+        $data['capital_value'],
+        $data['total_tax'],
+        $data['discount'],
+        $data['final_tax'],
+        $data['verification_date'],
+        $data['district_code']
+    );
+    
+    return $stmt->execute();
+}
+
+/**
+ * Update property verification
+ */
+public function updatePropertyVerification($id, $data) {
+    $sql = "UPDATE property_verifications SET 
+            formula = ?,
+            village_code = ?,
+            period_id = ?,
+            malmatta_id = ?,
+            ward_no = ?,
+            owner_name = ?,
+            road_name = ?,
+            group_no = ?,
+            occupant_name = ?,
+            previous_tax = ?,
+            building_tax = ?,
+            light_tax = ?,
+            health_tax = ?,
+            water_tax = ?,
+            padsar_tax = ?,
+            capital_value = ?,
+            total_tax = ?,
+            discount = ?,
+            final_tax = ?,
+            verification_date = ?
+            WHERE id = ? AND district_code = ?";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("ssiisssssddddddddddssi", 
+        $data['formula'],
+        $data['village_code'],
+        $data['period_id'],
+        $data['malmatta_id'],
+        $data['ward_no'],
+        $data['owner_name'],
+        $data['road_name'],
+        $data['group_no'],
+        $data['occupant_name'],
+        $data['previous_tax'],
+        $data['building_tax'],
+        $data['light_tax'],
+        $data['health_tax'],
+        $data['water_tax'],
+        $data['padsar_tax'],
+        $data['capital_value'],
+        $data['total_tax'],
+        $data['discount'],
+        $data['final_tax'],
+        $data['verification_date'],
+        $id,
+        $data['district_code']
+    );
+    
+    return $stmt->execute();
+}
+
+/**
+ * Get property details for verification
+ */
+public function getPropertyDetailsForVerification($villageCode, $periodId, $malmattaId) {
+    // Get basic property info
+    $sql = "SELECT * FROM malmatta_data_entry 
+            WHERE id = ? AND village_code = ? AND period_id = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("iss", $malmattaId, $villageCode, $periodId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $info = $result->fetch_assoc();
+    
+    if (!$info) {
+        return ['success' => false, 'message' => 'Property not found'];
+    }
+    
+    // Get property components
+    $sql = "SELECT * FROM malmatta_property_details 
+            WHERE malmatta_id = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("i", $malmattaId);
+    $stmt->execute();
+    $properties = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    
+    // Get tax rates
+    $sql = "SELECT * FROM tax_rates WHERE district_code = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $info['district_code']);
+    $stmt->execute();
+    $taxRates = $stmt->get_result()->fetch_assoc();
+    
+    // Get water tariff
+    $sql = "SELECT * FROM water_tariff WHERE district_code = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $info['district_code']);
+    $stmt->execute();
+    $waterTariff = $stmt->get_result()->fetch_assoc();
+    
+    return [
+        'success' => true,
+        'info' => $info,
+        'properties' => $properties,
+        'tax_rates' => $taxRates,
+        'water_tariff' => $waterTariff
+    ];
 }
 }
 ?>

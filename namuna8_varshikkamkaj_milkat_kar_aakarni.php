@@ -1,5 +1,5 @@
 <?php 
-    require_once './include/auth_middleware.php';
+require_once './include/auth_middleware.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,11 +8,10 @@ $title = "मालमत्ता माहिती प्रमाणिक�
 ?>
 <?php include('include/header.php'); ?>
 <?php
-    $newName = $fun->getNewName();
     $periods = $fun->getPeriodDetails($_SESSION['district_code']);
-$lgdVillages = $fun->getVillagesWithDistrict($_SESSION['district_code']);
-$periodsWithReasons = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
-$malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code']);
+    $lgdVillages = $fun->getVillagesWithDistrict($_SESSION['district_code']);
+    $periodsWithReasons = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
+    $malmattaEntry = $fun->getMalmattaDataEntryByLgdcodeApproved($_SESSION['district_code']);
 ?>
 
 <body id="page-top">
@@ -22,7 +21,7 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
         $page = 'namuna8';
         $subpage = 'varshik_kamkaj';
         include('include/sidebar.php');
-       ?>
+        ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -40,185 +39,201 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
                     </div>
 
                     <!-- Alert Message -->
-                    <div class="text-danger fw-bold mb-3">रेडीरेकनर दर भरलेले नाहीत...कृपया भरा</div>
+                    <?php if(isset($_SESSION['message'])): ?>
+                    <div class="alert alert-<?= $_SESSION['message_type'] ?>"><?= $_SESSION['message'] ?></div>
+                    <?php 
+                        unset($_SESSION['message']);
+                        unset($_SESSION['message_type']);
+                        ?>
+                    <?php endif; ?>
 
-                    <!-- Radio Buttons -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="सूत्र" id="सूत्र1" checked>
-                                <label class="form-check-label" for="सूत्र1">सूत्र १</label>
+                    <!-- Main Form -->
+                    <form method="post" action="api/property_verification.php">
+                        <input type="hidden" name="verification_id" id="verification_id" value="">
+
+                        <!-- Radio Buttons -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="formula" id="formula1"
+                                        value="सूत्र १" checked>
+                                    <label class="form-check-label" for="formula1">सूत्र १</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="formula" id="formula2"
+                                        value="सूत्र २">
+                                    <label class="form-check-label" for="formula2">सूत्र २</label>
+                                </div>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="सूत्र" id="सूत्र2">
-                                <label class="form-check-label" for="सूत्र2">सूत्र २</label>
+                        </div>
+
+                        <!-- Search Section -->
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">गावाचे नाव</label>
+                                <select class="form-control select2-single-placeholder" name="village_code"
+                                    id="village_name" required>
+                                    <option value="" selected>--निवडा--</option>
+                                    <?php while($village = mysqli_fetch_assoc($lgdVillages)): ?>
+                                    <option value="<?= $village['Village_Code'] ?>"><?= $village['Village_Name'] ?>
+                                    </option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">कालावधी</label>
+                                <select name="period_id" id="period" class="form-control" required>
+                                    <option value="" selected>--निवडा--</option>
+                                    <?php while($period = mysqli_fetch_assoc($periodsWithReasons)): ?>
+                                    <option value="<?= $period['id'] ?>"><?= $period['total_period'] ?></option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">मालमत्ता क्रमांक <span
+                                        class="text-danger">*</span></label>
+                                <select name="malmatta_id" id="malmatta_no" class="form-control" required>
+                                    <option value="" selected>--निवडा--</option>
+                                    <?php while($malmatta = mysqli_fetch_assoc($malmattaEntry)): ?>
+                                    <option value="<?= $malmatta['id'] ?>"><?= $malmatta['malmatta_no'] ?></option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="button" class="btn btn-primary w-100" id="search-button">शोधा</button>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- First Row -->
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label class="form-label fw-bold">गावाचे नाव</label>
-                            <select class="form-control select2-single-placeholder mb-3" name="village_name"
-                                id="village_name">
-                                <option value="" selected>--निवडा.--</option>
-                                <?php
-                                                            if(mysqli_num_rows($lgdVillages) > 0){
-                                                                while($village = mysqli_fetch_assoc($lgdVillages)){
-                                                                    echo "<option value='".$village['Village_Code']."'>".$village['Village_Name']."</option>";
-                                                                }
-                                                            }
-                                                        ?>
-                            </select>
+                        <!-- Property Details -->
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">वॉर्ड क्र</label>
+                                <input type="text" class="form-control" name="ward_no" id="ward_no"
+                                    placeholder="वॉर्ड क्र" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">मालमत्ता धारकाचे नाव</label>
+                                <textarea class="form-control" name="owner_name" id="owner_name"
+                                    placeholder="मालमत्ता धारकाचे नाव" readonly></textarea>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">रस्त्याचे नाव / गल्ली क्रमांक</label>
+                                <input type="text" class="form-control" name="road_name" id="road_name"
+                                    placeholder="रस्त्याचे नाव" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">गट / सर्वे नंबर</label>
+                                <textarea class="form-control" id="group_no" name="group_no" placeholder="इतर माहिती"
+                                    readonly></textarea>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label fw-bold">कालावधी</label>
-                            <select name="period" id="period" class="form-control">
-                                <option value="" selected>--निवडा--</option>
-                                <?php
-                                                            if(mysqli_num_rows($periodsWithReasons) > 0){
-                                                                while($periodsWithReason = mysqli_fetch_assoc($periodsWithReasons)){
-                                                                    echo '<option value="'.$periodsWithReason['id'].'">'.$periodsWithReason['total_period'].'</option>';
-                                                                }
-                                                            }
-                                                        ?>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label fw-bold">मालमत्ता क्रमांक <span
-                                    class="text-danger">*</span></label>
-                            <select name="malmatta_no" id="malmatta_no" class="form-control" required>
-                                <option value="" selected>--निवडा--</option>
-                                <?php
-                                                            if(mysqli_num_rows($malmattaEntry) > 0){
-                                                                while($malmattaEntr = mysqli_fetch_assoc($malmattaEntry)){
-                                                                    echo '<option value="'.$malmattaEntr['id'].'">'.$malmattaEntr['malmatta_no'].'</option>';
-                                                                }
-                                                            }
-                                                        ?>
-                            </select>
-                        </div>
-                        <div class="col-md-3 d-flex align-items-end">
-                            <button class="btn btn-primary w-100" id="search-button">शोधा</button>
-                        </div>
-                    </div>
 
-                    <!-- Second Row -->
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label class="form-label fw-bold">वॉर्ड क्र</label>
-                            <input type="text" class="form-control" name="ward_no" id="ward_no" placeholder="वॉर्ड क्र">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">भागवटा धारकाचे नाव</label>
+                                <textarea class="form-control" name="occupant_name" id="occupant_name"
+                                    placeholder="भागवटा धारकाचे नाव" readonly></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">मागील कर आकारणी नुसार कर</label>
+                                <input type="text" class="form-control" name="previous_tax" id="previous_year_tax"
+                                    placeholder="मागील कर" readonly>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label fw-bold">मालमत्ता धारकाचे नाव</label>
-                            <textarea class="form-control" name="owner_name" id="owner_name"
-                                placeholder="मालमत्ता धारकाचे नाव"></textarea>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label fw-bold">रस्त्याचे नाव / गल्ली क्रमांक</label>
-                            <input type="text" class="form-control" name="road_name" id="road_name"
-                                placeholder="रस्त्याचे नाव">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label fw-bold">गट / सर्वे नंबर</label>
-                            <textarea class="form-control" id="group_no" name="group_no"
-                                placeholder="इतर माहिती"></textarea>
-                        </div>
-                    </div>
 
-                    <!-- Third Row -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">भागवटा धारकाचे नाव</label>
-                            <textarea class="form-control" name="occupant_name" id="occupant_name"
-                                placeholder="भागवटा धारकाचे नाव"></textarea>
+                        <!-- Property Table -->
+                        <div class="table-responsive mt-4">
+                            <table id="propertyTable"
+                                class="table table-bordered table-striped text-center align-middle">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th>अ क्र</th>
+                                        <th>मालमत्ता क्र.</th>
+                                        <th>मालमत्ता प्रकार</th>
+                                        <th>मजला</th>
+                                        <th>लांबी</th>
+                                        <th>रुंदी</th>
+                                        <th>क्षेत्रफळ(Foot)</th>
+                                        <th>क्षेत्रफळ(mt)</th>
+                                        <th>बांधकाम वर्ष</th>
+                                        <th>रेडीरेकनर दर</th>
+                                        <th>बांधकाम दर</th>
+                                        <th>घसारा दर</th>
+                                        <th>भारांक</th>
+                                        <th>भांडवली मुल्यांकन</th>
+                                        <th>मिळकत कर दर</th>
+                                        <th>इमारत कर</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">मागील कर आकारणी नुसार कर</label>
-                            <input type="text" class="form-control" name="previous_year_tax" id="previous_year_tax"
-                                placeholder="मागील कर">
-                        </div>
-                    </div>
-                    <div class="table-responsive mt-4">
-                        <table id="propertyTable" class="table table-bordered table-striped text-center align-middle"" >
-                        <thead class=" bg-primary text-white">
-                            <tr>
-                                <th>अ क्र</th>
-                                <th>मालमत्ता क्र.</th>
-                                <th>मालमत्ता प्रकार</th>
-                                <th>मजला</th>
-                                <th>लांबी</th>
-                                <th>रुंदी</th>
-                                <th>क्षेत्रफळ(Foot)</th>
-                                <th>क्षेत्रफळ(mt)</th>
-                                <th>बांधकाम वर्ष</th>
-                                <th>रेडीरेकनर दर</th>
-                                <th>बांधकाम दर</th>
-                                <th>घसारा दर</th>
-                                <th>भारांक</th>
-                                <th>भांडवली मुल्यांकन</th>
-                                <th>मिळकत कर दर</th>
-                                <th>इमारत कर</th>
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    <!-- Tax Inputs -->
-                    <div class="row mb-3">
-                        <div class="col-md-2">
-                            <label class="form-label">इमारत कर</label>
-                            <input type="text" class="form-control" name="building_tax" id="building_tax" value="0.00">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label" for="light_tax">दिवाबत्ती कर</label>
-                            <input type="text" class="form-control" id="light_tax" name="light_tax" value="0.00">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label" for="health_tax">आरोग्य कर</label>
-                            <input type="text" class="form-control" name="health_tax" id="health_tax" value="0.00">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">सामान्य पाणीपुरवठा</label>
-                            <input type="text" class="form-control" id="water_tax" name="water_tax" value="0.00">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">पडसर/खुली कर</label>
-                            <input type="text" class="form-control" name="padsar_tax" id="padsar_tax" value="0.00">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">भांडवली मूल्य</label>
-                            <input type="text" class="form-control" name="bhandavali_tax" id="bhandavali_tax"
-                                value="0.00">
-                        </div>
-                    </div>
 
-                    <!-- Final Calculation Inputs -->
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label class="form-label">कर आकारणी प्रमाणे एकूण</label>
-                            <input type="text" class="form-control" name="total_tax" id="total_tax" value="0.00">
+                        <!-- Tax Calculation -->
+                        <div class="row mb-3">
+                            <div class="col-md-2">
+                                <label class="form-label">इमारत कर</label>
+                                <input type="text" class="form-control" name="building_tax" id="building_tax"
+                                    value="0.00" readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">दिवाबत्ती कर</label>
+                                <input type="text" class="form-control" id="light_tax" name="light_tax" value="0.00"
+                                    readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">आरोग्य कर</label>
+                                <input type="text" class="form-control" name="health_tax" id="health_tax" value="0.00"
+                                    readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">सामान्य पाणीपुरवठा</label>
+                                <input type="text" class="form-control" id="water_tax" name="water_tax" value="0.00"
+                                    readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">पडसर/खुली कर</label>
+                                <input type="text" class="form-control" name="padsar_tax" id="padsar_tax" value="0.00"
+                                    readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">भांडवली मूल्य</label>
+                                <input type="text" class="form-control" name="capital_value" id="bhandavali_tax"
+                                    value="0.00" readonly>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label">% प्रमाणे कमी केलेली रक्कम(-)</label>
-                            <input type="text" class="form-control" name="discount" id="discount" value="0.00">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">एकूण कर</label>
-                            <input type="text" class="form-control" name="total_tax_amount" id="total_tax_amount"
-                                value="0.00">
-                        </div>
-                    </div>
 
-                    <!-- Buttons -->
-                    <!-- Buttons -->
-                    <div class="d-flex gap-3 mt-4">
-                        <button class="btn btn-primary">साठवा</button>
-                        <button class="btn btn-secondary">रद्द करा</button>
-                    </div>
+                        <!-- Final Calculation -->
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">कर आकारणी प्रमाणे एकूण</label>
+                                <input type="text" class="form-control" name="total_tax" id="total_tax" value="0.00"
+                                    readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">% प्रमाणे कमी केलेली रक्कम(-)</label>
+                                <input type="text" class="form-control" name="discount" id="discount" value="0.00">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">एकूण कर</label>
+                                <input type="text" class="form-control" name="final_tax" id="total_tax_amount"
+                                    value="0.00" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">प्रमाणिकरण दिनांक</label>
+                                <input type="date" class="form-control" name="verification_date" id="verification_date"
+                                    required>
+                            </div>
+                        </div>
 
-                    <!-- Data Table -->
+                        <!-- Buttons -->
+                        <div class="d-flex gap-3 mt-4">
+                            <button type="submit" name="save" class="btn btn-primary">साठवा</button>
+                            <button type="reset" class="btn btn-secondary">रद्द करा</button>
+                        </div>
+                    </form>
+
+                    <!-- Verification Records Table -->
                     <div class="table-responsive mt-4">
                         <table class="table table-bordered table-striped text-center align-middle">
                             <thead class="bg-primary text-white">
@@ -226,42 +241,78 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
                                     <th>अ क्रं</th>
                                     <th>वॉर्डचे नाव</th>
                                     <th>रस्त्याचे नाव</th>
-                                    <th>गृ. नं.</th>
+                                    <!-- <th>गृ. नं.</th> -->
                                     <th>मालकाचे नाव</th>
                                     <th>भोगवटाधारकाचे नाव</th>
-                                    <th>इमारत मुल्यांकन</th>
+                                    <th>भांडवली मूल्य</th>
                                     <th>इमारत कर</th>
                                     <th>आरोग्य कर</th>
                                     <th>दिवाबत्ती कर</th>
                                     <th>पाणीपुरवठा कर</th>
                                     <th>पडसर / खुली जागा कर</th>
                                     <th>एकूण कर</th>
-                                    <th>बदल</th>
+                                    <th class="d-none">बदल</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php
+                                $verifications = $fun->getPropertyVerifications($_SESSION['district_code']);
+                                if(mysqli_num_rows($verifications) > 0):
+                                    $counter = 1;
+                                    while($row = mysqli_fetch_assoc($verifications)):
+                                ?>
                                 <tr>
-                                    <td>1</td>
-                                    <td>वॉर्ड (ब)</td>
-                                    <td>ढाणू ते जव्हार रस्ता</td>
-                                    <td>४५३</td>
-                                    <td>दीपक अशोक कोब</td>
-                                    <td>दीपक अशोक कोब</td>
-                                    <td>507000</td>
-                                    <td>491</td>
-                                    <td>20</td>
-                                    <td>20</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>531</td>
-                                    <td><a href="#"><i class="fa fa-pencil-alt"></i></a></td>
+                                    <td><?= $counter++ ?></td>
+                                    <td><?= $row['ward_no'] ?></td>
+                                    <td><?= $row['road_name'] ?></td>
+                                    <td class="d-none"><?= $row['group_no'] ?></td>
+                                    <td><?= $row['owner_name'] ?></td>
+                                    <td><?= $row['occupant_name'] ?></td>
+                                    <td><?= number_format($row['capital_value'], 2) ?></td>
+                                    <td><?= number_format($row['building_tax'], 2) ?></td>
+                                    <td><?= number_format($row['health_tax'], 2) ?></td>
+                                    <td><?= number_format($row['light_tax'], 2) ?></td>
+                                    <td><?= number_format($row['water_tax'], 2) ?></td>
+                                    <td><?= number_format($row['padsar_tax'], 2) ?></td>
+                                    <td><?= number_format($row['final_tax'], 2) ?></td>
+                                    <td class="d-none">
+                                        <button class="btn btn-sm btn-primary" onclick="editVerification(
+                                            '<?= $row['id'] ?>',
+                                            '<?= $row['formula'] ?>',
+                                            '<?= $row['village_code'] ?>',
+                                            '<?= $row['period_id'] ?>',
+                                            '<?= $row['malmatta_id'] ?>',
+                                            '<?= $row['ward_no'] ?>',
+                                            '<?= addslashes($row['owner_name']) ?>',
+                                            '<?= addslashes($row['road_name']) ?>',
+                                            '<?= addslashes($row['group_no']) ?>',
+                                            '<?= addslashes($row['occupant_name']) ?>',
+                                            '<?= $row['previous_tax'] ?>',
+                                            '<?= $row['building_tax'] ?>',
+                                            '<?= $row['light_tax'] ?>',
+                                            '<?= $row['health_tax'] ?>',
+                                            '<?= $row['water_tax'] ?>',
+                                            '<?= $row['padsar_tax'] ?>',
+                                            '<?= $row['capital_value'] ?>',
+                                            '<?= $row['total_tax'] ?>',
+                                            '<?= $row['discount'] ?>',
+                                            '<?= $row['final_tax'] ?>',
+                                            '<?= $row['verification_date'] ?>'
+                                        )">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
                                 </tr>
+                                <?php endwhile; ?>
+                                <?php else: ?>
+                                <tr>
+                                    <td colspan="14" class="text-center">प्रमाणिकरण माहिती सापडली नाही</td>
+                                </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
-
                 </div>
-
                 <!---Container Fluid-->
             </div>
             <!-- Footer -->
@@ -277,27 +328,13 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
 
     <?php include('include/scripts.php'); ?>
     <script>
-    function filldata(id, person_name, nickname, mobile_no, aadhar_no, email, gender) {
-        console.log(id, person_name, nickname, mobile_no, aadhar_no, email, gender);
-
-        document.getElementById('update').value = id;
-        document.getElementById('person_name').value = person_name;
-        document.getElementById('nickname').value = nickname;
-        document.getElementById('mobile_no').value = mobile_no;
-        document.getElementById('aadhar_no').value = aadhar_no;
-        document.getElementById('email').value = email;
-        document.getElementById('gender').value = gender;
-    }
-
-
+    // Set current date as verification date
     document.addEventListener("DOMContentLoaded", function() {
-        const decision_date = document.getElementById('decision_date');
-
-        decision_date.value = new Date().toISOString().split('T')[0];
-
+        const verification_date = document.getElementById('verification_date');
+        verification_date.value = new Date().toISOString().split('T')[0];
     });
-    </script>
-    <script>
+
+    // Search property details
     document.getElementById('search-button').addEventListener('click', function() {
         const village = document.getElementById('village_name').value;
         const period = document.getElementById('period').value;
@@ -307,6 +344,7 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
             alert("कृपया सर्व फील्ड भरा");
             return;
         }
+
         const tbody = document.querySelector("#propertyTable tbody");
         tbody.innerHTML = ""; // Clear previous data
 
@@ -329,108 +367,61 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
                     const waterTariff = data.water_tariff;
                     const tbody = document.querySelector("#propertyTable tbody");
                     const properties = info.properties;
-                    console.log(properties);
-                    let total_value = 0;
-                    let discount = 0;
+
+                    // Fill property details table
                     properties.forEach((prop, index) => {
-                        const length = parseFloat(prop.lenght || 0);
-                        const width = parseFloat(prop.width || 0);
-                        const areaInMt = prop.areaInMt;
-                        const areaInFoot = prop.areaInFoot;
-                        const depreciation = prop.construction_year === "22" ? 0.9 : 1;
-
-
                         const row = `
-      <tr>
-        <td>${index + 1}</td>
-        <td>${info.malmatta_no}</td>
-        <td>${prop.property_use}</td>
-        <td>${prop.floor}</td>
-        <td>${length}</td>
-        <td>${width}</td>
-        <td>${areaInFoot}</td>
-        <td>${areaInMt}</td>
-        <td>${prop.construction_year}</td>
-        <td>${prop.yearly_tax}</td>
-        <td>${prop.construction_tax}</td>
-        <td>${prop.ghasara_tax}</td>
-        <td>${prop.bharank}</td>
-        <td>${prop.bhandavali}</td>
-        <td>${prop.milkat_fixed_tax}</td>
-        <td>${prop.building_value}</td>
-        
-      </tr>
-    `;
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${info.malmatta_no}</td>
+                                <td>${prop.property_use}</td>
+                                <td>${prop.floor}</td>
+                                <td>${prop.lenght || 0}</td>
+                                <td>${prop.width || 0}</td>
+                                <td>${prop.areaInFoot}</td>
+                                <td>${prop.areaInMt}</td>
+                                <td>${prop.construction_year}</td>
+                                <td>${prop.yearly_tax}</td>
+                                <td>${prop.construction_tax}</td>
+                                <td>${prop.ghasara_tax}</td>
+                                <td>${prop.bharank}</td>
+                                <td>${prop.bhandavali}</td>
+                                <td>${prop.milkat_fixed_tax}</td>
+                                <td>${prop.building_value}</td>
+                            </tr>
+                        `;
                         tbody.insertAdjacentHTML("beforeend", row);
                     });
-                    console.log("info", info);
-                    console.log(data.tax_rates);
 
-                    document.getElementById("previous_year_tax").value = info.previous_year_tax ?? 0;
-                    document.getElementById("previous_year_tax").readOnly = true;
+                    // Fill form fields
+                    document.getElementById("previous_year_tax").value = info.previous_year_tax || 0;
+                    document.getElementById("building_tax").value = info.building_total_value || 0;
+                    document.getElementById("bhandavali_tax").value = info.total_bhandavali || 0;
+                    document.getElementById('ward_no').value = info.ward_name || '';
+                    document.getElementById('owner_name').value = info.owner_name || '';
+                    document.getElementById('road_name').value = info.road_name || '';
+                    document.getElementById('group_no').value = info.group_no || '';
+                    document.getElementById('occupant_name').value = info.occupant_name || '';
+                    document.getElementById('light_tax').value = taxRates.divabatti_prap_tharabaila_rate ||
+                        0;
+                    document.getElementById('health_tax').value = taxRates.arogya_prap_tharabaila_rate || 0;
+                    document.getElementById('water_tax').value = waterTariff.fixed_rate || 0;
+                    document.getElementById('padsar_tax').value = info.padsar_total_value || 0;
 
-                    document.getElementById("building_tax").value = info.building_total_value;
-                    document.getElementById("building_tax").readOnly = true;
+                    // Calculate totals
+                    const buildingTax = parseFloat(info.building_total_value) || 0;
+                    const lightTax = parseFloat(taxRates.divabatti_prap_tharabaila_rate) || 0;
+                    const healthTax = parseFloat(taxRates.arogya_prap_tharabaila_rate) || 0;
+                    const waterTax = parseFloat(waterTariff.fixed_rate) || 0;
+                    const padsarTax = parseFloat(info.padsar_total_value) || 0;
 
-                    document.getElementById("bhandavali_tax").value = info.total_bhandavali;
-                    document.getElementById("bhandavali_tax").readOnly = true;
+                    const totalTax = buildingTax + lightTax + healthTax + waterTax + padsarTax;
+                    document.getElementById('total_tax').value = totalTax.toFixed(2);
 
-                    document.getElementById('ward_no').value = info.ward_name;
-                    console.log("info.ward_name", info.ward_name);
-
-                    document.getElementById('ward_no').readOnly = true;
-
-                    document.getElementById('owner_name').value = info.owner_name;
-                    console.log("owner_name", info.owner_name);
-                    document.getElementById('owner_name').readOnly = true;
-
-                    document.getElementById('road_name').value = info.road_name ?? "";
-                    console.log("info.road_name", info.road_name);
-                    document.getElementById('road_name').readOnly = true;
-
-                    document.getElementById('group_no').value = info.group_no ?? "";
-                    console.log("info.group_no", info.group_no);
-                    document.getElementById('group_no').readOnly = true;
-
-                    document.getElementById('occupant_name').value = info.occupant_name;
-                    console.log("info.occupant_name", info.occupant_name);
-                    document.getElementById('occupant_name').readOnly = true;
-
-                    // document.getElementById('building_tax').value = info.building_tax;
-                    // document.getElementById('building_tax').readOnly = true;
-
-                    document.getElementById('light_tax').value = taxRates.divabatti_prap_tharabaila_rate;
-                    console.log("taxRates.divabatti_prap_tharabaila_rate", taxRates
-                        .divabatti_prap_tharabaila_rate);
-                    document.getElementById('light_tax').readOnly = true;
-
-                    document.getElementById('health_tax').value = taxRates.arogya_prap_tharabaila_rate;
-                    console.log("taxRates.arogya_prap_tharabaila_rate", taxRates
-                        .arogya_prap_tharabaila_rate);
-                    document.getElementById('health_tax').readOnly = true;
-
-                    document.getElementById('water_tax').value = waterTariff.fixed_rate;
-                    console.log("waterTariff.fixed_rate", waterTariff.fixed_rate);
-                    document.getElementById('water_tax').readOnly = true;
-
-                    document.getElementById('padsar_tax').value = info.padsar_total_value;
-                    console.log("padsar_total", info.padsar_total_value);
-                    document.getElementById('padsar_tax').readOnly = true;
-
-                    total = Number(info.padsar_total_value) + Number(info.building_total_value) +
-                        Number(taxRates.divabatti_prap_tharabaila_rate) + Number(taxRates
-                            .arogya_prap_tharabaila_rate) +
-                        Number(waterTariff.fixed_rate);
-                    total_tax = total - discount;
-
-                    document.getElementById('total_tax').value = total;
-                    document.getElementById('total_tax').readOnly = true;
-
-                    document.getElementById('discount').value = discount;
-                    document.getElementById('discount').readOnly = true;
-
-                    document.getElementById('total_tax_amount').value = total_tax;
-                    document.getElementById('total_tax_amount').readOnly = true;
+                    // Calculate final tax after discount
+                    const discount = parseFloat(document.getElementById('discount').value) || 0;
+                    const finalTax = totalTax - discount;
+                    document.getElementById('total_tax_amount').value = finalTax.toFixed(2);
                 } else {
                     alert("माहिती सापडली नाही.");
                 }
@@ -440,8 +431,66 @@ $malmattaEntry = $fun->getMalmattaDataEntryByLgdcode($_SESSION['district_code'])
                 alert("त्रुटी आली.");
             });
     });
-    </script>
 
+    // Calculate final tax when discount changes
+    document.getElementById('discount').addEventListener('input', function() {
+        const totalTax = parseFloat(document.getElementById('total_tax').value) || 0;
+        const discount = parseFloat(this.value) || 0;
+        const finalTax = totalTax - discount;
+        document.getElementById('total_tax_amount').value = finalTax.toFixed(2);
+    });
+
+    // Edit verification record
+    function editVerification(
+        id, formula, villageCode, periodId, malmattaId, wardNo, ownerName,
+        roadName, groupNo, occupantName, previousTax, buildingTax, lightTax,
+        healthTax, waterTax, padsarTax, capitalValue, totalTax, discount,
+        finalTax, verificationDate
+    ) {
+        // Set the verification ID
+        document.getElementById('verification_id').value = id;
+
+        // Set radio button
+        document.querySelector(`input[name="formula"][value="${formula}"]`).checked = true;
+
+        // Set dropdowns
+        document.getElementById('village_name').value = villageCode;
+        document.getElementById('period').value = periodId;
+        document.getElementById('malmatta_no').value = malmattaId;
+
+        // Set text fields
+        document.getElementById('ward_no').value = wardNo;
+        document.getElementById('owner_name').value = ownerName;
+        document.getElementById('road_name').value = roadName;
+        document.getElementById('group_no').value = groupNo;
+        document.getElementById('occupant_name').value = occupantName;
+        document.getElementById('previous_year_tax').value = previousTax;
+        document.getElementById('building_tax').value = buildingTax;
+        document.getElementById('light_tax').value = lightTax;
+        document.getElementById('health_tax').value = healthTax;
+        document.getElementById('water_tax').value = waterTax;
+        document.getElementById('padsar_tax').value = padsarTax;
+        document.getElementById('bhandavali_tax').value = capitalValue;
+        document.getElementById('total_tax').value = totalTax;
+        document.getElementById('discount').value = discount;
+        document.getElementById('total_tax_amount').value = finalTax;
+        document.getElementById('verification_date').value = verificationDate;
+
+        // Change button text
+        document.querySelector('button[name="save"]').textContent = 'अद्यतनित करा';
+
+        // Scroll to form
+        document.querySelector('form').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
+    // Reset form
+    document.querySelector('button[type="reset"]').addEventListener('click', function() {
+        document.getElementById('verification_id').value = '';
+        document.querySelector('button[name="save"]').textContent = 'साठवा';
+    });
+    </script>
 </body>
 
 </html>

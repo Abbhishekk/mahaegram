@@ -24,7 +24,7 @@ $milkatObject = [
     "मनोरा खुली जागा सर्वसाधारण किंवा डोंगराळ आदिवसी क्षेत्र असलेल्या ग्रामपंचायती"=>"manora_khuli_jaga_sarvasadharan",
     "मनोरा खुली जागा महानगरपालिका किंवा नगरपालिका यांच्या लगतच्या ग्रामपंचायती"=> "manora_khuli_jaga_mnc"   
 ];
-if ($village && $period && $malmattaId) {
+if ($malmattaId) {
     // Get full malmatta entry with properties + water tax
     $malmattaData = $fun->getMalmattaWithPropertiesWithId($malmattaId, $_SESSION['district_code']);
    
