@@ -39,7 +39,7 @@
                         class="collapse <?php if ($subpage == 'ahaval') { echo 'show'; } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="alerts.html">असेसमेंट रजिस्टर</a>
+                            <a class="collapse-item" href="namuna8_ahaval_assesment_register.php">असेसमेंट रजिस्टर</a>
                             <a class="collapse-item" href="buttons.html">नमुना क्र ८ मालमत्ता माहिती अहवाल</a>
                             <a class="collapse-item" href="dropdowns.html">असेसमेंट रजिस्टर (वैयक्तिक)</a>
                             <a class="collapse-item" href="modals.html">असेसमेंट रजिस्टर फेरफार नुसार अहवाल</a>
