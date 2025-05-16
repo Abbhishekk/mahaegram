@@ -1,143 +1,52 @@
 <?php
-require_once('lib/tcpdf/tcpdf.php');
+require_once('lib/tcpdf1/tcpdf.php');
 
-// Create new PDF document
-$pdf = new TCPDF('L', PDF_UNIT, 'A4', true, 'UTF-8', false);
-
-// Set document info
-$pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor('Your Name');
-$pdf->SetTitle('Malmatta PDF Export');
-
-// Set margins
+$pdf = new TCPDF('L', PDF_UNIT, 'A3', true, 'UTF-8', false);
 $pdf->SetMargins(10, 10, 10);
-$pdf->SetHeaderMargin(0);
-$pdf->SetFooterMargin(0);
-
-// Add a page
+$pdf->SetAutoPageBreak(true, 10);
+$pdf->SetFont('freeserif', '', 7); // smaller font
 $pdf->AddPage();
 
-// Set font
-$pdf->SetFont('freeserif', '', 10);
+// Title
+$pdf->Cell(0, 10, 'नमुना ८ - कर आकारणी नोंदवही', 0, 1, 'C');
 
-// Enable automatic page breaks
-$pdf->SetAutoPageBreak(TRUE, 10);
+// Headers (27 columns)
+$headers = [
+    'अ.क्र', 'रहिवाशीचे नाव', 'गल्लीतले नाव', 'गट', 'भूमापन',
+    'मालमत्ता क्रमांक', 'मालकाचे नाव', 'भोगवटाधारक',
+    'मालमत्तेचे वर्णन', 'बांधकामाचे वर्ष', 'वयोमान', 'क्षेत्रफळ (चौ.मी)',
+    'रेडीरेकनर दर', 'घसारा दर', 'इ.वापर भारांक', 'भांडवली मूल्य',
+    'कराचा दर', 'वार्षिक कर (रु.)', 'अपील निकाल', 'फेरफार शेरा',
+    'इमारत कर', 'स्वच्छता कर', 'आरोग्य कर', 'सावर्जनिक सुविधा कर',
+    'एकूण (इमारत)', 'एकूण (जमीन)', 'एकूण (तपशीलवार)'
+];
 
-// HTML content
-$html = <<<EOD
-<style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        font-size: 10px;
+$data = [
+    ['1', 'राम पाटील', 'डहाणू मार्ग', 'इतर', '30x38', 'P001', 'राम पाटील', '—', 'इमारत', '2013', '10', '105.91', '1040', '13352', '0.9', '1382845.69', '1', '866.90', '', '', '516', '20', '20', '75', '631', '', '866.9'],
+    ['2', 'गणेश काळे', 'बांद्रापाडा', 'मिश्र', '25x22', 'P002', 'गणेश काळे', '—', 'मातीचे घर', '2007', '17', '50.00', '1040', '13352', '0.8', '545214.00', '1', '543.00', '', '', '446', '18', '20', '75', '559', '', '609.0'],
+    // Add more rows as needed...
+];
+
+// Calculated column width
+$colWidth = 400 / count($headers); // 14.81mm
+
+// Build table manually
+$html = '<table border="1" cellpadding="2" cellspacing="0"><thead><tr>';
+foreach ($headers as $header) {
+    $html .= '<th width="'.$colWidth.'mm">'.$header.'</th>';
+}
+$html .= '</tr></thead><tbody>';
+
+foreach ($data as $row) {
+    $html .= '<tr>';
+    foreach ($row as $cell) {
+        $html .= '<td width="'.$colWidth.'mm">'.htmlspecialchars($cell, ENT_QUOTES, 'UTF-8').'</td>';
     }
-    th, td {
-        border: 1px solid black;
-        padding: 4px;
-        text-align: center;
-        vertical-align: middle;
-    }
-    .rotate {
-        writing-mode: vertical-rl;
-        transform: rotate(180deg);
-    }
-</style>
+    $html .= '</tr>';
+}
+$html .= '</tbody></table>';
 
-<table>
-    <thead>
-        <tr>
-            <th rowspan="2">अ. क्र.</th>
-            <th rowspan="2" class="rotate">सरसावाचे नाव</th>
-            <th rowspan="2" class="rotate">गल्लीतले नाव</th>
-            <th rowspan="2" class="rotate">गाळा क्रमांक</th>
-            <th rowspan="2" class="rotate">मालकाचे नाव</th>
-            <th rowspan="2" class="rotate">भोगवटादाराचे नाव</th>
-            <th rowspan="2">मालमत्तेचे वर्णन</th>
-            <th rowspan="2">क्षेत्रफळ (चौ. फु.)</th>
-            <th colspan="3">दर (रु. प्रति चौ. फु.)</th>
-            <th rowspan="2">कर रक्कम</th>
-            <th rowspan="2">वार्षिक कर</th>
-            <th rowspan="2">वार्षिक कर</th>
-            <th rowspan="2">वार्षिक कर</th>
-            <th rowspan="2">वार्षिक कर</th>
-            <th rowspan="2">वार्षिक कर</th>
-            <th rowspan="2">वार्षिक कर</th>
-            <th rowspan="2">वार्षिक कर</th>
-            <th rowspan="2">वार्षिक कर</th>
-            <th rowspan="2">वार्षिक कर</th>
-            <th rowspan="2">वार्षिक कर</th>
-            <th rowspan="2">वार्षिक कर</th>
-            <th rowspan="2">एकूण रक्कम</th>
-        </tr>
-        <tr>
-            <th>जमीन</th>
-            <th>इमारत</th>
-            <th>इतर</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>१</td>
-            <td class="rotate">खानुते</td>
-            <td class="rotate">विक्रमभाऊ रत्ता</td>
-            <td>१</td>
-            <td>लाखु बेंद्रे</td>
-            <td>खुद</td>
-            <td>दोन खोल्यांचे घर</td>
-            <td>२००</td>
-            <td>५</td>
-            <td>१०</td>
-            <td>०</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>५१६</td>
-            <td>२०</td>
-            <td>८६६.९</td>
-        </tr>
-        <tr>
-            <td>२</td>
-            <td class="rotate">खानुते</td>
-            <td class="rotate">विक्रमभाऊ रत्ता</td>
-            <td>२</td>
-            <td>सती तायां भोसले</td>
-            <td>खुद</td>
-            <td>एक मजल्याचे घर</td>
-            <td>२५०</td>
-            <td>५</td>
-            <td>५</td>
-            <td>५</td>
-            <td>५</td>
-            <td>५</td>
-            <td>५</td>
-            <td>५</td>
-            <td>५</td>
-            <td>५</td>
-            <td>५</td>
-            <td>५</td>
-            <td>५</td>
-            <td>५</td>
-            <td>१०</td>
-            <td>०</td>
-            <td>५३१</td>
-            <td>२०</td>
-            <td>६४६</td>
-        </tr>
-    </tbody>
-</table>
-EOD;
-
-// output the HTML content
 $pdf->writeHTML($html, true, false, true, false, '');
 
-// Output PDF
-$pdf->Output('malmatta_export.pdf', 'I');
+// Output
+$pdf->Output('namuna8_27column_fitted.pdf', 'I');

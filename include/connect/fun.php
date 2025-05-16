@@ -195,6 +195,26 @@ class Fun
         $result = mysqli_query($this->db, $query);
         return $result;
     }
+    public function getYearArray($periods){
+        if(mysqli_num_rows($periods) > 0){
+            $row = mysqli_fetch_assoc($periods);
+            $total_period = $row['total_period'];
+          
+           [$start, $end] = explode('-', $total_period);
+    $start = (int) $start;
+    $end = (int) $end;
+
+    $ranges = [];
+
+    for ($year = $start; $year < $end; $year++) {
+        $ranges[] = "$year-" . ($year + 1);
+    }
+
+    return $ranges;
+        } else {
+            return null; // or handle the case when no rows are found
+        }
+    }
 
     public function addPeriodDetails($reason, $durationStart, $durationEnd, $duration, $lgd_code) {
         $stmt = $this->db->prepare("INSERT INTO period_details (period_reason, period_start, period_end, total_period, lgd_code) VALUES (?, ?, ?, ?, ?)");
