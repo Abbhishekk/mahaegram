@@ -6,7 +6,10 @@
 <?php 
 $title = "Dashboard";
 ?>
-<?php include('include/header.php'); ?>
+<?php include('include/header.php'); 
+
+
+?>
 
 <body id="page-top">
     <div id="wrapper">
@@ -63,6 +66,13 @@ $title = "Dashboard";
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <?php echo $_SESSION['district_name'] ?> </div>
+
+                                        </div>
+                                        <div class="col-md-3 mr-2 my-2">
+                                            <div class="text-xs font-weight-bold text-uppercase mb-1">Panchayat Name
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <?php echo $_SESSION['panchayat_name'] ?> </div>
 
                                         </div>
                                         <div class="col-md-3 mr-2 my-2">

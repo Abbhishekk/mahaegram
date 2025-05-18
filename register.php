@@ -85,6 +85,14 @@ if (isset($_SESSION['message'])) {
                                             </select>
                                         </div>
                                         <div class="form-group">
+                                            <label for="district">Select Panchayat</label>
+                                            <select class="select2-single-placeholder form-control" name="panchayat"
+                                                id="panchayat">
+                                                <option value="">Select Panchayat</option>
+
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="village">Select Village</label>
                                             <select class="select2-single-placeholder form-control" name="village"
                                                 id="village">
@@ -154,6 +162,21 @@ if (isset($_SESSION['message'])) {
         });
 
         $('#district').on('change', function() {
+            var district = $(this).val();
+            $.ajax({
+                url: 'api/get_panchayat.php',
+                type: 'POST',
+                data: {
+                    district: district
+                },
+                success: function(data) {
+                    $('#panchayat').html(data);
+                    $('#village').html('<option value="">Select Village</option>');
+                }
+            });
+        });
+
+        $('#panchayat').on('change', function() {
             var district = $(this).val();
             $.ajax({
                 url: 'api/get_villages.php',

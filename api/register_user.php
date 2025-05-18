@@ -33,23 +33,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $state = $_POST['state'];
     $district_code = $_POST['district'];
+    $panchayat_code = $_POST['panchayat'];
     $village_code = $_POST['village'];
     $user_id = generateUserId();
     // Check for existing user in district
-    $stmt = $conn->prepare("SELECT id FROM users WHERE district_code = ?");
-    $stmt->bind_param("s", $district_code);
+    $stmt = $conn->prepare("SELECT id FROM users WHERE panchayat_code = ?");
+    $stmt->bind_param("s", $panchayat_code);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        echo "A user already exists for this district.";
+        echo "A user already exists for this Panchayat.";
         exit;
     }
 
     // Insert new user
-    $stmt = $conn->prepare("INSERT INTO users (user_id, name, mobile, email, designation, password, state, district_code, village_code)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("sssssssss", $user_id, $name, $mobile, $email, $designation, $password, $state, $district_code, $village_code);
+    $stmt = $conn->prepare("INSERT INTO users (user_id, name, mobile, email, designation, password, state, district_code, panchayat_code ,village_code)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+$stmt->bind_param("ssssssssss", $user_id, $name, $mobile, $email, $designation, $password, $state, $district_code, $panchayat_code ,$village_code);
     if ($stmt->execute()) {
         $_SESSION['message'] = "User registered successfully.";
         $_SESSION['user_id'] = $user_id;

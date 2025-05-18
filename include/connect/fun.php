@@ -1932,6 +1932,16 @@ return $response;
         $result = mysqli_query($this->db, $query);
         return $result;
     }
+    public function getVillagesWithPanchayat($panchayat_code){
+        $query = "SELECT DISTINCT `Village_Code`, `Village_Name`,`District_Code` FROM `lgdtable` WHERE `Village_Panchayat_Code_TLB_Code` = '$panchayat_code'";
+        $result = mysqli_query($this->db, $query);
+        return $result;
+    }
+    public function getPanchayatWithDistrict($district_code){
+        $query = "SELECT DISTINCT `Village_Panchayat_Code_TLB_Code` as 'panchayat_code', `Village_Panchayat_Name_TLB_Name` as 'panchayat_name' ,`District_Code` FROM `lgdtable` WHERE `District_Code` = '$district_code'";
+        $result = mysqli_query($this->db, $query);
+        return $result;
+    }
 
     // milkat tax info
 

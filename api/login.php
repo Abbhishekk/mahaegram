@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $password = $_POST['password'];
 
 $stmt = $conn->prepare("SELECT * FROM users
-        left join lgdtable on users.village_code = lgdtable.village_code and users.district_code = lgdtable.district_code
+        left join lgdtable on users.village_code = lgdtable.village_code and users.panchayat_code = lgdtable.Village_Panchayat_Code_TLB_Code and users.district_code = lgdtable.district_code
        
  WHERE user_id = ?");
 $stmt->bind_param("s", $user_id);
@@ -28,6 +28,8 @@ $stmt->bind_param("s", $user_id);
             $_SESSION['district_name'] = $row['District_Name'];
             $_SESSION['village_code'] = $row['village_code'];
             $_SESSION['village_name'] = $row['Village_Name'];
+            $_SESSION['panchayat_code'] = $row['Village_Panchayat_Code_TLB_Code'];
+            $_SESSION['panchayat_name'] = $row['Village_Panchayat_Name_TLB_Name'];
             $_SESSION['message'] = "Login successful.";
             $_SESSION['state'] = $row['state'];
             echo "Login successful.";
