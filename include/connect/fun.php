@@ -2210,9 +2210,9 @@ public function deleteCheckbook($id, $district_code) {
  * Get all materials for current district
  */
 public function getMaterials($district_code) {
-    $sql = "SELECT * FROM materials WHERE district_code = ? ORDER BY material_name";
+    $sql = "SELECT * FROM materials WHERE panchayat_code = ? ORDER BY material_name";
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("s", $district_code);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
     $stmt->execute();
     return $stmt->get_result();
 }
@@ -2221,9 +2221,15 @@ public function getMaterials($district_code) {
  * Add new material
  */
 public function addMaterial($data) {
-    $sql = "INSERT INTO materials (material_name, district_code) VALUES (?, ?)";
+    $sql = "INSERT INTO materials (material_name, district_code, panchayat_code) VALUES (?, ?, ?)";
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("ss", $data['material_name'], $data['district_code']);
+    $stmt->bind_param("sss", $data['material_name'], $data['district_code'], $_SESSION['panchayat_code']);
+    return $stmt->execute();
+}
+public function getMaterialWithId($id) {
+    $sql = "SELECT * FROM materials WHERE id = ? AND panchayat_code = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("ss",$id,$_SESSION['panchayat_code']);
     return $stmt->execute();
 }
 
@@ -2231,9 +2237,9 @@ public function addMaterial($data) {
  * Update material
  */
 public function updateMaterial($id, $data) {
-    $sql = "UPDATE materials SET material_name = ? WHERE id = ? AND district_code = ?";
+    $sql = "UPDATE materials SET material_name = ? WHERE id = ? AND panchayat_code = ?";
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("sis", $data['material_name'], $id, $data['district_code']);
+    $stmt->bind_param("sis", $data['material_name'], $id, $_SESSION['panchayat_code']);
     return $stmt->execute();
 }
 
@@ -2241,9 +2247,9 @@ public function updateMaterial($id, $data) {
  * Delete material
  */
 public function deleteMaterial($id, $district_code) {
-    $sql = "DELETE FROM materials WHERE id = ? AND district_code = ?";
+    $sql = "DELETE FROM materials WHERE id = ? AND panchayat_code = ?";
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("is", $id, $district_code);
+    $stmt->bind_param("is", $id, $_SESSION['panchayat_code']);
     return $stmt->execute();
 }
 
@@ -2587,5 +2593,69 @@ public function sanitize($data, $type = 'default') {
     
     return $data;
 }
+
+//pavti pustak 
+
+public function getPavatiPustak($district_code) {
+    $query = "SELECT * FROM pavati_pustak
+              WHERE panchayat_code = ?
+              ORDER BY buying_date DESC, material_type";
+    
+    $stmt = $this->db->prepare($query);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
+    $stmt->execute();
+    
+    return $stmt->get_result();
+}
+
+/**
+ * Get a single receipt book record by ID
+ */
+public function getPavatiPustakById($id, $district_code) {
+    $query = "SELECT * FROM pavati_pustak 
+              WHERE id = ? AND panchayat_code = ?";
+    
+    $stmt = $this->db->prepare($query);
+    $stmt->bind_param("is", $id, $_SESSION['panchayat_code']);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
+// pavati pustak vitaran
+/**
+ * Get all receipt book distribution records for current district
+ */
+public function getPavatiPustakVitaran($district_code) {
+    $query = "SELECT v.*, p.material_type, p.material_number 
+              FROM pavati_pustak_vitaran v
+              JOIN pavati_pustak p ON v.material_id = p.id
+              WHERE v.panchayat_code = ?
+              ORDER BY v.created_at DESC";
+    
+    $stmt = $this->db->prepare($query);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
+    $stmt->execute();
+    
+    return $stmt->get_result();
+}
+
+/**
+ * Get a single distribution record by ID
+ */
+public function getPavatiPustakVitaranById($id, $district_code) {
+    $query = "SELECT v.*, p.material_type, p.material_number 
+              FROM pavati_pustak_vitaran v
+              JOIN pavati_pustak p ON v.material_id = p.id
+              WHERE v.id = ? AND v.panchayat_code = ?";
+    
+    $stmt = $this->db->prepare($query);
+    $stmt->bind_param("is", $id, $_SESSION['panchayat_code']);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
+
 }
 ?>
