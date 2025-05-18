@@ -28,10 +28,10 @@ if (isset($_POST['add'])) {
     $tap_numbers       = trim($_POST['tap_numbers']);
     $tap_width         = trim($_POST['tap_width']);
     $tap_owner_id      = trim($_POST['tap_owner_name']);
-
+ 
     // Multiple property entries (JSON)
     $income_data       = isset($_POST['income_data']) ? json_decode($_POST['income_data'], true) : [];
-
+    // print_r($income_data);
     // Validate required fields
     if (empty($period_id) || empty($village_name) || empty($ward_id) || empty($malmatta_no) || empty($owner_id) || empty($occupant_id) || empty($toilet_available)) {
         $_SESSION['message'] = "⚠️ कृपया सर्व आवश्यक माहिती भरा!";
@@ -64,8 +64,34 @@ if (isset($_POST['add'])) {
 
         // Insert each dynamic property
         $all_properties_inserted = true;
+        // print_r($income_data);
         foreach ($income_data as $entry) {
-            print_r($entry);
+            $photoPath = null;
+        
+    // Handle photo upload if exists
+    if (!empty($entry['propertyPhoto'])) {
+        $uploadDir = '../uploads/property_photos/';
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        
+        $photoData = $entry['propertyPhoto'];
+        $fileName = uniqid('property_') . '_' . $entry['photoName'];
+        $filePath = $uploadDir . $fileName;
+        
+        // Convert base64 to file
+        if (preg_match('/^data:image\/(\w+);base64,/', $photoData, $type)) {
+            $photoData = substr($photoData, strpos($photoData, ',') + 1);
+            $photoData = base64_decode($photoData);
+            
+            if ($photoData !== false) {
+                file_put_contents($filePath, $photoData);
+                $photoPath = 'uploads/property_photos/' . $fileName;
+            }
+        }
+    }
+
+    // print_r($entry);
             
             $insert_property = $fun->addMalmattaPropertyInfo(
                 $malmatta_id,
@@ -82,6 +108,7 @@ if (isset($_POST['add'])) {
                 $entry['width'] ?? '',
                 $entry['area'] ?? '',
                 $entry['propertyUse'] ?? '',
+                $photoPath  
             );
             if (!$insert_property) {
                 $all_properties_inserted = false;
@@ -116,6 +143,7 @@ if (isset($_POST['add'])) {
             $_SESSION['message'] = "❌ डेटाबेस त्रुटी: " . $e->getMessage();
             $_SESSION['message_type'] = "error";
         }
+        // print_r($e->getMessage());
     } catch (Exception $ex) {
         $_SESSION['message'] = $ex->getMessage();
         $_SESSION['message_type'] = "error";

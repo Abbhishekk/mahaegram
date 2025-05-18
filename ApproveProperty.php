@@ -18,7 +18,8 @@ $selected_period = null;
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['period']) && $_POST['period'] !== '') {
     $selected_period = $_POST['period'];
     // You can filter malmatta data here based on $selected_period
-    $malmatta_data_entries = $fun->getMalmattaDataEntryByPeriod($_SESSION['district_code'], $selected_period);
+    $malmatta_data_entries = $fun->getMalmattaWithPropertiesAccordingToPeriod( $selected_period, 0,0);
+    // print_r($malmatta_data_entries);
 } else {
     $malmatta_data_entries = null;
 }
@@ -104,7 +105,7 @@ if (isset($_SESSION['message'])) {
                                 </div>
                             </div>
                         </div>
-                        <?php if ($selected_period && $malmatta_data_entries && mysqli_num_rows($malmatta_data_entries) > 0): ?>
+                        <?php if ($selected_period && $malmatta_data_entries && count($malmatta_data_entries) > 0): ?>
                         <div class="col-lg-12">
                             <div class="card">
 
@@ -119,14 +120,7 @@ if (isset($_SESSION['message'])) {
                                                 <th>गट /सर्वे नं</th>
                                                 <th>मालमत्ता धारकाचे नाव</th>
                                                 <th>भोगवटाधारक</th>
-                                                <th>मालमता प्रकार</th>
-                                                <th>अधिक माहिती</th>
-                                                <th>मजला</th>
-                                                <th>Measuring Unit</th>
-                                                <th>लांबी</th>
-                                                <th>रुंदी</th>
-                                                <th>क्षेत्रफळ</th>
-                                                <th>बा.वर्ष</th>
+
                                                 <th>भारांक</th>
                                                 <!-- <th>जमिन दर</th>
                                                 <th>बांधकाम दर</th> -->
@@ -135,20 +129,18 @@ if (isset($_SESSION['message'])) {
                                         </thead>
                                         <tbody>
                                             <?php
-                                                if(mysqli_num_rows($malmatta_data_entries) > 0){
+                                                if(count($malmatta_data_entries) > 0){
                                                     $i = 1;
-                                                    while($name = mysqli_fetch_assoc($malmatta_data_entries)){
-                                                        //    print_r($name);
-                                                        //    echo "<br>";
-                                                        $malmatta_period_details = $fun->getMalmattaDetailsAll($name['malmatta_id'], $name["village_name"]);
-                                                        // print_r($malmatta_period_details);
-                                                        // echo "<br>";
+                                                    foreach ($malmatta_data_entries as $name) {
+                                                            // print_r($name);
+                                                            // echo "<br>";
+                                                      
                                                           $malmatta_use_tax = [
             "रहिवाशी" => 1,
             "वाणिज्य/व्यापार" => 1.2,
             "औद्योगिक" => 1.5
         ];
-                                                        $bharank = $malmatta_use_tax[$name["malmatta_use"]];
+                                                        // $bharank = $malmatta_use_tax[$name["malmatta_use"]];
                                              ?>
                                             <tr>
                                                 <td><a href="#"><?php echo $i; ?></a></td>
@@ -158,14 +150,7 @@ if (isset($_SESSION['message'])) {
                                                 <td><?php echo $name['group_no']."/".$name['city_survey_no']; ?></td>
                                                 <td><?php echo $name['owner_name']; ?></td>
                                                 <td><?php echo $name['occupant_name']; ?></td>
-                                                <td><?php echo $name['tax_exempt']; ?></td>
-                                                <td><?php echo $name['directions']; ?></td>
-                                                <td><?php echo $name['floor']; ?></td>
-                                                <td><?php echo $name['measuring_unit']; ?></td>
-                                                <td><?php echo $name['lenght']; ?></td>
-                                                <td><?php echo $name['width']; ?></td>
-                                                <td><?php echo $name['area']; ?></td>
-                                                <td><?php echo $name['construction_year']; ?></td>
+
                                                 <td>
                                                     <button type="button" class="btn btn-primary" data-toggle="modal"
                                                         data-target="#modal<?php echo $name['malmatta_id']?>"
@@ -208,17 +193,50 @@ if (isset($_SESSION['message'])) {
                                                                                     <th>भांडवली मुल्यांकन</th>
                                                                                     <th>मिळकत कर दर</th>
                                                                                     <th>इमारत कर</th>
+                                                                                    <th>फोटो</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
                                                                                 <?php
-                                        if (isset($malmatta_period_details["info"][0]['properties'])) {
-                                            $i = 1;
-                                            foreach ($malmatta_period_details["info"][0]['properties'] as $property) {
-                                                // print_r($property);
-                                                ?>
+if (isset($name['properties'])) {
+    $sr = 1;
+    $allModals = ""; // Collect modals here
+    foreach ($name['properties'] as $property) {
+        $photoCell = $property['property_photo_path'] ?
+            '<td><img src="'.$property['property_photo_path'].'" alt="Property Photo"
+             width="50" height="50" 
+             class="thumbnail-img"
+             style="cursor: pointer;"
+             data-toggle="modal"
+             data-target="#modal'.md5($property['property_photo_path']).'"></td>' :
+            '<td>No photo</td>';
+
+        // Store modal for later rendering
+        if ($property['property_photo_path']) {
+            $modalId = md5($property['property_photo_path']); // safe ID
+            $allModals .= '<div class="modal fade" id="modal'.$modalId.'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Property Photo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="'.$property['property_photo_path'].'" alt="Property Photo" class="enlarged-image img-fluid">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>';
+        }
+
+        ?>
                                                                                 <tr>
-                                                                                    <td><?php echo $i++; ?></td>
+                                                                                    <td><?php echo $sr++; ?></td>
                                                                                     <td><?php echo $name['malmatta_no']; ?>
                                                                                     </td>
                                                                                     <td><?php echo $property['property_use']; ?>
@@ -249,21 +267,23 @@ if (isset($_SESSION['message'])) {
                                                                                     </td>
                                                                                     <td><?php echo $property['building_value']; ?>
                                                                                     </td>
-
+                                                                                    <?php echo $photoCell; ?>
                                                                                 </tr>
-
                                                                                 <?php
-                                                                                $i++;
-                                            }
-                                        } else {
-                                            ?>
+    }
+} else {
+    ?>
                                                                                 <tr>
-                                                                                    <td colspan="15">No data found</td>
+                                                                                    <td colspan="16">No data found</td>
                                                                                 </tr>
                                                                                 <?php
-                                        }
-                                    ?>
+}
+?>
                                                                             </tbody>
+
+                                                                            <!-- Echo all modals here, outside the table -->
+                                                                            <?php echo $allModals; ?>
+
                                                                         </table>
                                                                     </div>
                                                                 </div>

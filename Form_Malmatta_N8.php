@@ -7,6 +7,56 @@
 $title = "ग्रामपंचायत नमुना 8 डाटा एन्ट्री";
 ?>
 <?php include('include/header.php'); ?>
+<style>
+/* Style for the modal overlay */
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: zoom-out;
+}
+
+/* Style for the enlarged image */
+.enlarged-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+/* Style for thumbnail images */
+.thumbnail-img {
+    transition: transform 0.2s;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.thumbnail-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Close button style */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #ccc;
+}
+</style>
 <?php
     $malmattas = $fun->getAllMalmatta();
     $periods = $fun->getPeriodDetails($_SESSION['district_code']);
@@ -74,7 +124,7 @@ if (isset($_SESSION['message'])) {
 }
 ?>
                                 <div class="card-body">
-                                    <form method="post" action="api/newMalmatta.php">
+                                    <form method="post" action="api/newMalmatta.php" enctype="multipart/form-data">
                                         <div>
                                             <h5 class="bg-gradient-primary text-white py-3 px-5 w-25 rounded-pill">
                                                 मालमत्ता
@@ -273,8 +323,8 @@ if (isset($_SESSION['message'])) {
                                                     <div class="form-group col-md-4 mx-auto">
                                                         <label for="income_type">मिळकत प्रकार
                                                         </label>
-                                                        <select name="income_type" id="income_type" class="form-control"
-                                                            required>
+                                                        <select name="income_type" id="income_type"
+                                                            class="form-control">
                                                             <option value="" selected>--निवडा--</option>
                                                             <?php
                                                                 if(mysqli_num_rows($incomeTypes) > 0){
@@ -302,7 +352,7 @@ if (isset($_SESSION['message'])) {
                                                             <span class="text-danger">*</span>
                                                         </label>
                                                         <select name="taxable_land" id="taxable_land"
-                                                            class="form-control" required>
+                                                            class="form-control">
                                                             <option value="" selected>--निवडा--</option>
                                                             <?php
                                                                 if(mysqli_num_rows($taxExempts) > 0){
@@ -434,6 +484,12 @@ if (isset($_SESSION['message'])) {
                                                         <small id="convertedAreaUnit" class="form-text text-muted">मीटर
                                                             (Square Meters)</small>
                                                     </div>
+                                                    <!-- Change the file input in your dynamic property section -->
+                                                    <div class="form-group col-md-4 mx-auto">
+                                                        <label for="property_photo">मालमत्ता फोटो</label>
+                                                        <input type="file" class="form-control property-photo-input"
+                                                            name="property_photos[]" multiple>
+                                                    </div>
                                                     <!-- <div class="form-group col-md-4 mx-auto my-auto">
                                                         <button class="btn btn-primary bg-gradient-primary">
                                                             ADD</button>
@@ -462,6 +518,7 @@ if (isset($_SESSION['message'])) {
                                                             <th>रुंदी</th>
                                                             <th>क्षेत्रफळ (Area)</th>
                                                             <th>रूपांतरित क्षेत्रफळ (Converted Area)</th>
+                                                            <th>मालमत्ता फोटो</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
@@ -821,6 +878,10 @@ if (isset($_SESSION['message'])) {
         const buildingAge = document.getElementById('building_age');
         const buildingAgeValue = buildingAge.value.trim();
         const selectedConstructionType = document.querySelector('input[name="construction_year_type"]:checked');
+
+        const fileInput = document.querySelector('.property-photo-input');
+        const photoFile = fileInput.files[0];
+        let photoData = null;
         let construction_year_type = "";
         if (selectedConstructionType) {
             construction_year_type = selectedConstructionType.value;
@@ -859,33 +920,67 @@ if (isset($_SESSION['message'])) {
         const convertedAreaValue = convertedArea.value.trim();
 
 
+        if (photoFile) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                photoData = e.target.result;
+                // Add to entries
+                incomeEntries.push({
+                    taxTypeId: taxTypeValue,
+                    area: area,
+                    incomeType: incomeTypeValue,
+                    incomeOtherInfo: incomeOtherInfoValue,
+                    taxableLand: taxableLandValue,
+                    propertyUse: propertyUseValue,
+                    taxType: taxTypeText,
+                    redirecenarParts: redirecenarPartsValue,
+                    constructionYear: constructionYearValue,
+                    buildingAge: buildingAgeValue,
+                    construction_year_type: construction_year_type,
+                    age: ageValue,
+                    floors: floorsValue,
+                    selectedUnit: selectedUnitValue,
+                    ft: ftValue,
+                    meter: meterValue,
+                    height: heightValue,
+                    width: widthValue,
+                    area: areaValue,
+                    convertedArea: convertedAreaValue,
+                    propertyPhoto: photoData,
+                    photoName: photoFile.name
+                });
+                renderIncomeTable();
+            };
+            reader.readAsDataURL(photoFile);
+        } else {
+            incomeEntries.push({
+                taxTypeId: taxTypeValue,
+                area: area,
+                incomeType: incomeTypeValue,
+                incomeOtherInfo: incomeOtherInfoValue,
+                taxableLand: taxableLandValue,
+                propertyUse: propertyUseValue,
+                taxType: taxTypeText,
+                redirecenarParts: redirecenarPartsValue,
+                constructionYear: constructionYearValue,
+                buildingAge: buildingAgeValue,
+                construction_year_type: construction_year_type,
+                age: ageValue,
+                floors: floorsValue,
+                selectedUnit: selectedUnitValue,
+                ft: ftValue,
+                meter: meterValue,
+                height: heightValue,
+                width: widthValue,
+                area: areaValue,
+                convertedArea: convertedAreaValue,
+                propertyPhoto: null,
+                photoName: null
+            });
+            renderIncomeTable();
 
-        // Add to array
-        incomeEntries.push({
-            taxTypeId: taxTypeValue,
-            area: area,
-            incomeType: incomeTypeValue,
-            incomeOtherInfo: incomeOtherInfoValue,
-            taxableLand: taxableLandValue,
-            propertyUse: propertyUseValue,
-            taxType: taxTypeText,
-            redirecenarParts: redirecenarPartsValue,
-            constructionYear: constructionYearValue,
-            buildingAge: buildingAgeValue,
-            construction_year_type: construction_year_type,
-            age: ageValue,
-            floors: floorsValue,
-            selectedUnit: selectedUnitValue,
-            ft: ftValue,
-            meter: meterValue,
-            height: heightValue,
-            width: widthValue,
-            area: areaValue,
-            convertedArea: convertedAreaValue
-        });
+        }
 
-        // Render to table
-        renderIncomeTable();
 
         // Clear inputs
         incomeType.value = "";
@@ -906,6 +1001,9 @@ if (isset($_SESSION['message'])) {
 
         // Store in hidden input
         document.getElementById("income_data").value = JSON.stringify(incomeEntries);
+        console.log(incomeEntries);
+
+        fileInput.value = '';
     });
 
     function renderIncomeTable() {
@@ -913,6 +1011,15 @@ if (isset($_SESSION['message'])) {
         tbody.innerHTML = "";
 
         incomeEntries.forEach((entry, index) => {
+            const photoCell = entry.propertyPhoto ?
+                `<td><img src="${entry.propertyPhoto}" 
+                 width="50" height="50" 
+                 class="thumbnail-img"
+                 style="cursor: pointer;"
+                 data-fullimg="${entry.propertyPhoto}"
+                 onclick="showFullImage(this)"></td>` :
+                `<td>No photo</td>`;
+
             const row = `<tr>
             <td>${entry.incomeType}</td>
             <td>${entry.incomeOtherInfo}</td>
@@ -927,10 +1034,62 @@ if (isset($_SESSION['message'])) {
             <td>${entry.width}</td>
             <td>${entry.area}</td>
             <td>${entry.convertedArea}</td>
-            <td><button type="button" class="btn btn-danger bg-gradient-danger"  onclick="removeIncomeType(${index})">Remove</button></td>
+            ${photoCell}
+            <td><button type="button" class="btn btn-danger" onclick="removeIncomeType(${index})">Remove</button></td>
         </tr>`;
             tbody.innerHTML += row;
         });
+    }
+
+    function showFullImage(imgElement) {
+        const fullImgUrl = imgElement.getAttribute('data-fullimg');
+
+        // Create modal overlay
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.backgroundColor = 'rgba(0,0,0,0.8)';
+        overlay.style.zIndex = '1000';
+        overlay.style.display = 'flex';
+        overlay.style.justifyContent = 'center';
+        overlay.style.alignItems = 'center';
+        overlay.style.cursor = 'pointer';
+        overlay.onclick = function() {
+            document.body.removeChild(overlay);
+        };
+
+        // Create image element
+        const fullImg = document.createElement('img');
+        fullImg.src = fullImgUrl;
+        fullImg.style.maxWidth = '90%';
+        fullImg.style.maxHeight = '90%';
+        fullImg.style.objectFit = 'contain';
+
+        // Prevent clicks on image from closing the modal
+        fullImg.onclick = function(e) {
+            e.stopPropagation();
+        };
+
+        // Add close button
+        const closeBtn = document.createElement('span');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.style.position = 'absolute';
+        closeBtn.style.top = '20px';
+        closeBtn.style.right = '30px';
+        closeBtn.style.color = 'white';
+        closeBtn.style.fontSize = '40px';
+        closeBtn.style.fontWeight = 'bold';
+        closeBtn.style.cursor = 'pointer';
+        closeBtn.onclick = function() {
+            document.body.removeChild(overlay);
+        };
+
+        overlay.appendChild(fullImg);
+        overlay.appendChild(closeBtn);
+        document.body.appendChild(overlay);
     }
 
     function removeIncomeType(index) {

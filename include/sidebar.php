@@ -184,7 +184,7 @@
                         <span>वार्षिक कामकाज</span>
                     </a>
                     <div id="collapseBootstrapNamuna10YearlyWork"
-                        class="collapse <?php if ($subpage == 'varshik_kamkaj') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna10_varshikkamkaj_shillak.php">वर्षाच्या सुरवातीची

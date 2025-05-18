@@ -33,8 +33,44 @@ $colWidth = 400 / count($headers); // 14.81mm
 // Build table manually
 $html = '<table border="1" cellpadding="2" cellspacing="0"><thead><tr>';
 foreach ($headers as $header) {
-    $html .= '<th width="'.$colWidth.'mm">'.$header.'</th>';
 }
+$html .= ' <th width="30" rowspan="3">क्र</th>
+        <th width="80" rowspan="3">रस्त्याचे नाव</th>
+        <th width="100" rowspan="3">गट क्र. भूमापन क्र</th>
+        <th width="90" rowspan="3">माल मत्ता क्रमांक</th>
+        <th width="60" rowspan="3">मालकाचे नाव (धारण करणाऱ्याचे नाव)</th>
+        <th width="60" rowspan="3" >भोगवटा करणान्याचे
+नाव</th>
+        <th width="50" rowspan="3" >मालमत्तेचे वर्णन</th>
+        <th width="50" rowspan="3" >भारांक</th>
+        <th width="70" rowspan="3" >क्षेत्रफळ ची मी/(चौ.फू)</th>
+        <th width="50" rowspan="1" colspan="3" >रेडीरेकनर दर प्रति
+चो मी</th>
+        <th width="60" rowspan="3" >घसारा दर</th>
+        <th width="60" rowspan="3" >इ. वापरा नुसार भारांक</th>
+        <th width="60" rowspan="3" >भांडवली मूल्य</th>
+        <th width="60" rowspan="3" >करा चा दर</th>
+        <th width="60" rowspan="1" colspan="5" >कराची रक्कम (रूपये)</th>
+        <th width="60" rowspan="1" colspan="5" >अपिलाचे निकाल आणी त्यानंतर केलेले  फेरफार   (रूपये)</th>
+        <th width="60" rowspan="3" >नंतर वाढकिंवा घट झालेल्या याबाबतीत आदेशाच्या संदर्भात शेरा</th> </tr>';
+$html .= '<tr>
+        <th width="60" rowspan="2" >जमिन</th>
+        <th width="60" rowspan="2" >इमारत</th>
+        <th width="60" rowspan="2" >बांधकाम</th>
+        <th width="60" rowspan="2" >इमारत कर</th>
+        <th width="60" rowspan="2" >दिवाबत्ती</th>
+        <th width="60" rowspan="2" >आरोग्य</th>
+        <th width="60" rowspan="2" >पाणी पटटी</th>
+        <th width="60" rowspan="2" >एकूण</th>
+        <th width="60" rowspan="2" >इमारत कर</th>
+        <th width="60" rowspan="2" >दिवाबत्ती</th>
+        <th width="60" rowspan="2" >आरोग्य</th>
+        <th width="60" rowspan="2" >पाणी पटटी</th>
+        <th width="60" rowspan="2" >एकूण</th>
+
+       ';
+
+
 $html .= '</tr></thead><tbody>';
 
 foreach ($data as $row) {

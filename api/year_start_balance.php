@@ -30,7 +30,8 @@ try {
             'account_no' => $_POST['account_no'] ?? '',
             'ifsc_code' => $_POST['ifsc_code'] ?? '',
             'amount' => $_POST['amount'] ?? 0,
-            'district_code' => $_SESSION['district_code']
+            'district_code' => $_SESSION['district_code'],
+            'thev_yojana_name' => $_POST['theve_yojana_name'] ?? '',
         ];
         
         // Validate required fields

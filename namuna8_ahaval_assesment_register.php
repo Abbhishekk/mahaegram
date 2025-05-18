@@ -12,7 +12,8 @@ $title = "मालमत्ता कर आकारणी";
 $financialYears = $fun->getFinancialYears();
     $banks = $fun->getBanks();
     $periodsWithReasons = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
-    $yearArray = $fun->getYearArray($periodsWithReasons);
+    $periodsWithReasons2 = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
+    $yearArray = $fun->getYearArray($periodsWithReasons2);
     $wards = $fun->getWard($_SESSION['district_code']);
     $roadDetails = $fun->getRoad($_SESSION['district_code']);
    
@@ -23,7 +24,7 @@ $financialYears = $fun->getFinancialYears();
     <div id="wrapper">
         <!-- Sidebar -->
         <?php 
-        $page = 'namuna10';
+        $page = 'namuna8';
         $subpage = 'ahaval';
         include('include/sidebar.php');
        ?>
@@ -50,6 +51,7 @@ $financialYears = $fun->getFinancialYears();
                         <div class="col-lg-12">
                             <div class="card mb-4">
                                 <?php
+                                // print_r($_SESSION);
                                 if (isset($_SESSION['message'])) {
                                     $message = $_SESSION['message'];
                                     $message_type = $_SESSION['message_type'];
@@ -62,15 +64,14 @@ $financialYears = $fun->getFinancialYears();
                                 }
                                 ?>
                                 <div class="card-body">
-                                    <form method="post" action="api/year_start_remaining.php">
+                                    <form id="pdfForm">
                                         <input type="hidden" name="material_id" id="material_id" value="">
                                         <div class="row">
                                             <div class="col-md-3 my-3">
                                                 <div class="custom-control custom-radio">
                                                     <input type="radio" id="all_ahaval" name="ahavalType"
-                                                        value="संपूर्ण अहवाल"
-                                                        class="custom-control-input">
-                                                    <label class="custom-control-label" for="all_ahaval">संपूर्ण अहवाल  
+                                                        value="संपूर्ण अहवाल" class="custom-control-input">
+                                                    <label class="custom-control-label" for="all_ahaval">संपूर्ण अहवाल
                                                     </label>
                                                 </div>
 
@@ -78,76 +79,76 @@ $financialYears = $fun->getFinancialYears();
                                             <div class="col-md-3 my-3">
                                                 <div class="custom-control custom-radio">
                                                     <input type="radio" id="according_to_ward" name="ahavalType"
-                                                        value="वॉर्ड नुसार अहवाल"
-                                                        class="custom-control-input">
-                                                    <label class="custom-control-label" for="according_to_ward">वॉर्ड नुसार अहवाल</label>
+                                                        value="वॉर्ड नुसार अहवाल" class="custom-control-input">
+                                                    <label class="custom-control-label" for="according_to_ward">वॉर्ड
+                                                        नुसार अहवाल</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3 my-3">
                                                 <div class="custom-control custom-radio">
                                                     <input type="radio" id="according_to_road" name="ahavalType"
-                                                        value="रस्त्यानुसार अहवाल"
-                                                        class="custom-control-input">
-                                                    <label class="custom-control-label" for="according_to_road">रस्त्यानुसार अहवाल
+                                                        value="रस्त्यानुसार अहवाल" class="custom-control-input">
+                                                    <label class="custom-control-label"
+                                                        for="according_to_road">रस्त्यानुसार अहवाल
                                                     </label>
                                                 </div>
 
                                             </div>
-                                            <div class="col-md-3 my-3">
+                                            <div class="col-md-3 my-3 d-none">
                                                 <div class="custom-control custom-radio">
                                                     <input type="radio" id="according_to_years" name="ahavalType"
-                                                        value="आर्थिक वर्ष नुसार अहवाल"
-                                                        class="custom-control-input">
-                                                    <label class="custom-control-label" for="according_to_years">आर्थिक वर्ष नुसार अहवाल
+                                                        value="आर्थिक वर्ष नुसार अहवाल" class="custom-control-input">
+                                                    <label class="custom-control-label" for="according_to_years">आर्थिक
+                                                        वर्ष नुसार अहवाल
                                                     </label>
                                                 </div>
                                             </div>
-                                           <div class="form-group col-md-3">
-                                                    <label for="period">कालावधी<span class="text-danger">*</span>
-                                                    </label>
-                                                    <select name="period" id="period" class="form-control">
-                                                        <option value="" selected>--निवडा--</option>
-                                                        <?php
+                                            <div class="form-group col-md-4">
+                                                <label for="period">कालावधी<span class="text-danger">*</span>
+                                                </label>
+                                                <select name="period" id="period" class="form-control">
+                                                    <option value="" selected>--निवडा--</option>
+                                                    <?php
                                                             if(mysqli_num_rows($periodsWithReasons) > 0){
                                                                 while($periodsWithReason = mysqli_fetch_assoc($periodsWithReasons)){
                                                                     echo '<option value="'.$periodsWithReason['id'].'">'.$periodsWithReason['total_period'].'</option>';
                                                                 }
                                                             }
                                                         ?>
-                                                    </select>
+                                                </select>
 
-                                                </div>
+                                            </div>
                                             <div class="form-group col-md-3">
-                                                    <label for="ward_name">वॉर्ड क्रं <span class="text-danger">*</span>
-                                                    </label>
-                                                    <select name="ward_name" id="ward_name" class="form-control">
-                                                        <option value="" selected>--निवडा--</option>
-                                                        <?php
+                                                <label for="ward_name">वॉर्ड क्रं <span class="text-danger">*</span>
+                                                </label>
+                                                <select name="ward_name" id="ward_name" class="form-control">
+                                                    <option value="" selected>--निवडा--</option>
+                                                    <?php
                                                             if(mysqli_num_rows($wards) > 0){
                                                                 while($ward = mysqli_fetch_assoc($wards)){
                                                                     echo '<option value="'.$ward['id'].'">'.$ward['ward_name'].'</option>';
                                                                 }
                                                             }
                                                         ?>
-                                                    </select>
+                                                </select>
 
-                                                </div>
+                                            </div>
                                             <div class="form-group col-md-3">
-                                                    <label for="road_name">गल्लीचे नाव/ अंतर्गत रस्त्याचे नाव<span
-                                                            class="text-danger">*</span>
-                                                    </label>
-                                                    <select name="road_name" id="road_name" class="form-control">
-                                                        <option value="" selected>--निवडा--</option>
-                                                        <?php
+                                                <label for="road_name">गल्लीचे नाव/ अंतर्गत रस्त्याचे नाव<span
+                                                        class="text-danger">*</span>
+                                                </label>
+                                                <select name="road_name" id="road_name" class="form-control">
+                                                    <option value="" selected>--निवडा--</option>
+                                                    <?php
                                                             if(mysqli_num_rows($roadDetails) > 0){
                                                                 while($roadDetail = mysqli_fetch_assoc($roadDetails)){
                                                                     echo '<option value="'.$roadDetail['id'].'">'.$roadDetail['road_name'].'</option>';
                                                                 }
                                                             }
                                                         ?>
-                                                    </select>
+                                                </select>
 
-                                                </div>
+                                            </div>
                                             <div class="form-group col-md-3">
                                                 <label for="drainageType">आर्थिक वर्ष <span class="text-danger">*</span>
                                                 </label>
@@ -164,7 +165,7 @@ $financialYears = $fun->getFinancialYears();
                                                 </select>
 
                                             </div>
-                                            
+
                                         </div>
 
                                         <button type="submit" name="add" class="btn btn-primary">साठवणे</button>
@@ -173,7 +174,7 @@ $financialYears = $fun->getFinancialYears();
                                 </div>
                             </div>
                         </div>
-                       
+
                     </div>
                 </div>
                 <!---Container Fluid-->
@@ -191,86 +192,138 @@ $financialYears = $fun->getFinancialYears();
 
     <?php include('include/scripts.php'); ?>
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const allAhaval = document.getElementById('all_ahaval');
-    const wardRadio = document.getElementById('according_to_ward');
-    const roadRadio = document.getElementById('according_to_road');
-    const yearsRadio = document.getElementById('according_to_years');
+    document.addEventListener('DOMContentLoaded', function() {
+        const allAhaval = document.getElementById('all_ahaval');
+        const wardRadio = document.getElementById('according_to_ward');
+        const roadRadio = document.getElementById('according_to_road');
+        const yearsRadio = document.getElementById('according_to_years');
 
-    const periodSelect = document.getElementById('period').closest('.form-group');
-    const wardSelect = document.getElementById('ward_name').closest('.form-group');
-    const roadSelect = document.getElementById('road_name').closest('.form-group');
-    const yearSelect = document.getElementById('financialYear').closest('.form-group');
+        const periodSelect = document.getElementById('period').closest('.form-group');
+        const wardSelect = document.getElementById('ward_name').closest('.form-group');
+        const roadSelect = document.getElementById('road_name').closest('.form-group');
+        const yearSelect = document.getElementById('financialYear').closest('.form-group');
 
-    function updateVisibility() {
-        if (allAhaval.checked) {
-            periodSelect.style.display = 'block';
-            wardSelect.style.display = 'none';
-            roadSelect.style.display = 'none';
-            yearSelect.style.display = 'none';
-        } else if (wardRadio.checked) {
-            periodSelect.style.display = 'block';
-            wardSelect.style.display = 'block';
-            roadSelect.style.display = 'none';
-            yearSelect.style.display = 'none';
-        } else if (roadRadio.checked) {
-            periodSelect.style.display = 'block';
-            wardSelect.style.display = 'none';
-            roadSelect.style.display = 'block';
-            yearSelect.style.display = 'none';
-        } else if (yearsRadio.checked) {
-            periodSelect.style.display = 'block';
-            wardSelect.style.display = 'none';
-            roadSelect.style.display = 'none';
-            yearSelect.style.display = 'block';
-        } else {
-            // Default: hide all optional selects
-            periodSelect.style.display = 'none';
-            wardSelect.style.display = 'none';
-            roadSelect.style.display = 'none';
-            yearSelect.style.display = 'none';
+        function updateVisibility() {
+            if (allAhaval.checked) {
+                periodSelect.style.display = 'block';
+                wardSelect.style.display = 'none';
+                roadSelect.style.display = 'none';
+                yearSelect.style.display = 'none';
+            } else if (wardRadio.checked) {
+                periodSelect.style.display = 'block';
+                wardSelect.style.display = 'block';
+                roadSelect.style.display = 'none';
+                yearSelect.style.display = 'none';
+            } else if (roadRadio.checked) {
+                periodSelect.style.display = 'block';
+                wardSelect.style.display = 'none';
+                roadSelect.style.display = 'block';
+                yearSelect.style.display = 'none';
+            } else if (yearsRadio.checked) {
+                periodSelect.style.display = 'block';
+                wardSelect.style.display = 'none';
+                roadSelect.style.display = 'none';
+                yearSelect.style.display = 'block';
+            } else {
+                // Default: hide all optional selects
+                periodSelect.style.display = 'none';
+                wardSelect.style.display = 'none';
+                roadSelect.style.display = 'none';
+                yearSelect.style.display = 'none';
+            }
         }
-    }
 
-    // Attach event listeners
-    [allAhaval, wardRadio, roadRadio, yearsRadio].forEach(radio => {
-        radio.addEventListener('change', updateVisibility);
+        // Attach event listeners
+        [allAhaval, wardRadio, roadRadio, yearsRadio].forEach(radio => {
+            radio.addEventListener('change', updateVisibility);
+        });
+
+        // Initial visibility
+        updateVisibility();
     });
-
-    // Initial visibility
-    updateVisibility();
-});
-</script>
+    </script>
 
     <script>
-    function fillMaterialData(id, material_name) {
-        // Set the material ID
-        document.getElementById('material_id').value = id;
+    document.getElementById('pdfForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
 
-        // Fill form fields
-        document.getElementById('material_name').value = material_name;
+        const period = document.getElementById('period').value;
+        const ward = document.getElementById('ward_name').value;
+        const road = document.getElementById('road_name').value;
+        const year = document.getElementById('financialYear').value;
+        const ahavalType = document.querySelector('input[name="ahavalType"]:checked').value;
 
-        // Change button text
-        document.querySelector('button[name="add"]').textContent = 'अपडेट करा';
+        // 👇 Fetch table HTML from your PHP backend
+        const res = await fetch(
+            `table.php?period=${period}&ward=${ward}&road=${road}&year=${year}&type=${ahavalType}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        const html = await res.text();
 
-        // Scroll to form
-        document.getElementById('material_name').scrollIntoView({
-            behavior: 'smooth'
-        });
+        // 👇 Open in new tab and print
+        const printWindow = window.open('', '_blank');
+        printWindow.document.open();
+        printWindow.document.write(`
+    <html>
+    <head>
+      <title>नमुना ८</title>
+      <style>
+body {
+    font-family: 'Mangal', 'Noto Sans Devanagari', 'Arial', sans-serif;
+    margin: 20px;
+    color: #000;
+}
+
+h1,
+h2,
+h3 {
+    text-align: center;
+    margin: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid #000;
+    padding: 4px 6px;
+    text-align: center;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+.header-note {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+@media print {
+    @page {
+        size: landscape;
     }
-
-    // Reset form when cancel button is clicked
-    document.querySelector('button[type="reset"]').addEventListener('click', function() {
-        document.getElementById('material_id').value = '';
-        document.querySelector('button[name="add"]').textContent = 'साठवणे';
+}
+</style>
+    </head>
+    <body onload="window.print()">
+      ${html}
+    </body>
+    </html>
+  `);
+        printWindow.document.close();
     });
-
-    // Also reset when form is successfully submitted
-    <?php if (isset($_SESSION['message']) && $_SESSION['message_type'] == 'success'): ?>
-    document.getElementById('material_id').value = '';
-    document.querySelector('button[name="add"]').textContent = 'साठवणे';
-    <?php endif; ?>
     </script>
+
 </body>
 
 </html>

@@ -7,7 +7,6 @@ include "../include/connect/fun.php";
 $connect = new Connect();
 $fun = new Fun($connect->dbConnect());
 
-session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['malmatta_id'])) {
     $malmatta_id = intval($_POST['malmatta_id']);
@@ -23,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['malmatta_id'])) {
         $_SESSION['message_type'] = "danger";
     }
 
-    header("Location: ../ApproveProperty.php"); // Change to actual file name
+     header("Location: ../ApproveProperty.php"); // Change to actual file name
     exit;
 }
 ?>

@@ -163,6 +163,7 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                                         <th>भांडवली मुल्यांकन</th>
                                         <th>मिळकत कर दर</th>
                                         <th>इमारत कर</th>
+                                        <th>फोटो</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -370,6 +371,16 @@ $title = "मालमत्ता माहिती प्रमाणिक�
 
                     // Fill property details table
                     properties.forEach((prop, index) => {
+                        console.log(prop);
+
+                        const photoCell = prop.property_photo_path ?
+                            `<td><img src="${prop.property_photo_path}" 
+                 width="50" height="50" 
+                 class="thumbnail-img"
+                 style="cursor: pointer;"
+                 data-fullimg="${prop.property_photo_path}"
+                 onclick="showFullImage(this)"></td>` :
+                            `<td>No photo</td>`;
                         const row = `
                             <tr>
                                 <td>${index + 1}</td>
@@ -388,6 +399,7 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                                 <td>${prop.bhandavali}</td>
                                 <td>${prop.milkat_fixed_tax}</td>
                                 <td>${prop.building_value}</td>
+                                ${photoCell}
                             </tr>
                         `;
                         tbody.insertAdjacentHTML("beforeend", row);
