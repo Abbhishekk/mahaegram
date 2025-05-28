@@ -16,6 +16,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $aadharNo = trim($_POST['aadhar_no']);
         $email = trim($_POST['email']);
 
+        // Validate inputs
+        $errors = [];
+        
+        // Name validation
+        if (empty($personName)) {
+            $errors[] = "व्यक्तीचे नाव आवश्यक आहे.";
+        } elseif (!preg_match("/^[\p{Marathi} ]+$/u", $personName)) {
+            $errors[] = "व्यक्तीचे नाव फक्त मराठी अक्षरे असावे.";
+        }
+
+        // Mobile number validation (10 digits, starts with 6-9)
+        if (empty($mobileNo)) {
+            $errors[] = "मोबाईल नंबर आवश्यक आहे.";
+        } elseif (!preg_match("/^[6-9][0-9]{9}$/", $mobileNo)) {
+            $errors[] = "कृपया वैध मोबाईल नंबर प्रविष्ट करा (10 अंक, 6,7,8 किंवा 9 ने सुरू).";
+        }
+
+        // Aadhaar validation (12 digits, can have spaces or hyphens)
+        if (!empty($aadharNo)) {
+            $cleanedAadhar = preg_replace('/[-\s]/', '', $aadharNo);
+            if (!preg_match("/^[0-9]{12}$/", $cleanedAadhar)) {
+                $errors[] = "कृपया वैध आधार क्रमांक प्रविष्ट करा (12 अंक).";
+            }
+            $aadharNo = $cleanedAadhar; // Store cleaned version
+        }
+
+        // Email validation
+        if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "कृपया वैध ईमेल पत्ता प्रविष्ट करा.";
+        }
+
+        // Check if there are any validation errors
+        if (!empty($errors)) {
+            $_SESSION['message'] = implode("<br>", $errors);
+            $_SESSION['message_type'] = "danger";
+            header("Location: ../Form_Name_Masters.php");
+            exit();
+        }
         // Check if it's an update or new entry
         $updateId = isset($_POST['update']) && !empty($_POST['update']) ? $_POST['update'] : null;
 

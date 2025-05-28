@@ -61,29 +61,20 @@ if (isset($_SESSION['message'])) {
                                         <input type="hidden" name="checkbook_id" id="checkbook_id" value="">
                                         <div class="row">
                                             <div class="form-group col-md-12">
-                                                <label for="plan_name">योजनेचे नाव <span class="text-danger">*</span>
-                                                </label>
-                                                <select class="form-control mb-3" name="plan_name" id="plan_name"
-                                                    required>
-                                                    <option value=""> -- निवडा -- </option>
-                                                    <option value="ग्रामनिधी">ग्रामनिधी</option>
-                                                    <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
-                                                </select>
+    <label for="plan_name">योजनेचे नाव <span class="text-danger">*</span></label>
+    <select class="form-control mb-3" name="plan_name" id="plan_name" required>
+        <option value=""> -- निवडा -- </option>
+        <option value="ग्रामनिधी">ग्रामनिधी</option>
+        <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
+    </select>
+</div>
 
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="bank_name">बँकेचे नाव <span class="text-danger">*</span>
-                                                </label>
-                                                <select class="form-control mb-3" name="bank_name" id="bank_name"
-                                                    required>
-                                                    <option value=""> -- निवडा -- </option>
-                                                    <?php foreach ($banks['data'] as $bank) { ?>
-                                                    <option value="<?php echo $bank['id']; ?>">
-                                                        <?php echo $bank['bank_name']; ?></option>
-                                                    <?php } ?>
-                                                </select>
-
-                                            </div>
+<div class="form-group col-md-6">
+    <label for="bank_name">बँकेचे नाव <span class="text-danger">*</span></label>
+    <select class="form-control mb-3" name="bank_name" id="bank_name" required >
+        <option value=""> -- प्रथम योजना निवडा -- </option>
+    </select>
+</div>
                                             <div class="form-group col-md-6">
                                                 <label for="checkbook_no">चेकबुक क्रमांक <span
                                                         class="text-danger">*</span>
@@ -261,6 +252,72 @@ if (isset($_SESSION['message'])) {
         document.getElementById('last_check_no').value = lastCheckNo;
     });
     </script>
+    <script>
+// Function to load banks based on selected plan
+function loadBanksByPlan(planName) {
+    if (!planName) {
+        $('#bank_name').html('<option value="">-- निवडा --</option>');
+        return;
+    }
+
+    $.ajax({
+        url: 'api/checkbook.php?getBanksByPlan=1',
+        type: 'GET',
+        data: { plan_name: planName },
+        dataType: 'json',
+        success: function(response) {
+            console.log(response);
+            if (response) {
+                var options = '<option value="">-- निवडा --</option>';
+                $.each(response, function(index, bank) {
+                    options += '<option value="' + bank.id + '">' + bank.bank_name + '</option>';
+                });
+                $('#bank_name').html(options);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error fetching banks:", error);
+        }
+    });
+}
+
+// Event listener for plan selection change
+$('#plan_name').change(function() {
+    var selectedPlan = $(this).val();
+    loadBanksByPlan(selectedPlan);
+});
+
+// Existing fillCheckbookData function with bank selection
+function fillCheckbookData(id, plan_name, bank_id, checkbook_no, first_check_no, check_no, last_check_no, date) {
+    // Set the checkbook ID
+    $('#checkbook_id').val(id);
+
+    // First set the plan name
+    $('#plan_name').val(plan_name).trigger('change');
+    
+    // After a small delay (to allow banks to load), set the bank
+    setTimeout(function() {
+        $('#bank_name').val(bank_id);
+    }, 300);
+
+    // Fill other form fields
+    $('#checkbook_no').val(checkbook_no);
+    $('#first_check_no').val(first_check_no);
+    $('#check_no').val(check_no);
+    $('#last_check_no').val(last_check_no);
+    $('#date').val(date);
+
+    // Change button text
+    $('button[name="add"]').text('अपडेट करा');
+
+    // Scroll to form
+    $('html, body').animate({
+        scrollTop: $('#plan_name').offset().top
+    }, 500);
+}
+
+// Rest of your existing JavaScript...
+</script>
 </body>
 
 </html>

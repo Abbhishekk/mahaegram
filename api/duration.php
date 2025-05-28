@@ -8,27 +8,31 @@ $connect = new Connect();
 $fun = new Fun($connect->dbConnect());
 
 if (isset($_POST['add'])) {
-    $reason = trim($_POST['reason']);
-    $reasons = $fun->getDurationReasonById($reason);
-    if ($reasons) {
-        $reason = $reasons['reason'];
-    } else {
+    $reason_id = trim($_POST['reason']);
+    $reasons = $fun->getDurationReasonById($reason_id);
+    
+    if (!$reasons) {
         $_SESSION['message'] = "⚠️ कालावधी कारण सापडले नाही! (Duration reason not found!)";
         $_SESSION['message_type'] = "error";
         header("Location: ../durationMaster.php");
         exit();
     }
+    
+    $reason = $reasons['reason'];
     $duration_start = trim($_POST['durationStart']);
     $duration_end = trim($_POST['durationEnd']);
     $total_duration = trim($_POST['duration']);
+    $district_code = $_SESSION['district_code'];
 
-    if (empty($reason) || empty($duration_start) || empty($duration_end) || empty($total_duration)) {
+    // Validate all fields are filled
+    if (empty($reason_id) || empty($duration_start) || empty($duration_end) || empty($total_duration)) {
         $_SESSION['message'] = "⚠️ कृपया सर्व माहिती भरा! (Please fill in all details.)";
         $_SESSION['message_type'] = "warning";
         header("Location: ../durationMaster.php");
         exit();
     }
 
+    // Check if we're updating an existing record
     if (isset($_POST['update']) && $_POST['update'] !== "") {
         $duration_id = $_POST['update'];
         try {
@@ -45,8 +49,25 @@ if (isset($_POST['add'])) {
             handleDatabaseError($e);
         }
     } else {
+        // For new entries, check if this reason already has an active period
         try {
-            $add = $fun->addPeriodDetails($reason, $duration_start, $duration_end, $total_duration, $_SESSION['district_code']);
+            // Check if there's an existing active period for this reason
+            $existing_period = $fun->getActivePeriodByReason($reason, $district_code);
+            print_r($existing_period);
+            if ($existing_period) {
+                $current_date = date('Y-m-d');
+                if ($existing_period['period_end'] >= $current_date) {
+                    $_SESSION['message'] = "⚠️ ह्या कारणासाठी आधीच सक्रिय कालावधी आहे (" . 
+                                         $existing_period['period_start'] . " ते " . 
+                                         $existing_period['period_end'] . ")";
+                    $_SESSION['message_type'] = "warning";
+                    header("Location: ../durationMaster.php");
+                    exit();
+                }
+            }
+            
+            // If no active period or existing period has ended, add new one
+            $add = $fun->addPeriodDetails($reason, $duration_start, $duration_end, $total_duration, $district_code);
     
             if ($add) {
                 $_SESSION['message'] = "✅ कालावधी यशस्वीरीत्या जोडला गेला! (Duration added successfully!)";

@@ -56,19 +56,19 @@ class Fun
     }
     //Ward Master
     public function getWard($lgd_code){
-        $query = "SELECT * FROM `ward_details` where `lgd_code` = '$lgd_code'";
+        $query = "SELECT * FROM `ward_details` where `lgd_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
     public function getWardById($id){
-        $query = "SELECT * FROM `ward_details` WHERE `ward_no` = '$id'";
+        $query = "SELECT * FROM `ward_details` WHERE `ward_no` = '$id' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
     public function addWard($ward_no,$ward_name,$lgd_code){
-        $query = "INSERT INTO `ward_details`(`ward_no`, `ward_name`,`lgd_code`) VALUES ('$ward_no','$ward_name','$lgd_code')";
+        $query = "INSERT INTO `ward_details`(`ward_no`, `ward_name`,`lgd_code`, `panchayat_code`) VALUES ('$ward_no','$ward_name','$lgd_code', '$_SESSION[panchayat_code]')";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -95,19 +95,19 @@ class Fun
 
     //Road Master
     public function getRoad($lgd_code){
-        $query = "SELECT * FROM `road_details` where `lgd_code` = '$lgd_code'";
+        $query = "SELECT * FROM `road_details` where `lgd_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
     public function getRoadById($id){
-        $query = "SELECT * FROM `road_details` WHERE `id` = '$id'";
+        $query = "SELECT * FROM `road_details` WHERE `id` = '$id' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
     public function addRoad($road_name, $lgd_code){
-        $query = "INSERT INTO `road_details`( `road_name`,`lgd_code`) VALUES ('$road_name','$lgd_code')";
+        $query = "INSERT INTO `road_details`( `road_name`,`lgd_code`, `panchayat_code`) VALUES ('$road_name','$lgd_code', '$_SESSION[panchayat_code]')";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -145,12 +145,12 @@ class Fun
 
     //Period Details
     public function getPeriodDetails($lgd_code){
-        $query = "SELECT * FROM `period_details` where `lgd_code` = '$lgd_code'";
+        $query = "SELECT * FROM `period_details` where `lgd_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
     public function getPeriodDetailsWithId($lgd_code, $id){
-        $query = "SELECT * FROM `period_details` where `lgd_code` = '$lgd_code' and `id` = '$id'";
+        $query = "SELECT * FROM `period_details` where `lgd_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]'  and `id` = '$id'";
         $result = mysqli_query($this->db, $query);
         if(mysqli_num_rows($result) > 0){
             $row = mysqli_fetch_assoc($result);
@@ -174,7 +174,7 @@ class Fun
     }
 
     public function getPeriodDetailsLastValueByPeriodReason($periodReason, $lgd_code){
-        $query = "SELECT * FROM `period_details` WHERE `period_reason` = '$periodReason' and `lgd_code` = '$lgd_code' ORDER BY `id` DESC LIMIT 1";
+        $query = "SELECT * FROM `period_details` WHERE `period_reason` = '$periodReason' and `lgd_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]'  ORDER BY `id` DESC LIMIT 1";
         $result = mysqli_query($this->db, $query);
 
         if(mysqli_num_rows($result) > 0){
@@ -185,7 +185,7 @@ class Fun
         }
     }
     public function getPeriodDetailsAllValueByPeriodReason($periodReason, $lgd_code){
-        $query = "SELECT * FROM `period_details` WHERE `period_reason` = '$periodReason' and `lgd_code` = '$lgd_code' ORDER BY `id`";
+        $query = "SELECT * FROM `period_details` WHERE `period_reason` = '$periodReason' and `lgd_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]' ORDER BY `id`";
         $result = mysqli_query($this->db, $query);
 
         if(mysqli_num_rows($result) > 0){
@@ -197,12 +197,12 @@ class Fun
     }
 
     public function getPeriodTotalPeriods($lgd_code){
-        $query = "SELECT  `total_period`, `id` FROM `period_details` where `lgd_code` = '$lgd_code'";
+        $query = "SELECT  `total_period`, `id` FROM `period_details` where `lgd_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
     public function getPeriodTotalPeriodsWithPeriodReason($periodReason, $lgd_code){
-        $query = "SELECT  `total_period`, `id` FROM `period_details` WHERE `period_reason` = '$periodReason' and `lgd_code` = '$lgd_code'";
+        $query = "SELECT  `total_period`, `id` FROM `period_details` WHERE `period_reason` = '$periodReason' and `lgd_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -228,8 +228,8 @@ class Fun
     }
 
     public function addPeriodDetails($reason, $durationStart, $durationEnd, $duration, $lgd_code) {
-        $stmt = $this->db->prepare("INSERT INTO period_details (period_reason, period_start, period_end, total_period, lgd_code) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $reason, $durationStart, $durationEnd, $duration,$lgd_code);
+        $stmt = $this->db->prepare("INSERT INTO period_details (period_reason, period_start, period_end, total_period, lgd_code, panchayat_code) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $reason, $durationStart, $durationEnd, $duration,$lgd_code, $_SESSION['panchayat_code']);
         return $stmt->execute();
     }
     
@@ -238,6 +238,23 @@ class Fun
         $stmt->bind_param("ssssi", $reason, $durationStart, $durationEnd, $duration, $id);
         return $stmt->execute();
     }
+
+    public function getActivePeriodByReason($reason_id, $district_code) {
+    $current_date = date('Y-m-d');
+    $sql = "SELECT * FROM period_details 
+            WHERE period_reason = ? 
+            and panchayat_code = '$_SESSION[panchayat_code]'
+            AND period_end >= ?
+            LIMIT 1";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("ss", $reason_id,  $current_date);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    return $result->fetch_assoc();
+}
+
     
 
     //drainage types
@@ -271,14 +288,14 @@ class Fun
     public function getWaterTariff($lgd_code){
         $query = "SELECT *,wt.id as wt_id,  pt.id as pt_id  FROM `water_tariff` wt
             LEFT JOIN `period_details` pt ON wt.`period` = pt.`id` 
-            Where wt.`lgd_code` = '$lgd_code'
+            Where wt.`lgd_code` = '$lgd_code' and wt.`panchayat_code` = '$_SESSION[panchayat_code]'
             ORDER BY wt.id ASC";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
     public function addWaterTariff($drainage_type, $period, $min_rate, $fixed_rate, $pipe_diameter, $decison_date, $resolution_no,$max_rate, $lgd_code){
-        $query = "INSERT INTO `water_tariff`(`drainage_type`, `period`, `min_rate`,`max_rate` ,`fixed_rate`, `pipe_diameter`, `decision_date`, `resolution_no`, `lgd_code`) VALUES ('$drainage_type', '$period', '$min_rate','$max_rate' ,'$fixed_rate', '$pipe_diameter', '$decison_date', '$resolution_no', '$lgd_code')";
+        $query = "INSERT INTO `water_tariff`(`drainage_type`, `period`, `min_rate`,`max_rate` ,`fixed_rate`, `pipe_diameter`, `decision_date`, `resolution_no`, `lgd_code`, `panchayat_code`) VALUES ('$drainage_type', '$period', '$min_rate','$max_rate' ,'$fixed_rate', '$pipe_diameter', '$decison_date', '$resolution_no', '$lgd_code', '$_SESSION[panchayat_code]')";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -286,19 +303,19 @@ class Fun
     public function getWaterTariffById($id, $lgd_code){
         $query = "SELECT *,wt.id as wt_id,  pt.id as pt_id  FROM `water_tariff` wt
             LEFT JOIN `period_details` pt ON wt.`period` = pt.`id`
-         WHERE `id` = '$id' and wt.`lgd_code` = '$lgd_code'";
+         WHERE `id` = '$id' and wt.`lgd_code` = '$lgd_code' and wt.`panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
     public function getWaterTariffByResolutionNo($id, $lgd_code){
         $query = "SELECT *,wt.id as wt_id,  pt.id as pt_id  FROM `water_tariff` wt
-            LEFT JOIN `period_details` pt ON wt.`period` = pt.`id` WHERE wt.`resolution_no` = '$id' and wt.`lgd_code` = '$lgd_code'";
+            LEFT JOIN `period_details` pt ON wt.`period` = pt.`id` WHERE wt.`resolution_no` = '$id' and wt.`lgd_code` = '$lgd_code' and wt.`panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
     public function getWaterTariffByDrainageType($drainage_type, $lgd_code){
-        $query = "SELECT * FROM `water_tariff` WHERE `drainage_type` = '$drainage_type' and lgd_code = '$lgd_code' ORDER BY id ASC LIMIT 1";
+        $query = "SELECT * FROM `water_tariff` WHERE `drainage_type` = '$drainage_type' and lgd_code = '$lgd_code' and panchayat_code = '$_SESSION[panchayat_code]'  ORDER BY id ASC LIMIT 1";
         $result = mysqli_query($this->db, $query);
         if(mysqli_num_rows($result) > 0){
             $row = mysqli_fetch_assoc($result);
@@ -401,19 +418,20 @@ class Fun
 
     public function getReadyrecInfo(){
         $query = "SELECT *, ri.`id` as rid FROM `readyrec_info` ri
-                    Left join lgdtable lt on lt.`Village_Code` =  ri.`revenue_village`";
+                    Left join lgdtable lt on lt.`Village_Code` =  ri.`revenue_village`
+                    WHERE ri.`panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
     public function addReadyrecInfo($financial_years, $revenue_village, $readyrec_type, $land_type, $recordings, $yearly_tax){
-        $query = "INSERT INTO `readyrec_info`(`financial_years`, `revenue_village`, `readyrec_type`, `land_type`, `recordings`, `yearly_tax`) VALUES ('$financial_years', '$revenue_village', '$readyrec_type', '$land_type', '$recordings', '$yearly_tax')";
+        $query = "INSERT INTO `readyrec_info`(`financial_years`, `revenue_village`, `readyrec_type`, `land_type`, `recordings`, `yearly_tax`, `panchayat_code`) VALUES ('$financial_years', '$revenue_village', '$readyrec_type', '$land_type', '$recordings', '$yearly_tax', '$_SESSION[panchayat_code]')";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
     public function getReadyrecInfoById($id){
-        $query = "SELECT * FROM `readyrec_info` WHERE `id` = '$id'";
+        $query = "SELECT * FROM `readyrec_info` WHERE `id` = '$id' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -427,13 +445,13 @@ class Fun
 //New name
 
 public function getNewNameById($id){
-    $query = "SELECT * FROM `new_name` WHERE `id` = '$id'";
+    $query = "SELECT * FROM `new_name` WHERE `id` = '$id' and `panchayat_code` = '$_SESSION[panchayat_code]'";
     $result = mysqli_query($this->db, $query);
     return $result;
 }
 
 public function addNewName($person_name, $nickname, $gender,$mobile_no,$aadhar_no, $email){
-    $query = "INSERT INTO `new_name`(`person_name`, `nickname`, `gender`, `mobile_no`, `aadhar_no`, `email`) VALUES ('$person_name', '$nickname', '$gender', '$mobile_no', '$aadhar_no', '$email')";
+    $query = "INSERT INTO `new_name`(`person_name`, `nickname`, `gender`, `mobile_no`, `aadhar_no`, `email`, `panchayat_code`) VALUES ('$person_name', '$nickname', '$gender', '$mobile_no', '$aadhar_no', '$email', '$_SESSION[panchayat_code]')";
     $result = mysqli_query($this->db, $query);
     return $result;
 }
@@ -445,7 +463,7 @@ public function updateNewName($id,$person_name, $nickname, $gender,$mobile_no,$a
 }
 
 public function getNewName(){
-    $query = "SELECT * FROM `new_name`";
+    $query = "SELECT * FROM `new_name` where `panchayat_code` = '$_SESSION[panchayat_code]'";
     $result = mysqli_query($this->db, $query);
     return $result;
 
@@ -652,30 +670,30 @@ public function deleteMalmatta($id) {
     
     //tharav
     public function getTharav(){
-        $query = "SELECT * FROM `tharav`";
+        $query = "SELECT * FROM `tharav` where `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
     public function addTharav($tharav_date, $tharav_no, $for_period, $lgd_code){
-        $query = "INSERT INTO `tharav`(`tharav_date`, `tharav_no`, `for_period`, `lgdcode`) VALUES ('$tharav_date', '$tharav_no', '$for_period','$lgd_code')";
+        $query = "INSERT INTO `tharav`(`tharav_date`, `tharav_no`, `for_period`, `lgdcode`, `panchayat_code`) VALUES ('$tharav_date', '$tharav_no', '$for_period','$lgd_code', '$_SESSION[panchayat_code]')";
        
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
     public function getTharavById($id){
-        $query = "SELECT * FROM `tharav` WHERE `id` = '$id'";
+        $query = "SELECT * FROM `tharav` WHERE `id` = '$id' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
     public function getTharavByNo($id){
-        $query = "SELECT * FROM `tharav` WHERE `tharav_no` = '$id'";
+        $query = "SELECT * FROM `tharav` WHERE `tharav_no` = '$id' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
     public function getTharavByPeriod($id){
-        $query = "SELECT * FROM `tharav` WHERE `for_period` = '$id'";
+        $query = "SELECT * FROM `tharav` WHERE `for_period` = '$id' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -686,7 +704,7 @@ public function deleteMalmatta($id) {
     }
 
     public function isTharavExists($for_period) {
-        $query = "SELECT * FROM `tharav` WHERE `for_period` = '$for_period'";
+        $query = "SELECT * FROM `tharav` WHERE `for_period` = '$for_period' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return mysqli_num_rows($result) > 0;
     }
@@ -704,7 +722,7 @@ public function deleteMalmatta($id) {
                     left join new_name nno on mde.`owner_name` = nno.`id`
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
-                    Where mde.`lgdcode` = '$lgdcode' and mde.`approved` = '0' ;";
+                    Where mde.`lgdcode` = '$lgdcode' and mde.`approved` = '0' and mde.`panchayat_code` = '$_SESSION[panchayat_code]` ;";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -718,25 +736,25 @@ public function deleteMalmatta($id) {
                     left join new_name nno on mde.`owner_name` = nno.`id`
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
-                    Where mde.`lgdcode` = '$lgdcode' and mde.`approved` = '0' and mde.`period` = '$period' ;";
+                    Where mde.`lgdcode` = '$lgdcode' and mde.`approved` = '0' and mde.`period` = '$period' and mde.`panchayat_code` = '$_SESSION[panchayat_code]' ;";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
     public function getMalmattaDataEntryByLgdcode($lgdcode){
         $query = "SELECT * FROM `malmatta_data_entry` mde
-                    Where mde.`lgdcode` = '$lgdcode' ;";
+                    Where mde.`lgdcode` = '$lgdcode' and mde.`panchayat_code` = '$_SESSION[panchayat_code]` ;";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
     public function getMalmattaDataEntryByLgdcodeApproved($lgdcode){
         $query = "SELECT * FROM `malmatta_data_entry` mde
-                    Where mde.`lgdcode` = '$lgdcode' AND mde.`approved` = '1' AND mde.`verified` = '0' ;";
+                    Where mde.`lgdcode` = '$lgdcode' AND mde.`approved` = '1' AND mde.`verified` = '0' and mde.`panchayat_code` = '$_SESSION[panchayat_code]' ;";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
     public function addMalmattaDataEntry($period, $village_name, $ward_no, $road_name, $malmatta_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $remarks, $lgdcode){
-        $query = "INSERT INTO `malmatta_data_entry`(`period`, `village_name`, `ward_no`, `road_name`, `malmatta_no`, `city_survey_no`, `group_no`, `washroom_available`, `owner_name`, `wife_name`, `occupant_name`, `remarks`, `lgdcode`) VALUES ('$period', '$village_name', '$ward_no', '$road_name', '$malmatta_no', '$city_survey_no', '$group_no', '$washroom_available', '$owner_name', '$wife_name', '$occupant_name', '$remarks', '$lgdcode')";
+        $query = "INSERT INTO `malmatta_data_entry`(`period`, `village_name`, `ward_no`, `road_name`, `malmatta_no`, `city_survey_no`, `group_no`, `washroom_available`, `owner_name`, `wife_name`, `occupant_name`, `remarks`, `lgdcode`, `panchayat_code`) VALUES ('$period', '$village_name', '$ward_no', '$road_name', '$malmatta_no', '$city_survey_no', '$group_no', '$washroom_available', '$owner_name', '$wife_name', '$occupant_name', '$remarks', '$lgdcode', '$_SESSION[panchayat_code]')";
         $result = mysqli_query($this->db, $query);
         if($result){
             return mysqli_insert_id($this->db); 
@@ -756,7 +774,7 @@ public function deleteMalmatta($id) {
 
 
     public function getLastMalmattaDataEntryId(){
-        $query = "SELECT MAX(`id`) as `id` FROM `malmatta_data_entry`";
+        $query = "SELECT MAX(`id`) as `id` FROM `malmatta_data_entry` ";
         $result = mysqli_query($this->db, $query);
         $row = mysqli_fetch_assoc($result);
         return $row['id'];
@@ -771,7 +789,7 @@ public function deleteMalmatta($id) {
                     left join new_name nno on mde.`owner_name` = nno.`id`
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
-                    Where mde.`id` = '$id' and mde.`lgdcode` = '$lgdcode' ;";
+                    Where mde.`id` = '$id' and mde.`lgdcode` = '$lgdcode' and mde.`panchayat_code` = '$_SESSION[panchayat_code]' ;";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -1353,8 +1371,8 @@ public function deleteMalmatta($id) {
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
                     left join property_verifications pv on mde.`id` = pv.`malmatta_id`
-                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type`
-        Where mde.`period` = '".$period."' and mde.`lgdcode` = '".$_SESSION['district_code']."' and mde.`approved` = '$approved' and mde.`verified` = '$verfied'
+                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type` and r.`panchayat_code` = '".$_SESSION['panchayat_code']."'
+        Where mde.`period` = '".$period."' and mde.`lgdcode` = '".$_SESSION['district_code']."' and mde.`panchayat_code` = '".$_SESSION['panchayat_code']."' and mde.`approved` = '$approved' and mde.`verified` = '$verfied'
     ";
 
     $result = mysqli_query($this->db, $query);
@@ -1518,9 +1536,10 @@ public function deleteMalmatta($id) {
                     left join new_name nno on mde.`owner_name` = nno.`id`
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
-                    left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type`
+                    left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type`  and r.`panchayat_code` = '".$_SESSION['panchayat_code']."'
         WHERE mde.id = '$id'
         AND mde.lgdcode = '$lgdcode'
+        and mde.panchayat_code = '".$_SESSION['panchayat_code']."'
         AND mde.approved = '1'
     ";
 
@@ -1812,6 +1831,12 @@ public function deleteMalmatta($id) {
     return array_values($malmattas);
 }
 
+public function getMalmattNumbers(){
+    $query = "SELECT `malmatta_no`, id FROM `malmatta_data_entry` WHERE `panchayat_code` = '$_SESSION[panchayat_code]' AND `lgdcode` = '$_SESSION[district_code]' AND `approved` = 1";
+    $result = mysqli_query($this->db, $query);
+    return $result;
+}
+
 public function getMalmattaDetailsAll($malmattaId, $village){
     
 
@@ -1986,6 +2011,9 @@ return $response;
     if (!isset($_SESSION['district_code'])) {
         return ['success' => false, 'message' => 'District code not found in session'];
     }
+    if($_SESSION['panchayat_code'] == '0'){
+        return ['success' => false, 'message' => 'District code not found in session'];
+    }
     
     // Validate data
     $errors = [];
@@ -2002,9 +2030,9 @@ return $response;
     
     // Check if already 5 banks exist for this plan
     $checkSql = "SELECT COUNT(*) as count FROM bank_master 
-                 WHERE plan_name = ? AND district_code = ?";
+                 WHERE plan_name = ? AND district_code = ? and panchayat_code = ?";
     $stmt = $this->db->prepare($checkSql);
-    $stmt->bind_param("ss", $data['plan_name'], $_SESSION['district_code']);
+    $stmt->bind_param("sss", $data['plan_name'], $_SESSION['district_code'], $_SESSION['panchayat_code']);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
@@ -2015,8 +2043,8 @@ return $response;
     
     // Insert new bank
     $sql = "INSERT INTO bank_master 
-            (plan_name, bank_name, bank_branch, bank_address, account_no, ifsc_code, district_code) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
+            (plan_name, bank_name, bank_branch, bank_address, account_no, ifsc_code, district_code, panchayat_code) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt = $this->db->prepare($sql);
     $stmt->bind_param("sssssss", 
@@ -2026,7 +2054,8 @@ return $response;
         $data['bank_address'],
         $data['bank_no'],
         $data['bank_ifsc_code'],
-        $_SESSION['district_code']
+        $_SESSION['district_code'],
+        $_SESSION['panchayat_code']
     );
     
     if ($stmt->execute()) {
@@ -2041,10 +2070,13 @@ function getBanks() {
     if (!isset($_SESSION['district_code'])) {
         return ['success' => false, 'message' => 'District code not found in session'];
     }
+    if($_SESSION['panchayat_code'] == '0'){
+        return ['success' => false, 'message' => 'District code not found in session'];
+    }
     
-    $sql = "SELECT * FROM bank_master WHERE district_code = ? ORDER BY plan_name, bank_name";
+    $sql = "SELECT * FROM bank_master WHERE district_code = ? and panchayat_code = ? ORDER BY plan_name, bank_name";
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("s", $_SESSION['district_code']);
+    $stmt->bind_param("ss", $_SESSION['district_code'], $_SESSION['panchayat_code']);
     $stmt->execute();
     $result = $stmt->get_result();
     
@@ -2078,10 +2110,10 @@ function updateBank( $id, $data) {
             bank_address = ?,
             account_no = ?,
             ifsc_code = ?
-            WHERE id = ? AND district_code = ?";
+            WHERE id = ? AND district_code = ? and panchayat_code = ?";
     
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("ssssssis", 
+    $stmt->bind_param("ssssssiss", 
         $data['plan_name'],
         $data['bank_name'],
         $data['bank_branch'],
@@ -2089,7 +2121,8 @@ function updateBank( $id, $data) {
         $data['bank_no'],
         $data['bank_ifsc_code'],
         $id,
-        $_SESSION['district_code']
+        $_SESSION['district_code'],
+        $_SESSION['panchayat_code']
     );
     
     if ($stmt->execute()) {
@@ -2116,12 +2149,35 @@ function deleteBank( $id) {
     }
 }
 
+public function getBankById($id) {
+    $sql = "SELECT * FROM bank_master WHERE id = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+public function getBankByPlanName($plan_name) {
+    $sql = "SELECT * FROM bank_master WHERE plan_name = '$plan_name' and panchayat_code = '$_SESSION[panchayat_code]'";
+    $result  = mysqli_query($this->db, $sql);
+    $bankArray = [];
+    if(mysqli_num_rows($result)> 0){
+        while($row = mysqli_fetch_assoc($result)){
+            $bankArray[] = $row;
+        }
+    }
+    return $bankArray;
+    // return $stmt->get_result();
+}
+
+
+
 // checkbooks
 
 public function getCheckbooks($district_code) {
-    $sql = "SELECT * FROM checkbooks WHERE district_code = ? ORDER BY date DESC";
+    $sql = "SELECT * FROM checkbooks WHERE panchayat_code = ? ORDER BY date DESC";
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("s", $district_code);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
     $stmt->execute();
     return $stmt->get_result();
 }
@@ -2144,11 +2200,11 @@ public function getBankName($bank_id) {
  */
 public function addCheckbook($data) {
     $sql = "INSERT INTO checkbooks 
-            (plan_name, bank_id, checkbook_no, first_check_no, check_no, last_check_no, date, district_code) 
+            (plan_name, bank_id, checkbook_no, first_check_no, check_no, last_check_no, date, district_code, panchayat_code) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("sisssiss", 
+    $stmt->bind_param("sisssisss", 
         $data['plan_name'],
         $data['bank_name'],
         $data['checkbook_no'],
@@ -2156,7 +2212,8 @@ public function addCheckbook($data) {
         $data['check_no'],
         $data['last_check_no'],
         $data['date'],
-        $data['district_code']
+        $data['district_code'],
+        $_SESSION['panchayat_code']
     );
     
     return $stmt->execute();
@@ -2174,10 +2231,10 @@ public function updateCheckbook($id, $data) {
             check_no = ?,
             last_check_no = ?,
             date = ?
-            WHERE id = ? AND district_code = ?";
+            WHERE id = ?";
     
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("sisssissi", 
+    $stmt->bind_param("sisssiss", 
         $data['plan_name'],
         $data['bank_name'],
         $data['checkbook_no'],
@@ -2186,7 +2243,6 @@ public function updateCheckbook($id, $data) {
         $data['last_check_no'],
         $data['date'],
         $id,
-        $data['district_code']
     );
     
     return $stmt->execute();
@@ -2261,9 +2317,9 @@ public function deleteMaterial($id, $district_code) {
  * Get year start balances for current district
  */
 public function getYearStartBalances($district_code) {
-    $sql = "SELECT * FROM year_start_balances WHERE district_code = ? ORDER BY financial_year DESC, plan_name";
+    $sql = "SELECT * FROM year_start_balances WHERE panchayat_code = ? ORDER BY financial_year DESC, plan_name";
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("s", $district_code);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
     $stmt->execute();
     return $stmt->get_result();
 }
@@ -2274,11 +2330,11 @@ public function getYearStartBalances($district_code) {
 public function addYearStartBalance($data) {
     $sql = "INSERT INTO year_start_balances 
             (balance_type, financial_year, plan_name, bank_id, post_name, post_branch, 
-             account_no, ifsc_code, amount, district_code, thev_yojana_name) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+             account_no, ifsc_code, amount, district_code, thev_yojana_name, panchayat_code) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("sssissssdss", 
+    $stmt->bind_param("sssissssdsss", 
         $data['balance_type'],
         $data['financial_year'],
         $data['plan_name'],
@@ -2289,7 +2345,8 @@ public function addYearStartBalance($data) {
         $data['ifsc_code'],
         $data['amount'],
         $data['district_code'],
-        $data['thev_yojana_name']
+        $data['thev_yojana_name'],
+        $_SESSION['panchayat_code']
     );
     
     return $stmt->execute();
@@ -2310,10 +2367,10 @@ public function updateYearStartBalance($id, $data) {
             ifsc_code = ?,
             amount = ?,
             thev_yojana_name = ?
-            WHERE id = ? AND district_code = ?";
+            WHERE id = ? AND district_code = ? and panchayat_code = ?";
     
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("sssissssdis", 
+    $stmt->bind_param("sssissssdiss", 
         $data['balance_type'],
         $data['financial_year'],
         $data['plan_name'],
@@ -2325,7 +2382,8 @@ public function updateYearStartBalance($id, $data) {
         $data['amount'],
         $data['thev_yojana_name'],
         $id,
-        $data['district_code']
+        $data['district_code'],
+        $_SESSION['panchayat_code']
     );
     
     return $stmt->execute();
@@ -2656,6 +2714,144 @@ public function getPavatiPustakVitaranById($id, $district_code) {
     $result = $stmt->get_result();
     return $result->fetch_assoc();
 }
+ /**
+  * Get last pavati_pustak_vitaran record for a specific material
+  */
+public function getLastPavatiPustakVitaran() {
+    $query = "SELECT * FROM pavati_pustak_vitaran Where panchayat_code = ?
+              ORDER BY id DESC LIMIT 1";
+    
+    $stmt = $this->db->prepare($query);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
+    print_r($stmt);
+    return $result->fetch_assoc();
+}
+//Bank Bharane
+
+/**
+ * Get all bank deposit records for district
+ */
+public function getBankBharane($district_code) {
+    $query = "SELECT * FROM bank_bharane 
+              WHERE panchayat_code = ?
+              ORDER BY date DESC";
+    
+    $stmt = $this->db->prepare($query);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
+    $stmt->execute();
+    
+    return $stmt->get_result();
+}
+
+// bank transfer
+
+/**
+ * Get all bank-to-bank transfers for district
+ */
+public function getBankToBankTransfers($district_code) {
+    $query = "SELECT * FROM bank_to_bank_transfers 
+              WHERE panchayat_code = ?
+              ORDER BY date DESC";
+    
+    $stmt = $this->db->prepare($query);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
+    $stmt->execute();
+    
+    return $stmt->get_result();
+}
+
+//jama pavati kadhane
+
+public function insertJamaPavatiKadhane($data) {
+        $stmt = $this->db->prepare("
+            INSERT INTO jama_pavati_kadhane 
+                (`book_number`, `receipt_number`, `collection_date`, `owner_name`, `collected_amount`, `property_number`, `bank_name`, `cheque_number`, `cheque_date`, `panchayat_code`)
+            VALUES 
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ");
+        $stmt->bind_param(
+            "ssssssssss",
+            $data['book_number'],
+            $data['receipt_number'],
+            $data['collection_date'],
+            $data['owner_name'],
+            $data['collected_amount'],
+            $data['property_number'],
+            $data['bank_name'],
+            $data['cheque_number'],
+            $data['cheque_date'],
+            $_SESSION['panchayat_code']
+        );
+
+        return $stmt->execute();
+    }
+
+    // Get all records
+    public function getAllJamaPavatiKadhane() {
+        $sql = "SELECT * FROM jama_pavati_kadhane WHERE panchayat_code = ? ORDER BY id DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("s", $_SESSION['panchayat_code']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+    }
+
+    // Get a single record by ID
+    public function getByIdJamaPavatiKadhane($id) {
+        $stmt = $this->db->prepare("SELECT * FROM jama_pavati_kadhane WHERE id = ? and panchayat_code = ?");
+        $stmt->bind_param("is", $id, $_SESSION['panchayat_code']);
+
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+    // Update record by ID
+    public function updateJamaPavatiKadhane($id, $data) {
+        $stmt = $this->db->prepare("
+            UPDATE jama_pavati_kadhane SET 
+                book_number = ?, receipt_number = ?, collection_date = ?,
+                owner_name = ?, collected_amount = ?, property_number=?, 
+               bank_name = ?, cheque_number = ?, cheque_date = ?
+            WHERE id = ? and panchayat_code = ?
+        ");
+        $stmt->bind_param(
+            "sssssssssss",
+            $data['book_number'],
+            $data['receipt_number'],
+            $data['collection_date'],
+            $data['owner_name'],
+            $data['collected_amount'],
+            $data['property_number'],
+            $data['bank_name'],
+            $data['cheque_number'],
+            $data['cheque_date'],
+            $id,
+            $_SESSION['panchayat_code']
+        );
+        return $stmt->execute();
+    }
+
+    // Delete record by ID
+    public function deleteJamaPavatiKadhane($id) {
+        $stmt = $this->db->prepare("DELETE FROM jama_pavati_kadhane WHERE id = ? and panchayat_code = ?");
+        $stmt->bind_param("is", $id, $_SESSION['panchayat_code']);
+        return $stmt->execute();
+    }
+
+    //Get totat sum 
+    public function getJamaPavatiKadhaneTotal($panchayat_code) {
+    $sql = "SELECT SUM(collected_amount) as total FROM jama_pavati_kadhane WHERE panchayat_code = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $panchayat_code);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    return $row['total'] ?? 0;
+}
+
 
 }
 ?>

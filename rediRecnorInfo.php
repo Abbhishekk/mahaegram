@@ -11,7 +11,9 @@ $title = "रेडीरेकनर दर माहिती";
     $readyRecInfo = $fun->getReadyrecInfo();
     $readyRecParts = $fun->getReadyrecParts();
 $financialYears = $fun->getFinancialYears();
-$lgdVillages = $fun->getVillagesWithDistrict($_SESSION['district_code']);
+ $periodsWithReasons2 = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
+    $yearArray = $fun->getYearArray($periodsWithReasons2);
+$lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
 ?>
 
 <body id="page-top">
@@ -68,9 +70,9 @@ if (isset($_SESSION['message'])) {
                                                     id="financialYear">
 
                                                     <?php
-                                                            if(mysqli_num_rows($financialYears) > 0){
-                                                                while($financialYear = mysqli_fetch_assoc($financialYears)){
-                                                                    echo "<option value='".$financialYear['year']."'>".$financialYear['year']."</option>";
+                                                            if(count($yearArray) > 0){
+                                                                foreach($yearArray as $year){
+                                                                    echo '<option value="'.$year.'">'.$year.'</option>';
                                                                 }
                                                             }
                                                         ?>
@@ -300,6 +302,7 @@ if (isset($_SESSION['message'])) {
         redirecSelect.addEventListener('change', function() {
             const selectedValue = redirecSelect.value;
             land_type.value = selectedValue;
+            land_type.setAttribute('readonly', true);
         });
         decision_date.value = new Date().toISOString().split('T')[0];
 

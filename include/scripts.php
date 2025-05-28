@@ -4,7 +4,8 @@
 <script src="js/ruang-admin.min.js"></script>
 <script src="vendor/chart.js/Chart.min.js"></script>
 <script src="js/demo/chart-area-demo.js"></script>
-
+<!-- Add these to your header -->
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/datatables.min.js"></script>
 <script src="vendor/select2/dist/js/select2.min.js"></script>
 <script>
 $(document).ready(function() {

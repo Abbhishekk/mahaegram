@@ -14,6 +14,16 @@ $response = [
     'errors' => []
 ];
 
+// Add this to your existing checkbook.php
+if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['getBanksByPlan'])) {
+    $plan_name = $fun->sanitize($_GET['plan_name']);
+    // echo $plan_name;
+    $banks = $fun->getBankByPlanName($plan_name);
+
+    echo json_encode($banks);
+    exit;
+}
+
 try {
  
     

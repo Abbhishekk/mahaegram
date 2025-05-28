@@ -12,6 +12,7 @@ $title = "पाणीपट्टी दर माहिती";
     $durationReason = $fun->getDurationReason();
 $drainageTypes = $fun->getDrainageTypes();
 $periodTotalPeriod = $fun->getPeriodTotalPeriodsWithPeriodReason("पाणीपट्टी कालावधी", $_SESSION['district_code']);
+$periodCount = mysqli_num_rows($periodTotalPeriod);
 ?>
 
 <body id="page-top">
@@ -59,6 +60,11 @@ if (isset($_SESSION['message'])) {
 ?>
                                 <div class="card-body">
                                     <form method="post" action="api/waterTax.php">
+                                        <?php
+                                            if($periodCount == 0){
+                                                echo "<p class='text-danger'>⚠️ कृपया पाणीपट्टी कालावधी आधीच भरा! </p>";
+                                            }
+                                        ?>
                                         <div class="row">
 
                                             <div class="form-group col-md-4">

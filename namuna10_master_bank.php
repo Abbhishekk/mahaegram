@@ -8,7 +8,7 @@ $title = "बँकांची माहिती";
 ?>
 <?php include('include/header.php'); ?>
 <?php
-    $banks = $fun->getBanks($_SESSION['district_code']);
+    $banks = $fun->getBanks();
 
 ?>
 
@@ -43,18 +43,17 @@ $title = "बँकांची माहिती";
                         <div class="col-lg-12">
                             <div class="card mb-4">
                                 <?php
+                                    if (isset($_SESSION['message'])) {
+                                        $message = $_SESSION['message'];
+                                        $message_type = $_SESSION['message_type'];
 
-if (isset($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    $message_type = $_SESSION['message_type'];
+                                        echo "<div class='alert alert-$message_type'>$message</div>";
 
-    echo "<div class='alert alert-$message_type'>$message</div>";
-
-    // Unset the message so it doesn't persist after refresh
-    unset($_SESSION['message']);
-    unset($_SESSION['message_type']);
-}
-?>
+                                        // Unset the message so it doesn't persist after refresh
+                                        unset($_SESSION['message']);
+                                        unset($_SESSION['message_type']);
+                                    }
+                                    ?>
                                 <div class="card-body">
                                     <h5 class="text-center mb-3 font-weight-light text-primary" >टीप-आपण एका योजने अंतर्गत ५ बँकेचे नाव प्रविष्ठ करू शकता</h5>
                                     <form method="post" action="api/bank.php">

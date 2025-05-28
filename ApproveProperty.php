@@ -202,6 +202,7 @@ if (isset($name['properties'])) {
     $sr = 1;
     $allModals = ""; // Collect modals here
     foreach ($name['properties'] as $property) {
+        // print_r($property);
         $photoCell = $property['property_photo_path'] ?
             '<td><img src="'.$property['property_photo_path'].'" alt="Property Photo"
              width="50" height="50" 

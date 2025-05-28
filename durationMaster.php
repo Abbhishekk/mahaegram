@@ -57,7 +57,7 @@ if (isset($_SESSION['message'])) {
 }
 ?>
                                 <div class="card-body">
-                                    <span class="text-danger">नमुना नंबर 8 कालावधी हा ४ वर्षाकरिता नोंद करावा.</span>
+                                    <!-- <span class="text-danger">नमुना नंबर 8 कालावधी हा ४ वर्षाकरिता नोंद करावा.</span> -->
                                     <form method="post" action="api/duration.php">
                                         <div class="row">
                                             <div class="form-group col-md-3">

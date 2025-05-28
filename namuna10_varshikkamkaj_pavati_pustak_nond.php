@@ -195,20 +195,16 @@ $title = "पावती पुस्तक नोंदणी";
                                                 <label for="book_number">बुक नंबर :<span
                                                         class="text-danger">*</span></label>
                                                 <input type="text" name="book_number" id="book_number"
-                                                    class="form-control" required>
+                                                    class="form-control" required readonly >
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label for="pavati_pasun">पावती पासून :<span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" name="pavati_pasun" id="pavati_pasun"
-                                                    class="form-control" required>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="pavati_paryant">पावती पर्यंत :<span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" name="pavati_paryant" id="pavati_paryant"
-                                                    class="form-control" required>
-                                            </div>
+    <label for="pavati_pasun">पावती पासून :<span class="text-danger">*</span></label>
+    <input type="number" name="pavati_pasun" id="pavati_pasun" class="form-control" required min="1">
+</div>
+<div class="form-group col-md-6">
+    <label for="pavati_paryant">पावती पर्यंत :<span class="text-danger">*</span></label>
+    <input type="number" name="pavati_paryant" id="pavati_paryant" class="form-control" required min="1">
+</div>
 
                                         </div>
 
@@ -442,7 +438,74 @@ $(document).ready(function() {
         }
     });
 });
+// Add this script in your JavaScript section
+$(document).ready(function() {
+    // When material is selected in vitaran form
+    $('#material_number_pavati').on('change', function() {
+        var materialId = $(this).val();
+        if (materialId) {
+            // Fetch material details
+            $.ajax({
+                url: 'api/getPavatiPustakDetails.php',
+                type: 'POST',
+                data: {id: materialId},
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Generate book number
+                        generateBookNumber(materialId, function(bookNumber) {
+                            $('#book_number').val(bookNumber);
+                        });
+                        
+                        // Set max values for pavati inputs
+                        $('#pavati_pasun').attr('data-max', response.total_number);
+                        $('#pavati_paryant').attr('data-max', response.total_number);
+                    }
+                }
+            });
+        }
+    });
+    
+    // Validate pavati numbers
+    $('#pavati_pasun, #pavati_paryant').on('change', function() {
+        var max = parseInt($(this).attr('data-max'));
+        var value = parseInt($(this).val());
+        
+        if (value > max) {
+            alert('पावती संख्या ' + max + ' पेक्षा जास्त असू शकत नाही');
+            $(this).val('');
+        }
+        
+        // Ensure paryant is >= pasun
+        if ($(this).attr('id') === 'pavati_pasun') {
+            var paryant = parseInt($('#pavati_paryant').val());
+            if (paryant && value > paryant) {
+                $('#pavati_paryant').val(value);
+            }
+        } else if ($(this).attr('id') === 'pavati_paryant') {
+            var pasun = parseInt($('#pavati_pasun').val());
+            if (pasun && value < pasun) {
+                $('#pavati_pasun').val(value);
+            }
+        }
+    });
+});
+
+function generateBookNumber(materialId, callback) {
+    $.ajax({
+        url: 'api/generateBookNumber.php',
+        type: 'POST',
+        data: {material_id: materialId},
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                callback(response.book_number);
+            }
+        }
+    });
+}
 </script>
+
 </body>
 
 </html>

@@ -76,11 +76,45 @@ $title = "ग्रामपंचायत नमुना 8 डाटा ए�
     $malmattataxTypes = $fun->getMalmattaTaxType();
     $redyrecs = $fun->getReadyrecInfo();
     $buildingFloors = $fun->getBuildingFloors();
-$lgdVillages = $fun->getVillagesWithDistrict($_SESSION['district_code']);
+$lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
 
 ?>
 
 <body id="page-top">
+    <!-- Full Screen Loader -->
+<div id="fullScreenLoader" class="full-screen-loader">
+    <div class="loader-content">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p class="mt-3 text-white">प्रक्रिया सुरू आहे... कृपया प्रतीक्षा करा</p>
+    </div>
+</div>
+
+<style>
+.full-screen-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+}
+
+.loader-content {
+    text-align: center;
+    color: white;
+}
+
+.loader-content p {
+    font-size: 1.2rem;
+}
+</style>
     <div id="wrapper">
         <!-- Sidebar -->
         <?php 
@@ -124,7 +158,7 @@ if (isset($_SESSION['message'])) {
 }
 ?>
                                 <div class="card-body">
-                                    <form method="post" action="api/newMalmatta.php" enctype="multipart/form-data">
+                                    <form method="post" id="malmattaForm" action="api/newMalmatta.php" enctype="multipart/form-data">
                                         <div>
                                             <h5 class="bg-gradient-primary text-white py-3 px-5 w-25 rounded-pill">
                                                 मालमत्ता
@@ -854,6 +888,61 @@ if (isset($_SESSION['message'])) {
         // Initialize with foot selected
         calculateAndDisplayAreas();
     });
+
+
+    document.getElementById('malmattaForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Update the hidden input with latest data
+    document.getElementById("income_data").value = JSON.stringify(incomeEntries);
+    
+    // Create FormData object
+    const formData = new FormData(this);
+    
+    // Add property photos separately
+    incomeEntries.forEach((entry, index) => {
+        if (entry.propertyPhoto) {
+            // Convert base64 to blob
+            const blob = dataURLtoBlob(entry.propertyPhoto);
+            formData.append(`property_photos[${index}]`, blob, entry.photoName || `property_${index}.jpg`);
+        }
+    });
+    formData.append("add", "yes");
+    
+    // Submit via AJAX
+    fetch(this.action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            console.log(data);
+            const baseURL = window.location.origin;
+            const redirectURL = data.redirect ? `${baseURL}/mahaegram-master/${data.redirect}` : baseURL;
+            alert(data.message || 'Form submitted successfully');
+            console.log(redirectURL);
+            
+            
+            // window.location.href = `/mahaegram-master/${data.redirect}` || window.location.href;
+        } else {
+            alert(data.message || 'Error occurred');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error submitting form');
+    });
+});
+
+function dataURLtoBlob(dataurl) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    for (var i = 0; i < n; i++) {
+        u8arr[i] = bstr.charCodeAt(i);
+    }
+    return new Blob([u8arr], {type:mime});
+}
     </script>
 
     <script>

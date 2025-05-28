@@ -4322,11 +4322,14 @@ input[type=submit].btn-block {
 }
 
 .custom-control-input:disabled~.custom-control-label {
-    color: #757575
+    color: #757575;
+    cursor: not-allowed;
 }
 
 .custom-control-input:disabled~.custom-control-label::before {
-    background-color: #eaecf4
+    background-color: #eaecf4;
+    cursor: not-allowed;
+
 }
 
 .custom-control-label {
@@ -4377,11 +4380,13 @@ input[type=submit].btn-block {
 }
 
 .custom-checkbox .custom-control-input:disabled:checked~.custom-control-label::before {
-    background-color: rgba(78, 115, 223, .5)
+    background-color: rgba(78, 115, 223, .5);
+    cursor: not-allowed;
 }
 
 .custom-checkbox .custom-control-input:disabled:indeterminate~.custom-control-label::before {
-    background-color: rgba(78, 115, 223, .5)
+    background-color: rgba(78, 115, 223, .5);
+    cursor: not-allowed;
 }
 
 .custom-radio .custom-control-label::before {
@@ -4393,7 +4398,8 @@ input[type=submit].btn-block {
 }
 
 .custom-radio .custom-control-input:disabled:checked~.custom-control-label::before {
-    background-color: rgba(78, 115, 223, .5)
+    background-color: rgba(78, 115, 223, .5);
+    cursor: not-allowed;
 }
 
 .custom-switch {
@@ -4434,7 +4440,8 @@ input[type=submit].btn-block {
 }
 
 .custom-switch .custom-control-input:disabled:checked~.custom-control-label::before {
-    background-color: rgba(78, 115, 223, .5)
+    background-color: rgba(78, 115, 223, .5);
+    cursor: not-allowed;
 }
 
 .custom-select {
