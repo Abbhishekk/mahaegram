@@ -12,17 +12,26 @@ $title = "पावती पुस्तक नोंदणी";
     $banks = $fun->getBanks();
     $materials = $fun ->getMaterials($_SESSION['district_code']);
     $periodsWithReasons = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
-    $yearArray = $fun->getYearArray($periodsWithReasons);
-    $currentYear = date('Y');
-    $currentYearIndex = 0;
-    for ($i = 0; $i < count($yearArray); $i++) {
-        $yearRange = explode("-", $yearArray[$i]);
-        $startYear = $yearRange[0];
-        $endYear = $yearRange[1];
-        if ($startYear <= $currentYear && $endYear >= $currentYear) {
-            $currentYearIndex = $i;
-            break;
+    if (mysqli_num_rows($periodsWithReasons) == 0) {
+        $_SESSION['message'] = "कालावधी नोंदणी केलेली नाही. कृपया कालावधी नोंदणी करा.";
+        $_SESSION['message_type'] = 'danger';
+        $disabled = 'ture';
+    }else {
+        $yearArray = $fun->getYearArray($periodsWithReasons);
+        $currentYear = date('Y');
+        $currentYearIndex = 0;
+        // print_r($yearArray);
+        for ($i = 0; $i < count($yearArray); $i++) {
+            $yearRange = explode("-", $yearArray[$i]);
+            $startYear = $yearRange[0];
+            $endYear = $yearRange[1];
+            if ($startYear <= $currentYear && $endYear >= $currentYear) {
+                $currentYearIndex = $i;
+                break;
+            }
         }
+        $disabled = 'false';
+
     }
     $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
     // print_r($periodsWithReasons);
@@ -94,10 +103,10 @@ $title = "पावती पुस्तक नोंदणी";
                                             <div
                                                 class="form-group col-md-8 d-flex justify-content-start align-items-center">
                                                 <p class="font-weight-bold"> आर्थिक वर्ष :
-                                                    <?php echo $yearArray[$currentYearIndex];  ?>
+                                                    <?php echo $yearArray[$currentYearIndex ?? 0] ?? '' ;  ?>
                                                 </p>
                                                 <input type="hidden" name="financial_year" id="financial_year"
-                                                    class="form-control" value="<?php echo $yearArray[$currentYearIndex];  ?>"
+                                                    class="form-control" value="<?php echo $yearArray[$currentYearIndex ?? 0] ?? '' ;  ?>"
                                                     >
                                             </div>
                                             <div class="form-group col-md-3">
@@ -130,7 +139,7 @@ $title = "पावती पुस्तक नोंदणी";
 
                                         </div>
 
-                                        <button type="submit" name="save" class="btn btn-primary">साठवणे</button>
+                                        <button type="submit" name="save" class="btn btn-primary" disabled="<?php echo $disabled; ?>" >साठवणे</button>
                                         <button type="reset" class="btn btn-secondary">रद्द करणे</button>
                                     </form>
                                 </div>
@@ -467,26 +476,21 @@ $(document).ready(function() {
     });
     
     // Validate pavati numbers
-    $('#pavati_pasun, #pavati_paryant').on('change', function() {
-        var max = parseInt($(this).attr('data-max'));
-        var value = parseInt($(this).val());
-        
-        if (value > max) {
+    $('#pavati_paryant').on('change', function() {
+        var min = parseInt($('#pavati_pasun').val());
+        var max = parseInt($(this).val());
+        var valueRange = parseInt($(this).attr('data-max'));
+        if (min > max) {
             alert('पावती संख्या ' + max + ' पेक्षा जास्त असू शकत नाही');
             $(this).val('');
         }
-        
-        // Ensure paryant is >= pasun
-        if ($(this).attr('id') === 'pavati_pasun') {
-            var paryant = parseInt($('#pavati_paryant').val());
-            if (paryant && value > paryant) {
-                $('#pavati_paryant').val(value);
-            }
-        } else if ($(this).attr('id') === 'pavati_paryant') {
-            var pasun = parseInt($('#pavati_pasun').val());
-            if (pasun && value < pasun) {
-                $('#pavati_pasun').val(value);
-            }
+        else if(min < 1) {
+            alert('पावती संख्या 1 पेक्षा कमी असू शकत नाही');
+            $(this).val('');
+        }
+       else if(max-min > valueRange) {
+            alert('पावती संख्या ' + valueRange + ' असावी लागेल');
+            $(this).val('');
         }
     });
 });

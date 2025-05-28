@@ -2412,6 +2412,20 @@ public function getPropertyVerifications($district_code) {
     return $stmt->get_result();
 }
 
+public function getPropertyVerificationWithMalmattaId($malmattaId) {
+    $sql = "SELECT * FROM property_verifications WHERE malmatta_id = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("i", $malmattaId);
+    $stmt->execute();
+   $result = $stmt->get_result();
+
+    if($result->num_rows > 0) {
+        return $result->fetch_assoc();
+    } else {
+        return null;
+    }
+}
+
 /**
  * Add new property verification
  */
@@ -2718,15 +2732,15 @@ public function getPavatiPustakVitaranById($id, $district_code) {
   * Get last pavati_pustak_vitaran record for a specific material
   */
 public function getLastPavatiPustakVitaran() {
-    $query = "SELECT * FROM pavati_pustak_vitaran Where panchayat_code = ?
+    $query = "SELECT * FROM pavati_pustak_vitaran Where panchayat_code = '$_SESSION[panchayat_code]'
               ORDER BY id DESC LIMIT 1";
     
     $stmt = $this->db->prepare($query);
-    $stmt->bind_param("s", $_SESSION['panchayat_code']);
     $stmt->execute();
     
     $result = $stmt->get_result();
-    print_r($stmt);
+   
+    // print_r($stmt);
     return $result->fetch_assoc();
 }
 //Bank Bharane
@@ -2850,6 +2864,174 @@ public function insertJamaPavatiKadhane($data) {
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
     return $row['total'] ?? 0;
+}
+
+// Shared 
+
+/**
+ * Insert a record into a table (MySQLi version)
+ */
+function insertRecord($table, $data) {
+    $columns = array_keys($data);
+    $placeholders = array_fill(0, count($columns), '?');
+    
+    $sql = "INSERT INTO $table (" . implode(', ', $columns) . ") 
+            VALUES (" . implode(', ', $placeholders) . ")";
+    
+    $stmt = $this->db->prepare($sql);
+    
+    if (!$stmt) {
+        throw new Exception("Prepare failed: " . $this->db->error);
+    }
+    
+    // Bind parameters
+    $types = '';
+    $values = [];
+    
+    foreach ($data as $value) {
+        if (is_int($value)) {
+            $types .= 'i';
+        } elseif (is_float($value)) {
+            $types .= 'd';
+        } else {
+            $types .= 's';
+        }
+        $values[] = $value;
+    }
+    
+    $stmt->bind_param($types, ...$values);
+    
+    if (!$stmt->execute()) {
+        throw new Exception("Execute failed: " . $stmt->error);
+    }
+    
+    $insertId = $stmt->insert_id;
+    $stmt->close();
+    
+    return $insertId;
+}
+
+/**
+ * Update a record in a table (MySQLi version)
+ */
+function updateRecord( $table, $data, $where) {
+    $setParts = [];
+    foreach (array_keys($data) as $column) {
+        $setParts[] = "$column = ?";
+    }
+    
+    $sql = "UPDATE $table SET " . implode(', ', $setParts) . " WHERE $where";
+    
+    $stmt = $this->db->prepare($sql);
+    
+    if (!$stmt) {
+        throw new Exception("Prepare failed: " . $this->db->error);
+    }
+    
+    // Bind parameters
+    $types = '';
+    $values = [];
+    
+    foreach ($data as $value) {
+        if (is_int($value)) {
+            $types .= 'i';
+        } elseif (is_float($value)) {
+            $types .= 'd';
+        } else {
+            $types .= 's';
+        }
+        $values[] = $value;
+    }
+    
+    $stmt->bind_param($types, ...$values);
+    
+    $result = $stmt->execute();
+    $stmt->close();
+    
+    return $result;
+}
+
+/**
+ * Get a single record from a table (MySQLi version)
+ */
+function getRecord($db, $table, $where, $params = []) {
+    $sql = "SELECT * FROM $table WHERE $where LIMIT 1";
+    $stmt = $db->prepare($sql);
+    
+    if (!$stmt) {
+        throw new Exception("Prepare failed: " . $db->error);
+    }
+    
+    if (!empty($params)) {
+        $types = '';
+        $values = [];
+        
+        foreach ($params as $value) {
+            if (is_int($value)) {
+                $types .= 'i';
+            } elseif (is_float($value)) {
+                $types .= 'd';
+            } else {
+                $types .= 's';
+            }
+            $values[] = $value;
+        }
+        
+        $stmt->bind_param($types, ...$values);
+    }
+    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+    
+    return $row;
+}
+
+/**
+ * Get multiple records from a table (MySQLi version)
+ */
+function getRecords($db, $table, $where = '1', $params = [], $orderBy = '', $limit = '') {
+    $sql = "SELECT * FROM $table WHERE $where";
+    
+    if (!empty($orderBy)) {
+        $sql .= " ORDER BY $orderBy";
+    }
+    
+    if (!empty($limit)) {
+        $sql .= " LIMIT $limit";
+    }
+    
+    $stmt = $db->prepare($sql);
+    
+    if (!$stmt) {
+        throw new Exception("Prepare failed: " . $db->error);
+    }
+    
+    if (!empty($params)) {
+        $types = '';
+        $values = [];
+        
+        foreach ($params as $value) {
+            if (is_int($value)) {
+                $types .= 'i';
+            } elseif (is_float($value)) {
+                $types .= 'd';
+            } else {
+                $types .= 's';
+            }
+            $values[] = $value;
+        }
+        
+        $stmt->bind_param($types, ...$values);
+    }
+    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    
+    return $rows;
 }
 
 

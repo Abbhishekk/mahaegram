@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "../include/connect/db.php";
 require_once "../include/connect/fun.php";
 
@@ -12,15 +13,14 @@ if (isset($_POST['material_id'])) {
     
     // Get last book number for this material
     $lastBook = $fun->getLastPavatiPustakVitaran();
-    echo "Last Book Details: ";
-    print_r($lastBook);
+   
     
     if ($lastBook) {
         // Parse the last book number (format x/y)
         $parts = explode('/', $lastBook['book_number']);
         $x = (int)$parts[0];
         $y = (int)$parts[1];
-            echo "Parsed Book Number: x = $x, y = $y\n";
+            // echo "Parsed Book Number: x = $x, y = $y\n";
         if ($y < 100) {
             $y++;
         } else {
