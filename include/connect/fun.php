@@ -2412,6 +2412,31 @@ public function getPropertyVerifications($district_code) {
     return $stmt->get_result();
 }
 
+public function getPropertyVerificationsAccordingToPanchayat(){
+    $sql = "SELECT * FROM property_verifications
+                left join malmatta_data_entry mde on property_verifications.malmatta_id = mde.id
+             WHERE mde.panchayat_code = ? ORDER BY verification_date DESC";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $propertyVerifications = [];
+    if($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $propertyVerifications[] = $row;
+        }
+    }
+    return $propertyVerifications;
+}
+
+public function getPropertyVerificationsWithWardAndId($ward_no, $id) {
+    $sql = "SELECT * FROM property_verifications WHERE ward_no = ? AND malmatta_id = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("si", $ward_no, $id);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
 public function getPropertyVerificationWithMalmattaId($malmattaId) {
     $sql = "SELECT * FROM property_verifications WHERE malmatta_id = ?";
     $stmt = $this->db->prepare($sql);
@@ -3034,6 +3059,28 @@ function getRecords($db, $table, $where = '1', $params = [], $orderBy = '', $lim
     return $rows;
 }
 
+// tax demands
+public function getTaxDemands($district_code) {
+    $sql = "SELECT * FROM tax_demands  td
+            left join malmatta_data_entry mde on td.malmatta_id = mde.id
+            WHERE mde.panchayat_code = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
+    $stmt->execute();
+    return $stmt->get_result();
 
+
+}
+
+public function getCheckStatus(){
+    $sql = "SELECT *, bm.bank_name as 'bank_deposited_name' FROM check_status cs
+        left join checkbooks cb on cs.checkbook_id = cb.id
+        left join bank_master bm on cs.bank_deposited_id = bm.id
+     WHERE cs.panchayat_code = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
+    $stmt->execute();
+    return $stmt->get_result();
+}
 }
 ?>
