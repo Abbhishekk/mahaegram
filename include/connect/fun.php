@@ -187,7 +187,7 @@ class Fun
     public function getPeriodDetailsAllValueByPeriodReason($periodReason, $lgd_code){
         $query = "SELECT * FROM `period_details` WHERE `period_reason` = '$periodReason' and `lgd_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]' ORDER BY `id`";
         $result = mysqli_query($this->db, $query);
-
+        
         if(mysqli_num_rows($result) > 0){
             $row = mysqli_fetch_assoc($result);
             return $row;
@@ -2546,6 +2546,15 @@ public function updatePropertyVerification($id, $data) {
     return $stmt->execute();
 }
 
+/**
+ *  Update property verification status
+ */
+public function updatePropertyVerificationStatus($id, $status) {
+    $sql = "UPDATE property_verifications SET status = ? WHERE malmatta_id = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("si", $status, $id);
+    return $stmt->execute();
+}
 /**
  * Get property details for verification
  */

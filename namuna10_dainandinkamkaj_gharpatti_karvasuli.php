@@ -10,7 +10,7 @@ $title = "नमूना क्र १० पावती";
 <?php
     $newName = $fun->getNewName();
     $periods = $fun->getPeriodDetails($_SESSION['district_code']);
-    $malmatta_details = $fun->getMalmattNumbers();
+    $malmatta_details = $fun->getTaxDemands($_SESSION['district_code']);
 ?>
 <style>
 .section-title {
@@ -84,7 +84,7 @@ $title = "नमूना क्र १० पावती";
                                     <select class="form-control" name="malamatta_kramanak" id="malamatta_kramanak">
                                         <option>--निवडा--</option>
                                         <?php foreach ($malmatta_details as $malmatta) { ?>
-                                        <option value="<?php echo $malmatta['id']; ?>">
+                                        <option value="<?php echo $malmatta['malmatta_id']; ?>">
                                             <?php echo $malmatta['malmatta_no']; ?>
                                         </option>
                                         <?php } ?>
@@ -532,6 +532,19 @@ $title = "नमूना क्र १० पावती";
         const currSut = parseFloat($('#current_mangani_sut_tax').val()) || 0;
         $('#total_mangani_sut_tax').val((prevSut + currSut).toFixed(2));
 
+        $('#current_mangani_total_tax').val(
+            ( currBuilding + currHealth +
+                currLight + currWater +
+                currPadsar + currDand +
+                currSut).toFixed(2)
+        );
+
+        $("#previous_mangani_total_tax").val(
+            (prevBuilding + prevHealth +
+                prevLight + prevWater +
+                prevPadsar + prevDand +
+                prevSut).toFixed(2)
+        );
         // Calculate grand total for Mangani
         const manganiTotal = (prevBuilding + currBuilding + prevHealth + currHealth +
             prevLight + currLight + prevWater + currWater +

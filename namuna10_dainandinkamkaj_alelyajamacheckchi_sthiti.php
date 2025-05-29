@@ -9,7 +9,12 @@ $title = "आलेल्या (जमा) चेकची स्थिती";
 <?php include('include/header.php'); ?>
 <?php
     $newName = $fun->getNewName();
-    $periods = $fun->getPeriodDetails($_SESSION['district_code']);
+   $periods = $fun->getPeriodDetailsAllValueByPeriodReason("नमुना नंबर 8 कालावधी",$_SESSION['district_code']);
+    if (empty($periods)) {
+        $_SESSION['message'] = "कालावधी उपलब्ध नाही.";
+        $_SESSION['message_type'] = "danger";
+      
+    }
     $financialYears = $fun->getYearArray($periods);
 
 ?>

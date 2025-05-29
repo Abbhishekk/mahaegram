@@ -96,7 +96,8 @@ $title = "वार्षिक कर मागणी";
                                         <option>--निवडा--</option>
                                         <?php
                                             foreach($property_verifications as $property){
-                                                echo "<option value='{$property['malmatta_id']}'>{$property['malmatta_id']}</option>";
+                                                if($property['status'] != 0) continue; // Skip if malmatta_id is 0
+                                                echo "<option value='{$property['malmatta_id']}'>{$property['malmatta_no']}</option>";
                                             }
                                         ?>
                                     </select>
@@ -687,7 +688,7 @@ $title = "वार्षिक कर मागणी";
                     ward: document.getElementById('ward').value,
                     malmatta_id: document.getElementById('malmatta_id').value,
                     owner_name: document.getElementById('kardena_name').value,
-                    financial_year: `${new Date().getFullYear()}-${new Date().getFullYear() + 1}`,
+                    financial_year: document.getElementById('financial_year').value,
                     building_tax: document.getElementById('imarat_kar').value || 0,
                     light_tax: document.getElementById('divabatti_kar').value || 0,
                     health_tax: document.getElementById('arogy_kar').value || 0,

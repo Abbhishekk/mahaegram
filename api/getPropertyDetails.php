@@ -29,7 +29,7 @@ try {
     $malmattaId = $_POST['malmatta_id'];
         // print_r($malmattaId);
     // Query to get property details from property_verifications (approved properties)
-    $query = "SELECT * FROM property_verifications WHERE malmatta_id = ?";
+    $query = "SELECT * FROM `tax_demands` WHERE `malmatta_id` = ?";
     $stmt = $conn->prepare($query);
     
     if (!$stmt) {
@@ -54,35 +54,35 @@ try {
     // print_r($property_result);
     // print_r($result);
     // Check if property is approved (exists in property_verifications)
-    if ($result->num_rows > 0) {
+    // if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $property_row = $property_result->fetch_assoc();
+        // $property_row = $property_result->fetch_assoc();
         // echo "Property found in property_verifications:\n";
         // print_r($row);
         $response['success'] = true;
         $response['data'] = [
-            'ward_no' => $row['ward_no'],
+            'ward_no' => $row['ward'],
             'owner_name' => $row['owner_name'],
             'malmatta_info' => $row ?: null
         ];
         $response['is_property_approved'] = true;
-    } 
+    // } 
     // Check if property exists in malmatta_data_entry (unapproved)
-    elseif ($property_result->num_rows > 0) {
-        $property_row = $property_result->fetch_assoc();
-        // echo "Property found in malmatta_data_entry:\n";
-        // print_r($property_row);
+    // elseif ($property_result->num_rows > 0) {
+    //     $property_row = $property_result->fetch_assoc();
+    //     // echo "Property found in malmatta_data_entry:\n";
+    //     // print_r($property_row);
         
-        $response['success'] = true;
-        $response['data'] = [
-            'ward_no' => $property_row['ward_no'],
-            'owner_name' => $property_row['owner_name'],
-            'malmatta_info' => $property_row
-        ];
-        $response['is_property_approved'] = false;
-    } else {
-        $response['message'] = 'No property found with the given ID';
-    }
+    //     $response['success'] = true;
+    //     $response['data'] = [
+    //         'ward_no' => $property_row['ward_no'],
+    //         'owner_name' => $property_row['owner_name'],
+    //         'malmatta_info' => $property_row
+    //     ];
+    //     $response['is_property_approved'] = false;
+    // } else {
+    //     $response['message'] = 'No property found with the given ID';
+    // }
 
     // Close statements
     $stmt->close();

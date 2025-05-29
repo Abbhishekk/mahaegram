@@ -60,8 +60,13 @@ try {
 
     // Insert into database
     $result = $fun->insertRecord( 'tax_demands', $data);
-    
+    $result_id = $result['id'] ?? false;
     if ($result) {
+        // print_r($result);
+          $fun->updatePropertyVerificationStatus(
+            $input['malmatta_id'],
+           1
+        );
         $response['success'] = true;
         $response['message'] = 'Tax demand saved successfully';
         $response['id'] = $result;
