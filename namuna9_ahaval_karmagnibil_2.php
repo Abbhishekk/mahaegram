@@ -9,7 +9,14 @@ $title = "मालमत्ता माहिती प्रमाणिक�
 <?php include('include/header.php'); ?>
 <?php
     $newName = $fun->getNewName();
-    $periods = $fun->getPeriodDetails($_SESSION['district_code']);
+    $periods = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी",$_SESSION['district_code']);
+    if (empty($periods)) {
+        $_SESSION['message'] = "कालावधी उपलब्ध नाही.";
+        $_SESSION['message_type'] = "danger";
+      
+    }
+    $financialYears = $fun->getYearArray($periods);
+    $wards = $fun->getWard($_SESSION['district_code']);
 ?>
 
 <body id="page-top">
@@ -28,63 +35,99 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->
-                <div class="container border rounded p-3">
-    <div class="bg-light p-2 mb-3 border-bottom">
-        <h5 class="fw-bold text-secondary">मागणी लेखा (नोटीस) तयार करणे</h5>
-        <p class="text-danger small m-0 fw-bold">
-            टीप : नमुना १ / कर मागणी बिल पूर्ण तयार झाले नंतरच मागणी हुकूम तयार करावे
-        </p>
-    </div>
+                <div class="container-fluid border rounded p-3">
+                    <div class="bg-light p-2 mb-3 border-bottom">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">मागणी लेखा (नोटीस) तयार करणे</h1>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="./">माहईग्राम</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 9</li>
+                                <li class="breadcrumb-item active" aria-current="page">मास्टर्स</li>
+                                <li class="breadcrumb-item active" aria-current="page">मागणी लेखा (नोटीस) तयार करणे</li>
+                            </ol>
+                        </div>
+                        <p class="text-danger small m-0 fw-bold">
+                            टीप : नमुना १ / कर मागणी बिल पूर्ण तयार झाले नंतरच मागणी हुकूम तयार करावे
+                        </p>
+                    </div>
+                    <form action="">
+                        <?php
+                                if (isset($_SESSION['message'])) {
+                                    echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
+                                    unset($_SESSION['message']);
+                                    unset($_SESSION['message_type']);
+                                }
+                                ?>
+                        <div class="card p-4">
+                            <div class="row mb-3">
+                                <div class="col-md-6 my-2">
+                                    <label class="form-label fw-bold">आर्थिक वर्ष :</label>
+                                    <select class="form-control border-primary" name="financial_year"
+                                        id="financial_year">
+                                        <option value=""> --निवडा-- </option>
+                                        <?php foreach ($financialYears as $year): ?>
+                                        <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">हुकूम दिनांक <span
+                                            class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" value="2025-05-22">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">ठराव न. <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
 
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <label class="form-label fw-bold">आर्थिक वर्ष <span class="text-danger">*</span></label>
-            <select class="form-select">
-                <option>Select</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label class="form-label fw-bold">हुकूम दिनांक <span class="text-danger">*</span></label>
-            <input type="date" class="form-control" value="2025-05-22">
-        </div>
-        <div class="col-md-4">
-            <label class="form-label fw-bold">ठराव न. <span class="text-danger">*</span></label>
-            <input type="text" class="form-control">
-        </div>
-    </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">एकरकमी नोटीस रक्कम <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
 
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <label class="form-label fw-bold">एकरकमी नोटीस रक्कम <span class="text-danger">*</span></label>
-            <input type="text" class="form-control">
-        </div>
-    </div>
+                            <div class="row mb-3 my-2">
+                                <div class="col-md-12 d-flex flex-wrap gap-4">
+                                    <label class="ml-3 col-md-3 fw-bold text-secondary"><input type="radio"
+                                            name="notice_type" class="me-1" checked> ग्रामनिधी नोटीस</label>
+                                    <label class="ml-3 col-md-3 fw-bold text-secondary"><input type="radio"
+                                            name="notice_type" class="me-1"> ग्राम पाणीपुरवठा निधी</label>
+                                    <label class="ml-3 col-md-3 fw-bold text-secondary"><input type="radio"
+                                            name="notice_type" class="me-1"> किरकोळ मागणी</label>
+                                    <label class="ml-3 col-md-2 fw-bold text-secondary"><input type="radio"
+                                            name="notice_type" class="me-1"> वॉर्डनुसार यादी तयार करणे</label>
+                                </div>
+                            </div>
 
-    <div class="row mb-3">
-        <div class="col-md-12 d-flex flex-wrap gap-4">
-            <label class="ml-3 fw-bold text-secondary"><input type="radio" name="notice_type" class="me-1" checked> ग्रामनिधी नोटीस</label>
-            <label class="ml-3 fw-bold text-secondary"><input type="radio" name="notice_type" class="me-1"> ग्राम पाणीपुरवठा निधी</label>
-            <label class="ml-3 fw-bold text-secondary"><input type="radio" name="notice_type" class="me-1"> किरकोळ मागणी</label>
-            <label class="ml-3 fw-bold text-secondary"><input type="radio" name="notice_type" class="me-1"> वॉर्डनुसार यादी तयार करणे</label>
-        </div>
-    </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 my-2 ">
+                                    <label class="form-label" for="ward">वॉर्ड नाव</label>
+                                    <select class="form-select form-control" name="ward" id="ward">
+                                        <option>निवडा</option>
+                                        <?php
+                                            while($ward = mysqli_fetch_assoc($wards)){
+                                                echo "<option value='{$ward['ward_name']}'>{$ward['ward_name']}</option>";
+                                            }
 
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <label class="form-label fw-bold">वॉर्ड न. <span class="text-danger">*</span></label>
-            <select class="form-select">
-                <option>Select</option>
-            </select>
-        </div>
-    </div>
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-12 d-flex gap-2">
+                                    <button class="ml-3 btn btn-primary">मागणी लेखा (नोटीस) तयार करणे</button>
+                                    <button class="ml-3 btn btn-secondary">रद्द करणे</button>
+                                </div>
+                            </div>
 
-    <div class="row mt-4">
-        <div class="col-md-12 d-flex gap-2">
-            <button class="ml-3 btn btn-primary">मागणी लेखा (नोटीस) तयार करणे</button>
-            <button class="ml-3 btn btn-secondary">रद्द करणे</button>
-        </div>
-    </div>
-</div>
+                        </div>
+
+                    </form>
+
+                </div>
 
 
 

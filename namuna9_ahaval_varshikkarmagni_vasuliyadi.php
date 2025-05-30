@@ -38,9 +38,9 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->
-               
+
                 <div class="container-fluid border rounded p-3">
-                 <div class="d-sm-flex align-items-center  justify-content-between mb-4">
+                    <div class="d-sm-flex align-items-center  justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">वार्षिक कर मागणी व वसुली यादी </h1>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="./">माहईग्राम</a></li>
@@ -49,7 +49,7 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                             <li class="breadcrumb-item active" aria-current="page">वार्षिक कर मागणी व वसुली यादी</li>
                         </ol>
                     </div>
-                 <?php
+                    <?php
                                          if (isset($_SESSION['message'])) {
                                              $message = $_SESSION['message'];
                                              $message_type = $_SESSION['message_type'];
@@ -61,103 +61,105 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                                              unset($_SESSION['message_type']);
                                          }
                                          ?>
-                <div class="card p-3" >
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label class="col-md-3 me-4 fw-bold text-primary">
-                                <input type="radio" name="criteria" id="milkat_criteria" value="milkat" checked class="me-1 my-2"> मिळकत क्रमांकानुसार
-                            </label>
-                            <label class="col-md-3 me-4 fw-bold text-primary">
-                                <input type="radio" name="criteria" id="ekat_criteria" value="ekat" class="me-1 my-2"> एकत्रीकरण
-                            </label>
-                             <label class="col-md-3 fw-bold text-primary">
-                                <input type="radio" name="criteria" id="all_register" value="all_register" checked class="me-1 my-2"> संपूर्ण रजिस्टर
-                            </label>
-                            <label class="fw-bold col-md-3 text-primary">
-                                <input type="radio" name="criteria" id="gava_mangani" value="gava_mangani" class="me-1 my-2"> गावानुसार मागणी
-                            </label>
-                             <label class="fw-bold col-md-3 text-primary">
-                                <input type="radio" name="criteria" id="malmatta_mangani" value="malmatta_mangani" class="me-1 my-2"> मालमत्तेनुसार मागणी
-                            </label>
-                        </div>
-    
-                        <div class="col-md-6 my-2">
-                                    <label class="form-label fw-bold">आर्थिक वर्ष :</label>
-                                    <select class="form-control border-primary" name="financial_year"
-                                        id="financial_year">
-                                        <option value=""> --निवडा-- </option>
-                                        <?php foreach ($financialYears as $year): ?>
-                                        <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-    
-                         <div class="form-group col-md-4">
-                                                    <label for="revenue_village">गावाचे नाव<span
-                                                            class="text-danger">*</span>
-                                                    </label>
-                                                    <select class="form-control select2-single-placeholder mb-3"
-                                                        name="revenue_village" id="revenue_village">
-                                                        <option value="" selected>--निवडा.--</option>
-                                                        <?php
+                    <div class="card p-3">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label class="col-md-3 me-4 fw-bold text-primary">
+                                    <input type="radio" name="criteria" id="milkat_criteria" value="milkat" checked
+                                        class="me-1 my-2"> मिळकत क्रमांकानुसार
+                                </label>
+                                <label class="col-md-3 me-4 fw-bold text-primary">
+                                    <input type="radio" name="criteria" id="ekat_criteria" value="ekat"
+                                        class="me-1 my-2"> एकत्रीकरण
+                                </label>
+                                <label class="col-md-3 fw-bold text-primary">
+                                    <input type="radio" name="criteria" id="all_register" value="all_register" checked
+                                        class="me-1 my-2"> संपूर्ण रजिस्टर
+                                </label>
+                                <label class="fw-bold col-md-3 text-primary">
+                                    <input type="radio" name="criteria" id="gava_mangani" value="gava_mangani"
+                                        class="me-1 my-2"> गावानुसार मागणी
+                                </label>
+                                <label class="fw-bold col-md-3 text-primary">
+                                    <input type="radio" name="criteria" id="malmatta_mangani" value="malmatta_mangani"
+                                        class="me-1 my-2"> मालमत्तेनुसार मागणी
+                                </label>
+                            </div>
+
+                            <div class="col-md-6 my-2">
+                                <label class="form-label fw-bold">आर्थिक वर्ष :</label>
+                                <select class="form-control border-primary" name="financial_year" id="financial_year">
+                                    <option value=""> --निवडा-- </option>
+                                    <?php foreach ($financialYears as $year): ?>
+                                    <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="revenue_village">गावाचे नाव<span class="text-danger">*</span>
+                                </label>
+                                <select class="form-control select2-single-placeholder mb-3" name="revenue_village"
+                                    id="revenue_village">
+                                    <option value="" selected>--निवडा.--</option>
+                                    <?php
                                                             if(mysqli_num_rows($lgdVillages) > 0){
                                                                 while($village = mysqli_fetch_assoc($lgdVillages)){
                                                                     echo "<option value='".$village['Village_Code']."'>".$village['Village_Name']."</option>";
                                                                 }
                                                             }
                                                         ?>
-                                                    </select>
+                                </select>
 
-                                                </div>
-    
-                           
-                            
+                            </div>
+
+
+
                             <div class="col-md-4 my-2 ">
-                                    <label class="form-label" for="ward">वॉर्ड नाव</label>
-                                    <select class="form-select form-control" name="ward" id="ward">
-                                        <option>निवडा</option>
-                                        <?php
+                                <label class="form-label" for="ward">वॉर्ड नाव</label>
+                                <select class="form-select form-control" name="ward" id="ward">
+                                    <option>निवडा</option>
+                                    <?php
                                             while($ward = mysqli_fetch_assoc($wards)){
                                                 echo "<option value='{$ward['ward_name']}'>{$ward['ward_name']}</option>";
                                             }
 
                                         ?>
-                                    </select>
-                                </div>
+                                </select>
+                            </div>
                             <div class="col-md-4 my-2 ">
-                                    <label class="form-label" for="malmatta_id">मालमत्ता क्रमांक</label>
-                                    <select class="form-select form-control" name="malmatta_id" id="malmatta_id">
-                                        <option>--निवडा--</option>
-                                        <?php
+                                <label class="form-label" for="malmatta_id">मालमत्ता क्रमांक</label>
+                                <select class="form-select form-control" name="malmatta_id" id="malmatta_id">
+                                    <option>--निवडा--</option>
+                                    <?php
                                             foreach($property_verifications as $property){
                                                 if($property['status'] != 0) continue; // Skip if malmatta_id is 0
                                                 echo "<option value='{$property['malmatta_id']}'>{$property['malmatta_no']}</option>";
                                             }
                                         ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-2 my-2 " >
-                                    <button class="ml-3 btn btn-info text-white">शोधा</button>
-                                </div>
+                                </select>
+                            </div>
+                            <div class="col-md-2 my-2 ">
+                                <button class="ml-3 btn btn-info text-white">शोधा</button>
+                            </div>
                             <div class="col-md-6 my-2 ">
-                                        <label class="form-label" for="kardena_name">कर देणाऱ्याचे नाव</label>
-                                        <select class="form-select form-control" readonly name="kardena_name"
-                                            id="kardena_name">
-                                            <option>--निवडा--</option>
-                                        </select>
-                                    </div>
-                        
-    
-                        
-    
-                        <div class="col-md-12 mb-3 d-flex align-items-end gap-2 my-2">
-                            <button class="ml-3 btn btn-primary">ठीक</button>
-                            <button class="ml-3 btn btn-secondary">रद्द करणे</button>
-                            
+                                <label class="form-label" for="kardena_name">कर देणाऱ्याचे नाव</label>
+                                <select class="form-select form-control" readonly name="kardena_name" id="kardena_name">
+                                    <option>--निवडा--</option>
+                                </select>
+                            </div>
+
+
+
+
+                            <div class="col-md-12 mb-3 d-flex align-items-end gap-2 my-2">
+                                <button class="ml-3 btn btn-primary">ठीक</button>
+                                <button class="ml-3 btn btn-secondary">रद्द करणे</button>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-</div>
 
 
 
