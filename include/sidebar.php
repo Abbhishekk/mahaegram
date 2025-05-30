@@ -1,11 +1,11 @@
 <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
-            <img src="img/logo.png">
+            <!-- <img src="img/logo.png"> -->
         </div>
         <div class="sidebar-brand-text mx-3">
             <!-- <img accesskey="" src="img/logo.png" alt="logo" style="width: 100px; height: 50px;"> -->
-            माहईग्राम
+            नमुना
         </div>
     </a>
     <hr class="sidebar-divider my-0">

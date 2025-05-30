@@ -3,7 +3,7 @@
         <i class="fa fa-bars"></i>
     </button>
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown no-arrow">
+        <li class="nav-item dropdown no-arrow d-none ">
             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-search fa-fw"></i>
@@ -24,7 +24,7 @@
                 </form>
             </div>
         </li>
-        <li class="nav-item dropdown no-arrow mx-1">
+        <li class="nav-item dropdown no-arrow d-none mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
@@ -71,7 +71,7 @@
                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
             </div>
         </li>
-        <li class="nav-item dropdown no-arrow mx-1">
+        <li class="nav-item dropdown no-arrow d-none mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw"></i>
@@ -109,7 +109,7 @@
                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
             </div>
         </li>
-        <li class="nav-item dropdown no-arrow mx-1">
+        <li class="nav-item dropdown d-none no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-tasks fa-fw"></i>
@@ -156,26 +156,65 @@
                 <a class="dropdown-item text-center small text-gray-500" href="#">View All Taks</a>
             </div>
         </li>
+        <li class="nav-item no-arrow mx-1" > 
+            <div class="card px-5 " >
+               <div class="row align-items-center gap-2">
+                                        
+                                        <div class=" mr-4 my-2">
+                                            <div class="text-xs font-weight-bold text-uppercase mb-1">User ID
+                                            </div>
+                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                                                <?php echo $_SESSION['user_id'] ?> </div>
+
+                                        </div>
+                                        <div class=" mr-4 my-2">
+                                            <div class="text-xs font-weight-bold text-uppercase mb-1">State
+                                            </div>
+                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                                                <?php echo $_SESSION['state'] ?> </div>
+
+                                        </div>
+                                        <div class=" mr-4 my-2">
+                                            <div class="text-xs font-weight-bold text-uppercase mb-1">District Name
+                                            </div>
+                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                                                <?php echo $_SESSION['district_name'] ?> </div>
+
+                                        </div>
+                                        <div class=" mr-4 my-2">
+                                            <div class="text-xs font-weight-bold text-uppercase mb-1">Panchayat Name
+                                            </div>
+                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                                                <?php echo $_SESSION['panchayat_name'] ?> </div>
+
+                                        </div>
+                                        <div class=" mr-4 my-2">
+                                            <div class="text-xs font-weight-bold text-uppercase mb-1">Village Name
+                                            </div>
+                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                                                <?php echo $_SESSION['village_name'] ?> </div>
+
+                                        </div>
+                                        <div class=" mr-4 my-2">
+                                            <div class="text-xs font-weight-bold text-uppercase mb-1">LGD Code
+                                            </div>
+                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                                                <?php echo $_SESSION['district_code'] ?> </div>
+
+                                        </div>
+
+                                    </div>
+            </div>
+        </li>
         <div class="topbar-divider d-none d-sm-block"></div>
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <img class="img-profile rounded-circle" src="img/boy.png" style="max-width: 60px">
-                <span class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
+                <span class="ml-2 d-none d-lg-inline text-white small"> <?php echo $_SESSION['user_name']; ?> </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Activity Log
-                </a>
+                
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
