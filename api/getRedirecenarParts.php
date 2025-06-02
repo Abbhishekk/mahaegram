@@ -14,15 +14,15 @@ if ($taxType === '') {
 }
 
 
-$stmt = $conn->prepare("SELECT readyrec_type FROM readyrec_info WHERE id = ?");
+$stmt = $conn->prepare("SELECT * FROM readyrec_info WHERE id = ?");
 $stmt->bind_param('s', $taxType);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($row = $result->fetch_assoc()) {
-    echo json_encode(['readyrec_type' => $row['readyrec_type']]);
+    echo json_encode(['readyrec_type' => $row['readyrec_type'], "yearly_tax" => $row['yearly_tax'], "id"=> $row['id']]);
 } else {
-    echo json_encode(['readyrec_type' => null]);
+    echo json_encode(['readyrec_type' => null,'yearly_tax' => null, "id"=> null]);
 }
 
 $stmt->close();

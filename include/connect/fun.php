@@ -842,7 +842,7 @@ public function deleteMalmatta($id) {
         $result = mysqli_query($this->db, $query);
         return $result;
     }
-    
+
 
     public function deleteMalmattaPropertyInfo($id){
         $query = "DELETE FROM `malmatta_property_info` WHERE `id` = '$id'";
@@ -878,7 +878,7 @@ public function deleteMalmatta($id) {
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
                      left join property_verifications pv on mde.`id` = pv.`malmatta_id`
-                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type`
+                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`id`
         WHERE mde.`lgdcode` = '$_SESSION[district_code]' 
     ";
 
@@ -1042,7 +1042,7 @@ public function deleteMalmatta($id) {
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
                      left join property_verifications pv on mde.`id` = pv.`malmatta_id`
-                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type`
+                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`id`
         Where mde.`period` = '".$period."' and mde.`road_name` = '".$road_name."' and mde.`lgdcode` = '".$_SESSION['district_code']."' and mde.`approved` = '1' and mde.`verified` = '1'
     ";
 
@@ -1206,7 +1206,7 @@ public function deleteMalmatta($id) {
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
                      left join property_verifications pv on mde.`id` = pv.`malmatta_id`
-                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type`
+                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`id`
         Where mde.`period` = '".$period."' and mde.`ward_no` = '".$ward_no."' and mde.`lgdcode` = '".$_SESSION['district_code']."' and mde.`approved` = '1' and mde.`verified` = '1'
     ";
 
@@ -1371,7 +1371,7 @@ public function deleteMalmatta($id) {
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
                     left join property_verifications pv on mde.`id` = pv.`malmatta_id`
-                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type` and r.`panchayat_code` = '".$_SESSION['panchayat_code']."'
+                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`id` and r.`panchayat_code` = '".$_SESSION['panchayat_code']."'
         Where mde.`period` = '".$period."' and mde.`lgdcode` = '".$_SESSION['district_code']."' and mde.`panchayat_code` = '".$_SESSION['panchayat_code']."' and mde.`approved` = '$approved' and mde.`verified` = '$verfied'
     ";
 
@@ -1536,7 +1536,7 @@ public function deleteMalmatta($id) {
                     left join new_name nno on mde.`owner_name` = nno.`id`
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
-                    left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type`  and r.`panchayat_code` = '".$_SESSION['panchayat_code']."'
+                    left join readyrec_info r on mpi.`redirecconar_parts` = r.`id`  and r.`panchayat_code` = '".$_SESSION['panchayat_code']."'
         WHERE mde.id = '$id'
         AND mde.lgdcode = '$lgdcode'
         and mde.panchayat_code = '".$_SESSION['panchayat_code']."'
@@ -1687,7 +1687,9 @@ public function deleteMalmatta($id) {
             mpi.lenght, 
             mpi.width, 
             mpi.area,
-             mde.`id` as `malmatta_id`, mde.`malmatta_no` as 'malmatta_number', nno.`person_name` as `owner_name`, nno1.`person_name` as `wife_name`, nno2.`person_name` as `occupant_name`
+            rd.`id` as `road_id`,
+            wd.`id` as `ward_id`,
+             mde.`id` as `malmatta_id`, mde.`malmatta_no` as 'malmatta_number', nno.`id` as 'owner_id' ,nno.`person_name` as `owner_name`, nno1.`id` as 'wife_id' ,nno1.`person_name` as `wife_name`, nno2.`id` as 'occupant_id'  ,nno2.`person_name` as `occupant_name`
         FROM malmatta_data_entry mde
         Left Join malmatta_property_info mpi on mde.`id` = mpi.`malmatta_id`
                     left join period_details pd on mde.`period` = pd.`id`
@@ -1697,7 +1699,7 @@ public function deleteMalmatta($id) {
                     left join new_name nno on mde.`owner_name` = nno.`id`
                     left join new_name nno1 on mde.`wife_name` = nno1.`id`
                     left join new_name nno2 on mde.`occupant_name` = nno2.`id`
-                    left join readyrec_info r on mpi.`redirecconar_parts` = r.`readyrec_type`
+                    left join readyrec_info r on mpi.`redirecconar_parts` = r.`id`
         WHERE mde.id = '$id'
         AND mde.lgdcode = '$lgdcode'
         AND mde.approved = '0'
@@ -1739,12 +1741,17 @@ public function deleteMalmatta($id) {
                 'village_name' => $row['village_name'],
                 'ward_no' => $row['ward_no'],
                 'road_name' => $row['road_name'],
+                'road_id' => $row['road_id'],
+
                 'malmatta_no' => $row['malmatta_no'],
                 'city_survey_no' => $row['city_survey_no'],
                 'group_no' => $row['group_no'],
                 'washroom_available' => $row['washroom_available'],
                 'owner_name' => $row['owner_name'],
+                'owner_id' => $row['owner_id'],
                 'wife_name' => $row['wife_name'],
+                'wife_id' => $row['wife_id'],
+                'occupant_id' => $row['occupant_id'],
                 'occupant_name' => $row['occupant_name'],
                 'remarks' => $row['remarks'],
                 'lgdcode' => $row['lgdcode'],
@@ -1925,6 +1932,13 @@ return $response;
         $result = mysqli_query($this->db, $query);
         return $result;
     }
+    public function getMalmattaWaterTaxByMalmattaId($id){
+        $query = "SELECT * FROM `malmatta_water_tax`
+               
+         WHERE `malmatta_id` = '$id'";
+        $result = mysqli_query($this->db, $query);
+        return $result;
+    }
 
     public function updateMalmattaWaterTax($id,$malmatta_id, $water_usage_type, $no_of_taps, $tap_width, $tap_owner_name){
         $query = "UPDATE `malmatta_water_tax` SET `malmatta_id`='$malmatta_id', `water_usage_type`='$water_usage_type', `no_of_taps`='$no_of_taps', `tap_width`='$tap_width', `tap_owner_name`='$tap_owner_name' WHERE `id` = '$id'";
@@ -1932,7 +1946,12 @@ return $response;
         return $result;
     }
 
-
+public function deleteMalmattaWaterTax($malmatta_id) {
+    $query = "DELETE FROM malmatta_water_tax WHERE malmatta_id = ?";
+    $stmt = $this->db->prepare($query);
+    $stmt->bind_param("i", $malmatta_id);
+    return $stmt->execute();
+}
     //lgdtable
 
     public function getLgdTable(){
@@ -1992,7 +2011,7 @@ return $response;
     }
 
     public function addMilkatTaxInfo($district_code, $dar, $kacche_ghar, $ardha_pakke_ghar, $padsar, $itar_pakke_ghar,$rcc,$manora_type_ghar,$manora_khuli_jaga_sarvasadharan,$manora_khuli_jaga_mnc){
-        $query = "INSERT INTO `milkat_tax_info`(`district_code`, `dar`, `kacche_ghar`, `ardha_pakke_ghar`, `padsar`, `itar_pakke_ghar`, `rcc`, `manora_type_ghar`, `manora_khuli_jaga_sarvasadharan`, `manora_khuli_jaga_mnc`) VALUES ('$district_code', '$dar', '$kacche_ghar', '$ardha_pakke_ghar', '$padsar', '$itar_pakke_ghar', '$rcc', '$manora_type_ghar', '$manora_khuli_jaga_sarvasadharan', '$manora_khuli_jaga_mnc')";
+        $query = "INSERT INTO `milkat_tax_info`(`district_code`, `dar`, `kache_ghar`, `ardha_pakke_ghar`, `padsar`, `itar_pakke_ghar`, `rcc`, `manora_type_ghar`, `manora_khuli_jaga_sarvasadharan`, `manora_khuli_jaga_mnc`) VALUES ('$district_code', '$dar', '$kacche_ghar', '$ardha_pakke_ghar', '$padsar', '$itar_pakke_ghar', '$rcc', '$manora_type_ghar', '$manora_khuli_jaga_sarvasadharan', '$manora_khuli_jaga_mnc')";
         // $query = "INSERT INTO `milkat_tax_info`(`district_code`, `dar`, `min_rate`, `max_rate`, `fixed_rate`, `construction_rate`) VALUES ('$district_code', '$dar', '$min_rate', '$max_rate', '$fixed_rate', '$construction_rate')";
         $result = mysqli_query($this->db, $query);
         return $result;

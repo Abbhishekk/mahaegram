@@ -69,6 +69,7 @@ try {
             // Update existing verification
             $id = (int)$_POST['verification_id'];
             $success = $fun->updatePropertyVerification($id, $data);
+            $approveProperty = $fun->approveMalmattaDataEntry($_POST['malmatta_id']);
             if ($success) {
                 $fun->verifyMalmattaDataEntry($data['malmatta_id']);
             }
@@ -76,10 +77,11 @@ try {
         } else {
             // Add new verification
             $success = $fun->addPropertyVerification($data);
+             $approveProperty = $fun->approveMalmattaDataEntry($_POST['malmatta_id']);
             if ($success) {
                 $fun->verifyMalmattaDataEntry($data['malmatta_id']);
             }
-            $message = $success ? 'प्रमाणिकरण यशस्वीरित्या नोंदवले' : 'प्रमाणिकरण नोंदवताना त्रुटी';
+            $message = $success ? 'प्रमाणिकरण यशस्वीरित्या नोंदवले <a href="namuna9_varshikkamkaj_varshikkarmagni.php" class="btn btn-primary">वार्शिक कर मांगनी येथे जाण्यासाठी येथे क्लिक करा</a> ' : 'प्रमाणिकरण नोंदवताना त्रुटी';
         }
         
         if ($success) {
@@ -89,13 +91,13 @@ try {
             throw new Exception($message);
         }
         
-        header('Location: ../namuna8_varshikkamkaj_milkat_kar_aakarni.php');
+        header('Location: ../Form_Malmatta_N8.php');
         exit;
     }
     
 } catch (Exception $e) {
     $_SESSION['message'] = $e->getMessage();
     $_SESSION['message_type'] = 'danger';
-    header('Location: ../namuna8_varshikkamkaj_milkat_kar_aakarni.php');
+    header('Location: ../Form_Malmatta_N8.php');
     exit;
 }

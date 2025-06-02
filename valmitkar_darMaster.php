@@ -120,7 +120,7 @@ if (isset($_SESSION['message'])) {
                                                         <tr>
                                                             <td>१. कच्चे घर (झोपडी किंवा मातीचे घर)</td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $minDar['kache_ghar']?>"
+                                                                    value="<?php echo $minDar['kache_ghar'] ?>"
                                                                     name="minDar_kache_ghar" class="form-control"
                                                                     readonly>
                                                             </td>
@@ -131,7 +131,7 @@ if (isset($_SESSION['message'])) {
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_kache_ghar"
-                                                                    value="<?php echo $fixedDar['kache_ghar']?>"
+                                                                    value="<?php echo (isset($fixedDar['kache_ghar'])?($fixedDar['kache_ghar']):("0.00"))?>"
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
@@ -153,7 +153,7 @@ if (isset($_SESSION['message'])) {
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_ardha_pakke_ghar"
-                                                                    value="<?php echo $fixedDar['ardha_pakke_ghar']?>"
+                                                                    value="<?php echo $isFixedAvailable? $fixedDar['ardha_pakke_ghar']: ("0.00")?>"
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
@@ -172,7 +172,7 @@ if (isset($_SESSION['message'])) {
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_padsar"
-                                                                    value="<?php echo $fixedDar['padsar']?>"
+                                                                    value="<?php echo $isFixedAvailable? $fixedDar['padsar']: ("0.00")?>"
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
@@ -193,7 +193,7 @@ if (isset($_SESSION['message'])) {
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_itar_pakke_ghar"
-                                                                    value="<?php echo $fixedDar['itar_pakke_ghar']?>"
+                                                                    value="<?php echo $isFixedAvailable? $fixedDar['itar_pakke_ghar']: ("0.00")?>"
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
@@ -210,7 +210,7 @@ if (isset($_SESSION['message'])) {
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_rcc"
-                                                                    value="<?php echo $fixedDar['rcc']?>"
+                                                                    value="<?php echo $isFixedAvailable? $fixedDar['rcc']: ("0.00")?>"
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
@@ -229,7 +229,7 @@ if (isset($_SESSION['message'])) {
                                                                     readonly></td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_manora_type_ghar"
-                                                                    value="<?php echo $fixedDar['manora_type_ghar']?>"
+                                                                    value="<?php echo $isFixedAvailable? $fixedDar['manora_type_ghar']: ("0.00")?>"
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
@@ -250,7 +250,7 @@ if (isset($_SESSION['message'])) {
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_manora_khuli_jaga_sarvasadharan"
-                                                                    value="<?php echo $fixedDar['manora_khuli_jaga_sarvasadharan']?>"
+                                                                    value="<?php echo $isFixedAvailable? $fixedDar['manora_khuli_jaga_sarvasadharan']: ("0.00")?>"
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
@@ -272,7 +272,7 @@ if (isset($_SESSION['message'])) {
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_manora_khuli_jaga_mnc"
-                                                                    value="<?php echo $fixedDar['manora_khuli_jaga_mnc']?>"
+                                                                    value="<?php echo $isFixedAvailable? $fixedDar['manora_khuli_jaga_mnc']: ("0.00")?>"
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"

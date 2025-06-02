@@ -78,43 +78,64 @@ $title = "ग्रामपंचायत नमुना 8 डाटा ए�
     $buildingFloors = $fun->getBuildingFloors();
 $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
 
+if (isset($_GET['edit_id'])) {
+    $editId = $_GET['edit_id'];
+    $malmattaData = $fun->getMalmattaWithPropertiesWithIdNotApproved($editId, $_SESSION['district_code']);
+    // print_r($malmattaData);
+    if ($malmattaData && !empty($malmattaData[0])) {
+        $isEditMode = true;
+        $malmatta = $malmattaData[0];
+        $properties = isset($malmattaData[0]['properties']) ? $malmattaData[0]['properties'] : [];
+        // print_r($malmatta);
+        // Prepare properties data for JavaScript
+        $propertiesJson = json_encode($properties, JSON_HEX_APOS | JSON_HEX_QUOT);
+    } else {
+        $_SESSION['message'] = "मालमत्ता क्रमांक उपलब्ध नाही.";
+        $_SESSION['message_type'] = "danger";
+        $isEditMode = false;
+    }
+} else {
+    $isEditMode = false;
+    $propertiesJson = '[]';
+}
+
 ?>
 
 <body id="page-top">
     <!-- Full Screen Loader -->
-<div id="fullScreenLoader" class="full-screen-loader">
-    <div class="loader-content">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
+    <div id="fullScreenLoader" class="full-screen-loader">
+        <div class="loader-content">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <p class="mt-3 text-white">प्रक्रिया सुरू आहे... कृपया प्रतीक्षा करा</p>
         </div>
-        <p class="mt-3 text-white">प्रक्रिया सुरू आहे... कृपया प्रतीक्षा करा</p>
     </div>
-</div>
 
-<style>
-.full-screen-loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    flex-direction: column;
-}
+    <style>
+    .full-screen-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        flex-direction: column;
+    }
 
-.loader-content {
-    text-align: center;
-    color: white;
-}
+    .loader-content {
+        text-align: center;
+        color: white;
+    }
 
-.loader-content p {
-    font-size: 1.2rem;
-}
-</style>
+    .loader-content p {
+        font-size: 1.2rem;
+    }
+    </style>
     <div id="wrapper">
         <!-- Sidebar -->
         <?php 
@@ -158,7 +179,8 @@ if (isset($_SESSION['message'])) {
 }
 ?>
                                 <div class="card-body">
-                                    <form method="post" id="malmattaForm" action="api/newMalmatta.php" enctype="multipart/form-data">
+                                    <form method="post" id="malmattaForm" action="api/newMalmatta.php"
+                                        enctype="multipart/form-data">
                                         <div>
                                             <h5 class="bg-gradient-primary text-white py-3 px-5 w-25 rounded-pill">
                                                 मालमत्ता
@@ -201,6 +223,10 @@ if (isset($_SESSION['message'])) {
                                                     </select>
 
                                                 </div>
+                                                <input type="hidden" name="is_edit"
+                                                    value="<?= $isEditMode ? '1' : '0' ?>">
+                                                <input type="hidden" name="edit_id"
+                                                    value="<?= $isEditMode ? $editId : '' ?>">
                                                 <div class="form-group col-md-4">
                                                     <label for="road_name">गल्लीचे नाव/ अंतर्गत रस्त्याचे नाव<span
                                                             class="text-danger">*</span>
@@ -416,7 +442,7 @@ if (isset($_SESSION['message'])) {
 
                                                     </div>
                                                     <div class="form-group col-md-4 mx-auto">
-                                                        <label for="tax_type">मालमत्ता कर प्रकार
+                                                        <label for="tax_type">मालमत्ता/जमिनीचा कर प्रकार
 
                                                         </label>
                                                         <select name="tax_type" id="tax_type" class="form-control">
@@ -437,6 +463,16 @@ if (isset($_SESSION['message'])) {
                                                         </label>
                                                         <textarea name="redirecenarParts" class="form-control"
                                                             id="redirecenarParts" readonly></textarea>
+
+
+
+                                                    </div>
+                                                    <div class="form-group col-md-4 mx-auto">
+                                                        <label for="redirecenarDar">दर
+
+                                                        </label>
+                                                        <textarea name="redirecenarDar" class="form-control"
+                                                            id="redirecenarDar" readonly></textarea>
 
 
 
@@ -545,6 +581,7 @@ if (isset($_SESSION['message'])) {
                                                             <th>मालमत्ता वापर</th>
                                                             <th>मालमत्ता कर प्रकार</th>
                                                             <th>रेडिरेकनर प्रमाणे भाग / उपविभाग</th>
+                                                            <th>दर</th>
                                                             <th>बांधकाम वर्ष/वय</th>
                                                             <th>मजला</th>
                                                             <th>इमारतीचे क्षेत्रफळ :</th>
@@ -652,8 +689,10 @@ if (isset($_SESSION['message'])) {
 
 
                                         <div class="w-100 mx-auto col-md-2">
-                                            <button type="submit" name="add"
-                                                class="btn btn-primary bg-gradient-primary">साठवणे</button>
+                                            <button type="submit" name="<?= $isEditMode ? 'update' : 'add' ?>"
+                                                class="btn btn-primary bg-gradient-primary">
+                                                <?= $isEditMode ? 'अद्यतनित करा' : 'साठवणे' ?>
+                                            </button>
                                             <button type="reset" class="btn btn-secondary bg-gradient-secondary">रद्द
                                                 करणे</button>
 
@@ -783,7 +822,86 @@ if (isset($_SESSION['message'])) {
     }
 
 
+    // In your JavaScript, check if we're in edit mode
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get('edit_id');
 
+        if (editId) {
+            // Fetch existing data and populate the form
+            fetch(`api/get_malmatta_for_edit.php?id=${editId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Populate main form
+                        console.log(data, "data");
+
+                        document.getElementById('period').value = data.malmatta.period;
+                        document.getElementById('revenue_village').value = data.malmatta.village_name;
+                        document.getElementById('road_name').value = data.malmatta.road_id;
+                        document.getElementById('ward_name').value = data.malmatta.ward_no;
+                        document.getElementById('malmatta_no').value = data.malmatta.malmatta_id;
+                        document.getElementById('owner_name').value = data.malmatta.owner_id;
+                        document.getElementById('owner_wife_name').value = data.malmatta.wife_id;
+                        document.getElementById('occupant_name').value = data.malmatta.occupant_id;
+                        document.getElementById('city_survey_no').value = data.malmatta.city_survey_no;
+                        document.getElementById('group_number').value = data.malmatta.group_no;
+                        document.getElementById('toilet_available').value = data.malmatta
+                            .washroom_available;
+                        document.getElementById('drainage_type').value = data.waterTax.water_usage_type;
+                        document.getElementById('tap_numbers').value = data.waterTax.no_of_taps;
+                        document.getElementById('tap_width').value = data.waterTax.tap_width;
+                        document.getElementById('tap_owner_name').value = data.waterTax.tap_owner_name;
+                        document.getElementById('remarks').value = data.malmatta.remarks;
+                        const taxType = document.getElementById('tax_type');
+                        taxType.value = data.malmatta.property_tax_type || '';
+                        console.log(data.malmatta.property_tax_type, taxType.value);
+
+                        const taxTypeValue = taxType.value.trim();
+                        const taxTypeText = taxType.options[taxType.selectedIndex].text;
+
+                        // Populate properties table
+                        data.properties.forEach(prop => {
+                            console.log(prop);
+
+                            incomeEntries.push({
+                                taxTypeId: prop.property_tax_type,
+                                area: prop.measuring_unit === 'foot' ? prop.areaInFoot :
+                                    prop.areaInMt,
+                                incomeType: prop.property_tax_type,
+                                incomeOtherInfo: prop.directions,
+                                taxableLand: prop.tax_exempt,
+                                propertyUse: prop.malmatta_use,
+                                taxType: taxTypeText,
+                                redirecenarParts: prop.redirecconar_parts,
+                                constructionYear: prop.construction_year,
+                                buildingAge: prop.construction_year,
+                                construction_year_type: prop.construction_year_type,
+                                age: prop.construction_year,
+                                floors: prop.floor,
+                                selectedUnit: prop.measuring_unit,
+                                ft: prop.areaInFoot,
+                                meter: prop.areaInMt,
+                                height: prop.lenght,
+                                width: prop.width,
+                                area: prop.measuring_unit === 'foot' ? prop.areaInFoot :
+                                    prop.areaInMt,
+                                convertedArea: prop.measuring_unit === 'mt' ? prop
+                                    .areaInMt : prop.areaInFoot,
+                                propertyPhoto: prop.property_photo_path,
+                                photoName: prop.property_photo_path,
+                                redirecenarDar: prop.yearly_tax
+
+                            });
+                        });
+
+                        renderIncomeTable();
+                    }
+                    document.getElementById("income_data").value = JSON.stringify(incomeEntries);
+                    console.log(incomeEntries);
+                });
+        }
+    });
     document.addEventListener("DOMContentLoaded", function() {
         const heightInput = document.getElementById("height");
         const widthInput = document.getElementById("width");
@@ -805,6 +923,7 @@ if (isset($_SESSION['message'])) {
 
                     document.getElementById('redirecenarParts').value = data.readyrec_type ||
                         'No data found';
+                    document.getElementById('redirecenarDar').value = data.yearly_tax || 'No data found';
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -821,6 +940,75 @@ if (isset($_SESSION['message'])) {
 
         heightInput.addEventListener("input", calculateArea);
         widthInput.addEventListener("input", calculateArea);
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get('edit_id');
+
+        // Check if we have properties data from PHP
+        const propertiesData = <?php echo $propertiesJson; ?>;
+
+        if (editId && propertiesData.length > 0) {
+            // Populate main form fields
+            document.getElementById('period').value = '<?php echo $malmatta['period'] ?? ''; ?>';
+            document.getElementById('revenue_village').value = '<?php echo $malmatta['village_name'] ?? ''; ?>';
+            document.getElementById('road_name').value = '<?php echo $malmatta['road_name'] ?? ''; ?>';
+            document.getElementById('ward_name').value = '<?php echo $malmatta['ward_no'] ?? ''; ?>';
+            document.getElementById('malmatta_no').value = '<?php echo $malmatta['malmatta_no'] ?? ''; ?>';
+
+            document.getElementById('owner_name').value = '<?php echo $malmatta['owner_id'] ?? ''; ?>';
+            document.getElementById('owner_wife_name').value = '<?php echo $malmatta['wife_id'] ?? ''; ?>';
+            document.getElementById('occupant_name').value = '<?php echo $malmatta['occupant_id'] ?? ''; ?>';
+            document.getElementById('city_survey_no').value =
+                '<?php echo $malmatta['city_survey_no'] ?? ''; ?>';
+            document.getElementById('group_number').value = '<?php echo $malmatta['group_no'] ?? ''; ?>';
+            document.getElementById('toilet_available').value =
+                '<?php echo $malmatta['toilet_available'] ?? ''; ?>';
+            document.getElementById('drainage_type').value = '<?php echo $malmatta['drainage_type'] ?? ''; ?>';
+            document.getElementById('tap_numbers').value = '<?php echo $malmatta['tap_numbers'] ?? '0'; ?>';
+            document.getElementById('tap_width').value = '<?php echo $malmatta['tap_width'] ?? ''; ?>';
+            document.getElementById('tap_owner_name').value =
+                '<?php echo $malmatta['tap_owner_name'] ?? ''; ?>';
+            document.getElementById('remarks').value = `<?php echo addslashes($malmatta['remarks'] ?? ''); ?>`;
+
+            // Populate properties table
+            propertiesData.forEach(prop => {
+                incomeEntries.push({
+                    incomeType: prop.income_type || '',
+                    incomeOtherInfo: prop.income_other_info || '',
+                    taxableLand: prop.taxable_land || '',
+                    propertyUse: prop.property_use || '',
+                    taxTypeId: prop.tax_type || '',
+                    taxType: prop.tax_type_name || '',
+                    redirecenarParts: prop.redirecenar_parts || '',
+                    redirecenarDar: prop.redirecenar_dar || '',
+                    construction_year_type: prop.construction_year ? 'construction_year' :
+                        'building_age',
+                    age: prop.construction_year || prop.building_age || '',
+                    floors: prop.floors || '',
+                    selectedUnit: prop.measuring_unit || 'foot',
+                    height: prop.height || '',
+                    width: prop.width || '',
+                    area: prop.area || '',
+                    convertedArea: prop.converted_area || '',
+                    propertyPhoto: prop.property_photo || null,
+                    photoName: prop.property_photo ? 'property_photo.jpg' : null
+                });
+            });
+
+            // Render the properties table
+            renderIncomeTable();
+
+            // Set radio buttons based on first property (assuming all properties have same units)
+            if (propertiesData.length > 0) {
+                const firstProp = propertiesData[0];
+                if (firstProp.measuring_unit === 'meter') {
+                    document.getElementById('meter').checked = true;
+                } else {
+                    document.getElementById('ft').checked = true;
+                }
+            }
+        }
     });
     document.addEventListener("DOMContentLoaded", function() {
         const heightInput = document.getElementById("height");
@@ -891,64 +1079,92 @@ if (isset($_SESSION['message'])) {
 
 
     document.getElementById('malmattaForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Update the hidden input with latest data
-    document.getElementById("income_data").value = JSON.stringify(incomeEntries);
-    
-    // Create FormData object
-    const formData = new FormData(this);
-    
-    // Add property photos separately
-    incomeEntries.forEach((entry, index) => {
-        if (entry.propertyPhoto) {
-            // Convert base64 to blob
-            const blob = dataURLtoBlob(entry.propertyPhoto);
-            formData.append(`property_photos[${index}]`, blob, entry.photoName || `property_${index}.jpg`);
-        }
-    });
-    formData.append("add", "yes");
-    
-    // Submit via AJAX
-    fetch(this.action, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.success) {
-            console.log(data);
-            const baseURL = window.location.origin;
-            const redirectURL = data.redirect ? `${baseURL}/mahaegram-master/${data.redirect}` : baseURL;
-            alert(data.message || 'Form submitted successfully');
-            console.log(redirectURL);
-            
-            
-            // window.location.href = `/mahaegram-master/${data.redirect}` || window.location.href;
-        } else {
-            alert(data.message || 'Error occurred');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error submitting form');
-    });
-});
+        e.preventDefault();
 
-function dataURLtoBlob(dataurl) {
-    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    for (var i = 0; i < n; i++) {
-        u8arr[i] = bstr.charCodeAt(i);
+        // Update the hidden input with latest data
+        document.getElementById("income_data").value = JSON.stringify(incomeEntries);
+
+        // Create FormData object
+        const formData = new FormData(this);
+
+        // Add property photos separately
+        incomeEntries.forEach((entry, index) => {
+            if (entry.propertyPhoto && typeof entry.propertyPhoto === 'string' && entry.propertyPhoto
+                .startsWith('data:')) {
+                // Convert base64 to blob
+                const blob = dataURLtoBlob(entry.propertyPhoto);
+                formData.append(`property_photos[${index}]`, blob, entry.photoName ||
+                    `property_${index}.jpg`);
+            }
+        });
+
+        // Add the appropriate action parameter
+        if (<?php echo $isEditMode ? 'true' : 'false'; ?>) {
+            formData.append("update", "yes");
+            formData.append("edit_id", "<?php echo $editId ?? ''; ?>");
+        } else {
+            formData.append("add", "yes");
+        }
+        if (confirm("तुमची खात्री आहे की तुम्ही हा फॉर्म सबमिट करू इच्छिता?")) {
+            fetch(this.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("Form submitted successfully:", data);
+
+                        const baseURL = window.location.origin;
+                        const redirectURL = data.redirect ? `${baseURL}/mahaegram-master/${data.redirect}` :
+                            baseURL;
+
+                        // Show success message
+                        alert(data || 'Form submitted successfully');
+
+                        // Redirect to appropriate page
+                        if (data.redirect) {
+                            window.location.href = redirectURL;
+                        }
+
+                    } else {
+                        alert(data.message || 'Error occurred');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error submitting form');
+                });
+        } else {
+            console.log("Form submission cancelled");
+            return;
+        }
+        // Submit via AJAX
+
+    });
+
+    function dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+        for (var i = 0; i < n; i++) {
+            u8arr[i] = bstr.charCodeAt(i);
+        }
+        return new Blob([u8arr], {
+            type: mime
+        });
     }
-    return new Blob([u8arr], {type:mime});
-}
     </script>
 
     <script>
     let incomeEntries = [];
+    document.getElementById('add_property').onclick = function() {
+        addIncomeType();
+    };
 
-    document.getElementById("add_property").addEventListener("click", () => {
+    function addIncomeType() {
         const incomeType = document.getElementById('income_type');
         const incomeTypeValue = incomeType.value.trim();
         const incomeOtherInfo = document.getElementById('income_other_info');
@@ -960,13 +1176,14 @@ function dataURLtoBlob(dataurl) {
         const taxType = document.getElementById('tax_type');
         const taxTypeValue = taxType.value.trim();
         const taxTypeText = taxType.options[taxType.selectedIndex].text;
-        const redirecenarParts = document.getElementById('redirecenarParts');
+        const redirecenarParts = document.getElementById('tax_type');
         const redirecenarPartsValue = redirecenarParts.value.trim();
         const constructionYear = document.getElementById('construction_year');
         const constructionYearValue = constructionYear.value.trim();
         const buildingAge = document.getElementById('building_age');
         const buildingAgeValue = buildingAge.value.trim();
         const selectedConstructionType = document.querySelector('input[name="construction_year_type"]:checked');
+        const redirecenarDar = document.getElementById('redirecenarDar');
 
         const fileInput = document.querySelector('.property-photo-input');
         const photoFile = fileInput.files[0];
@@ -1036,7 +1253,8 @@ function dataURLtoBlob(dataurl) {
                     area: areaValue,
                     convertedArea: convertedAreaValue,
                     propertyPhoto: photoData,
-                    photoName: photoFile.name
+                    photoName: photoFile.name,
+                    redirecenarDar: redirecenarDar.value.trim()
                 });
                 renderIncomeTable();
             };
@@ -1064,7 +1282,8 @@ function dataURLtoBlob(dataurl) {
                 area: areaValue,
                 convertedArea: convertedAreaValue,
                 propertyPhoto: null,
-                photoName: null
+                photoName: null,
+                redirecenarDar: redirecenarDar.value.trim()
             });
             renderIncomeTable();
 
@@ -1086,6 +1305,7 @@ function dataURLtoBlob(dataurl) {
         width.value = "";
         area.value = "";
         convertedArea.value = "";
+        redirecenarDar.value = "";
 
 
         // Store in hidden input
@@ -1093,20 +1313,21 @@ function dataURLtoBlob(dataurl) {
         console.log(incomeEntries);
 
         fileInput.value = '';
-    });
+    }
 
     function renderIncomeTable() {
         const tbody = document.getElementById("income_table").querySelector("tbody");
         tbody.innerHTML = "";
+        console.log("entries:", incomeEntries);
 
         incomeEntries.forEach((entry, index) => {
             const photoCell = entry.propertyPhoto ?
                 `<td><img src="${entry.propertyPhoto}" 
-                 width="50" height="50" 
-                 class="thumbnail-img"
-                 style="cursor: pointer;"
-                 data-fullimg="${entry.propertyPhoto}"
-                 onclick="showFullImage(this)"></td>` :
+             width="50" height="50" 
+             class="thumbnail-img"
+             style="cursor: pointer;"
+             data-fullimg="${entry.propertyPhoto}"
+             onclick="showFullImage(this)"></td>` :
                 `<td>No photo</td>`;
 
             const row = `<tr>
@@ -1116,6 +1337,7 @@ function dataURLtoBlob(dataurl) {
             <td>${entry.propertyUse}</td>
             <td>${entry.taxType}</td>
             <td>${entry.redirecenarParts}</td>
+            <td>${entry.redirecenarDar}</td>
             <td>${entry.age}</td>
             <td>${entry.floors}</td>
             <td>${entry.selectedUnit}</td>
@@ -1124,7 +1346,14 @@ function dataURLtoBlob(dataurl) {
             <td>${entry.area}</td>
             <td>${entry.convertedArea}</td>
             ${photoCell}
-            <td><button type="button" class="btn btn-danger" onclick="removeIncomeType(${index})">Remove</button></td>
+            <td>
+                <button type="button" class="btn btn-primary btn-sm" onclick="editIncomeType(${index})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeIncomeType(${index})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
         </tr>`;
             tbody.innerHTML += row;
         });
@@ -1182,8 +1411,214 @@ function dataURLtoBlob(dataurl) {
     }
 
     function removeIncomeType(index) {
+        // Check if we're removing the entry currently being edited
+        const currentEditIndex = document.getElementById('update').value;
+        if (currentEditIndex && parseInt(currentEditIndex) === index) {
+            resetFormAndRender();
+        }
+
         incomeEntries.splice(index, 1);
         renderIncomeTable();
+        document.getElementById("income_data").value = JSON.stringify(incomeEntries);
+    }
+
+    function editIncomeType(index) {
+        const entry = incomeEntries[index];
+
+        // Fill the form with the selected entry's data
+        document.getElementById('income_type').value = entry.incomeType;
+        document.getElementById('income_other_info').value = entry.incomeOtherInfo;
+        document.getElementById('taxable_land').value = entry.taxableLand;
+        document.getElementById('property_use').value = entry.propertyUse;
+        document.getElementById('tax_type').value = entry.taxTypeId;
+        document.getElementById('redirecenarParts').value = entry.redirecenarParts;
+        document.getElementById('redirecenarDar').value = entry.redirecenarDar;
+
+        // Set construction year/age radio button
+        if (entry.construction_year_type === 'construction_year') {
+            document.getElementById('construction_year').checked = true;
+        } else if (entry.construction_year_type === 'building_age') {
+            document.getElementById('building_age').checked = true;
+        }
+
+        document.getElementById('age').value = entry.age;
+        document.getElementById('floors').value = entry.floors;
+
+        // Set measuring unit radio button
+        if (entry.selectedUnit === 'foot') {
+            document.getElementById('ft').checked = true;
+        } else if (entry.selectedUnit === 'meter') {
+            document.getElementById('meter').checked = true;
+        }
+
+        document.getElementById('height').value = entry.height;
+        document.getElementById('width').value = entry.width;
+        document.getElementById('area').value = entry.area;
+        document.getElementById('converted_area').value = entry.convertedArea;
+
+        // Store the index being edited in a hidden field
+        document.getElementById('update').value = index;
+
+        // Change the add button text to indicate editing
+        document.getElementById('add_property').textContent = 'Update';
+        document.getElementById('add_property').onclick = function() {
+            updateIncomeType(index);
+        };
+
+        // Scroll to the form section
+        document.querySelector('.card-body').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
+    function updateIncomeType(index) {
+        const incomeType = document.getElementById('income_type');
+        const incomeTypeValue = incomeType.value.trim();
+        const incomeOtherInfo = document.getElementById('income_other_info');
+        const incomeOtherInfoValue = incomeOtherInfo.value.trim();
+        const taxableLand = document.getElementById('taxable_land');
+        const taxableLandValue = taxableLand.value.trim();
+        const propertyUse = document.getElementById('property_use');
+        const propertyUseValue = propertyUse.value.trim();
+        const taxType = document.getElementById('tax_type');
+        const taxTypeValue = taxType.value.trim();
+        const taxTypeText = taxType.options[taxType.selectedIndex].text;
+        const redirecenarParts = document.getElementById('tax_type');
+        const redirecenarPartsValue = redirecenarParts.value.trim();
+        const constructionYear = document.getElementById('construction_year');
+        const constructionYearValue = constructionYear.value.trim();
+        const buildingAge = document.getElementById('building_age');
+        const buildingAgeValue = buildingAge.value.trim();
+        const selectedConstructionType = document.querySelector('input[name="construction_year_type"]:checked');
+        const redirecenarDar = document.getElementById('redirecenarDar');
+
+        const fileInput = document.querySelector('.property-photo-input');
+        const photoFile = fileInput.files[0];
+        let photoData = incomeEntries[index].propertyPhoto; // Keep existing photo if not changed
+        let construction_year_type = "";
+
+        if (selectedConstructionType) {
+            construction_year_type = selectedConstructionType.value;
+        }
+
+        const age = document.getElementById('age');
+        const ageValue = age.value.trim();
+        const floors = document.getElementById('floors');
+        const floorsValue = floors.value.trim();
+        const ft = document.getElementById('ft');
+        const ftValue = ft.value.trim();
+        const meter = document.getElementById('meter');
+        const meterValue = meter.value.trim();
+
+        const selectedUnit = document.querySelector('input[name="measuring_unit"]:checked');
+        let selectedUnitValue = "";
+        if (selectedUnit) {
+            selectedUnitValue = selectedUnit.value;
+        }
+
+        const height = document.getElementById('height');
+        const heightValue = height.value.trim();
+        const width = document.getElementById('width');
+        const widthValue = width.value.trim();
+        const area = document.getElementById('area');
+        const areaValue = area.value.trim();
+        const convertedArea = document.getElementById('converted_area');
+        const convertedAreaValue = convertedArea.value.trim();
+
+        if (photoFile) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                photoData = e.target.result;
+                // Update the entry
+                incomeEntries[index] = {
+                    taxTypeId: taxTypeValue,
+                    area: area,
+                    incomeType: incomeTypeValue,
+                    incomeOtherInfo: incomeOtherInfoValue,
+                    taxableLand: taxableLandValue,
+                    propertyUse: propertyUseValue,
+                    taxType: taxTypeText,
+                    redirecenarParts: redirecenarPartsValue,
+                    constructionYear: constructionYearValue,
+                    buildingAge: buildingAgeValue,
+                    construction_year_type: construction_year_type,
+                    age: ageValue,
+                    floors: floorsValue,
+                    selectedUnit: selectedUnitValue,
+                    ft: ftValue,
+                    meter: meterValue,
+                    height: heightValue,
+                    width: widthValue,
+                    area: areaValue,
+                    convertedArea: convertedAreaValue,
+                    propertyPhoto: photoData,
+                    photoName: photoFile.name || incomeEntries[index].photoName,
+                    redirecenarDar: redirecenarDar.value.trim()
+                };
+                resetFormAndRender();
+            };
+            reader.readAsDataURL(photoFile);
+        } else {
+            // Update the entry without changing the photo
+            incomeEntries[index] = {
+                taxTypeId: taxTypeValue,
+                area: area,
+                incomeType: incomeTypeValue,
+                incomeOtherInfo: incomeOtherInfoValue,
+                taxableLand: taxableLandValue,
+                propertyUse: propertyUseValue,
+                taxType: taxTypeText,
+                redirecenarParts: redirecenarPartsValue,
+                constructionYear: constructionYearValue,
+                buildingAge: buildingAgeValue,
+                construction_year_type: construction_year_type,
+                age: ageValue,
+                floors: floorsValue,
+                selectedUnit: selectedUnitValue,
+                ft: ftValue,
+                meter: meterValue,
+                height: heightValue,
+                width: widthValue,
+                area: areaValue,
+                convertedArea: convertedAreaValue,
+                propertyPhoto: incomeEntries[index].propertyPhoto,
+                photoName: incomeEntries[index].photoName,
+                redirecenarDar: redirecenarDar.value.trim()
+            };
+            resetFormAndRender();
+        }
+    }
+
+    function resetFormAndRender() {
+        // Clear form
+        document.getElementById('income_type').value = "";
+        document.getElementById('income_other_info').value = "";
+        document.getElementById('taxable_land').value = "";
+        document.getElementById('property_use').value = "";
+        document.getElementById('tax_type').value = "";
+        document.getElementById('redirecenarParts').value = "";
+        document.getElementById('redirecenarDar').value = "";
+        document.getElementById('age').value = "";
+        document.getElementById('floors').value = "";
+        document.getElementById('height').value = "";
+        document.getElementById('width').value = "";
+        document.getElementById('area').value = "";
+        document.getElementById('converted_area').value = "";
+        document.querySelector('.property-photo-input').value = '';
+
+        // Reset add button
+        document.getElementById('add_property').textContent = 'Add';
+        document.getElementById('add_property').onclick = function() {
+            addIncomeType();
+        };
+
+        // Clear update index
+        document.getElementById('update').value = "";
+
+        // Re-render table
+        renderIncomeTable();
+
+        // Update hidden input
         document.getElementById("income_data").value = JSON.stringify(incomeEntries);
     }
     </script>

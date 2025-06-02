@@ -10,10 +10,14 @@ $fun = new Fun($connect->dbConnect());
 $response = ['success' => false, 'message' => ''];
 
 try {
-    // Validate request method and action
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['add'])) {
+    // Validate request method
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         throw new Exception("Invalid request method");
     }
+
+    // Check if this is an add or update operation
+    $isEdit = isset($_POST['is_edit']) && $_POST['is_edit'] === '1';
+    $malmatta_id = $isEdit ? (int)($_POST['edit_id'] ?? 0) : 0;
 
     // Validate and sanitize input data
     $requiredFields = [
@@ -59,25 +63,53 @@ try {
     $connect->dbConnect()->begin_transaction();
 
     try {
-        // Insert main malmatta entry
-        $malmatta_id = $fun->addMalmattaDataEntry(
-            $data['period'],
-            $data['revenue_village'],
-            $data['ward_name'],
-            $data['road_name'],
-            $data['malmatta_no'],
-            $data['city_survey_no'],
-            $data['group_number'],
-            $data['toilet_available'],
-            $data['owner_name'],
-            $data['owner_wife_name'],
-            $data['occupant_name'],
-            $data['remarks'],
-            $data['lgdcode']
-        );
+        if ($isEdit && $malmatta_id > 0) {
+            // Update existing malmatta entry
+            $updated = $fun->updateMalmattaDataEntry(
+                $malmatta_id,
+                $data['period'],
+                $data['revenue_village'],
+                $data['ward_name'],
+                $data['road_name'],
+                $data['malmatta_no'],
+                $data['city_survey_no'],
+                $data['group_number'],
+                $data['toilet_available'],
+                $data['owner_name'],
+                $data['owner_wife_name'],
+                $data['occupant_name'],
+                $data['remarks'],
+              
+            );
 
-        if (!$malmatta_id) {
-            throw new Exception("❌ मुख्य मालमत्ता डेटा जतन करण्यात अयशस्वी!");
+            if (!$updated) {
+                throw new Exception("❌ मुख्य मालमत्ता डेटा अद्यतनित करण्यात अयशस्वी!");
+            }
+
+            // Delete existing properties and water tax info before adding new ones
+            $fun->deleteMalmattaPropertyInfo($malmatta_id);
+            $fun->deleteMalmattaWaterTax($malmatta_id);
+        } else {
+            // Insert new malmatta entry
+            $malmatta_id = $fun->addMalmattaDataEntry(
+                $data['period'],
+                $data['revenue_village'],
+                $data['ward_name'],
+                $data['road_name'],
+                $data['malmatta_no'],
+                $data['city_survey_no'],
+                $data['group_number'],
+                $data['toilet_available'],
+                $data['owner_name'],
+                $data['owner_wife_name'],
+                $data['occupant_name'],
+                $data['remarks'],
+                $data['lgdcode']
+            );
+
+            if (!$malmatta_id) {
+                throw new Exception("❌ मुख्य मालमत्ता डेटा जतन करण्यात अयशस्वी!");
+            }
         }
 
         // Process each property
@@ -107,7 +139,7 @@ try {
             }
         }
 
-        // Insert water tax info
+        // Insert/update water tax info
         $water_added = $fun->addMalmattaWaterTax(
             $malmatta_id,
             $data['drainage_type'],
@@ -125,8 +157,11 @@ try {
 
         $response = [
             'success' => true,
-            'message' => "✅ मालमत्ता यशस्वीरीत्या जतन केली गेली!",
-            'redirect' => "Form_Malmatta_N8.php"
+            'message' => $isEdit ? 
+                "✅ मालमत्ता यशस्वीरीत्या अद्यतनित केली गेली!" : 
+                "✅ मालमत्ता यशस्वीरीत्या जतन केली गेली!",
+            'redirect' => 
+                "namuna8_pramanit_kar.php?malmatta_id=" . $malmatta_id
         ];
 
         // Store in session for non-AJAX fallback
@@ -142,6 +177,7 @@ try {
     $response['message'] = ($e->getCode() == 1062) ? 
         "⚠️ ही मालमत्ता आधीच अस्तित्वात आहे!" : 
         "❌ डेटाबेस त्रुटी: " . $e->getMessage();
+    
 } catch (Exception $e) {
     $response['message'] = $e->getMessage();
 }
@@ -154,7 +190,7 @@ exit();
 /**
  * Process property photo upload (either file upload or base64)
  */
- function processPropertyPhoto($index, $entry) {
+function processPropertyPhoto($index, $entry) {
     $photoPath = null;
     $uploadDir = '../uploads/property_photos/';
     

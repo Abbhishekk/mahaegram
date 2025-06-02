@@ -22,9 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Name validation
         if (empty($personName)) {
             $errors[] = "व्यक्तीचे नाव आवश्यक आहे.";
-        } elseif (!preg_match("/^[\p{Marathi} ]+$/u", $personName)) {
-            $errors[] = "व्यक्तीचे नाव फक्त मराठी अक्षरे असावे.";
-        }
+        } 
+        // elseif (!preg_match("/^[\p{Marathi} ]+$/u", $personName)) {
+        //     $errors[] = "व्यक्तीचे नाव फक्त मराठी अक्षरे असावे.";
+        // }
 
         // Mobile number validation (10 digits, starts with 6-9)
         if (empty($mobileNo)) {

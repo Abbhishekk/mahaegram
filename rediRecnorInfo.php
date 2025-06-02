@@ -11,8 +11,17 @@ $title = "रेडीरेकनर दर माहिती";
     $readyRecInfo = $fun->getReadyrecInfo();
     $readyRecParts = $fun->getReadyrecParts();
 $financialYears = $fun->getFinancialYears();
+$disabled = "";
  $periodsWithReasons2 = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
-    $yearArray = $fun->getYearArray($periodsWithReasons2);
+ if(mysqli_num_rows($periodsWithReasons2) > 0){
+     $yearArray = $fun->getYearArray($periodsWithReasons2);
+     $disabled = "";
+ }else {
+        $yearArray = [];
+        $_SESSION['message'] = "नमुना नंबर 8 कालावधी नोंदवलेली नाही.";
+        $_SESSION['message_type'] = "warning";
+        $disabled = "disabled";
+ }
 $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
 ?>
 
@@ -188,7 +197,8 @@ if (isset($_SESSION['message'])) {
                                             स्वयं:निर्मित ( Auto Generate ) करण्याकरिता रेडीरेकनर दर फक्त एकदाच नोंद
                                             करता येणार आहे,तरी ग्रामपंचायतीने ठरवलेला अचूक दर नोंद करण्यात यावा.</p>
                                         <div class="w-100 mx-auto col-md-2">
-                                            <button type="submit" name="add" class="btn btn-primary">साठवणे</button>
+                                            <button type="submit" name="add" <?= $disabled ?? "" ?>
+                                                class="btn btn-primary">साठवणे</button>
                                             <button type="reset" class="btn btn-secondary">रद्द करणे</button>
 
                                         </div>
@@ -302,7 +312,7 @@ if (isset($_SESSION['message'])) {
         redirecSelect.addEventListener('change', function() {
             const selectedValue = redirecSelect.value;
             land_type.value = selectedValue;
-            land_type.setAttribute('readonly', true);
+            // land_type.setAttribute('readonly', true);
         });
         decision_date.value = new Date().toISOString().split('T')[0];
 

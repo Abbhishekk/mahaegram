@@ -20,8 +20,7 @@
     </div>
     <li class="nav-item">
         <a class="nav-link <?php if ($page == "namuna7") echo ""; else echo "collapsed"; ?>" href="#"
-            data-toggle="collapse" data-target="#collapseNamuna7" aria-expanded="true"
-            aria-controls="collapseNamuna7">
+            data-toggle="collapse" data-target="#collapseNamuna7" aria-expanded="true" aria-controls="collapseNamuna7">
             <i class="far fa-fw fa-window-maximize"></i>
             <span>नामुना क्रमांक 7</span>
         </a>
@@ -39,7 +38,7 @@
                         class="collapse <?php if ($subpage == 'ahaval') { echo 'show'; } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="namuna7_ahaval_samanya_pavati.php">सामान्य पावती अहवात</a>
+                            <a class="collapse-item" href="namuna7_ahaval_samanya_pavti.php">सामान्य पावती अहवात</a>
 
                         </div>
                     </div>
@@ -55,18 +54,20 @@
                         class="collapse <?php if ($subpage == 'dainandin') { echo 'show'; } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
-                               <a class="collapse-item" href="namuna10_varshikkamkaj_pavati_pustak_nond.php">पावती पुस्तक
+                            <a class="collapse-item" href="namuna7_varshikkamkaj_pavati_pustak_nond.php">पावती
+                                पुस्तक
                                 नोंदणी /वितरण</a>
-                               <a class="collapse-item" href="namuna7_dainandin_jama_pavati.php">नमुना क ७ जमा पावती</a>
-                               
-                            <a class="collapse-item" href="namuna10_dainandin_bank_bharne.php">बँक भरणा</a>
+                            <a class="collapse-item" href="namuna7_dainandin_jama_pavati.php">नमुना क ७ जमा पावती</a>
+
+                            <a class="collapse-item" href="namuna7_dainandin_bank_bharne.php">बँक भरणा</a>
                             <!-- <a class="collapse-item" href="Malmatta.php">मालमत्ता माहिती</a> -->
-                            <a class="collapse-item" href="namuna10_dainandin_khate_to_khate_transfar.php">खाते टू खाते
+                            <a class="collapse-item" href="namuna7_dainandin_khate_to_khate_transfar.php">खाते टू खाते
                                 ट्रान्सफर</a>
-                            <a class="collapse-item" href="namuna10_dainandin_jama_pavati_radd.php">जमा पावती रद्द
+                            <a class="collapse-item" href="namuna7_dainandinkamkaj_jamapavtiradda.php">जमा पावती रद्द
                                 करणे</a>
-                            
-                            <a class="collapse-item" href="namuna10_dainandin_chekchi_sathi.php">आलेल्या चेकची
+
+                            <a class="collapse-item"
+                                href="namuna7_dainandinkamkaj_alelyajamacheckchi_sthiti.php">आलेल्या चेकची
                                 स्थिती</a>
 
                         </div>
@@ -83,10 +84,10 @@
                         class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="namuna10_varshikkamkaj_shillak.php">वर्षाच्या सुरवातीची
+                            <a class="collapse-item" href="namuna7_varshikkamkaj_shillak.php">वर्षाच्या सुरवातीची
                                 शिल्लक</a>
-                            <a class="collapse-item" href="namuna10_varshikkamkaj_vasuli_khate.php">वसूल खाते ठरवणे</a>
-                   
+                            <a class="collapse-item" href="namuna7_varshikkamkaj_vasuli_khate.php">वसूल खाते ठरवणे</a>
+
 
 
                         </div>
@@ -103,12 +104,12 @@
                         class="collapse <?php if ($subpage == 'master') { echo 'show'; } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
-                              <a class="collapse-item" href="namuna10_varshikkamkaj_shillak.php">वर्षाच्या सुरवातीची
+                            <a class="collapse-item" href="namuna7_masters_shillak.php">वर्षाच्या सुरवातीची
                                 शिल्लक</a>
-                            <a class="collapse-item" href="namuna10_master_bank.php">बँकांची माहिती</a>
+                            <a class="collapse-item" href="namuna7_master_bank.php">बँकांची माहिती</a>
 
-                            <a class="collapse-item" href="namuna10_master_chekbuk.php">धनादेश (चेकबुक) माहिती</a>
-                            <a class="collapse-item" href="namuna10_master_vastu.php">वस्तूंची माहिती</a>
+                            <a class="collapse-item" href="namuna7_master_chekbuk.php">धनादेश (चेकबुक) माहिती</a>
+                            <a class="collapse-item" href="namuna7_master_vastu.php">वस्तूंची माहिती</a>
 
 
                         </div>
@@ -244,11 +245,15 @@
                         class="collapse <?php if ($subpage == 'ahaval') { echo 'show'; } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar9">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="namuna9_ahaval_varshikkarmagni_vasuliyadi.php">वार्षिक कर मागणी व वसुली यादी</a>
+                            <a class="collapse-item" href="namuna9_ahaval_varshikkarmagni_vasuliyadi.php">वार्षिक कर
+                                मागणी व वसुली यादी</a>
                             <a class="collapse-item" href="namuna9_ahaval_karthakbakiyadi.php">कर थकबाकी यादी</a>
-                            <a class="collapse-item" href="namuna9_ahaval_karmagnibil_1.php">कर मागणी बिल (नमुना-९ क) १२९/१</a>
-                            <a class="collapse-item" href="namuna9_ahaval_karmagnibil_2.php">कर मागणी बिल नोटीस (२९) (ब) १२९/२</a>
-                            <a class="collapse-item" href="namuna9_ahaval_japticheadhipatra.php">जप्तीचे आधीपत्र १२९/३</a>
+                            <a class="collapse-item" href="namuna9_ahaval_karmagnibil_1.php">कर मागणी बिल (नमुना-९ क)
+                                १२९/१</a>
+                            <a class="collapse-item" href="namuna9_ahaval_karmagnibil_2.php">कर मागणी बिल नोटीस (२९) (ब)
+                                १२९/२</a>
+                            <a class="collapse-item" href="namuna9_ahaval_japticheadhipatra.php">जप्तीचे आधीपत्र
+                                १२९/३</a>
 
                         </div>
                     </div>
@@ -264,14 +269,14 @@
                         class="collapse <?php if ($subpage == 'varshik_kamkaj') { echo 'show'; } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar9">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item"
-                                href="namuna9_varshikkamkaj_varshikkarmagni.php">वार्षिक कर मागणी (नमुना-९)</a>
-                            
+                            <a class="collapse-item" href="namuna9_varshikkamkaj_varshikkarmagni.php">वार्षिक कर मागणी
+                                (नमुना-९)</a>
+
 
                         </div>
                     </div>
                 </li>
-             
+
             </ul>
         </div>
     </li>
@@ -318,10 +323,12 @@
                                 ट्रान्सफर</a>
                             <a class="collapse-item" href="namuna10_dainandinkamkaj_jamapavtiradda.php">जमा पावती रद्द
                                 करणे</a>
-                            <a class="collapse-item" href="namuna10_dainandinkamkaj_jamapavtikadhne.php">जमा पावती काढणे</a>
+                            <a class="collapse-item" href="namuna10_dainandinkamkaj_jamapavtikadhne.php">जमा पावती
+                                काढणे</a>
                             <a class="collapse-item" href="namuna10_dainandinkamkaj_gharpatti_karvasuli.php">घरफाळा /
                                 घरपट्टी कर वसुली</a>
-                            <a class="collapse-item" href="namuna10_dainandinkamkaj_alelyajamacheckchi_sthiti.php">आलेल्या चेकची
+                            <a class="collapse-item"
+                                href="namuna10_dainandinkamkaj_alelyajamacheckchi_sthiti.php">आलेल्या चेकची
                                 स्थिती</a>
 
                         </div>

@@ -43,27 +43,27 @@ if (isset($_SESSION['message'])) {
                                         <div class="form-group">
                                             <label>Name</label>
                                             <input type="text" class="form-control" id="name" name="name"
-                                                placeholder="Enter Name">
+                                                placeholder="Enter Name" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Mobile</label>
                                             <input type="text" class="form-control" id="mobile" name="mobile"
-                                                placeholder="Enter Mobile Number">
+                                                placeholder="Enter Mobile Number" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Email</label>
                                             <input type="email" class="form-control" id="exampleInputEmail" name="email"
-                                                aria-describedby="emailHelp" placeholder="Enter Email Address">
+                                                aria-describedby="emailHelp" required placeholder="Enter Email Address">
                                         </div>
                                         <div class="form-group">
                                             <label>Designation</label>
                                             <input type="text" class="form-control" id="designation" name="designation"
-                                                aria-describedby="emailHelp" placeholder="Enter Designation" />
+                                                aria-describedby="emailHelp" required placeholder="Enter Designation" />
                                         </div>
                                         <div class="form-group">
                                             <label for="state">Select State</label>
-                                            <select class="select2-single-placeholder form-control" name="state"
-                                                id="state">
+                                            <select class="select2-single-placeholder form-control" required
+                                                name="state" id="state">
                                                 <option value="">Select State</option>
                                                 <?php
                                                 if ($states->num_rows > 0) {
@@ -78,36 +78,36 @@ if (isset($_SESSION['message'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="district">Select District</label>
-                                            <select class="select2-single-placeholder form-control" name="district"
-                                                id="district">
+                                            <select class="select2-single-placeholder form-control" required
+                                                name="district" id="district">
                                                 <option value="">Select District</option>
 
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="district">Select Panchayat</label>
-                                            <select class="select2-single-placeholder form-control" name="panchayat"
-                                                id="panchayat">
+                                            <select class="select2-single-placeholder form-control" required
+                                                name="panchayat" id="panchayat">
                                                 <option value="">Select Panchayat</option>
 
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="village">Select Village</label>
-                                            <select class="select2-single-placeholder form-control" name="village"
-                                                id="village">
+                                            <select class="select2-single-placeholder form-control" required
+                                                name="village" id="village">
                                                 <option value="">Select Village</option>
 
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label>Password</label>
-                                            <input type="password" class="form-control" name="password"
+                                            <input type="password" class="form-control" required name="password"
                                                 id="exampleInputPassword" placeholder="Password">
                                         </div>
                                         <div class="form-group">
                                             <label>Repeat Password</label>
-                                            <input type="password" class="form-control" name="password_repeat"
+                                            <input type="password" class="form-control" required name="password_repeat"
                                                 id="exampleInputPasswordRepeat" placeholder="Repeat Password">
                                         </div>
                                         <div class="form-group">

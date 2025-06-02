@@ -161,8 +161,8 @@ $title = "वार्षिक कर मागणी";
                                     <div class="p-3 shadow-sm bg-white rounded">
                                         <h6 class="text-primary fw-bold">इमारतीवरील कर</h6>
                                         <label>मागील बाकी <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control mb-1" readonly
-                                            name="imarativariil_magil_kar" id="imarativariil_magil_kar">
+                                        <input type="text" class="form-control mb-1" name="imarativariil_magil_kar"
+                                            id="imarativariil_magil_kar">
                                         <label>चालू कर</label>
                                         <input type="text" class="form-control mb-1" readonly
                                             name="imarativariil_chalu_kar" id="imarativariil_chalu_kar">
@@ -176,8 +176,8 @@ $title = "वार्षिक कर मागणी";
                                     <div class="p-3 shadow-sm bg-white rounded">
                                         <h6 class="text-primary fw-bold">दिवाबत्ती कर</h6>
                                         <label>मागील बाकी <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control mb-1" readonly
-                                            name="divabatti_kar_magil_baki" id="divabatti_kar_magil_baki">
+                                        <input type="text" class="form-control mb-1" name="divabatti_kar_magil_baki"
+                                            id="divabatti_kar_magil_baki">
                                         <label>चालू कर</label>
                                         <input type="text" class="form-control mb-1" readonly
                                             name="divabatti_kar_chalu_kar" id="divabatti_kar_chalu_kar">
@@ -191,8 +191,8 @@ $title = "वार्षिक कर मागणी";
                                     <div class="p-3 shadow-sm bg-white rounded">
                                         <h6 class="text-primary fw-bold">आरोग्य कर </h6>
                                         <label>मागील बाकी</label>
-                                        <input type="text" class="form-control mb-1" readonly
-                                            name="arogya_kar_magil_baki" id="arogya_kar_magil_baki">
+                                        <input type="text" class="form-control mb-1" name="arogya_kar_magil_baki"
+                                            id="arogya_kar_magil_baki">
                                         <label>चालू कर</label>
                                         <input type="text" class="form-control mb-1" readonly
                                             name="arogya_kar_chalu_kar" id="arogya_kar_chalu_kar">
@@ -206,7 +206,7 @@ $title = "वार्षिक कर मागणी";
                                     <div class="p-3 shadow-sm bg-white rounded">
                                         <h6 class="text-primary fw-bold">सार्वजनिक पाणीपट्टी</h6>
                                         <label>मागील बाकी <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control mb-1" readonly
+                                        <input type="text" class="form-control mb-1"
                                             name="sarvajanik_panipatty_magil_baki" id="sarvajanik_panipatty_magil_baki">
                                         <label>चालू कर</label>
                                         <input type="text" class="form-control mb-1" readonly
@@ -222,8 +222,8 @@ $title = "वार्षिक कर मागणी";
                                     <div class="p-3 shadow-sm bg-white rounded">
                                         <h6 class="text-primary fw-bold">पडसर कर</h6>
                                         <label>मागील बाकी <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control mb-1" readonly
-                                            name="padsar_kar_magil_baki" id="padsar_kar_magil_baki">
+                                        <input type="text" class="form-control mb-1" name="padsar_kar_magil_baki"
+                                            id="padsar_kar_magil_baki">
                                         <label>चालू कर</label>
                                         <input type="text" class="form-control mb-1" readonly
                                             name="padsar_kar_chalu_kar" id="padsar_kar_chalu_kar">
@@ -237,7 +237,7 @@ $title = "वार्षिक कर मागणी";
                                     <div class="p-3 shadow-sm bg-white rounded">
                                         <h6 class="text-primary fw-bold">दंड</h6>
                                         <label>दंड मागील</label>
-                                        <input type="text" class="form-control mb-1" readonly name="dand_magil_baki"
+                                        <input type="text" class="form-control mb-1" name="dand_magil_baki"
                                             id="dand_magil_baki">
                                         <label>दंड चालू</label>
                                         <input type="text" class="form-control mb-1" readonly name="dand_chalu_kar"
@@ -690,14 +690,37 @@ $title = "वार्षिक कर मागणी";
                     owner_name: document.getElementById('kardena_name').value,
                     financial_year: document.getElementById('financial_year').value,
                     building_tax: document.getElementById('imarat_kar').value || 0,
+                    previous_remaining_building_tax: document.getElementById(
+                        'imarativariil_magil_kar').value || 0,
+                    current_building_tax: document.getElementById('imarativariil_chalu_kar')
+                        .value || 0,
                     light_tax: document.getElementById('divabatti_kar').value || 0,
+                    previous_remaining_light_tax: document.getElementById(
+                        'divabatti_kar_magil_baki').value || 0,
+                    current_light_tax: document.getElementById('divabatti_kar_chalu_kar').value ||
+                        0,
                     health_tax: document.getElementById('arogy_kar').value || 0,
+                    previous_remaining_health_tax: document.getElementById('arogya_kar_magil_baki')
+                        .value || 0,
+                    current_health_tax: document.getElementById('arogya_kar_chalu_kar').value || 0,
                     water_tax: document.getElementById('samany_panni').value || 0,
+                    previous_remaining_water_tax: document.getElementById(
+                        'sarvajanik_panipatty_magil_baki').value || 0,
+                    current_water_tax: document.getElementById('sarvajanik_panipatty_chalu_kar')
+                        .value || 0,
                     padsar_tax: document.getElementById('padsar_kar').value || 0,
+                    previous_remaining_padsar_tax: document.getElementById('padsar_kar_magil_baki')
+                        .value || 0,
+                    current_padsar_tax: document.getElementById('padsar_kar_chalu_kar').value || 0,
                     fine: document.getElementById('dand_rakkam').value || 0,
+                    previous_remaining_fine: document.getElementById('dand_magil_baki').value || 0,
+                    current_fine: document.getElementById('dand_chalu_kar').value || 0,
                     notice_fee: document.getElementById('notis_fi').value || 0,
                     discount: document.getElementById('sut_rakkam').value || 0,
                     total_amount: document.getElementById('ekun_rakkam_new').value || 0,
+                    previous_remaining_total: document.getElementById('ekun_magil_baki').value || 0,
+                    current_total: document.getElementById('ekun_chalu_kar').value || 0,
+
                     created_by: '<?php echo $_SESSION['user_id'] ?? 0; ?>'
                 };
 
@@ -723,6 +746,132 @@ $title = "वार्षिक कर मागणी";
                         alert('An error occurred while saving data');
                     });
             });
+        });
+        </script>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to calculate totals for each tax section
+            function calculateSectionTotals() {
+                // Building tax section
+                const buildingPrev = parseFloat(document.getElementById('imarativariil_magil_kar').value) || 0;
+                const buildingCurrent = parseFloat(document.getElementById('imarativariil_chalu_kar').value) ||
+                    0;
+                const buildingTotal = buildingPrev + buildingCurrent;
+                document.getElementById('imarativariil_ekun_rakkam').value = buildingTotal.toFixed(2);
+                document.getElementById('imarat_kar').value = buildingTotal.toFixed(2);
+
+                // Light tax section
+                const lightPrev = parseFloat(document.getElementById('divabatti_kar_magil_baki').value) || 0;
+                const lightCurrent = parseFloat(document.getElementById('divabatti_kar_chalu_kar').value) || 0;
+                const lightTotal = lightPrev + lightCurrent;
+                document.getElementById('divabatti_kar_ekun_rakkam').value = lightTotal.toFixed(2);
+                document.getElementById('divabatti_kar').value = lightTotal.toFixed(2);
+
+                // Health tax section
+                const healthPrev = parseFloat(document.getElementById('arogya_kar_magil_baki').value) || 0;
+                const healthCurrent = parseFloat(document.getElementById('arogya_kar_chalu_kar').value) || 0;
+                const healthTotal = healthPrev + healthCurrent;
+                document.getElementById('arogya_kar_ekun_rakkam').value = healthTotal.toFixed(2);
+                document.getElementById('arogy_kar').value = healthTotal.toFixed(2);
+
+                // Water tax section
+                const waterPrev = parseFloat(document.getElementById('sarvajanik_panipatty_magil_baki')
+                    .value) || 0;
+                const waterCurrent = parseFloat(document.getElementById('sarvajanik_panipatty_chalu_kar')
+                    .value) || 0;
+                const waterTotal = waterPrev + waterCurrent;
+                document.getElementById('sarvajanik_panipatty_ekun_rakkam').value = waterTotal.toFixed(2);
+                document.getElementById('samany_panni').value = waterTotal.toFixed(2);
+
+                // Padsar tax section
+                const padsarPrev = parseFloat(document.getElementById('padsar_kar_magil_baki').value) || 0;
+                const padsarCurrent = parseFloat(document.getElementById('padsar_kar_chalu_kar').value) || 0;
+                const padsarTotal = padsarPrev + padsarCurrent;
+                document.getElementById('padsar_kar_ekun_rakkam').value = padsarTotal.toFixed(2);
+                document.getElementById('padsar_kar').value = padsarTotal.toFixed(2);
+
+                // Fine section
+                const finePrev = parseFloat(document.getElementById('dand_magil_baki').value) || 0;
+                const fineCurrent = parseFloat(document.getElementById('dand_chalu_kar').value) || 0;
+                const fineTotal = finePrev + fineCurrent;
+                document.getElementById('dand_ekun_rakkam').value = fineTotal.toFixed(2);
+                document.getElementById('dand_rakkam').value = fineTotal.toFixed(2);
+
+                // Notice fee and discount
+                const noticeFee = parseFloat(document.getElementById('notis_fee').value) || 0;
+                const discount = parseFloat(document.getElementById('suit_rakkam').value) || 0;
+                document.getElementById('notis_fi').value = noticeFee.toFixed(2);
+                document.getElementById('sut_rakkam').value = discount.toFixed(2);
+
+                // Calculate grand totals
+                const totalPrev = buildingPrev + lightPrev + healthPrev + waterPrev + padsarPrev + finePrev;
+                const totalCurrent = buildingCurrent + lightCurrent + healthCurrent + waterCurrent +
+                    padsarCurrent + fineCurrent;
+                const totalAmount = totalPrev + totalCurrent - discount + noticeFee;
+
+                document.getElementById('ekun_magil_baki').value = totalPrev.toFixed(2);
+                document.getElementById('ekun_chalu_kar').value = totalCurrent.toFixed(2);
+                document.getElementById('ekun_rakkam').value = totalAmount.toFixed(2);
+                document.getElementById('ekun_rakkam_new').value = totalAmount.toFixed(2);
+            }
+
+            // Add event listeners to all tax inputs to recalculate when changed
+            const taxInputs = [
+                'imarativariil_magil_kar', 'imarativariil_chalu_kar',
+                'divabatti_kar_magil_baki', 'divabatti_kar_chalu_kar',
+                'arogya_kar_magil_baki', 'arogya_kar_chalu_kar',
+                'sarvajanik_panipatty_magil_baki', 'sarvajanik_panipatty_chalu_kar',
+                'padsar_kar_magil_baki', 'padsar_kar_chalu_kar',
+                'dand_magil_baki', 'dand_chalu_kar',
+                'notis_fee', 'suit_rakkam'
+            ];
+
+            taxInputs.forEach(inputId => {
+                document.getElementById(inputId).addEventListener('input', calculateSectionTotals);
+            });
+
+            // Also add listeners to the individual tax inputs at the bottom
+            const bottomTaxInputs = [
+                'imarat_kar', 'divabatti_kar', 'arogy_kar',
+                'samany_panni', 'padsar_kar', 'dand_rakkam',
+                'notis_fi', 'sut_rakkam'
+            ];
+
+            bottomTaxInputs.forEach(inputId => {
+                document.getElementById(inputId).addEventListener('input', function() {
+                    // When these inputs change, update the corresponding section totals
+                    if (inputId === 'imarat_kar') {
+                        document.getElementById('imarativariil_chalu_kar').value = this.value ||
+                            '0';
+                    } else if (inputId === 'divabatti_kar') {
+                        document.getElementById('divabatti_kar_chalu_kar').value = this.value ||
+                            '0';
+                    } else if (inputId === 'arogy_kar') {
+                        document.getElementById('arogya_kar_chalu_kar').value = this.value ||
+                            '0';
+                    } else if (inputId === 'samany_panni') {
+                        document.getElementById('sarvajanik_panipatty_chalu_kar').value = this
+                            .value || '0';
+                    } else if (inputId === 'padsar_kar') {
+                        document.getElementById('padsar_kar_chalu_kar').value = this.value ||
+                            '0';
+                    } else if (inputId === 'dand_rakkam') {
+                        document.getElementById('dand_chalu_kar').value = this.value || '0';
+                    } else if (inputId === 'notis_fi') {
+                        document.getElementById('notis_fee').value = this.value || '0';
+                    } else if (inputId === 'sut_rakkam') {
+                        document.getElementById('suit_rakkam').value = this.value || '0';
+                    }
+
+                    // Recalculate all totals
+                    calculateSectionTotals();
+                });
+            });
+
+            // Initial calculation when page loads
+            calculateSectionTotals();
+
+
         });
         </script>
 </body>
