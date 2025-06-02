@@ -11,6 +11,7 @@ $title = "नमूना क्र १० पावती";
     $newName = $fun->getNewName();
     $periods = $fun->getPeriodDetails($_SESSION['district_code']);
     $malmatta_details = $fun->getTaxDemands($_SESSION['district_code']);
+    
 ?>
 <style>
 .section-title {
@@ -83,7 +84,9 @@ $title = "नमूना क्र १० पावती";
                                             class="text-danger">*</span></label>
                                     <select class="form-control" name="malamatta_kramanak" id="malamatta_kramanak">
                                         <option>--निवडा--</option>
-                                        <?php foreach ($malmatta_details as $malmatta) { ?>
+                                        <?php foreach ($malmatta_details as $malmatta) { 
+                                                // print_r($malmatta);
+                                            ?>
                                         <option value="<?php echo $malmatta['malmatta_id']; ?>">
                                             <?php echo $malmatta['malmatta_no']; ?>
                                         </option>
@@ -465,22 +468,36 @@ $title = "नमूना क्र १० पावती";
                                     '<option value="">--निवडा--</option>');
                             }
                             if (malmatta_info.malmatta_id) {
+                                $("#previous_mangani_building_tax").val(malmatta_info
+                                    .previous_building_tax || '0.00');
                                 $('#current_mangani_building_tax').val(malmatta_info
                                     .building_tax || '0.00');
+                                $('#previous_mangani_health_tax').val(malmatta_info
+                                    .previous_health_tax || '0.00');
                                 $('#current_mangani_health_tax').val(malmatta_info
                                     .health_tax || '0.00');
                                 $('#current_mangani_divabatti_tax').val(malmatta_info
                                     .light_tax || '0.00');
+                                $('#previous_mangani_divabatti_tax').val(malmatta_info
+                                    .previous_light_tax || '0.00');
                                 $('#current_mangani_panniyojana_tax').val(malmatta_info
                                     .water_tax || '0.00');
+                                $('#previous_mangani_panniyojana_tax').val(malmatta_info
+                                    .previous_water_tax || '0.00');
                                 $('#current_mangani_padsar_tax').val(malmatta_info
                                     .padsar_tax || '0.00');
                                 $('#current_mangani_dand_tax').val(malmatta_info.dand_tax ||
                                     '0.00');
+                                $('#previous_mangani_dand_tax').val(malmatta_info
+                                    .previous_fine || '0.00');
+                                $('#previous_mangani_padsar_tax').val(malmatta_info
+                                    .previous_padsar_tax || '0.00');
                                 $('#current_mangani_sut_tax').val(malmatta_info.sut_tax ||
                                     '0.00');
                                 $('#current_mangani_total_tax').val(malmatta_info
                                     .total_tax || '0.00');
+                                $('#previous_mangani_total_tax').val(malmatta_info
+                                    .previous_total_amount || '0.00');
                                 calculateTaxTotals();
                             } else {
                                 $('#not_available').show();

@@ -25,13 +25,14 @@ try {
     
     
     $result = $fun->getPropertyVerificationsWithWardAndId($ward, $malmatta_id);
-    
+    $malmattaDataEntry = $fun->getMalmattaDataEntryById($malmatta_id, $_SESSION['district_code']);
     if ($result->num_rows === 0) {
         throw new Exception('No property found with these details');
     }
 
     $response['success'] = true;
     $response['data'] = $result->fetch_assoc();
+    $response['malmatta_no'] = $malmattaDataEntry->fetch_assoc();
     
 } catch (Exception $e) {
     $response['message'] = $e->getMessage();

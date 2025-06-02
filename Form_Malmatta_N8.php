@@ -821,6 +821,30 @@ if (isset($_SESSION['message'])) {
         document.getElementById('group_number').value = group_no;
     }
 
+    $("#drainage_type").change(function() {
+        var selectedValue = $(this).val();
+        if (selectedValue === "वापर नाही") {
+            $("#tap_numbers").prop("disabled", true);
+            $("#tap_numbers").val();
+            $("#tap_numbers").prop("required", false);
+            
+            $("#tap_width").prop("disabled", true);
+            $("#tap_width").val();
+            $("#tap_width").prop("required", false);
+           
+            $("#tap_owner_name").prop("disabled", true);
+            $("#tap_owner_name").val();
+            $("#tap_owner_name").prop("required", false);
+           
+        } else {
+            $("#tap_numbers").prop("disabled", false);
+            $("#tap_numbers").prop("required", true);
+            $("#tap_width").prop("disabled", false);
+            $("#tap_width").prop("required", true);
+            $("#tap_owner_name").prop("disabled", false);
+            $("#tap_owner_name").prop("required", true);
+        }
+    });
 
     // In your JavaScript, check if we're in edit mode
     document.addEventListener("DOMContentLoaded", function() {
@@ -1114,13 +1138,13 @@ if (isset($_SESSION['message'])) {
                 .then(data => {
                     if (data.success) {
                         console.log("Form submitted successfully:", data);
-
-                        const baseURL = window.location.origin;
+                            const pathName = window.location.pathname;
+                        const baseURL = window.location.origin+"/"+pathName.split('/')[1];
                         const redirectURL = data.redirect ? `${baseURL}/${data.redirect}` :
                             baseURL;
 
                         // Show success message
-                        alert(data || 'Form submitted successfully');
+                        alert(data.message || 'Form submitted successfully');
 
                         // Redirect to appropriate page
                         if (data.redirect) {

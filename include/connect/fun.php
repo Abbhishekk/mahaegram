@@ -1801,7 +1801,7 @@ public function deleteMalmatta($id) {
                 }else if($year >60){
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot'? $row['area']/10.76 : $row['area']);
+                $area = round(($row['measuring_unit'] == 'foot'? $row['area']/10.76 : $row['area']),2);
                 $areaInFoot = ($row['measuring_unit'] == 'foot'? $row['area'] : $row['area']*10.76);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
