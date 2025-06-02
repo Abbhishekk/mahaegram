@@ -941,7 +941,9 @@ public function deleteMalmatta($id) {
 
         // If property info exists
         if (!empty($row['property_id'])) {
-            $year = $row['construction_year'];
+             $years = $row['construction_year'];
+            $redirecFinancialYear = explode('-', $row['financial_years'])[0];
+            $year = $row['construction_year_type']== "building_age"? $years : $redirecFinancialYear - $years;
             $group = (in_array($row['property_use'], $this->propertyUseGroupA)? $this->ghasaraDarGroupA : (
                 (in_array($row['property_use'], $this->propertyUseGroupB)? $this->ghasaraDarGroupB : [1,1,1,1,1,1,1,1,1])
             ));
@@ -973,7 +975,7 @@ public function deleteMalmatta($id) {
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax/100) * $bharank;
-                $building_value = ($bhandavali*$milkatFixedTax)/100;
+                $building_value = ($bhandavali*$milkatFixedTax)/1000;
                 $total_bhandavali += $bhandavali;
                 if($row['property_use'] == 'पडसर/खुली जागा'){
                     $padsar_total_value += $building_value; 
@@ -1105,7 +1107,9 @@ public function deleteMalmatta($id) {
 
         // If property info exists
         if (!empty($row['property_id'])) {
-            $year = $row['construction_year'];
+             $years = $row['construction_year'];
+            $redirecFinancialYear = explode('-', $row['financial_years'])[0];
+            $year = $row['construction_year_type']== "building_age"? $years : $redirecFinancialYear - $years;
             $group = (in_array($row['property_use'], $this->propertyUseGroupA)? $this->ghasaraDarGroupA : (
                 (in_array($row['property_use'], $this->propertyUseGroupB)? $this->ghasaraDarGroupB : [1,1,1,1,1,1,1,1,1])
             ));
@@ -1137,7 +1141,7 @@ public function deleteMalmatta($id) {
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax/100) * $bharank;
-                $building_value = ($bhandavali*$milkatFixedTax)/100;
+                $building_value = ($bhandavali*$milkatFixedTax)/1000;
                 $total_bhandavali += $bhandavali;
                 if($row['property_use'] == 'पडसर/खुली जागा'){
                     $padsar_total_value += $building_value; 
@@ -1269,7 +1273,9 @@ public function deleteMalmatta($id) {
 
         // If property info exists
         if (!empty($row['property_id'])) {
-            $year = $row['construction_year'];
+             $years = $row['construction_year'];
+            $redirecFinancialYear = explode('-', $row['financial_years'])[0];
+            $year = $row['construction_year_type']== "building_age"? $years : $redirecFinancialYear - $years;
             $group = (in_array($row['property_use'], $this->propertyUseGroupA)? $this->ghasaraDarGroupA : (
                 (in_array($row['property_use'], $this->propertyUseGroupB)? $this->ghasaraDarGroupB : [1,1,1,1,1,1,1,1,1])
             ));
@@ -1301,7 +1307,7 @@ public function deleteMalmatta($id) {
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax/100) * $bharank;
-                $building_value = ($bhandavali*$milkatFixedTax)/100;
+                $building_value = ($bhandavali*$milkatFixedTax)/1000;
                 $total_bhandavali += $bhandavali;
                 if($row['property_use'] == 'पडसर/खुली जागा'){
                     $padsar_total_value += $building_value; 
@@ -1435,7 +1441,9 @@ public function deleteMalmatta($id) {
 
         // If property info exists
         if (!empty($row['property_id'])) {
-            $year = $row['construction_year'];
+             $years = $row['construction_year'];
+            $redirecFinancialYear = explode('-', $row['financial_years'])[0];
+            $year = $row['construction_year_type']== "building_age"? $years : $redirecFinancialYear - $years;
             $group = (in_array($row['property_use'], $this->propertyUseGroupA)? $this->ghasaraDarGroupA : (
                 (in_array($row['property_use'], $this->propertyUseGroupB)? $this->ghasaraDarGroupB : [1,1,1,1,1,1,1,1,1])
             ));
@@ -1467,7 +1475,7 @@ public function deleteMalmatta($id) {
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax/100) * $bharank;
-                $building_value = ($bhandavali*$milkatFixedTax)/100;
+                $building_value = ($bhandavali*$milkatFixedTax)/1000;
                 $total_bhandavali += $bhandavali;
                 if($row['property_use'] == 'पडसर/खुली जागा'){
                     $padsar_total_value += $building_value; 
@@ -1597,7 +1605,9 @@ public function deleteMalmatta($id) {
 
         // If property info exists
         if (!empty($row['property_id'])) {
-            $year = $row['construction_year'];
+            $years = $row['construction_year'];
+            $redirecFinancialYear = explode('-', $row['financial_years'])[0];
+            $year = $row['construction_year_type']== "building_age"? $years : $redirecFinancialYear - $years;
             $group = (in_array($row['property_use'], $this->propertyUseGroupA)? $this->ghasaraDarGroupA : (
                 (in_array($row['property_use'], $this->propertyUseGroupB)? $this->ghasaraDarGroupB : [1,1,1,1,1,1,1,1,1])
             ));
@@ -1629,7 +1639,7 @@ public function deleteMalmatta($id) {
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax/100) * $bharank;
-                $building_value = ($bhandavali*$milkatFixedTax)/100;
+                $building_value = ($bhandavali*$milkatFixedTax)/1000;
                 $total_bhandavali += $bhandavali;
                 if($row['property_use'] == 'पडसर/खुली जागा'){
                     $padsar_total_value += $building_value; 
@@ -1764,7 +1774,9 @@ public function deleteMalmatta($id) {
 
         // If property info exists
         if (!empty($row['property_id'])) {
-            $year = $row['construction_year'];
+             $years = $row['construction_year'];
+            $redirecFinancialYear = explode('-', $row['financial_years'])[0];
+            $year = $row['construction_year_type']== "building_age"? $years : $redirecFinancialYear - $years;
             $group = (in_array($row['property_use'], $this->propertyUseGroupA)? $this->ghasaraDarGroupA : (
                 (in_array($row['property_use'], $this->propertyUseGroupB)? $this->ghasaraDarGroupB : [1,1,1,1,1,1,1,1,1])
             ));
@@ -1796,7 +1808,7 @@ public function deleteMalmatta($id) {
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax/100) * $bharank;
-                $building_value = ($bhandavali*$milkatFixedTax)/100;
+                $building_value = ($bhandavali*$milkatFixedTax)/1000;
                 $total_bhandavali += $bhandavali;
                 if($row['property_use'] == 'पडसर/खुली जागा'){
                     $padsar_total_value += $building_value; 

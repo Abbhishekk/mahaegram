@@ -1116,7 +1116,7 @@ if (isset($_SESSION['message'])) {
                         console.log("Form submitted successfully:", data);
 
                         const baseURL = window.location.origin;
-                        const redirectURL = data.redirect ? `${baseURL}/mahaegram-master/${data.redirect}` :
+                        const redirectURL = data.redirect ? `${baseURL}/${data.redirect}` :
                             baseURL;
 
                         // Show success message
