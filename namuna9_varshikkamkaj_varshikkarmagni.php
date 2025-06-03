@@ -464,7 +464,7 @@ $title = "वार्षिक कर मागणी";
                     .then(response => response.json())
                     .then(data => {
                         console.log('Response:', data);
-                        
+
                         if (data.success) {
                             populateForm(data.data, data.malmatta_no);
                         } else {
@@ -504,7 +504,8 @@ $title = "वार्षिक कर मागणी";
                     document.getElementById('sarvajanik_panipatty_magil_baki').value = data.previous_taxes
                         .water || '0';
                     document.getElementById('padsar_kar_magil_baki').value = data.previous_taxes.padsar || '0';
-                    document.getElementById('dand_magil_baki').value = (data.previous_taxes.building * 0.05).toFixed(2) || '0';
+                    document.getElementById('dand_magil_baki').value = (data.previous_taxes.building * 0.05)
+                        .toFixed(2) || '0';
                 }
                 // Populate current tax amounts if available
                 if (data) {
@@ -515,7 +516,8 @@ $title = "वार्षिक कर मागणी";
                     document.getElementById('sarvajanik_panipatty_chalu_kar').value = data.water_tax ||
                         '0';
                     document.getElementById('padsar_kar_chalu_kar').value = data.padsar_tax || '0';
-                    document.getElementById('dand_chalu_kar').value = (data.building_tax * 0.05).toFixed(2) || '0';
+                    document.getElementById('dand_chalu_kar').value = (data.building_tax * 0.05).toFixed(2) ||
+                        '0';
                 }
 
                 // Calculate totals
@@ -578,7 +580,7 @@ $title = "वार्षिक कर मागणी";
             }
 
             $("#imarativariil_magil_kar").on('input', function() {
-                
+
                 $("#dand_magil_baki").val((parseFloat(this.value) * 0.05).toFixed(2));
             });
             // Add event listeners to all tax inputs to recalculate totals when changed

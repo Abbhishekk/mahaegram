@@ -793,6 +793,20 @@ public function deleteMalmatta($id) {
         $result = mysqli_query($this->db, $query);
         return $result;
     }
+    public function getMalmattaDataEntryByMalmattaNo($id, $lgdcode){
+        $query = "SELECT *, mde.`id` as `malmatta_id`, mde.`malmatta_no` as 'malmatta_number', nno.`person_name` as `owner_name`, nno1.`person_name` as `wife_name`, nno2.`person_name` as `occupant_name` FROM `malmatta_data_entry` mde
+                    Left Join malmatta_property_info mpi on mde.`id` = mpi.`malmatta_id`
+                    left join period_details pd on mde.`period` = pd.`id`
+                    left join malmatta_water_tax mw on mde.`id` = mw.`malmatta_id`
+                    left join road_details rd on mde.`road_name` = rd.`id`
+                    left join ward_details wd on mde.`ward_no`= wd.`id`
+                    left join new_name nno on mde.`owner_name` = nno.`id`
+                    left join new_name nno1 on mde.`wife_name` = nno1.`id`
+                    left join new_name nno2 on mde.`occupant_name` = nno2.`id`
+                    Where mde.`malmatta_no` = '$id' and mde.`lgdcode` = '$lgdcode' and mde.`panchayat_code` = '$_SESSION[panchayat_code]' ;";
+        $result = mysqli_query($this->db, $query);
+        return $result;
+    }
 
     public function updateMalmattaDataEntry($id,$period, $village_name, $ward_no, $road_name, $malmatta_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $remarks){
         $query = "UPDATE `malmatta_data_entry` SET `period`='$period', `village_name`='$village_name', `ward_no`='$ward_no', `road_name`='$road_name', `malmatta_no`='$malmatta_no', `city_survey_no`='$city_survey_no', `group_no`='$group_no', `washroom_available`='$washroom_available', `owner_name`='$owner_name', `wife_name`='$wife_name', `occupant_name`='$occupant_name', `remarks`='$remarks' WHERE `id` = '$id'";

@@ -260,13 +260,11 @@ if (isset($_SESSION['message'])) {
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="malmatta_no">मालमत्ता क्रमांक <span
-                                                            class="text-danger">*</span>
-                                                    </label>
+                                                            class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" name="malmatta_no"
                                                         id="malmatta_no" aria-describedby="emailHelp"
-                                                        placeholder="मालमत्ता क्रमांक">
-
-
+                                                        placeholder="मालमत्ता क्रमांक" required>
+                                                    <small id="malmattaNoHelp" class="form-text text-muted"></small>
                                                 </div>
                                                 <div class="form-group col-md-5 mx-auto">
                                                     <label for="owner_name">मालमत्ता धारकाचे नाव <span
@@ -827,15 +825,15 @@ if (isset($_SESSION['message'])) {
             $("#tap_numbers").prop("disabled", true);
             $("#tap_numbers").val();
             $("#tap_numbers").prop("required", false);
-            
+
             $("#tap_width").prop("disabled", true);
             $("#tap_width").val();
             $("#tap_width").prop("required", false);
-           
+
             $("#tap_owner_name").prop("disabled", true);
             $("#tap_owner_name").val();
             $("#tap_owner_name").prop("required", false);
-           
+
         } else {
             $("#tap_numbers").prop("disabled", false);
             $("#tap_numbers").prop("required", true);
@@ -1138,8 +1136,8 @@ if (isset($_SESSION['message'])) {
                 .then(data => {
                     if (data.success) {
                         console.log("Form submitted successfully:", data);
-                            const pathName = window.location.pathname;
-                        const baseURL = window.location.origin+"/"+pathName.split('/')[1];
+                        const pathName = window.location.pathname;
+                        const baseURL = window.location.origin + "/" + pathName.split('/')[1];
                         const redirectURL = data.redirect ? `${baseURL}/${data.redirect}` :
                             baseURL;
 
@@ -1645,6 +1643,55 @@ if (isset($_SESSION['message'])) {
         // Update hidden input
         document.getElementById("income_data").value = JSON.stringify(incomeEntries);
     }
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const malmattaNoInput = document.getElementById('malmatta_no');
+        const districtCode = '<?php echo $_SESSION['district_code']; ?>';
+
+        // Update the checkMalmattaAvailability function
+        function checkMalmattaAvailability(malmattaNo) {
+            const helpText = document.getElementById('malmattaNoHelp');
+
+            if (!malmattaNo) {
+                helpText.textContent = '';
+                malmattaNoInput.setCustomValidity('');
+                return;
+            }
+
+            fetch(`api/check_malmatta_no.php?malmatta_no=${malmattaNo}&district_code=${districtCode}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.available) {
+                        helpText.textContent = data.message;
+                        helpText.className = 'form-text text-danger';
+                        malmattaNoInput.setCustomValidity(data.message);
+                    } else {
+                        helpText.textContent = 'मालमत्ता क्रमांक उपलब्ध आहे';
+                        helpText.className = 'form-text text-success';
+                        malmattaNoInput.setCustomValidity('');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Check on blur (when user leaves the field)
+        malmattaNoInput.addEventListener('blur', function() {
+            checkMalmattaAvailability(this.value);
+        });
+
+        // Also check before form submission
+        document.getElementById('malmatta_no').addEventListener('change', function(e) {
+            if (malmattaNoInput.value) {
+                // For immediate feedback, you might want to do a synchronous check here
+                // or disable the submit button until validation is complete
+
+                checkMalmattaAvailability(malmattaNoInput.value);
+            }
+        });
+    });
     </script>
 
 </body>
