@@ -42,7 +42,7 @@ $financialYears = $fun->getFinancialYears();
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="./">माहईग्राम</a></li>
                             <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 10</li>
-                            <li class="breadcrumb-item active" aria-current="page">मास्टर्स</li>
+                            <li class="breadcrumb-item active" aria-current="page">अहवाल</li>
                             <li class="breadcrumb-item active" aria-current="page">मालमत्ता कर आकारणी</li>
                         </ol>
                     </div>
@@ -255,7 +255,7 @@ $financialYears = $fun->getFinancialYears();
 
         // 👇 Fetch table HTML from your PHP backend
         const res = await fetch(
-            `table.php?period=${period}&ward=${ward}&road=${road}&year=${year}&type=${ahavalType}`, {
+            `pdf/tax_report_template.php?period=${period}&ward=${ward}&road=${road}&year=${year}&type=${ahavalType}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

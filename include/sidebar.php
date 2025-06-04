@@ -140,9 +140,13 @@
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna8_ahaval_assesment_register.php">असेसमेंट रजिस्टर</a>
-                            <a class="collapse-item" href="buttons.html">नमुना क्र ८ मालमत्ता माहिती अहवाल</a>
-                            <a class="collapse-item" href="dropdowns.html">असेसमेंट रजिस्टर (वैयक्तिक)</a>
-                            <a class="collapse-item" href="modals.html">असेसमेंट रजिस्टर फेरफार नुसार अहवाल</a>
+                            <a class="collapse-item" href="namuna8_ahaval_maalmatta_mahit_ahaval.php">नमुना क्र ८
+                                मालमत्ता माहिती अहवाल</a>
+                            <a class="collapse-item" href="namuna8_ahaval_assesmentregister_vayaktik.php">असेसमेंट
+                                रजिस्टर (वैयक्तिक)</a>
+                            <a class="collapse-item"
+                                href="namuna8_ahaval_assesmentregister_phrpharnusar_ahaval.php">असेसमेंट रजिस्टर फेरफार
+                                नुसार अहवाल</a>
 
                         </div>
                     </div>
@@ -187,7 +191,7 @@
                         class="collapse <?php if ($subpage == 'malmatta') { echo 'show'; } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="Form_Name_masters.php">नवीन नाव नोंदणी</a>
+                            <a class="collapse-item" href="Form_Name_Masters.php">नवीन नाव नोंदणी</a>
                             <!-- <a class="collapse-item" href="Malmatta.php">मालमत्ता माहिती</a> -->
                             <a class="collapse-item" href="Form_Malmatta_N8.php">नमुना क्रमांक ८ (मालमत्ता माहिती)</a>
                             <a class="collapse-item" href="ApproveProperty.php">मालमत्ता माहिती प्रमाणिकरण</a>
