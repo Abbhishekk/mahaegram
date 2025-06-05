@@ -12,10 +12,11 @@ $title = "पावती पुस्तक नोंदणी";
     $banks = $fun->getBanks();
     $materials = $fun ->getMaterials($_SESSION['district_code']);
     $periodsWithReasons = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
+    $disabled = '';
     if (mysqli_num_rows($periodsWithReasons) == 0) {
         $_SESSION['message'] = "कालावधी नोंदणी केलेली नाही. कृपया कालावधी नोंदणी करा.";
         $_SESSION['message_type'] = 'danger';
-        $disabled = 'ture';
+        $disabled = 'disabled';
     }else {
         $yearArray = $fun->getYearArray($periodsWithReasons);
         $currentYear = date('Y');
@@ -30,11 +31,11 @@ $title = "पावती पुस्तक नोंदणी";
                 break;
             }
         }
-        $disabled = 'false';
+        $disabled = '';
 
     }
     $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
-    // print_r($periodsWithReasons);
+   
 ?>
 
 <body id="page-top">
@@ -148,7 +149,7 @@ $title = "पावती पुस्तक नोंदणी";
                                         </div>
 
                                         <button type="submit" name="save" class="btn btn-primary"
-                                            disabled="<?php echo $disabled; ?>">साठवणे</button>
+                                            <?php echo $disabled ?>>साठवणे</button>
                                         <button type="reset" class="btn btn-secondary">रद्द करणे</button>
                                     </form>
                                 </div>

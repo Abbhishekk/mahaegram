@@ -64,23 +64,23 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                     <div class="card p-3">
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label class="col-md-3 me-4 fw-bold text-primary">
-                                    <input type="radio" name="criteria" id="milkat_criteria" value="milkat" checked
+                                <label class="col-md-6 me-4 fw-bold text-primary">
+                                    <input type="radio" name="criteria1" id="milkat_criteria" value="milkat" checked
                                         class="me-1 my-2"> मिळकत क्रमांकानुसार
                                 </label>
-                                <label class="col-md-3 me-4 fw-bold text-primary">
-                                    <input type="radio" name="criteria" id="ekat_criteria" value="ekat"
+                                <label class="col-md-5 me-4 fw-bold text-primary">
+                                    <input type="radio" name="criteria1" id="ekat_criteria" value="ekat"
                                         class="me-1 my-2"> एकत्रीकरण
                                 </label>
-                                <label class="col-md-3 fw-bold text-primary">
+                                <label class="col-md-3 fw-bold text-primary mt-5">
                                     <input type="radio" name="criteria" id="all_register" value="all_register" checked
                                         class="me-1 my-2"> संपूर्ण रजिस्टर
                                 </label>
-                                <label class="fw-bold col-md-3 text-primary">
+                                <label class="fw-bold col-md-3 text-primary mt-5">
                                     <input type="radio" name="criteria" id="gava_mangani" value="gava_mangani"
                                         class="me-1 my-2"> गावानुसार मागणी
                                 </label>
-                                <label class="fw-bold col-md-3 text-primary">
+                                <label class="fw-bold col-md-3 text-primary mt-5">
                                     <input type="radio" name="criteria" id="malmatta_mangani" value="malmatta_mangani"
                                         class="me-1 my-2"> मालमत्तेनुसार मागणी
                                 </label>
@@ -197,6 +197,27 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
 
         decision_date.value = new Date().toISOString().split('T')[0];
 
+    });
+    </script>
+    <script>
+    $(document).ready(function() {
+        // Initialize Select2 for the revenue village dropdown
+        $('#revenue_village').select2({
+            placeholder: 'गाव निवडा',
+            allowClear: true
+        });
+
+        // Initialize Select2 for the malmatta_id dropdown
+        $('#malmatta_id').select2({
+            placeholder: 'मालमत्ता क्रमांक निवडा',
+            allowClear: true
+        });
+
+        // Initialize Select2 for the kardena_name dropdown
+        $('#kardena_name').select2({
+            placeholder: 'कर देणाऱ्याचे नाव निवडा',
+            allowClear: true
+        });
     });
     </script>
 </body>

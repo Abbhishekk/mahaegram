@@ -2764,7 +2764,7 @@ public function deleteMalmattaWaterTax($malmatta_id) {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt = $this->db->prepare($sql);
-    $stmt->bind_param("sssssss", 
+    $stmt->bind_param("ssssssss", 
         $data['plan_name'],
         $data['bank_name'],
         $data['bank_branch'],

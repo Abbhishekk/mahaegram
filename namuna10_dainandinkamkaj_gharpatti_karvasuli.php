@@ -550,7 +550,7 @@ $title = "नमूना क्र १० पावती";
         $('#total_mangani_sut_tax').val((prevSut + currSut).toFixed(2));
 
         $('#current_mangani_total_tax').val(
-            ( currBuilding + currHealth +
+            (currBuilding + currHealth +
                 currLight + currWater +
                 currPadsar + currDand +
                 currSut).toFixed(2)

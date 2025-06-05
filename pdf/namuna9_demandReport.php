@@ -1,0 +1,539 @@
+<?php
+require_once 'vendor/autoload.php';
+require_once '../include/connect/fun.php';
+
+session_start();
+
+// Get filter parameters
+$criteria = $_GET['criteria'] ?? 'all_register';
+$financial_year = $_GET['financial_year'] ?? '';
+$village_code = $_GET['revenue_village'] ?? '';
+$ward = $_GET['ward'] ?? '';
+$malmatta_id = $_GET['malmatta_id'] ?? '';
+
+// Initialize Fun class
+$connect = new Connect();
+    $db = $connect->dbConnect();
+    $fun = new Fun($connect->dbConnect());
+
+// Get data based on criteria
+if ($criteria === 'all_register') {
+    $data = $fun->getTaxDataByFinancialYear($financial_year);
+} elseif ($criteria === 'gava_mangani') {
+    $data = $fun->getTaxDataByVillage($financial_year, $village_code);
+} elseif ($criteria === 'malmatta_mangani') {
+    $data = $fun->getTaxDataByMalmatta($financial_year, $malmatta_id);
+}
+
+// Generate HTML
+ob_start();
+?>
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>वार्षिक कर मागणी व वसुली यादी</title>
+    <style>
+    body {
+        font-family: 'Mangal', 'Arial Unicode MS', sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10px;
+        page-break-inside: auto;
+    }
+
+    th,
+    td {
+        border: 1px solid #000;
+        padding: 4px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    caption {
+        caption-side: top;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .vertical-text {
+        writing-mode: vertical-rl;
+        transform: rotate(360deg);
+        white-space: nowrap;
+    }
+
+    .filter-info {
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+
+    @page {
+        size: A4 landscape;
+        margin: 10mm;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div class="filter-info">
+        <h3>फिल्टर माहिती:</h3>
+        <p><strong>अहवाल प्रकार:</strong>
+            <?php 
+    $reportTypes = [
+        'all_register' => 'संपूर्ण रजिस्टर',
+        'gava_mangani' => 'गावानुसार मागणी',
+        'malmatta_mangani' => 'मालमत्तेनुसार मागणी'
+    ];
+    echo $reportTypes[$criteria] ?? $criteria;
+    ?>
+        </p>
+        <p><strong>आर्थिक वर्ष:</strong> <?= htmlspecialchars($financial_year) ?></p>
+        <?php if($village_code): ?>
+        <p><strong>गाव:</strong> <?= htmlspecialchars($fun->getVillageName($village_code)) ?></p>
+        <?php endif; ?>
+        <?php if($ward): ?>
+        <p><strong>वॉर्ड:</strong> <?= htmlspecialchars($ward) ?></p>
+        <?php endif; ?>
+        <?php if($malmatta_id): ?>
+        <p><strong>मालमत्ता क्रमांक:</strong> <?= htmlspecialchars($fun->getMalmattaNo($malmatta_id)) ?></p>
+        <?php endif; ?>
+    </div>
+
+    <table>
+        <caption>थकबाकी यादी - ग्रामपंचायत <?= $_SESSION['village_name'] ?>, तालुका <?= $_SESSION['taluka_name'] ?>,
+            जिल्हा <?= $_SESSION['district_name'] ?></caption>
+        <thead>
+            <tr>
+                <th rowspan="2" colspan="2">अ.क्र.</th>
+                <th rowspan="2" colspan="2">आर्थिक वर्ष</th>
+                <th rowspan="2" colspan="2">मि. क्र.</th>
+                <th rowspan="2" colspan="3" class="vertical-text">वार्ड क्र.</th>
+                <th rowspan="2" colspan="4">मालमत्ता धारकाचे नाव</th>
+                <th rowspan="2" colspan="4">कर देणाऱ्याचे नाव</th>
+                <th colspan="9">मागणी</th>
+                <th colspan="2" rowspan="2">बुक क्र.<br>पावती क्र.<br>पावती दिनांक</th>
+                <th colspan="10">वसूल</th>
+                <th rowspan="2">बाकी</th>
+            </tr>
+            <tr>
+                <th>घरपट्टी कर</th>
+                <th>आरोग्य कर</th>
+                <th>दिवाबत्ती कर</th>
+                <th>पाणीपट्टी कर</th>
+                <th>पडसर जमीन</th>
+                <th>दंड</th>
+                <th>नोटीस फी</th>
+                <th colspan="2">एकूण मागणी</th>
+                <th>घरपट्टी कर</th>
+                <th>आरोग्य कर</th>
+                <th>दिवाबत्ती कर</th>
+                <th>पाणीपट्टी कर</th>
+                <th>पडसर जमीन</th>
+                <th>दंड</th>
+                <th>नोटीस फी</th>
+                <th>सूट</th>
+                <th colspan="2">एकूण वसूल</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($data)): ?>
+            <?php $i = 1; ?>
+            <?php foreach ($data as $row): ?>
+            <tr>
+                <td rowspan="3" colspan="2"><?= $i++ ?></td>
+                <td rowspan="3" colspan="2"><?= htmlspecialchars($financial_year) ?></td>
+                <td rowspan="3" colspan="2"><?= htmlspecialchars($row['malmatta_no'] ?? '') ?></td>
+                <td rowspan="3" colspan="3" class="vertical-text"><?= htmlspecialchars($row['ward_name'] ?? '') ?></td>
+                <td rowspan="3" colspan="4"><?= htmlspecialchars($row['owner_name'] ?? '') ?></td>
+                <td rowspan="3" colspan="4"><?= htmlspecialchars($row['occupant_name'] ?? '') ?></td>
+
+                <!-- Previous Demand -->
+                <td colspan="2">मागील:</td>
+                <td><?= htmlspecialchars($row['previous_mangani_building_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_mangani_health_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_mangani_divabatti_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_mangani_panniyojana_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_mangani_padsar_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_mangani_dand_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_mangani_notice_fee'] ?? 0) ?></td>
+                <td colspan="2"><?= htmlspecialchars($row['previous_mangani_total_tax'] ?? 0) ?></td>
+
+                <td colspan="2" rowspan="3">
+                    <?= htmlspecialchars($row['pustak_kramanak'] ?? '') ?><br>
+                    <?= htmlspecialchars($row['pavati_kramanak'] ?? '') ?><br>
+                    <?= !empty($row['vasul_dinank']) ? date('d-m-Y', strtotime($row['vasul_dinank'])) : '' ?>
+                </td>
+
+                <!-- Previous Collection -->
+                <td><?= htmlspecialchars($row['previous_vasul_building_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_vasul_health_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_vasul_divabatti_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_vasul_panniyojana_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_vasul_padsar_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_vasul_dand_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_vasul_notice_fee'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['previous_vasul_sut_tax'] ?? 0) ?></td>
+                <td colspan="2"><?= htmlspecialchars($row['previous_vasul_total_tax'] ?? 0) ?></td>
+
+                <td rowspan="3">
+                    <?= htmlspecialchars(($row['previous_mangani_total_tax'] ?? 0) - ($row['previous_vasul_total_tax'] ?? 0)) ?>
+                </td>
+            </tr>
+
+            <!-- Current Demand -->
+            <tr>
+                <td colspan="2">चालू:</td>
+                <td><?= htmlspecialchars($row['current_mangani_building_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_mangani_health_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_mangani_divabatti_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_mangani_panniyojana_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_mangani_padsar_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_mangani_dand_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_mangani_notice_fee'] ?? 0) ?></td>
+                <td colspan="2"><?= htmlspecialchars($row['current_mangani_total_tax'] ?? 0) ?></td>
+
+                <!-- Current Collection -->
+                <td><?= htmlspecialchars($row['current_vasul_building_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_vasul_health_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_vasul_divabatti_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_vasul_panniyojana_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_vasul_padsar_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_vasul_dand_tax'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_vasul_notice_fee'] ?? 0) ?></td>
+                <td><?= htmlspecialchars($row['current_vasul_sut_tax'] ?? 0) ?></td>
+                <td colspan="2"><?= htmlspecialchars($row['current_vasul_total_tax'] ?? 0) ?></td>
+            </tr>
+
+            <!-- Total -->
+            <tr>
+                <td colspan="2">एकूण:</td>
+                <td><?= htmlspecialchars(($row['previous_mangani_building_tax'] ?? 0) + ($row['current_mangani_building_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_mangani_health_tax'] ?? 0) + ($row['current_mangani_health_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_mangani_divabatti_tax'] ?? 0) + ($row['current_mangani_divabatti_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_mangani_panniyojana_tax'] ?? 0) + ($row['current_mangani_panniyojana_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_mangani_padsar_tax'] ?? 0) + ($row['current_mangani_padsar_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_mangani_dand_tax'] ?? 0) + ($row['current_mangani_dand_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_mangani_notice_fee'] ?? 0) + ($row['current_mangani_notice_fee'] ?? 0)) ?>
+                </td>
+                <td colspan="2">
+                    <?= htmlspecialchars(($row['previous_mangani_total_tax'] ?? 0) + ($row['current_mangani_total_tax'] ?? 0)) ?>
+                </td>
+
+                <td><?= htmlspecialchars(($row['previous_vasul_building_tax'] ?? 0) + ($row['current_vasul_building_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_vasul_health_tax'] ?? 0) + ($row['current_vasul_health_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_vasul_divabatti_tax'] ?? 0) + ($row['current_vasul_divabatti_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_vasul_panniyojana_tax'] ?? 0) + ($row['current_vasul_panniyojana_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_vasul_padsar_tax'] ?? 0) + ($row['current_vasul_padsar_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_vasul_dand_tax'] ?? 0) + ($row['current_vasul_dand_tax'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_vasul_notice_fee'] ?? 0) + ($row['current_vasul_notice_fee'] ?? 0)) ?>
+                </td>
+                <td><?= htmlspecialchars(($row['previous_vasul_sut_tax'] ?? 0) + ($row['current_vasul_sut_tax'] ?? 0)) ?>
+                </td>
+                <td colspan="2">
+                    <?= htmlspecialchars(($row['previous_vasul_total_tax'] ?? 0) + ($row['current_vasul_total_tax'] ?? 0)) ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <?php else: ?>
+            <tr>
+                <td colspan="34" class="text-center">कोणतेही डेटा सापडले नाही</td>
+            </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <!-- Summary Table -->
+    <table>
+        <caption>थकबाकी यादी - ग्रामपंचायत <?= $_SESSION['village_name'] ?>, तालुका <?= $_SESSION['taluka_name'] ?>,
+            जिल्हा <?= $_SESSION['district_name'] ?></caption>
+        <thead>
+            <tr>
+                <th rowspan="2">खात्याचे नाव</th>
+                <th colspan="3">मागणी</th>
+                <th colspan="3">वसूल</th>
+                <th colspan="3">येणे बाकी</th>
+            </tr>
+            <tr>
+                <th>मागील एकूण रुपये</th>
+                <th>चालू एकूण रुपये</th>
+                <th>एकूण रुपये</th>
+                <th>मागील एकूण रुपये</th>
+                <th>चालू एकूण रुपये</th>
+                <th>एकूण रुपये</th>
+                <th>मागील एकूण रुपये</th>
+                <th>चालू एकूण रुपये</th>
+                <th>एकूण रुपये</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($data)): ?>
+            <?php
+      // Calculate totals
+      $totals = [
+          'building' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
+          'health' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
+          'light' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
+          'water' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
+          'padsar' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
+          'fine' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
+          'notice' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
+          'discount' => ['prev_collect' => 0, 'curr_collect' => 0],
+      ];
+      
+      foreach ($data as $row) {
+          $totals['building']['prev_demand'] += $row['previous_mangani_building_tax'] ?? 0;
+          $totals['building']['curr_demand'] += $row['current_mangani_building_tax'] ?? 0;
+          $totals['building']['prev_collect'] += $row['previous_vasul_building_tax'] ?? 0;
+          $totals['building']['curr_collect'] += $row['current_vasul_building_tax'] ?? 0;
+          
+          $totals['health']['prev_demand'] += $row['previous_mangani_health_tax'] ?? 0;
+          $totals['health']['curr_demand'] += $row['current_mangani_health_tax'] ?? 0;
+          $totals['health']['prev_collect'] += $row['previous_vasul_health_tax'] ?? 0;
+          $totals['health']['curr_collect'] += $row['current_vasul_health_tax'] ?? 0;
+          
+          $totals['light']['prev_demand'] += $row['previous_mangani_divabatti_tax'] ?? 0;
+          $totals['light']['curr_demand'] += $row['current_mangani_divabatti_tax'] ?? 0;
+          $totals['light']['prev_collect'] += $row['previous_vasul_divabatti_tax'] ?? 0;
+          $totals['light']['curr_collect'] += $row['current_vasul_divabatti_tax'] ?? 0;
+          
+          $totals['water']['prev_demand'] += $row['previous_mangani_panniyojana_tax'] ?? 0;
+          $totals['water']['curr_demand'] += $row['current_mangani_panniyojana_tax'] ?? 0;
+          $totals['water']['prev_collect'] += $row['previous_vasul_panniyojana_tax'] ?? 0;
+          $totals['water']['curr_collect'] += $row['current_vasul_panniyojana_tax'] ?? 0;
+          
+          $totals['padsar']['prev_demand'] += $row['previous_mangani_padsar_tax'] ?? 0;
+          $totals['padsar']['curr_demand'] += $row['current_mangani_padsar_tax'] ?? 0;
+          $totals['padsar']['prev_collect'] += $row['previous_vasul_padsar_tax'] ?? 0;
+          $totals['padsar']['curr_collect'] += $row['current_vasul_padsar_tax'] ?? 0;
+          
+          $totals['fine']['prev_demand'] += $row['previous_mangani_dand_tax'] ?? 0;
+          $totals['fine']['curr_demand'] += $row['current_mangani_dand_tax'] ?? 0;
+          $totals['fine']['prev_collect'] += $row['previous_vasul_dand_tax'] ?? 0;
+          $totals['fine']['curr_collect'] += $row['current_vasul_dand_tax'] ?? 0;
+          
+          $totals['notice']['prev_demand'] += $row['previous_mangani_notice_fee'] ?? 0;
+          $totals['notice']['curr_demand'] += $row['current_mangani_notice_fee'] ?? 0;
+          $totals['notice']['prev_collect'] += $row['previous_vasul_notice_fee'] ?? 0;
+          $totals['notice']['curr_collect'] += $row['current_vasul_notice_fee'] ?? 0;
+          
+          $totals['discount']['prev_collect'] += $row['previous_vasul_sut_tax'] ?? 0;
+          $totals['discount']['curr_collect'] += $row['current_vasul_sut_tax'] ?? 0;
+      }
+      
+      $grand_totals = [
+          'prev_demand' => 0,
+          'curr_demand' => 0,
+          'prev_collect' => 0,
+          'curr_collect' => 0,
+          'prev_balance' => 0,
+          'curr_balance' => 0
+      ];
+      
+      foreach ($totals as $type => $values) {
+          $grand_totals['prev_demand'] += $values['prev_demand'] ?? 0;
+          $grand_totals['curr_demand'] += $values['curr_demand'] ?? 0;
+          $grand_totals['prev_collect'] += $values['prev_collect'] ?? 0;
+          $grand_totals['curr_collect'] += $values['curr_collect'] ?? 0;
+      }
+      
+      $grand_totals['prev_balance'] = $grand_totals['prev_demand'] - $grand_totals['prev_collect'];
+      $grand_totals['curr_balance'] = $grand_totals['curr_demand'] - $grand_totals['curr_collect'];
+      ?>
+
+            <!-- Building Tax -->
+            <tr>
+                <td>घरपट्टी कर</td>
+                <td><?= $totals['building']['prev_demand'] ?></td>
+                <td><?= $totals['building']['curr_demand'] ?></td>
+                <td><?= $totals['building']['prev_demand'] + $totals['building']['curr_demand'] ?></td>
+                <td><?= $totals['building']['prev_collect'] ?></td>
+                <td><?= $totals['building']['curr_collect'] ?></td>
+                <td><?= $totals['building']['prev_collect'] + $totals['building']['curr_collect'] ?></td>
+                <td><?= $totals['building']['prev_demand'] - $totals['building']['prev_collect'] ?></td>
+                <td><?= $totals['building']['curr_demand'] - $totals['building']['curr_collect'] ?></td>
+                <td><?= ($totals['building']['prev_demand'] + $totals['building']['curr_demand']) - ($totals['building']['prev_collect'] + $totals['building']['curr_collect']) ?>
+                </td>
+            </tr>
+
+            <!-- Health Tax -->
+            <tr>
+                <td>आरोग्य कर</td>
+                <td><?= $totals['health']['prev_demand'] ?></td>
+                <td><?= $totals['health']['curr_demand'] ?></td>
+                <td><?= $totals['health']['prev_demand'] + $totals['health']['curr_demand'] ?></td>
+                <td><?= $totals['health']['prev_collect'] ?></td>
+                <td><?= $totals['health']['curr_collect'] ?></td>
+                <td><?= $totals['health']['prev_collect'] + $totals['health']['curr_collect'] ?></td>
+                <td><?= $totals['health']['prev_demand'] - $totals['health']['prev_collect'] ?></td>
+                <td><?= $totals['health']['curr_demand'] - $totals['health']['curr_collect'] ?></td>
+                <td><?= ($totals['health']['prev_demand'] + $totals['health']['curr_demand']) - ($totals['health']['prev_collect'] + $totals['health']['curr_collect']) ?>
+                </td>
+            </tr>
+
+            <!-- Lighting Tax -->
+            <tr>
+                <td>दिवाबत्ती कर</td>
+                <td><?= $totals['light']['prev_demand'] ?></td>
+                <td><?= $totals['light']['curr_demand'] ?></td>
+                <td><?= $totals['light']['prev_demand'] + $totals['light']['curr_demand'] ?></td>
+                <td><?= $totals['light']['prev_collect'] ?></td>
+                <td><?= $totals['light']['curr_collect'] ?></td>
+                <td><?= $totals['light']['prev_collect'] + $totals['light']['curr_collect'] ?></td>
+                <td><?= $totals['light']['prev_demand'] - $totals['light']['prev_collect'] ?></td>
+                <td><?= $totals['light']['curr_demand'] - $totals['light']['curr_collect'] ?></td>
+                <td><?= ($totals['light']['prev_demand'] + $totals['light']['curr_demand']) - ($totals['light']['prev_collect'] + $totals['light']['curr_collect']) ?>
+                </td>
+            </tr>
+
+            <!-- Water Tax -->
+            <tr>
+                <td>पाणीपट्टी कर</td>
+                <td><?= $totals['water']['prev_demand'] ?></td>
+                <td><?= $totals['water']['curr_demand'] ?></td>
+                <td><?= $totals['water']['prev_demand'] + $totals['water']['curr_demand'] ?></td>
+                <td><?= $totals['water']['prev_collect'] ?></td>
+                <td><?= $totals['water']['curr_collect'] ?></td>
+                <td><?= $totals['water']['prev_collect'] + $totals['water']['curr_collect'] ?></td>
+                <td><?= $totals['water']['prev_demand'] - $totals['water']['prev_collect'] ?></td>
+                <td><?= $totals['water']['curr_demand'] - $totals['water']['curr_collect'] ?></td>
+                <td><?= ($totals['water']['prev_demand'] + $totals['water']['curr_demand']) - ($totals['water']['prev_collect'] + $totals['water']['curr_collect']) ?>
+                </td>
+            </tr>
+
+            <!-- Padsar Land -->
+            <tr>
+                <td>पडसर जमीन</td>
+                <td><?= $totals['padsar']['prev_demand'] ?></td>
+                <td><?= $totals['padsar']['curr_demand'] ?></td>
+                <td><?= $totals['padsar']['prev_demand'] + $totals['padsar']['curr_demand'] ?></td>
+                <td><?= $totals['padsar']['prev_collect'] ?></td>
+                <td><?= $totals['padsar']['curr_collect'] ?></td>
+                <td><?= $totals['padsar']['prev_collect'] + $totals['padsar']['curr_collect'] ?></td>
+                <td><?= $totals['padsar']['prev_demand'] - $totals['padsar']['prev_collect'] ?></td>
+                <td><?= $totals['padsar']['curr_demand'] - $totals['padsar']['curr_collect'] ?></td>
+                <td><?= ($totals['padsar']['prev_demand'] + $totals['padsar']['curr_demand']) - ($totals['padsar']['prev_collect'] + $totals['padsar']['curr_collect']) ?>
+                </td>
+            </tr>
+
+            <!-- Fine -->
+            <tr>
+                <td>दंड</td>
+                <td><?= $totals['fine']['prev_demand'] ?></td>
+                <td><?= $totals['fine']['curr_demand'] ?></td>
+                <td><?= $totals['fine']['prev_demand'] + $totals['fine']['curr_demand'] ?></td>
+                <td><?= $totals['fine']['prev_collect'] ?></td>
+                <td><?= $totals['fine']['curr_collect'] ?></td>
+                <td><?= $totals['fine']['prev_collect'] + $totals['fine']['curr_collect'] ?></td>
+                <td><?= $totals['fine']['prev_demand'] - $totals['fine']['prev_collect'] ?></td>
+                <td><?= $totals['fine']['curr_demand'] - $totals['fine']['curr_collect'] ?></td>
+                <td><?= ($totals['fine']['prev_demand'] + $totals['fine']['curr_demand']) - ($totals['fine']['prev_collect'] + $totals['fine']['curr_collect']) ?>
+                </td>
+            </tr>
+
+            <!-- Notice Fee -->
+            <tr>
+                <td>नोटीस फी</td>
+                <td><?= $totals['notice']['prev_demand'] ?></td>
+                <td><?= $totals['notice']['curr_demand'] ?></td>
+                <td><?= $totals['notice']['prev_demand'] + $totals['notice']['curr_demand'] ?></td>
+                <td><?= $totals['notice']['prev_collect'] ?></td>
+                <td><?= $totals['notice']['curr_collect'] ?></td>
+                <td><?= $totals['notice']['prev_collect'] + $totals['notice']['curr_collect'] ?></td>
+                <td><?= $totals['notice']['prev_demand'] - $totals['notice']['prev_collect'] ?></td>
+                <td><?= $totals['notice']['curr_demand'] - $totals['notice']['curr_collect'] ?></td>
+                <td><?= ($totals['notice']['prev_demand'] + $totals['notice']['curr_demand']) - ($totals['notice']['prev_collect'] + $totals['notice']['curr_collect']) ?>
+                </td>
+            </tr>
+
+            <!-- Discount -->
+            <tr>
+                <td>सूट</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><?= $totals['discount']['prev_collect'] ?></td>
+                <td><?= $totals['discount']['curr_collect'] ?></td>
+                <td><?= $totals['discount']['prev_collect'] + $totals['discount']['curr_collect'] ?></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+
+            <!-- Grand Total -->
+            <tr>
+                <th>एकूण रुपये</th>
+                <th><?= $grand_totals['prev_demand'] ?></th>
+                <th><?= $grand_totals['curr_demand'] ?></th>
+                <th><?= $grand_totals['prev_demand'] + $grand_totals['curr_demand'] ?></th>
+                <th><?= $grand_totals['prev_collect'] ?></th>
+                <th><?= $grand_totals['curr_collect'] ?></th>
+                <th><?= $grand_totals['prev_collect'] + $grand_totals['curr_collect'] ?></th>
+                <th><?= $grand_totals['prev_balance'] ?></th>
+                <th><?= $grand_totals['curr_balance'] ?></th>
+                <th><?= $grand_totals['prev_balance'] + $grand_totals['curr_balance'] ?></th>
+            </tr>
+
+            <!-- Property Counts -->
+            <tr>
+                <th rowspan="2">एकूण मिळकती संख्या</th>
+                <th>एकूण मागील मागणी मिळकती संख्या</th>
+                <th>एकूण चालू मागणी मिळकती संख्या</th>
+                <th>एकूण मागणी मिळकती संख्या</th>
+                <th>एकूण मागील वसूल मिळकती संख्या</th>
+                <th>एकूण चालू वसूल मिळकती संख्या</th>
+                <th>एकूण वसूल मिळकती संख्या</th>
+                <th>एकूण मागील बाकी मिळकती संख्या</th>
+                <th>एकूण चालू बाकी मिळकती संख्या</th>
+                <th>एकूण बाकी मिळकती संख्या</th>
+            </tr>
+            <tr>
+                <td><?= count($data) ?></td>
+                <td><?= count($data) ?></td>
+                <td><?= count($data) ?></td>
+                <td><?= count(array_filter($data, function($row) { return ($row['previous_vasul_total_tax'] ?? 0) > 0; })) ?>
+                </td>
+                <td><?= count(array_filter($data, function($row) { return ($row['current_vasul_total_tax'] ?? 0) > 0; })) ?>
+                </td>
+                <td><?= count(array_filter($data, function($row) { return ($row['previous_vasul_total_tax'] ?? 0) > 0 || ($row['current_vasul_total_tax'] ?? 0) > 0; })) ?>
+                </td>
+                <td><?= count(array_filter($data, function($row) { return ($row['previous_mangani_total_tax'] ?? 0 ) - ($row['previous_vasul_total_tax'] ?? 0) > 0; })) ?>
+                </td>
+                <td><?= count(array_filter($data, function($row) { return ($row['current_mangani_total_tax'] ?? 0) - ($row['current_vasul_total_tax'] ?? 0) > 0; })) ?>
+                </td>
+                <td><?= count(array_filter($data, function($row) { return (($row['previous_mangani_total_tax'] ?? 0) + ($row['current_mangani_total_tax'] ?? 0)) - (($row['previous_vasul_total_tax'] ?? 0) + ($row['current_vasul_total_tax'] ?? 0)) > 0; })) ?>
+                </td>
+            </tr>
+    </table>
+    <?php else: ?>
+    <tr>
+        <td colspan="10" class="text-center">कोणतेही डेटा सापडले नाही</td>
+    </tr>
+    <?php endif; ?>
+</body>
+
+</html>
