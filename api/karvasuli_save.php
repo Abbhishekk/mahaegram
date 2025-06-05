@@ -94,6 +94,8 @@ try {
         'panchayat_code' => $_SESSION['panchayat_code'],
     ];
 
+
+
     $propertyVerification = $fun->getPropertyVerificationWithMalmattaId($_POST['malamatta_kramanak']);
     if(!$propertyVerification) {
         throw new Exception('Property verification not found for the given malmatta kramanak');
