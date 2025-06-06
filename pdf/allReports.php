@@ -123,8 +123,8 @@ foreach ($taxReportsArray as $report) {
     <meta charset="UTF-8">
     <title>करांची मागणी पावती</title>
     <style>
-        body { font-family: 'Noto Sans Devanagari', sans-serif; margin: 20px; }
-        .receipt-box { border: 2px solid black; padding: 20px; max-width: 80%; margin: auto; }
+        body { font-family: 'Noto Sans Devanagari', sans-serif; margin: 5px; }
+        .receipt-box { border: 2px solid black; padding: 20px; margin: 10px auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 18px; }
         caption { caption-side: top; font-weight: bold; margin-bottom: 10px; }
         th, td { border: 1px solid black; padding: 6px; text-align: center; }
@@ -280,7 +280,6 @@ foreach ($taxReportsArray as $report) {
 </body>
 </html>
 HTML;
-
 }
 
 $html .= <<<HTML
@@ -289,27 +288,7 @@ $html .= <<<HTML
 <head>
     <meta charset="UTF-8">
     <title>करांची मागणी पावती</title>
-    <style>
-        body { font-family: 'Noto Sans Devanagari', sans-serif; margin: 20px; }
-        .receipt-box { border: 2px solid black; padding: 20px; max-width: 80%; margin: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 18px; }
-        caption { caption-side: top; font-weight: bold; margin-bottom: 10px; }
-        th, td { border: 1px solid black; padding: 6px; text-align: center; }
-        .header { text-align: center; font-weight: bold; margin-bottom: 10px; font-size: 20px; }
-        .info-table td { border: none; padding: 5px; text-align: left; }
-        .section { margin-top: 20px; }
-        .footer-table { width: 100%; border: 1px solid black; margin-top: 30px; }
-        .footer-table td { vertical-align: top; border: 1px solid black; padding: 10px; }
-        .footer-table .full { padding: 10px; text-align: left; }
-        .dashed-border { border-top: 2px dashed black; margin-top: 20px; }
-        @media print {
-            @page { size: A4; margin: 0; }
-            body { margin: 1.6cm; }
-        }
-         table {
-        page-break-inside: avoid;
-    }
-    </style>
+    
 </head>
 <body>
     <div class="receipt-box">
@@ -394,4 +373,3 @@ HTML;
 
 
 echo $html;
-?>

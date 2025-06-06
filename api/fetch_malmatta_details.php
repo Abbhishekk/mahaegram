@@ -16,19 +16,19 @@ $malmattaId = $data['malmattaId'] ?? '';
 $response = ['success' => false];
 $milkatObject = [
     "आर सी सी पद्धतीचे बांधकाम" => "rcc",
-    "इतर पक्के घर (दगड विटांचे चुना किंवा सिमेंटचे घर)" =>"itar_pakke_ghar",
-    "अर्ध पक्के घर (दगड विटांचे मातीचे घर)"=> "ardha_pakke_ghar",
+    "इतर पक्के घर (दगड विटांचे चुना किंवा सिमेंटचे घर)" => "itar_pakke_ghar",
+    "अर्ध पक्के घर (दगड विटांचे मातीचे घर)" => "ardha_pakke_ghar",
     "कच्चे घर (झोपडी किंवा मातीचे घर)" => "kache_ghar",
     "पडसर/खुली जागा" => "padsar",
-    "मनोरा तळ घर"=> "manora_type_ghar",
-    "मनोरा खुली जागा सर्वसाधारण किंवा डोंगराळ आदिवसी क्षेत्र असलेल्या ग्रामपंचायती"=>"manora_khuli_jaga_sarvasadharan",
-    "मनोरा खुली जागा महानगरपालिका किंवा नगरपालिका यांच्या लगतच्या ग्रामपंचायती"=> "manora_khuli_jaga_mnc"   
+    "मनोरा तळ घर" => "manora_type_ghar",
+    "मनोरा खुली जागा सर्वसाधारण किंवा डोंगराळ आदिवसी क्षेत्र असलेल्या ग्रामपंचायती" => "manora_khuli_jaga_sarvasadharan",
+    "मनोरा खुली जागा महानगरपालिका किंवा नगरपालिका यांच्या लगतच्या ग्रामपंचायती" => "manora_khuli_jaga_mnc"
 ];
-echo $malmattaId;
+// echo $malmattaId;
 if ($malmattaId) {
     // Get full malmatta entry with properties + water tax
     $malmattaData = $fun->getMalmattaWithPropertiesWithId($malmattaId, $_SESSION['district_code']);
-   
+
     // print_r($malmattaData);
     if ($malmattaData) {
         $response['success'] = true;
@@ -38,11 +38,11 @@ if ($malmattaId) {
         $totalArea = 0;
         $malmattaEntry = $malmattaData[0] ?? null;
 
-if ($malmattaEntry && isset($malmattaEntry['properties'])) {
-    foreach ($malmattaEntry['properties'] as $prop) {
-        $totalArea += (int) ($prop['areaInFoot'] ?? 0);
-    }
-}
+        if ($malmattaEntry && isset($malmattaEntry['properties'])) {
+            foreach ($malmattaEntry['properties'] as $prop) {
+                $totalArea += (int) ($prop['areaInFoot'] ?? 0);
+            }
+        }
 
 
         // ✅ Fetch applicable tax rate

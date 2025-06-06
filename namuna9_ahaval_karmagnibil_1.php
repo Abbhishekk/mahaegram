@@ -13,7 +13,6 @@ $periods = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नं�
 if (empty($periods)) {
     $_SESSION['message'] = "कालावधी उपलब्ध नाही.";
     $_SESSION['message_type'] = "danger";
-
 }
 $financialYears = $fun->getYearArray($periods);
 $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
@@ -228,10 +227,10 @@ $roads = $fun->getRoad($_SESSION['district_code']);
         }
     </script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             console.log("Document is ready");
 
-            $('#generatePdfBtn').click(async function () {
+            $('#generatePdfBtn').click(async function() {
                 // Get form values
                 console.log("Generate PDF button clicked");
 
@@ -278,11 +277,11 @@ $roads = $fun->getRoad($_SESSION['district_code']);
                 // Open in new window for printing
                 const res = await fetch(
                     url, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
                 const html = await res.text();
 
                 // 👇 Open in new tab and print
@@ -291,51 +290,8 @@ $roads = $fun->getRoad($_SESSION['district_code']);
                 printWindow.document.write(`
             <html>
             <head>
-            <title>नमुना ८</title>
-            <style>
-        body {
-            font-family: 'Mangal', 'Noto Sans Devanagari', 'Arial', sans-serif;
-            margin: 20px;
-            color: #000;
-        }
-
-        h1,
-        h2,
-        h3 {
-            text-align: center;
-            margin: 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #000;
-            padding: 4px 6px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f0f0f0;
-        }
-
-        .header-note {
-            text-align: center;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        @media print {
-            @page {
-                size: landscape;
-            }
-        }
-        </style>
+            <title>नमुना 9</title>
+            
             </head>
             <body onload="window.print()">
             ${html}
@@ -348,7 +304,7 @@ $roads = $fun->getRoad($_SESSION['district_code']);
         });
     </script>
     <script>
-        $('#malmatta_id').change(function () {
+        $('#malmatta_id').change(function() {
             const malmatta_id = $(this).val();
 
             if (malmatta_id) {
@@ -359,7 +315,7 @@ $roads = $fun->getRoad($_SESSION['district_code']);
                         malmattaId: malmatta_id
                     },
                     dataType: 'json',
-                    success: function (data) {
+                    success: function(data) {
                         if (data.success) {
                             $('#kardena_name').empty();
                             $('#kardena_name').attr('disabled', true);
@@ -374,7 +330,7 @@ $roads = $fun->getRoad($_SESSION['district_code']);
 
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.error("AJAX Error: " + status + " - " + error);
                     }
                 });
@@ -390,7 +346,7 @@ $roads = $fun->getRoad($_SESSION['district_code']);
         $('#road_div').hide();
 
         // Show/hide fields based on selected criteria
-        $('input[name="bill_type"]').change(function () {
+        $('input[name="bill_type"]').change(function() {
             const criteria = $(this).val();
 
 

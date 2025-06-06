@@ -1,19 +1,19 @@
-<?php 
-    require_once './include/auth_middleware.php';
+<?php
+require_once './include/auth_middleware.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php 
+<?php
 $title = "पाणीपट्टी दर माहिती";
 ?>
 <?php include('include/header.php'); ?>
 <?php
-    $waterTariff = $fun->getWaterTariff($_SESSION['district_code']);
-    $durationReason = $fun->getDurationReason();
+$waterTariff = $fun->getWaterTariff($_SESSION['district_code']);
+$durationReason = $fun->getDurationReason();
 $drainageTypes = $fun->getDrainageTypes();
 $periodTotalPeriod = $fun->getPeriodTotalPeriodsWithPeriodReason("पाणीपट्टी कालावधी", $_SESSION['district_code']);
 $periodCount = mysqli_num_rows($periodTotalPeriod);
-if($periodCount == 0){
+if ($periodCount == 0) {
     $_SESSION['message'] = "⚠️ कृपया पाणीपट्टी कालावधी आधीच भरा!";
     $_SESSION['message_type'] = "danger";
 }
@@ -22,11 +22,11 @@ if($periodCount == 0){
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar -->
-        <?php 
+        <?php
         $page = 'namuna8';
         $subpage = 'wardMaster';
         include('include/sidebar.php');
-       ?>
+        ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -51,17 +51,17 @@ if($periodCount == 0){
                             <div class="card mb-4">
                                 <?php
 
-if (isset($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    $message_type = $_SESSION['message_type'];
+                                if (isset($_SESSION['message'])) {
+                                    $message = $_SESSION['message'];
+                                    $message_type = $_SESSION['message_type'];
 
-    echo "<div class='alert alert-$message_type'>$message</div>";
+                                    echo "<div class='alert alert-$message_type'>$message</div>";
 
-    // Unset the message so it doesn't persist after refresh
-    unset($_SESSION['message']);
-    unset($_SESSION['message_type']);
-}
-?>
+                                    // Unset the message so it doesn't persist after refresh
+                                    unset($_SESSION['message']);
+                                    unset($_SESSION['message_type']);
+                                }
+                                ?>
                                 <div class="card-body">
                                     <form method="post" action="api/waterTax.php">
 
@@ -75,12 +75,12 @@ if (isset($_SESSION['message'])) {
                                                     required>
                                                     <option value="" selected>-- पाणीपट्टी प्रकार निवडा-</option>
                                                     <?php
-                                                            if(mysqli_num_rows($drainageTypes) > 0){
-                                                                while($drainageType = mysqli_fetch_assoc($drainageTypes)){
-                                                                    echo "<option value='".$drainageType['drainage_type']."'>".$drainageType['drainage_type']."</option>";
-                                                                }
-                                                            }
-                                                        ?>
+                                                    if (mysqli_num_rows($drainageTypes) > 0) {
+                                                        while ($drainageType = mysqli_fetch_assoc($drainageTypes)) {
+                                                            echo "<option value='" . $drainageType['drainage_type'] . "'>" . $drainageType['drainage_type'] . "</option>";
+                                                        }
+                                                    }
+                                                    ?>
                                                 </select>
 
                                                 <input type="number" value="" class="form-control d-none" name="update"
@@ -92,12 +92,12 @@ if (isset($_SESSION['message'])) {
                                                 <select class="form-control mb-3" name="period" id="period" required>
                                                     <option value="" selected>--कालावधी निवडा--</option>
                                                     <?php
-                                                            if(mysqli_num_rows($periodTotalPeriod) > 0){
-                                                                while($totalPerios = mysqli_fetch_assoc($periodTotalPeriod)){
-                                                                    echo "<option value='".$totalPerios['id']."'>".$totalPerios['total_period']."</option>";
-                                                                }
-                                                            }
-                                                        ?>
+                                                    if (mysqli_num_rows($periodTotalPeriod) > 0) {
+                                                        while ($totalPerios = mysqli_fetch_assoc($periodTotalPeriod)) {
+                                                            echo "<option value='" . $totalPerios['id'] . "'>" . $totalPerios['total_period'] . "</option>";
+                                                        }
+                                                    }
+                                                    ?>
                                                 </select>
 
                                             </div>
@@ -196,40 +196,40 @@ if (isset($_SESSION['message'])) {
                                         </thead>
                                         <tbody>
                                             <?php
-                                                if(mysqli_num_rows($waterTariff) > 0){
-                                                    $i = 1;
-                                                    while($water = mysqli_fetch_assoc($waterTariff)){
-                                                        // print_r($water);
-                                             ?>
-                                            <tr>
-                                                <td><a href="#"><?php echo $i; ?></a></td>
-                                                <td><?php echo $water['drainage_type']; ?></td>
-                                                <td><?php echo $water['pipe_diameter']; ?></td>
-                                                <td><?php echo $water['min_rate']; ?></td>
-                                                <td><?php echo $water['max_rate']; ?></td>
-                                                <td><?php echo $water['fixed_rate']; ?></td>
-                                                <td><?php echo $water['total_period']; ?></td>
-                                                <td>
-                                                    <a href="#"
-                                                        onclick="filldata('<?php echo $water['wt_id']; ?>', '<?php echo $water['drainage_type']; ?>', '<?php echo $water['pipe_diameter']; ?>', '<?php echo $water['min_rate']; ?>', '<?php echo $water['fixed_rate']; ?>', '<?php echo $water['pt_id']; ?>', '<?php echo $water['decision_date']; ?>', '<?php echo $water['resolution_no']; ?>')">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor" class="bi bi-pencil-square"
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                                            <path fill-rule="evenodd"
-                                                                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                                                        </svg>
-                                                    </a>
-                                                </td>
+                                            if (mysqli_num_rows($waterTariff) > 0) {
+                                                $i = 1;
+                                                while ($water = mysqli_fetch_assoc($waterTariff)) {
+                                                    // print_r($water);
+                                            ?>
+                                                    <tr>
+                                                        <td><a href="#"><?php echo $i; ?></a></td>
+                                                        <td><?php echo $water['drainage_type']; ?></td>
+                                                        <td><?php echo $water['pipe_diameter']; ?></td>
+                                                        <td><?php echo $water['min_rate']; ?></td>
+                                                        <td><?php echo $water['max_rate']; ?></td>
+                                                        <td><?php echo $water['fixed_rate']; ?></td>
+                                                        <td><?php echo $water['total_period']; ?></td>
+                                                        <td>
+                                                            <a href="#"
+                                                                onclick="filldata('<?php echo $water['wt_id']; ?>', '<?php echo $water['drainage_type']; ?>', '<?php echo $water['pipe_diameter']; ?>', '<?php echo $water['min_rate']; ?>', '<?php echo $water['fixed_rate']; ?>', '<?php echo $water['pt_id']; ?>', '<?php echo $water['decision_date']; ?>', '<?php echo $water['resolution_no']; ?>')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                                    fill="currentColor" class="bi bi-pencil-square"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                                                </svg>
+                                                            </a>
+                                                        </td>
 
-                                            </tr>
+                                                    </tr>
                                             <?php
-                                                $i++;
-                                                    }
-                                                }else{
-                                                    echo "<tr><td colspan='4'>No data found</td></tr>";
+                                                    $i++;
                                                 }
+                                            } else {
+                                                echo "<tr><td colspan='4'>No data found</td></tr>";
+                                            }
                                             ?>
 
 
@@ -260,68 +260,79 @@ if (isset($_SESSION['message'])) {
 
     <?php include('include/scripts.php'); ?>
     <script>
-    function filldata(id, drainage_type, pipe_diameter, min_rate, fixed_rate, total_period, decision_date,
-        resolution_no) {
-        // console.log(decision_date, id, drainage_type, pipe_diameter, min_rate, fixed_rate, total_period, decision_date,
-        //     resolution_no);
+        function filldata(id, drainage_type, pipe_diameter, min_rate, fixed_rate, total_period, decision_date,
+            resolution_no) {
+            // console.log(decision_date, id, drainage_type, pipe_diameter, min_rate, fixed_rate, total_period, decision_date,
+            //     resolution_no);
 
-        document.getElementById('update').value = id;
-        document.getElementById('drainageType').value = drainage_type;
-        document.getElementById('pip_connection').value = pipe_diameter;
-        document.getElementById('min_tax').value = min_rate;
-        document.getElementById('fixed_tax').value = fixed_rate;
-        document.getElementById('period').value = total_period;
-        document.getElementById('decision_date').value = decision_date;
-        document.getElementById('resolution_no').value = resolution_no;
-    }
+            document.getElementById('update').value = id;
+            document.getElementById('drainageType').value = drainage_type;
+            document.getElementById('pip_connection').value = pipe_diameter;
+            document.getElementById('min_tax').value = min_rate;
+            document.getElementById('fixed_tax').value = fixed_rate;
+            document.getElementById('period').value = total_period;
+            document.getElementById('decision_date').value = decision_date;
+            document.getElementById('resolution_no').value = resolution_no;
+        }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const decision_date = document.getElementById('decision_date');
+        document.addEventListener("DOMContentLoaded", function() {
+            const decision_date = document.getElementById('decision_date');
 
-        decision_date.value = new Date().toISOString().split('T')[0];
+            decision_date.value = new Date().toISOString().split('T')[0];
 
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        const decision_date = document.getElementById('decision_date');
-        decision_date.value = new Date().toISOString().split('T')[0];
+        });
+        document.addEventListener("DOMContentLoaded", function() {
 
-        const minTaxEl = document.getElementById('min_tax');
-        const maxTaxEl = document.getElementById('max_tax');
-        const fixedTaxEl = document.getElementById('fixed_tax');
-        const fixed_tax_error = document.getElementById('fixed_tax_error');
-        const submitButton = document.getElementById('add');
+            $("#drainageType").change(function() {
+                var selectedValue = $(this).val();
+                if (selectedValue === "वापर नाही") {
+                    $("#pip_connection").attr('disabled', 'true');
+                    $("#pip_connection").removeAttr('required');
+                } else {
+                    $("#pip_connection").removeAttr('disabled');
+                    $("#pip_connection").attr('required', 'true');
+                }
+            })
+            const decision_date = document.getElementById('decision_date');
+            decision_date.value = new Date().toISOString().split('T')[0];
 
-        function validateFixedTax() {
-            const minTax = parseFloat(minTaxEl.value);
-            const maxTax = parseFloat(maxTaxEl.value);
-            const fixedTax = parseFloat(fixedTaxEl.value);
-            console.log(minTax, maxTax, fixedTax);
+            const minTaxEl = document.getElementById('min_tax');
+            const maxTaxEl = document.getElementById('max_tax');
+            const fixedTaxEl = document.getElementById('fixed_tax');
+            const fixed_tax_error = document.getElementById('fixed_tax_error');
+            const submitButton = document.getElementById('add');
 
-            if (!isNaN(minTax) && !isNaN(maxTax) && !isNaN(fixedTax)) {
-                if (fixedTax < minTax || fixedTax > maxTax) {
-                    fixed_tax_error.innerText =
-                        'ठरवलेला दर किमान दर आणि कमाल दर यामध्ये असावा. (Fixed tax must be between min and max tax.)';
-                    fixedTaxEl.setCustomValidity(
-                        'ठरवलेला दर किमान दर आणि कमाल दर यामध्ये असावा. (Fixed tax must be between min and max tax.)'
-                    );
-                    submitButton.disabled = true;
+            function validateFixedTax() {
+                const minTax = parseFloat(minTaxEl.value);
+                const maxTax = parseFloat(maxTaxEl.value);
+                const fixedTax = parseFloat(fixedTaxEl.value);
+                console.log(minTax, maxTax, fixedTax);
+
+                if (!isNaN(minTax) && !isNaN(maxTax) && !isNaN(fixedTax)) {
+                    if (fixedTax < minTax || fixedTax > maxTax) {
+                        fixed_tax_error.innerText =
+                            'ठरवलेला दर किमान दर आणि कमाल दर यामध्ये असावा. (Fixed tax must be between min and max tax.)';
+                        fixedTaxEl.setCustomValidity(
+                            'ठरवलेला दर किमान दर आणि कमाल दर यामध्ये असावा. (Fixed tax must be between min and max tax.)'
+                        );
+                        submitButton.disabled = true;
+                    } else {
+                        fixedTaxEl.setCustomValidity('');
+                        fixed_tax_error.innerText = '';
+                        submitButton.disabled = false;
+                    }
                 } else {
                     fixedTaxEl.setCustomValidity('');
                     fixed_tax_error.innerText = '';
                     submitButton.disabled = false;
                 }
-            } else {
-                fixedTaxEl.setCustomValidity('');
-                fixed_tax_error.innerText = '';
-                submitButton.disabled = false;
             }
-        }
 
-        // Attach real-time validation
-        fixedTaxEl.addEventListener('change', validateFixedTax);
-        minTaxEl.addEventListener('change', validateFixedTax);
-        maxTaxEl.addEventListener('change', validateFixedTax);
-    });
+            // Attach real-time validation
+            fixedTaxEl.addEventListener('change', validateFixedTax);
+            minTaxEl.addEventListener('change', validateFixedTax);
+            maxTaxEl.addEventListener('change', validateFixedTax);
+        });
     </script>
 </body>
 

@@ -4016,13 +4016,20 @@ class Fun
     }
 
     // tax demands
-    public function getTaxDemands($district_code)
+    public function getTaxDemands($district_code, $financial_year = null)
     {
         $sql = "SELECT * FROM tax_demands  td
             left join malmatta_data_entry mde on td.malmatta_id = mde.id
             WHERE mde.panchayat_code = ?";
+        $types = "s";
+        $params = [$_SESSION['panchayat_code']];
+        if (!empty($financial_year)) {
+            $sql .= " AND td.financial_year = ?";
+            $types .= "s";
+            $params[] = $financial_year;
+        }
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("s", $_SESSION['panchayat_code']);
+        $stmt->bind_param($types, ...$params);
         $stmt->execute();
         return $stmt->get_result();
     }
@@ -4279,5 +4286,4 @@ class Fun
         $stmt->execute();
         return $stmt->get_result();
     }
-
 }

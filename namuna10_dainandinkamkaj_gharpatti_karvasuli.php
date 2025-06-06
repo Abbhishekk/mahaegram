@@ -1,44 +1,71 @@
-<?php 
-    require_once './include/auth_middleware.php';
+<?php
+require_once './include/auth_middleware.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php 
+<?php
 $title = "नमूना क्र १० पावती";
 ?>
 <?php include('include/header.php'); ?>
 <?php
-    $newName = $fun->getNewName();
-    $periods = $fun->getPeriodDetails($_SESSION['district_code']);
-    $malmatta_details = $fun->getTaxDemands($_SESSION['district_code']);
-    
+$newName = $fun->getNewName();
+$period_deatils = $fun->getPeriodDetails($_SESSION['district_code']);
+$periodsWithReasons = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
+$yearArray = $fun->getYearArray($periodsWithReasons);
+
+// Step 1: Determine current financial year
+$currentMonth = date('n'); // Numeric representation of current month (1-12)
+$currentYear = date('Y');
+
+if ($currentMonth >= 4) {
+    // If April or later, financial year starts from current year
+    $financialYearStart = $currentYear;
+    $financialYearEnd = $currentYear + 1;
+} else {
+    // If Jan-March, financial year started last year
+    $financialYearStart = $currentYear - 1;
+    $financialYearEnd = $currentYear;
+}
+
+$currentFinancialYear = $financialYearStart . "-" . $financialYearEnd;
+
+// Step 2: Find matching index in the array
+$currentYearIndex = 0;
+for ($i = 0; $i < count($yearArray); $i++) {
+    if ($yearArray[$i] === $currentFinancialYear) {
+        $currentYearIndex = $i;
+        break;
+    }
+}
+$malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$currentYearIndex]);
+
 ?>
 <style>
-.section-title {
-    font-weight: bold;
-    margin-top: 20px;
-    color: blue;
-}
+    .section-title {
+        font-weight: bold;
+        margin-top: 20px;
+        color: blue;
+    }
 
-.table td,
-.table th {
-    vertical-align: middle;
-    text-align: center;
-}
+    .table td,
+    .table th {
+        vertical-align: middle;
+        text-align: center;
+    }
 
-.highlight {
-    background-color: #66ff66;
-}
+    .highlight {
+        background-color: #66ff66;
+    }
 </style>
 
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar -->
-        <?php 
+        <?php
         $page = 'namuna10';
         $subpage = 'yearlyWork';
         include('include/sidebar.php');
-       ?>
+        ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -63,17 +90,17 @@ $title = "नमूना क्र १० पावती";
                         वसूल करण्यासाठी रक्कम उपलब्ध नाही !
                     </div>
                     <?php
-                                         if (isset($_SESSION['message'])) {
-                                             $message = $_SESSION['message'];
-                                             $message_type = $_SESSION['message_type'];
-     
-                                             echo "<div class='alert alert-$message_type'>$message</div>";
-     
-                                             // Unset the message so it doesn't persist after refresh
-                                             unset($_SESSION['message']);
-                                             unset($_SESSION['message_type']);
-                                         }
-                                         ?>
+                    if (isset($_SESSION['message'])) {
+                        $message = $_SESSION['message'];
+                        $message_type = $_SESSION['message_type'];
+
+                        echo "<div class='alert alert-$message_type'>$message</div>";
+
+                        // Unset the message so it doesn't persist after refresh
+                        unset($_SESSION['message']);
+                        unset($_SESSION['message_type']);
+                    }
+                    ?>
                     <!-- Form -->
                     <form action="api/karvasuli_save.php" method="post">
 
@@ -84,12 +111,12 @@ $title = "नमूना क्र १० पावती";
                                             class="text-danger">*</span></label>
                                     <select class="form-control" name="malamatta_kramanak" id="malamatta_kramanak">
                                         <option>--निवडा--</option>
-                                        <?php foreach ($malmatta_details as $malmatta) { 
-                                                // print_r($malmatta);
-                                            ?>
-                                        <option value="<?php echo $malmatta['malmatta_id']; ?>">
-                                            <?php echo $malmatta['malmatta_no']; ?>
-                                        </option>
+                                        <?php foreach ($malmatta_details as $malmatta) {
+                                            // print_r($malmatta);
+                                        ?>
+                                            <option value="<?php echo $malmatta['malmatta_id']; ?>">
+                                                <?php echo $malmatta['malmatta_no']; ?>
+                                            </option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -361,16 +388,16 @@ $title = "नमूना क्र १० पावती";
                             <select class="form-control" name="bank_name" id="bank_name"> >
                                 <option>--निवडा--</option>
                                 <?php
-                   $banks = $fun->getBanks();
-                   if($banks["success"]){
-                     
-                     foreach ($banks["data"] as $bank) {
-                         echo '<option value="'.$bank['id'].'">'.$bank['bank_name'].'</option>';
-                     }
-                   }else{
-                     echo '<option value="">बँकांची माहिती उपलब्ध नाही</option>';
-                   }
-                 ?>
+                                $banks = $fun->getBanks();
+                                if ($banks["success"]) {
+
+                                    foreach ($banks["data"] as $bank) {
+                                        echo '<option value="' . $bank['id'] . '">' . $bank['bank_name'] . '</option>';
+                                    }
+                                } else {
+                                    echo '<option value="">बँकांची माहिती उपलब्ध नाही</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -427,340 +454,340 @@ $title = "नमूना क्र १० पावती";
 
     <?php include('include/scripts.php'); ?>
     <script>
-    $(document).ready(function() {
-        // When malmatta_kramanak is changed
-        $("#not_available").hide();
-        $('#malamatta_kramanak').change(function() {
-            var malmattaId = $(this).val();
-            $('#current_mangani_building_tax').val('0.00');
-            $('#current_mangani_health_tax').val('0.00');
-            $('#current_mangani_divabatti_tax').val('0.00');
-            $('#current_mangani_panniyojana_tax').val('0.00');
-            $('#current_mangani_padsar_tax').val('0.00');
-            $('#current_mangani_dand_tax').val('0.00');
-            $('#current_mangani_sut_tax').val('0.00');
-            $('#current_mangani_total_tax').val('0.00');
-            if (malmattaId) {
-                // Make AJAX call to get property details
+        $(document).ready(function() {
+            // When malmatta_kramanak is changed
+            $("#not_available").hide();
+            $('#malamatta_kramanak').change(function() {
+                var malmattaId = $(this).val();
+                $('#current_mangani_building_tax').val('0.00');
+                $('#current_mangani_health_tax').val('0.00');
+                $('#current_mangani_divabatti_tax').val('0.00');
+                $('#current_mangani_panniyojana_tax').val('0.00');
+                $('#current_mangani_padsar_tax').val('0.00');
+                $('#current_mangani_dand_tax').val('0.00');
+                $('#current_mangani_sut_tax').val('0.00');
+                $('#current_mangani_total_tax').val('0.00');
+                if (malmattaId) {
+                    // Make AJAX call to get property details
+                    $.ajax({
+                        url: 'api/getPropertyDetails.php', // Create this file
+                        type: 'POST',
+                        data: {
+                            malmatta_id: malmattaId
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.success) {
+                                // Update ward number
+                                console.log(data);
+                                const malmatta_info = data.data.malmatta_info;
+                                $('#ward_kramanak').val(data.data.ward_no);
+                                $('#ward_kramanak').attr('readonly', true);
+                                // Update owner name dropdown
+                                $('#kar_denaryache_nav').empty();
+                                $('#kar_denaryache_nav').attr('readonly', true);
+                                if (data.data.owner_name) {
+                                    $('#kar_denaryache_nav').append('<option value="' + data
+                                        .data.owner_name + '">' + data.data.owner_name +
+                                        '</option>');
+                                } else {
+                                    $('#kar_denaryache_nav').append(
+                                        '<option value="">--निवडा--</option>');
+                                }
+                                if (malmatta_info.malmatta_id) {
+                                    $("#previous_mangani_building_tax").val(malmatta_info
+                                        .previous_building_tax || '0.00');
+                                    $('#current_mangani_building_tax').val(malmatta_info
+                                        .building_tax || '0.00');
+                                    $('#previous_mangani_health_tax').val(malmatta_info
+                                        .previous_health_tax || '0.00');
+                                    $('#current_mangani_health_tax').val(malmatta_info
+                                        .health_tax || '0.00');
+                                    $('#current_mangani_divabatti_tax').val(malmatta_info
+                                        .light_tax || '0.00');
+                                    $('#previous_mangani_divabatti_tax').val(malmatta_info
+                                        .previous_light_tax || '0.00');
+                                    $('#current_mangani_panniyojana_tax').val(malmatta_info
+                                        .water_tax || '0.00');
+                                    $('#previous_mangani_panniyojana_tax').val(malmatta_info
+                                        .previous_water_tax || '0.00');
+                                    $('#current_mangani_padsar_tax').val(malmatta_info
+                                        .padsar_tax || '0.00');
+                                    $('#current_mangani_dand_tax').val(malmatta_info.dand_tax ||
+                                        '0.00');
+                                    $('#previous_mangani_dand_tax').val(malmatta_info
+                                        .previous_fine || '0.00');
+                                    $('#previous_mangani_padsar_tax').val(malmatta_info
+                                        .previous_padsar_tax || '0.00');
+                                    $('#current_mangani_sut_tax').val(malmatta_info.sut_tax ||
+                                        '0.00');
+                                    $('#current_mangani_total_tax').val(malmatta_info
+                                        .total_tax || '0.00');
+                                    $('#previous_mangani_total_tax').val(malmatta_info
+                                        .previous_total_amount || '0.00');
+                                    calculateTaxTotals();
+                                } else {
+                                    $('#not_available').show();
+                                    setTimeout(function() {
+                                        $('#not_available').hide();
+                                    }, 5000);
+                                }
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("AJAX Error: " + status + " - " + error);
+                        }
+                    });
+                } else {
+                    // Reset fields if no property selected
+                    $('#ward_kramanak').val('');
+                    $('#kar_denaryache_nav').empty().append('<option value="">--निवडा--</option>');
+                }
+            });
+        });
+        // Add this function to calculate totals
+        function calculateTaxTotals() {
+            // Calculate for Mangani (Demand) section
+            const prevBuilding = parseFloat($('#previous_mangani_building_tax').val()) || 0;
+            const currBuilding = parseFloat($('#current_mangani_building_tax').val()) || 0;
+            $('#total_mangani_building_tax').val((prevBuilding + currBuilding).toFixed(2));
+
+            const prevHealth = parseFloat($('#previous_mangani_health_tax').val()) || 0;
+            const currHealth = parseFloat($('#current_mangani_health_tax').val()) || 0;
+            $('#total_mangani_health_tax').val((prevHealth + currHealth).toFixed(2));
+
+            const prevLight = parseFloat($('#previous_mangani_divabatti_tax').val()) || 0;
+            const currLight = parseFloat($('#current_mangani_divabatti_tax').val()) || 0;
+            $('#total_mangani_divabatti_tax').val((prevLight + currLight).toFixed(2));
+
+            const prevWater = parseFloat($('#previous_mangani_panniyojana_tax').val()) || 0;
+            const currWater = parseFloat($('#current_mangani_panniyojana_tax').val()) || 0;
+            $('#total_mangani_panniyojana_tax').val((prevWater + currWater).toFixed(2));
+
+            const prevPadsar = parseFloat($('#previous_mangani_padsar_tax').val()) || 0;
+            const currPadsar = parseFloat($('#current_mangani_padsar_tax').val()) || 0;
+            $('#total_mangani_padsar_tax').val((prevPadsar + currPadsar).toFixed(2));
+
+            const prevDand = parseFloat($('#previous_mangani_dand_tax').val()) || 0;
+            const currDand = parseFloat($('#current_mangani_dand_tax').val()) || 0;
+            $('#total_mangani_dand_tax').val((prevDand + currDand).toFixed(2));
+
+            const prevSut = parseFloat($('#previous_mangani_sut_tax').val()) || 0;
+            const currSut = parseFloat($('#current_mangani_sut_tax').val()) || 0;
+            $('#total_mangani_sut_tax').val((prevSut + currSut).toFixed(2));
+
+            $('#current_mangani_total_tax').val(
+                (currBuilding + currHealth +
+                    currLight + currWater +
+                    currPadsar + currDand +
+                    currSut).toFixed(2)
+            );
+
+            $("#previous_mangani_total_tax").val(
+                (prevBuilding + prevHealth +
+                    prevLight + prevWater +
+                    prevPadsar + prevDand +
+                    prevSut).toFixed(2)
+            );
+            // Calculate grand total for Mangani
+            const manganiTotal = (prevBuilding + currBuilding + prevHealth + currHealth +
+                prevLight + currLight + prevWater + currWater +
+                prevPadsar + currPadsar + prevDand + currDand +
+                prevSut + currSut).toFixed(2);
+            $('#total_mangani_total_tax').val(manganiTotal);
+
+            // Calculate for Vasul (Collection) section
+            const prevVasulBuilding = parseFloat($('#previous_vasul_building_tax').val()) || 0;
+            const currVasulBuilding = parseFloat($('#current_vasul_building_tax').val()) || 0;
+            $('#total_vasul_building_tax').val((prevVasulBuilding + currVasulBuilding).toFixed(2));
+
+            const prevVasulHealth = parseFloat($('#previous_vasul_health_tax').val()) || 0;
+            const currVasulHealth = parseFloat($('#current_vasul_health_tax').val()) || 0;
+            $('#total_vasul_health_tax').val((prevVasulHealth + currVasulHealth).toFixed(2));
+
+            const prevVasulLight = parseFloat($('#previous_vasul_divabatti_tax').val()) || 0;
+            const currVasulLight = parseFloat($('#current_vasul_divabatti_tax').val()) || 0;
+            $('#total_vasul_divabatti_tax').val((prevVasulLight + currVasulLight).toFixed(2));
+
+            const prevVasulWater = parseFloat($('#previous_vasul_panniyojana_tax').val()) || 0;
+            const currVasulWater = parseFloat($('#current_vasul_panniyojana_tax').val()) || 0;
+            $('#total_vasul_panniyojana_tax').val((prevVasulWater + currVasulWater).toFixed(2));
+
+            const prevVasulPadsar = parseFloat($('#previous_vasul_padsar_tax').val()) || 0;
+            const currVasulPadsar = parseFloat($('#current_vasul_padsar_tax').val()) || 0;
+            $('#total_vasul_padsar_tax').val((prevVasulPadsar + currVasulPadsar).toFixed(2));
+
+            const prevVasulDand = parseFloat($('#previous_vasul_dand_tax').val()) || 0;
+            const currVasulDand = parseFloat($('#current_vasul_dand_tax').val()) || 0;
+            $('#total_vasul_dand_tax').val((prevVasulDand + currVasulDand).toFixed(2));
+
+            const prevVasulSut = parseFloat($('#previous_vasul_sut_tax').val()) || 0;
+            const currVasulSut = parseFloat($('#current_vasul_sut_tax').val()) || 0;
+            $('#total_vasul_sut_tax').val((prevVasulSut + currVasulSut).toFixed(2));
+
+            // Calculate grand total for Vasul
+            const vasulTotal = (prevVasulBuilding + currVasulBuilding + prevVasulHealth + currVasulHealth +
+                prevVasulLight + currVasulLight + prevVasulWater + currVasulWater +
+                prevVasulPadsar + currVasulPadsar + prevVasulDand + currVasulDand +
+                prevVasulSut + currVasulSut).toFixed(2);
+            $('#total_vasul_total_tax').val(vasulTotal);
+        }
+
+        // Add event listeners to all input fields that should trigger calculations
+        function setupCalculationListeners() {
+            // Mangani (Demand) inputs
+            $('#previous_mangani_building_tax, #current_mangani_building_tax').on('input', calculateTaxTotals);
+            $('#previous_mangani_health_tax, #current_mangani_health_tax').on('input', calculateTaxTotals);
+            $('#previous_mangani_divabatti_tax, #current_mangani_divabatti_tax').on('input', calculateTaxTotals);
+            $('#previous_mangani_panniyojana_tax, #current_mangani_panniyojana_tax').on('input', calculateTaxTotals);
+            $('#previous_mangani_padsar_tax, #current_mangani_padsar_tax').on('input', calculateTaxTotals);
+            $('#previous_mangani_dand_tax, #current_mangani_dand_tax').on('input', calculateTaxTotals);
+            $('#previous_mangani_sut_tax, #current_mangani_sut_tax').on('input', calculateTaxTotals);
+
+            // Vasul (Collection) inputs
+            $('#previous_vasul_building_tax, #current_vasul_building_tax').on('input', calculateTaxTotals);
+            $('#previous_vasul_health_tax, #current_vasul_health_tax').on('input', calculateTaxTotals);
+            $('#previous_vasul_divabatti_tax, #current_vasul_divabatti_tax').on('input', calculateTaxTotals);
+            $('#previous_vasul_panniyojana_tax, #current_vasul_panniyojana_tax').on('input', calculateTaxTotals);
+            $('#previous_vasul_padsar_tax, #current_vasul_padsar_tax').on('input', calculateTaxTotals);
+            $('#previous_vasul_dand_tax, #current_vasul_dand_tax').on('input', calculateTaxTotals);
+            $('#previous_vasul_sut_tax, #current_vasul_sut_tax').on('input', calculateTaxTotals);
+        }
+
+        function populateCurrentVasuli() {
+            $('#current_vasul_building_tax').val(`${$('#current_mangani_building_tax').val()}`);
+
+
+            $('#current_vasul_health_tax').val($('#current_mangani_health_tax').val());
+            $('#current_vasul_divabatti_tax').val($('#current_mangani_divabatti_tax').val());
+            $('#current_vasul_panniyojana_tax').val($('#current_mangani_panniyojana_tax').val());
+            $('#current_vasul_padsar_tax').val($('#current_mangani_padsar_tax').val());
+            $('#current_vasul_dand_tax').val($('#current_mangani_dand_tax').val());
+            $('#current_vasul_sut_tax').val($('#current_mangani_sut_tax').val());
+            $('#current_vasul_total_tax').val($('#current_mangani_total_tax').val());
+        }
+
+        function resetCurrentVasuli() {
+            $('#current_vasul_building_tax').val('0.00');
+            $('#current_vasul_health_tax').val('0.00');
+            $('#current_vasul_divabatti_tax').val('0.00');
+            $('#current_vasul_panniyojana_tax').val('0.00');
+            $('#current_vasul_padsar_tax').val('0.00');
+            $('#current_vasul_dand_tax').val('0.00');
+            $('#current_vasul_sut_tax').val('0.00');
+            $('#current_vasul_total_tax').val('0.00');
+        }
+
+        function populatePreviousVasuli() {
+            $('#previous_vasul_building_tax').val($('#previous_mangani_building_tax').val());
+
+            $('#previous_vasul_health_tax').val($('#previous_mangani_health_tax').val());
+            $('#previous_vasul_divabatti_tax').val($('#previous_mangani_divabatti_tax').val());
+            $('#previous_vasul_panniyojana_tax').val($('#previous_mangani_panniyojana_tax').val());
+            $('#previous_vasul_padsar_tax').val($('#previous_mangani_padsar_tax').val());
+            $('#previous_vasul_dand_tax').val($('#previous_mangani_dand_tax').val());
+            $('#previous_vasul_sut_tax').val($('#previous_mangani_sut_tax').val());
+            $('#previous_vasul_total_tax').val($('#previous_mangani_total_tax').val());
+        }
+
+        function resetPreviousVasuli() {
+            $('#previous_vasul_building_tax').val('000');
+            $('#previous_vasul_health_tax').val('0.00');
+            $('#previous_vasul_divabatti_tax').val('0.00');
+            $('#previous_vasul_panniyojana_tax').val('0.00');
+            $('#previous_vasul_padsar_tax').val('0.00');
+            $('#previous_vasul_dand_tax').val('0.00');
+            $('#previous_vasul_sut_tax').val('0.00');
+            $('#previous_vasul_total_tax').val('0.00');
+        }
+        // Call this function in your document ready
+
+        $(document).ready(function() {
+            // When malmatta_kramanak is changed
+            $("#not_available").hide();
+            // Setup calculation listeners
+            setupCalculationListeners();
+
+            // Initial calculation
+            calculateTaxTotals();
+
+            // popuilate inputs according to the radio button selection
+            $('input[name="full"]').on('change', ((elem) => {
+                console.log(elem.target.id);
+
+                if (event.target.id === "fullItem") {
+                    // Logic for full item
+                    populateCurrentVasuli();
+                    populatePreviousVasuli();
+
+                } else if (event.target.id === "fullDemand") {
+                    // Logic for full demand
+                    resetCurrentVasuli();
+                    populatePreviousVasuli();
+
+                } else if (event.target.id === "fullCurrent") {
+                    // Logic for full current
+                    resetPreviousVasuli();
+                    populateCurrentVasuli();
+
+                }
+                calculateTaxTotals();
+
+            }));
+
+            // Function to populate book and receipt dropdowns
+            function populateBookReceiptDropdowns() {
                 $.ajax({
-                    url: 'api/getPropertyDetails.php', // Create this file
-                    type: 'POST',
-                    data: {
-                        malmatta_id: malmattaId
-                    },
+                    url: 'api/get_book_receipt_numbers.php',
+                    type: 'GET',
                     dataType: 'json',
                     success: function(data) {
                         if (data.success) {
-                            // Update ward number
-                            console.log(data);
-                            const malmatta_info = data.data.malmatta_info;
-                            $('#ward_kramanak').val(data.data.ward_no);
-                            $('#ward_kramanak').attr('readonly', true);
-                            // Update owner name dropdown
-                            $('#kar_denaryache_nav').empty();
-                            $('#kar_denaryache_nav').attr('readonly', true);
-                            if (data.data.owner_name) {
-                                $('#kar_denaryache_nav').append('<option value="' + data
-                                    .data.owner_name + '">' + data.data.owner_name +
-                                    '</option>');
-                            } else {
-                                $('#kar_denaryache_nav').append(
+                            // Populate pustak_kramanak (x values)
+                            $('#pustak_kramanak').empty();
+                            $('#pustak_kramanak').append('<option value="">--निवडा--</option>');
+                            data.books.forEach(function(book) {
+                                $('#pustak_kramanak').append('<option value="' + book.x + '">' +
+                                    book.x + '</option>');
+                            });
+
+                            // When pustak_kramanak changes, populate pavati_kramanak (y values)
+                            $('#pustak_kramanak').change(function() {
+                                var selectedX = $(this).val();
+                                $('#pavati_kramanak').empty();
+                                $('#pavati_kramanak').append(
                                     '<option value="">--निवडा--</option>');
-                            }
-                            if (malmatta_info.malmatta_id) {
-                                $("#previous_mangani_building_tax").val(malmatta_info
-                                    .previous_building_tax || '0.00');
-                                $('#current_mangani_building_tax').val(malmatta_info
-                                    .building_tax || '0.00');
-                                $('#previous_mangani_health_tax').val(malmatta_info
-                                    .previous_health_tax || '0.00');
-                                $('#current_mangani_health_tax').val(malmatta_info
-                                    .health_tax || '0.00');
-                                $('#current_mangani_divabatti_tax').val(malmatta_info
-                                    .light_tax || '0.00');
-                                $('#previous_mangani_divabatti_tax').val(malmatta_info
-                                    .previous_light_tax || '0.00');
-                                $('#current_mangani_panniyojana_tax').val(malmatta_info
-                                    .water_tax || '0.00');
-                                $('#previous_mangani_panniyojana_tax').val(malmatta_info
-                                    .previous_water_tax || '0.00');
-                                $('#current_mangani_padsar_tax').val(malmatta_info
-                                    .padsar_tax || '0.00');
-                                $('#current_mangani_dand_tax').val(malmatta_info.dand_tax ||
-                                    '0.00');
-                                $('#previous_mangani_dand_tax').val(malmatta_info
-                                    .previous_fine || '0.00');
-                                $('#previous_mangani_padsar_tax').val(malmatta_info
-                                    .previous_padsar_tax || '0.00');
-                                $('#current_mangani_sut_tax').val(malmatta_info.sut_tax ||
-                                    '0.00');
-                                $('#current_mangani_total_tax').val(malmatta_info
-                                    .total_tax || '0.00');
-                                $('#previous_mangani_total_tax').val(malmatta_info
-                                    .previous_total_amount || '0.00');
-                                calculateTaxTotals();
-                            } else {
-                                $('#not_available').show();
-                                setTimeout(function() {
-                                    $('#not_available').hide();
-                                }, 5000);
-                            }
+
+                                if (selectedX) {
+                                    console.log(selectedX);
+
+                                    var selectedBook = data.books.find(book => book.x ==
+                                        selectedX);
+                                    console.log(selectedBook);
+                                    if (selectedBook) {
+                                        for (let y = 1; y <= selectedBook.max_y; y++) {
+                                            $('#pavati_kramanak').append('<option value="' + y +
+                                                '">' + y + '</option>');
+                                        }
+                                    }
+                                }
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
                         console.error("AJAX Error: " + status + " - " + error);
                     }
                 });
-            } else {
-                // Reset fields if no property selected
-                $('#ward_kramanak').val('');
-                $('#kar_denaryache_nav').empty().append('<option value="">--निवडा--</option>');
             }
-        });
-    });
-    // Add this function to calculate totals
-    function calculateTaxTotals() {
-        // Calculate for Mangani (Demand) section
-        const prevBuilding = parseFloat($('#previous_mangani_building_tax').val()) || 0;
-        const currBuilding = parseFloat($('#current_mangani_building_tax').val()) || 0;
-        $('#total_mangani_building_tax').val((prevBuilding + currBuilding).toFixed(2));
 
-        const prevHealth = parseFloat($('#previous_mangani_health_tax').val()) || 0;
-        const currHealth = parseFloat($('#current_mangani_health_tax').val()) || 0;
-        $('#total_mangani_health_tax').val((prevHealth + currHealth).toFixed(2));
+            // Call the function on page load
+            populateBookReceiptDropdowns();
 
-        const prevLight = parseFloat($('#previous_mangani_divabatti_tax').val()) || 0;
-        const currLight = parseFloat($('#current_mangani_divabatti_tax').val()) || 0;
-        $('#total_mangani_divabatti_tax').val((prevLight + currLight).toFixed(2));
-
-        const prevWater = parseFloat($('#previous_mangani_panniyojana_tax').val()) || 0;
-        const currWater = parseFloat($('#current_mangani_panniyojana_tax').val()) || 0;
-        $('#total_mangani_panniyojana_tax').val((prevWater + currWater).toFixed(2));
-
-        const prevPadsar = parseFloat($('#previous_mangani_padsar_tax').val()) || 0;
-        const currPadsar = parseFloat($('#current_mangani_padsar_tax').val()) || 0;
-        $('#total_mangani_padsar_tax').val((prevPadsar + currPadsar).toFixed(2));
-
-        const prevDand = parseFloat($('#previous_mangani_dand_tax').val()) || 0;
-        const currDand = parseFloat($('#current_mangani_dand_tax').val()) || 0;
-        $('#total_mangani_dand_tax').val((prevDand + currDand).toFixed(2));
-
-        const prevSut = parseFloat($('#previous_mangani_sut_tax').val()) || 0;
-        const currSut = parseFloat($('#current_mangani_sut_tax').val()) || 0;
-        $('#total_mangani_sut_tax').val((prevSut + currSut).toFixed(2));
-
-        $('#current_mangani_total_tax').val(
-            (currBuilding + currHealth +
-                currLight + currWater +
-                currPadsar + currDand +
-                currSut).toFixed(2)
-        );
-
-        $("#previous_mangani_total_tax").val(
-            (prevBuilding + prevHealth +
-                prevLight + prevWater +
-                prevPadsar + prevDand +
-                prevSut).toFixed(2)
-        );
-        // Calculate grand total for Mangani
-        const manganiTotal = (prevBuilding + currBuilding + prevHealth + currHealth +
-            prevLight + currLight + prevWater + currWater +
-            prevPadsar + currPadsar + prevDand + currDand +
-            prevSut + currSut).toFixed(2);
-        $('#total_mangani_total_tax').val(manganiTotal);
-
-        // Calculate for Vasul (Collection) section
-        const prevVasulBuilding = parseFloat($('#previous_vasul_building_tax').val()) || 0;
-        const currVasulBuilding = parseFloat($('#current_vasul_building_tax').val()) || 0;
-        $('#total_vasul_building_tax').val((prevVasulBuilding + currVasulBuilding).toFixed(2));
-
-        const prevVasulHealth = parseFloat($('#previous_vasul_health_tax').val()) || 0;
-        const currVasulHealth = parseFloat($('#current_vasul_health_tax').val()) || 0;
-        $('#total_vasul_health_tax').val((prevVasulHealth + currVasulHealth).toFixed(2));
-
-        const prevVasulLight = parseFloat($('#previous_vasul_divabatti_tax').val()) || 0;
-        const currVasulLight = parseFloat($('#current_vasul_divabatti_tax').val()) || 0;
-        $('#total_vasul_divabatti_tax').val((prevVasulLight + currVasulLight).toFixed(2));
-
-        const prevVasulWater = parseFloat($('#previous_vasul_panniyojana_tax').val()) || 0;
-        const currVasulWater = parseFloat($('#current_vasul_panniyojana_tax').val()) || 0;
-        $('#total_vasul_panniyojana_tax').val((prevVasulWater + currVasulWater).toFixed(2));
-
-        const prevVasulPadsar = parseFloat($('#previous_vasul_padsar_tax').val()) || 0;
-        const currVasulPadsar = parseFloat($('#current_vasul_padsar_tax').val()) || 0;
-        $('#total_vasul_padsar_tax').val((prevVasulPadsar + currVasulPadsar).toFixed(2));
-
-        const prevVasulDand = parseFloat($('#previous_vasul_dand_tax').val()) || 0;
-        const currVasulDand = parseFloat($('#current_vasul_dand_tax').val()) || 0;
-        $('#total_vasul_dand_tax').val((prevVasulDand + currVasulDand).toFixed(2));
-
-        const prevVasulSut = parseFloat($('#previous_vasul_sut_tax').val()) || 0;
-        const currVasulSut = parseFloat($('#current_vasul_sut_tax').val()) || 0;
-        $('#total_vasul_sut_tax').val((prevVasulSut + currVasulSut).toFixed(2));
-
-        // Calculate grand total for Vasul
-        const vasulTotal = (prevVasulBuilding + currVasulBuilding + prevVasulHealth + currVasulHealth +
-            prevVasulLight + currVasulLight + prevVasulWater + currVasulWater +
-            prevVasulPadsar + currVasulPadsar + prevVasulDand + currVasulDand +
-            prevVasulSut + currVasulSut).toFixed(2);
-        $('#total_vasul_total_tax').val(vasulTotal);
-    }
-
-    // Add event listeners to all input fields that should trigger calculations
-    function setupCalculationListeners() {
-        // Mangani (Demand) inputs
-        $('#previous_mangani_building_tax, #current_mangani_building_tax').on('input', calculateTaxTotals);
-        $('#previous_mangani_health_tax, #current_mangani_health_tax').on('input', calculateTaxTotals);
-        $('#previous_mangani_divabatti_tax, #current_mangani_divabatti_tax').on('input', calculateTaxTotals);
-        $('#previous_mangani_panniyojana_tax, #current_mangani_panniyojana_tax').on('input', calculateTaxTotals);
-        $('#previous_mangani_padsar_tax, #current_mangani_padsar_tax').on('input', calculateTaxTotals);
-        $('#previous_mangani_dand_tax, #current_mangani_dand_tax').on('input', calculateTaxTotals);
-        $('#previous_mangani_sut_tax, #current_mangani_sut_tax').on('input', calculateTaxTotals);
-
-        // Vasul (Collection) inputs
-        $('#previous_vasul_building_tax, #current_vasul_building_tax').on('input', calculateTaxTotals);
-        $('#previous_vasul_health_tax, #current_vasul_health_tax').on('input', calculateTaxTotals);
-        $('#previous_vasul_divabatti_tax, #current_vasul_divabatti_tax').on('input', calculateTaxTotals);
-        $('#previous_vasul_panniyojana_tax, #current_vasul_panniyojana_tax').on('input', calculateTaxTotals);
-        $('#previous_vasul_padsar_tax, #current_vasul_padsar_tax').on('input', calculateTaxTotals);
-        $('#previous_vasul_dand_tax, #current_vasul_dand_tax').on('input', calculateTaxTotals);
-        $('#previous_vasul_sut_tax, #current_vasul_sut_tax').on('input', calculateTaxTotals);
-    }
-
-    function populateCurrentVasuli() {
-        $('#current_vasul_building_tax').val(`${$('#current_mangani_building_tax').val()}`);
-
-
-        $('#current_vasul_health_tax').val($('#current_mangani_health_tax').val());
-        $('#current_vasul_divabatti_tax').val($('#current_mangani_divabatti_tax').val());
-        $('#current_vasul_panniyojana_tax').val($('#current_mangani_panniyojana_tax').val());
-        $('#current_vasul_padsar_tax').val($('#current_mangani_padsar_tax').val());
-        $('#current_vasul_dand_tax').val($('#current_mangani_dand_tax').val());
-        $('#current_vasul_sut_tax').val($('#current_mangani_sut_tax').val());
-        $('#current_vasul_total_tax').val($('#current_mangani_total_tax').val());
-    }
-
-    function resetCurrentVasuli() {
-        $('#current_vasul_building_tax').val('0.00');
-        $('#current_vasul_health_tax').val('0.00');
-        $('#current_vasul_divabatti_tax').val('0.00');
-        $('#current_vasul_panniyojana_tax').val('0.00');
-        $('#current_vasul_padsar_tax').val('0.00');
-        $('#current_vasul_dand_tax').val('0.00');
-        $('#current_vasul_sut_tax').val('0.00');
-        $('#current_vasul_total_tax').val('0.00');
-    }
-
-    function populatePreviousVasuli() {
-        $('#previous_vasul_building_tax').val($('#previous_mangani_building_tax').val());
-
-        $('#previous_vasul_health_tax').val($('#previous_mangani_health_tax').val());
-        $('#previous_vasul_divabatti_tax').val($('#previous_mangani_divabatti_tax').val());
-        $('#previous_vasul_panniyojana_tax').val($('#previous_mangani_panniyojana_tax').val());
-        $('#previous_vasul_padsar_tax').val($('#previous_mangani_padsar_tax').val());
-        $('#previous_vasul_dand_tax').val($('#previous_mangani_dand_tax').val());
-        $('#previous_vasul_sut_tax').val($('#previous_mangani_sut_tax').val());
-        $('#previous_vasul_total_tax').val($('#previous_mangani_total_tax').val());
-    }
-
-    function resetPreviousVasuli() {
-        $('#previous_vasul_building_tax').val('000');
-        $('#previous_vasul_health_tax').val('0.00');
-        $('#previous_vasul_divabatti_tax').val('0.00');
-        $('#previous_vasul_panniyojana_tax').val('0.00');
-        $('#previous_vasul_padsar_tax').val('0.00');
-        $('#previous_vasul_dand_tax').val('0.00');
-        $('#previous_vasul_sut_tax').val('0.00');
-        $('#previous_vasul_total_tax').val('0.00');
-    }
-    // Call this function in your document ready
-
-    $(document).ready(function() {
-        // When malmatta_kramanak is changed
-        $("#not_available").hide();
-        // Setup calculation listeners
-        setupCalculationListeners();
-
-        // Initial calculation
-        calculateTaxTotals();
-
-        // popuilate inputs according to the radio button selection
-        $('input[name="full"]').on('change', ((elem) => {
-            console.log(elem.target.id);
-
-            if (event.target.id === "fullItem") {
-                // Logic for full item
-                populateCurrentVasuli();
-                populatePreviousVasuli();
-
-            } else if (event.target.id === "fullDemand") {
-                // Logic for full demand
-                resetCurrentVasuli();
-                populatePreviousVasuli();
-
-            } else if (event.target.id === "fullCurrent") {
-                // Logic for full current
-                resetPreviousVasuli();
-                populateCurrentVasuli();
-
-            }
-            calculateTaxTotals();
-
-        }));
-
-        // Function to populate book and receipt dropdowns
-        function populateBookReceiptDropdowns() {
-            $.ajax({
-                url: 'api/get_book_receipt_numbers.php',
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    if (data.success) {
-                        // Populate pustak_kramanak (x values)
-                        $('#pustak_kramanak').empty();
-                        $('#pustak_kramanak').append('<option value="">--निवडा--</option>');
-                        data.books.forEach(function(book) {
-                            $('#pustak_kramanak').append('<option value="' + book.x + '">' +
-                                book.x + '</option>');
-                        });
-
-                        // When pustak_kramanak changes, populate pavati_kramanak (y values)
-                        $('#pustak_kramanak').change(function() {
-                            var selectedX = $(this).val();
-                            $('#pavati_kramanak').empty();
-                            $('#pavati_kramanak').append(
-                                '<option value="">--निवडा--</option>');
-
-                            if (selectedX) {
-                                console.log(selectedX);
-
-                                var selectedBook = data.books.find(book => book.x ==
-                                    selectedX);
-                                console.log(selectedBook);
-                                if (selectedBook) {
-                                    for (let y = 1; y <= selectedBook.max_y; y++) {
-                                        $('#pavati_kramanak').append('<option value="' + y +
-                                            '">' + y + '</option>');
-                                    }
-                                }
-                            }
-                        });
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: " + status + " - " + error);
-                }
+            // Rest of your existing code...
+            $('#malamatta_kramanak').change(function() {
+                // Your existing malmatta change handler
             });
-        }
-
-        // Call the function on page load
-        populateBookReceiptDropdowns();
-
-        // Rest of your existing code...
-        $('#malamatta_kramanak').change(function() {
-            // Your existing malmatta change handler
         });
-    });
     </script>
 
 </body>
