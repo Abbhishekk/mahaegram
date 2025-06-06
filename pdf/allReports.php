@@ -10,13 +10,14 @@ $fun = new Fun($connect->dbConnect());
 // Get parameters from URL
 $financial_year = $_GET['financial_year'] ?? '';
 $revenue_village = $_GET['revenue_village'] ?? '';
-$ward = $_GET['ward'] ?? '';
-$malmatta_id = $_GET['malmatta_id'] ?? '';
+$ward = $_GET['ward'] ?? null;
+$malmatta_id = $_GET['malmatta_id'] ?? null;
+$road = $_GET['road'] ?? null;
 $bill_area = $_GET['bill_area'] ?? 'gramnidhi';
 $bill_type = $_GET['bill_type'] ?? 'complete';
 $date = $_GET['date'] ?? date('Y-m-d');
 // Fetch data based on parameters
-$taxDemands = $fun->getTaxDemandsWithFilters($revenue_village, $financial_year, $ward, $malmatta_id);
+$taxDemands = $fun->getTaxDemandsWithFilters($revenue_village, $financial_year, $ward, $malmatta_id, $road);
 // print_r($taxDemands);
 $taxReportsArray = array();
 if (mysqli_num_rows($taxDemands) == 0) {

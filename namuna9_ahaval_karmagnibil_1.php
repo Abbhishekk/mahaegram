@@ -239,6 +239,7 @@ $roads = $fun->getRoad($_SESSION['district_code']);
                 const financial_year = $('#financial_year').val();
                 const ward = $('#ward').val() || null;
                 const malmatta_id = $('#malmatta_id').val() || null;
+                const road = $('#road').val() || null;
                 const bill_area = $('input[name="bill_area"]:checked').val();
                 const bill_type = $('input[name="bill_type"]:checked').val();
                 const date = $('#date').val();
@@ -272,6 +273,7 @@ $roads = $fun->getRoad($_SESSION['district_code']);
                 if (malmatta_id) url += `&malmatta_id=${malmatta_id}`;
                 if (bill_area) url += `&bill_area=${bill_area}`;
                 if (bill_type) url += `&bill_type=${bill_type}`;
+                if (road) url += `&road=${road}`;
 
                 // Open in new window for printing
                 const res = await fetch(

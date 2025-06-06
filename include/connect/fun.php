@@ -4026,7 +4026,7 @@ class Fun
         $stmt->execute();
         return $stmt->get_result();
     }
-    public function getTaxDemandsWithFilters($village_name = null, $financial_year = null, $ward_name = null, $malmatta_no = null)
+    public function getTaxDemandsWithFilters($village_name = null, $financial_year = null, $ward_name = null, $malmatta_no = null, $road = null)
     {
         $sql = 'SELECT 
             nn1.person_name as "owner_name",
@@ -4093,9 +4093,16 @@ class Fun
             $types .= "s";
             $params[] = $malmatta_no;
         }
+        if (!empty($road)) {
+            $sql .= " AND mde.road_name = ?";
+            $types .= "s";
+            $params[] = $road;
+        }
         $sql .= " ORDER BY mde.village_name, mde.ward_no, mde.malmatta_no";
         $stmt = $this->db->prepare($sql);
-
+        // echo $sql . "<br>";
+        // echo $types . "<br>";
+        // echo implode(", ", $params) . "<br>";
         $stmt->bind_param($types, ...$params);
         $stmt->execute();
         return $stmt->get_result();
@@ -4272,4 +4279,5 @@ class Fun
         $stmt->execute();
         return $stmt->get_result();
     }
+
 }
