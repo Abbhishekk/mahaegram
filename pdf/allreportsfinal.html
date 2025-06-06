@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <title>करांची मागणी पावती</title>
+  <style>
+    body {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      margin: 20px;
+    }
+    .receipt-box {
+      border: 2px solid black;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    caption {
+      caption-side: top;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 6px;
+      text-align: center;
+    }
+    .header {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+    .info-table td {
+      border: none;
+      padding: 5px;
+      text-align: left;
+    }
+    .section {
+      margin-top: 20px;
+    }
+    .footer-table {
+      width: 100%;
+      border: 1px solid black;
+      margin-top: 30px;
+    }
+    .footer-table td {
+      
+      vertical-align: top;
+      border: 1px solid black;
+      padding: 10px;
+    }
+    .footer-table .full {
+      padding: 10px;
+      text-align: left;
+    }
+    .dashed-border {
+      border-top: 2px dashed black;
+      margin-top: 20px;
+    }
+    @media screen and (max-width: 600px) {
+      .info-table, .footer-table, table {
+        font-size: 16px;
+      }
+      th, td {
+        padding: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt-box">
+    <div class="header">
+      नमुना ९ (क) नियम ३२(५) पाहा<br>
+      करांची मागणी पावती
+    </div>
+
+    <p>श्री. श्री. <?php echo $client_name; ?> यांच्याकडून पुढील करांची रक्कम वसुलीयोग्य आहे.</p>
+
+    <table class="info-table">
+      <tr>
+        <td><strong>आर्थिक वर्ष :</strong> <?php echo $financial_year; ?></td>
+        <td><strong>वॉर्ड :</strong> <?php echo $ward; ?></td>
+        <td><strong>तालुका :</strong> <?php echo $taluka; ?></td>
+      </tr>
+      <tr>
+        <td><strong>ग्रामपंचायत :</strong> <?php echo $gram_panchayat; ?></td>
+        <td><strong>जिल्हा :</strong> <?php echo $district; ?></td>
+        <td><strong>मिळकत क्रमांक:</strong> <?php echo $property_no; ?></td>
+      </tr>
+      <tr>
+        <td colspan="3"><strong>बिल नंबर:</strong> <?php echo $bill_no; ?></td>
+      </tr>
+    </table>
+
+    <table>
+      
+      <thead>
+        <tr>
+          <th rowspan="2">कराचे नाव</th>
+          <th colspan="3">वसूल पात्र रकमा</th>
+        </tr>
+        <tr>
+          <th>मागील</th>
+          <th>चालू</th>
+          <th>एकूण</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="text-align: left;">(१)घरपट्टी/खुली जागा/इतर</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">(२)दिवाबत्ती कर</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">(३)आरोग्य कर</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">(४)सामान्य पाणीपट्टी कर</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">(५)खुली जागा/इतर</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">(६)दंड रक्कम</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">(७)वॉरंट फी</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><th style="text-align: left;">एकूण</th><th>0</th><th>0</th><th>0</th></tr>
+      </tbody>
+    </table>
+
+    <table class="footer-table">
+      <tr>
+        <td colspan="4" style=" text-align:left;">दिनांक व वेळ :</td>
+      </tr>
+      <tr>
+        <td colspan="2" style="border:2px solid black; height: 10px;text-align: left;color: red; font-weight: bolder;">
+          X
+        </td>
+        <td colspan="2"style="border:2px solid black; height: 10px;text-align: left;color: red; font-weight: bolder;">
+          X
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"style="width: 50%; padding:2px; text-align: left;vertical-align: bottom;border-bottom: none;border-right: none;">
+          <strong>ग्रामसेवक / ग्रामविकास अधिकारी</strong>
+        </td>
+        <td colspan="2"style="width: 50%; padding:2px; text-align: left;vertical-align: bottom;border-bottom: none;border-left: none;">
+          <strong>सरपंच</strong>
+        </td>
+      </tr>
+      <tr>
+          <td colspan="4" style=" font-size:14px; text-align:left;border-top: none;">
+              १) हे बिल आपल्यास प्राप्त झाल्यापासून देय रकमेचा भरणा १५ दिवसांचे आत करावा.
+          अन्यथा ग्रामपंचायत अधिनियमाच्या कलम क्र. ११९(२) <br>अन्वये आपल्यावर मागणी बजावण्यात येईल.
+          २) ३१/०३/२०२४ पूर्वी कर न भरल्यास घरपट्टी थकबाकीवर ५०% दंड आकारण्यात येईल.<br>
+          ३) ३० सप्टेंबर पर्यंत सूट देऊन {}{रक्कम} रकमेचा भरणा कराचा आहे.
+          </td>
+      </tr>
+      <tr>
+        <td colspan="3" style="text-align:left;"class="">
+          <strong>टीप :(१) या पावतीचा नमुना कार्बन प्रतीलीपी असावा.<br> (२) नमुने देण्यात येतील तेव्हा त्यावर पुस्तकांचे क्रमांक छापलेले असावे.</strong> 
+        </td>
+        <td colspan="1"style="border:2px solid black;"></td>
+      </tr>
+    </table>
+
+    <div class="dashed-border"></div>
+    <table>
+  <caption>थकबाकी यादी - ग्रामपंचायत धामणेर, तालुका कोरेगाव, जिल्हा सातारा</caption>
+  <thead>
+    <tr><th colspan="2">एकूण कर मागणी बिल संख्या  </th><th colspan="2">1 </th></tr>
+    <tr><th ></th><th>एकूण मागील  </th><th>एकूण चालू </th><th>एकूण  </th></tr>
+  </thead>
+  <tbody>
+    <tr><td style="text-align: left;">(१)घरपट्टी/खुली जागा/इतर  </td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td style="text-align: left;">(२)दिवाबत्ती कर   </td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td style="text-align: left;">(३)आरोग्य कर</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td style="text-align: left;"> (४)सामान्य पाणीपट्टी कर </td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td style="text-align: left;">(५)खुली जागा/इतर </td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td style="text-align: left;">(६)दंड रक्कम   </td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td style="text-align: left;">(७)वॉरंट फी </td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><th style="text-align: left;">एकूण </th><th>0</th><th>0</th><th>0</th></tr>
+    <!-- Add more rows as needed -->
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

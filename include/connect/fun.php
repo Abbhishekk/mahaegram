@@ -38,7 +38,7 @@ class Fun
     {
         $this->db = $con;
 
-        $this->milkatObject =  [
+        $this->milkatObject = [
             "आर सी सी पद्धतीचे बांधकाम" => "rcc",
             "इतर पक्के घर (दगड विटांचे चुना किंवा सिमेंटचे घर)" => "itar_pakke_ghar",
             "अर्ध पक्के घर (दगड विटांचे मातीचे घर)" => "ardha_pakke_ghar",
@@ -53,7 +53,7 @@ class Fun
     public function login($username, $password)
     {
 
-        $query    = "SELECT * FROM `user` WHERE `userid`='$username' AND `pass` = '$password'";
+        $query = "SELECT * FROM `user` WHERE `userid`='$username' AND `pass` = '$password'";
         $result = mysqli_query($this->db, $query);
 
 
@@ -289,7 +289,7 @@ class Fun
             LIMIT 1";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("ss", $reason_id,  $current_date);
+        $stmt->bind_param("ss", $reason_id, $current_date);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -545,22 +545,24 @@ class Fun
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->db->prepare($sql);
-        if ($stmt->execute([
-            $data['period'],
-            $data['revenue_village'],
-            $data['road_name'],
-            $data['ward_name'],
-            $data['malmatta_no'],
-            $data['owner_name'],
-            $data['owner_wife_name'],
-            $data['occupant_name'],
-            $data['mobile_no'],
-            $data['city_survey_no'],
-            $data['group_number'],
-            $data['drainage_type'],
-            $data['toilet_available'],
-            1
-        ])) {
+        if (
+            $stmt->execute([
+                $data['period'],
+                $data['revenue_village'],
+                $data['road_name'],
+                $data['ward_name'],
+                $data['malmatta_no'],
+                $data['owner_name'],
+                $data['owner_wife_name'],
+                $data['occupant_name'],
+                $data['mobile_no'],
+                $data['city_survey_no'],
+                $data['group_number'],
+                $data['drainage_type'],
+                $data['toilet_available'],
+                1
+            ])
+        ) {
             return true;
         }
         return false;
@@ -609,23 +611,25 @@ class Fun
             WHERE id = ?";
 
         $stmt = $this->db->prepare($sql);
-        if ($stmt->execute([
-            $data['period'],
-            $data['revenue_village'],
-            $data['road_name'],
-            $data['ward_name'],
-            $data['malmatta_no'],
-            $data['owner_name'],
-            $data['owner_wife_name'],
-            $data['occupant_name'],
-            $data['mobile_no'],
-            $data['city_survey_no'],
-            $data['group_number'],
-            $data['drainage_type'],
-            $data['toilet_available'],
-            1,
-            $id
-        ])) {
+        if (
+            $stmt->execute([
+                $data['period'],
+                $data['revenue_village'],
+                $data['road_name'],
+                $data['ward_name'],
+                $data['malmatta_no'],
+                $data['owner_name'],
+                $data['owner_wife_name'],
+                $data['occupant_name'],
+                $data['mobile_no'],
+                $data['city_survey_no'],
+                $data['group_number'],
+                $data['drainage_type'],
+                $data['toilet_available'],
+                1,
+                $id
+            ])
+        ) {
             return true;
         }
         return false;
@@ -2892,12 +2896,18 @@ class Fun
 
         // Validate data
         $errors = [];
-        if (empty($data['plan_name'])) $errors[] = 'Plan name is required';
-        if (empty($data['bank_name'])) $errors[] = 'Bank name is required';
-        if (empty($data['bank_branch'])) $errors[] = 'Bank branch is required';
-        if (empty($data['bank_address'])) $errors[] = 'Bank address is required';
-        if (empty($data['bank_no'])) $errors[] = 'Account number is required';
-        if (empty($data['bank_ifsc_code'])) $errors[] = 'IFSC code is required';
+        if (empty($data['plan_name']))
+            $errors[] = 'Plan name is required';
+        if (empty($data['bank_name']))
+            $errors[] = 'Bank name is required';
+        if (empty($data['bank_branch']))
+            $errors[] = 'Bank branch is required';
+        if (empty($data['bank_address']))
+            $errors[] = 'Bank address is required';
+        if (empty($data['bank_no']))
+            $errors[] = 'Account number is required';
+        if (empty($data['bank_ifsc_code']))
+            $errors[] = 'IFSC code is required';
 
         if (!empty($errors)) {
             return ['success' => false, 'message' => 'Validation failed', 'errors' => $errors];
@@ -2970,12 +2980,18 @@ class Fun
     {
         // Validate data
         $errors = [];
-        if (empty($data['plan_name'])) $errors[] = 'Plan name is required';
-        if (empty($data['bank_name'])) $errors[] = 'Bank name is required';
-        if (empty($data['bank_branch'])) $errors[] = 'Bank branch is required';
-        if (empty($data['bank_address'])) $errors[] = 'Bank address is required';
-        if (empty($data['bank_no'])) $errors[] = 'Account number is required';
-        if (empty($data['bank_ifsc_code'])) $errors[] = 'IFSC code is required';
+        if (empty($data['plan_name']))
+            $errors[] = 'Plan name is required';
+        if (empty($data['bank_name']))
+            $errors[] = 'Bank name is required';
+        if (empty($data['bank_branch']))
+            $errors[] = 'Bank branch is required';
+        if (empty($data['bank_address']))
+            $errors[] = 'Bank address is required';
+        if (empty($data['bank_no']))
+            $errors[] = 'Account number is required';
+        if (empty($data['bank_ifsc_code']))
+            $errors[] = 'IFSC code is required';
 
         if (!empty($errors)) {
             return ['success' => false, 'message' => 'Validation failed', 'errors' => $errors];
@@ -3041,7 +3057,7 @@ class Fun
     public function getBankByPlanName($plan_name)
     {
         $sql = "SELECT * FROM bank_master WHERE plan_name = '$plan_name' and panchayat_code = '$_SESSION[panchayat_code]'";
-        $result  = mysqli_query($this->db, $sql);
+        $result = mysqli_query($this->db, $sql);
         $bankArray = [];
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -4007,6 +4023,80 @@ class Fun
             WHERE mde.panchayat_code = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("s", $_SESSION['panchayat_code']);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+    public function getTaxDemandsWithFilters($village_name = null, $financial_year = null, $ward_name = null, $malmatta_no = null)
+    {
+        $sql = 'SELECT 
+            nn1.person_name as "owner_name",
+            nn2.person_name as "occupant_name",
+            td.financial_year as "financial_year",
+            td.ward as "ward_name",
+            td.id as "bill_no",
+            mde.malmatta_no as "malmatta_no",
+            td.previous_building_tax as "previous_building_tax",
+            td.current_building_tax as "current_building_tax",
+            td.building_tax as "total_building_tax",
+            
+            td.previous_light_tax as "previous_light_tax",
+            td.current_light_tax as "current_light_tax",
+            td.light_tax as "total_light_tax",
+            
+            td.previous_health_tax as "previous_health_tax",
+            td.current_health_tax as "current_health_tax",
+            td.health_tax as "total_health_tax",
+            
+            td.previous_water_tax as "previous_water_tax",
+            td.current_water_tax as "current_water_tax",
+            td.water_tax as "total_water_tax",
+            
+            td.previous_padsar_tax as "previous_padsar_tax",
+            td.current_padsar_tax as "current_padsar_tax",
+            td.padsar_tax as "total_padsar_tax",
+            
+            td.previous_fine as "previous_fine_tax",
+            td.current_fine as "current_fine_tax",
+            td.fine as "total_fine_tax",
+            
+            td.previous_total_amount as "total_previous_amount",
+            td.current_total_amount as "total_current_amount",
+            td.total_amount as "total_amount",
+    
+            td.created_at as "bill_date"
+            FROM tax_demands  td
+            left join malmatta_data_entry mde on td.malmatta_id = mde.id
+            left outer join new_name nn1 on mde.owner_name = nn1.id
+            left outer join new_name nn2 on mde.occupant_name = nn2.id
+            left outer join road_details rd on mde.road_name = rd.id
+            left outer join ward_details wd on mde.ward_no = wd.id
+            WHERE mde.panchayat_code = ? ';
+        $types = "s";
+        $params[] = $_SESSION["panchayat_code"];
+        if (!empty($village_name)) {
+            $sql .= " AND mde.village_name = ?";
+            $types .= "s";
+            $params[] = $village_name;
+        }
+        if (!empty($financial_year)) {
+            $sql .= " AND td.financial_year = ?";
+            $types .= "s";
+            $params[] = $financial_year;
+        }
+        if (!empty($ward_name)) {
+            $sql .= " AND mde.ward_no = ?";
+            $types .= "s";
+            $params[] = $ward_name;
+        }
+        if (!empty($malmatta_no)) {
+            $sql .= " AND mde.malmatta_no = ?";
+            $types .= "s";
+            $params[] = $malmatta_no;
+        }
+        $sql .= " ORDER BY mde.village_name, mde.ward_no, mde.malmatta_no";
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bind_param($types, ...$params);
         $stmt->execute();
         return $stmt->get_result();
     }
