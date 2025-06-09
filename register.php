@@ -1,14 +1,14 @@
-<?php 
+<?php
 session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php 
-$title = "Mahaegram Register";
+<?php
+$title = "Panchayat Portal Register";
 ?>
 <?php include('include/header.php'); ?>
 <?php
-   $states = $fun->getUniqueStates();
+$states = $fun->getUniqueStates();
 ?>
 
 <body class="bg-gradient-login">
@@ -19,22 +19,22 @@ $title = "Mahaegram Register";
                 <div class="card shadow-sm my-5">
                     <div class="card-body p-0">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12 text-black">
                                 <?php
 
-if (isset($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    $message_type = $_SESSION['message_type'];
-    $user_id = $_SESSION['user_id'];
-    echo "<div class='alert alert-$message_type'>$message</div>";
-    echo "<div class='alert alert-$message_type'>User Id: $user_id</div>";
+                                if (isset($_SESSION['message'])) {
+                                    $message = $_SESSION['message'];
+                                    $message_type = $_SESSION['message_type'];
+                                    $user_id = $_SESSION['user_id'] ?? 'N/A'; // Default to 'N/A' if user_id is not set
+                                    echo "<div class='alert alert-$message_type'>$message</div>";
+                                    echo "<div class='alert alert-$message_type'>User Id: $user_id</div>";
 
-    // Unset the message so it doesn't persist after refresh
-    unset($_SESSION['message']);
-    unset($_SESSION['message_type']);
-    unset($_SESSION['user_id']);
-}
-?>
+                                    // Unset the message so it doesn't persist after refresh
+                                    unset($_SESSION['message']);
+                                    unset($_SESSION['message_type']);
+                                    unset($_SESSION['user_id']);
+                                }
+                                ?>
                                 <div class="login-form">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Register</h1>
@@ -84,6 +84,16 @@ if (isset($_SESSION['message'])) {
 
                                             </select>
                                         </div>
+                                        <!-- changed -->
+                                        <div class="form-group">
+                                            <label for="block">Select Block</label>
+                                            <select class="select2-single-placeholder form-control" required
+                                                name="block" id="block">
+                                                <option value="">Select Block</option>
+
+                                            </select>
+                                        </div>
+                                        <!-- changed -->
                                         <div class="form-group">
                                             <label for="district">Select Panchayat</label>
                                             <select class="select2-single-placeholder form-control" required
@@ -135,61 +145,75 @@ if (isset($_SESSION['message'])) {
     <script src="js/ruang-admin.min.js"></script>
     <script src="vendor/select2/dist/js/select2.min.js"></script>
     <script>
-    $(document).ready(function() {
-        $('.select2-single').select2();
+        $(document).ready(function () {
+            $('.select2-single').select2();
 
-        // Select2 Single  with Placeholder
-        $('.select2-single-placeholder').select2({
-            placeholder: "Select a Province",
-            allowClear: true
-        });
+            // Select2 Single  with Placeholder
+            $('.select2-single-placeholder').select2({
+                placeholder: "Select a Province",
+                allowClear: true
+            });
 
-        // Select2 Multiple
-        $('.select2-multiple').select2();
-        $('#state').on('change', function() {
-            var state = $(this).val();
-            $.ajax({
-                url: 'api/get_district.php',
-                type: 'POST',
-                data: {
-                    state: state
-                },
-                success: function(data) {
-                    $('#district').html(data);
-                    $('#village').html('<option value="">Select Village</option>');
-                }
+            // Select2 Multiple
+            $('.select2-multiple').select2();
+            $('#state').on('change', function () {
+                var state = $(this).val();
+                $.ajax({
+                    url: 'api/get_district.php',
+                    type: 'POST',
+                    data: {
+                        state: state
+                    },
+                    success: function (data) {
+                        $('#district').html(data);
+                        $('#village').html('<option value="">Select Village</option>');
+                    }
+                });
+            });
+
+            $('#district').on('change', function () {
+                var district = $(this).val();
+                $.ajax({
+                    url: 'api/get_block.php',
+                    type: 'POST',
+                    data: {
+                        district: district
+                    },
+                    success: function (data) {
+                        $('#block').html(data);
+                        $('#village').html('<option value="">Select Village</option>');
+                    }
+                });
+            });
+            $('#block').on('change', function () {
+                var district = $(this).val();
+                $.ajax({
+                    url: 'api/get_panchayat.php',
+                    type: 'POST',
+                    data: {
+                        district: district
+                    },
+                    success: function (data) {
+                        $('#panchayat').html(data);
+                        $('#village').html('<option value="">Select Village</option>');
+                    }
+                });
+            });
+
+            $('#panchayat').on('change', function () {
+                var district = $(this).val();
+                $.ajax({
+                    url: 'api/get_villages.php',
+                    type: 'POST',
+                    data: {
+                        district: district
+                    },
+                    success: function (data) {
+                        $('#village').html(data);
+                    }
+                });
             });
         });
-
-        $('#district').on('change', function() {
-            var district = $(this).val();
-            $.ajax({
-                url: 'api/get_panchayat.php',
-                type: 'POST',
-                data: {
-                    district: district
-                },
-                success: function(data) {
-                    $('#panchayat').html(data);
-                    $('#village').html('<option value="">Select Village</option>');
-                }
-            });
-        });
-
-        $('#panchayat').on('change', function() {
-            var district = $(this).val();
-            $.ajax({
-                url: 'api/get_villages.php',
-                type: 'POST',
-                data: {
-                    district: district
-                },
-                success: function(data) {
-                    $('#village').html(data);
-                }
-            });
-        });
-    });
     </script>
 
 </body>

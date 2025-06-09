@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <title>करांची मागणी पावती</title>
+  <style>
+    body {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      margin: 20px;
+    }
+    .receipt-box {
+      border: 2px solid black;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    caption {
+      caption-side: top;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 6px;
+      text-align: center;
+    }
+    .header {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+    .info-table td {
+      border: none;
+      padding: 5px;
+      text-align: left;
+    }
+    .section {
+      margin-top: 20px;
+    }
+    .footer-table {
+      width: 100%;
+      border: 1px solid black;
+      margin-top: 30px;
+    }
+    .footer-table td {
+      
+      vertical-align: top;
+      border: 1px solid black;
+      padding: 10px;
+    }
+    .footer-table .full {
+      padding: 10px;
+      text-align: left;
+    }
+    .dashed-border {
+      border-top: 2px dashed black;
+      margin-top: 20px;
+    }
+    @media screen and (max-width: 600px) {
+      .info-table, .footer-table, table {
+        font-size: 16px;
+      }
+      th, td {
+        padding: 4px;
+      }
+    }
+    .boxc{
+      font-size: 32px; border:5px solid black; display: inline-block; padding: 4px; border-radius: 15px; box-shadow: 5px 10px 8px #888888;
+    }
+    .footer {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt-box">
+     <div style="font-size: 20px;">
+      नियम ३२(५) पाहा
+      <div class="header ">नमुना नं . १०</div>
+    </div>
+    <div class="header ">
+      <span class="boxc">कर व फी बाबत पावती </span>
+    </div>
+
+    
+
+    <table class="info-table">
+      <tr>
+        <td colspan="2"><strong>ग्रामपंचायत :</strong> <?php echo $gram_panchayat; ?></td>
+        <td><strong>तालुका :</strong> <?php echo $taluka; ?></td>
+        <td><strong>जिल्हा :</strong> <?php echo $district; ?></td>
+      </tr>
+      <tr>
+        <td colspan="3"><strong>पुस्तक क्रमांक:</strong> <?php echo $property_no; ?></td>
+         <td ><strong>पावती क्रमांक:</strong> <?php echo $bill_no; ?></td>
+      </tr>
+      <tr>
+        <td ><strong >श्री . </strong> <?php echo $gram_panchayat; ?></td>
+      </tr>
+      <tr>
+        <td colspan="3"></td>
+        <td><strong>यांचेकडून</strong> <?php echo $district; ?></td>
+      </tr>
+      <tr>
+        <td ><strong> घर नंबर :</strong> <?php echo $taluka; ?></td>
+        <td ><strong>बिल नंबर :</strong> <?php echo $district; ?></td>
+        <td><strong>याबद्दल </strong> <?php echo $district; ?></td>
+        <td></td>
+      </tr>
+       <tr>
+        <td ><strong >सन  २०२५ याबद्दल पुढील करांची रक्कम मिळाली .</strong></td>
+      </tr>
+    </table>
+
+    <table>
+      
+      <thead>
+        <tr>
+          <th rowspan="2">कराचे नाव</th>
+          <th colspan="3">वसूल पात्र रकमा</th>
+        </tr>
+        <tr>
+          <th>मागील</th>
+          <th>चालू</th>
+          <th>एकूण</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="text-align: left;">घरपट्टी/खुली जागा/इतर</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">दिवाबत्ती कर</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">आरोग्य कर</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">सामान्य पाणीपट्टी कर</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">नोटीस फी </td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">वॉरंट फी</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td style="text-align: left;">इतर</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><th style="text-align: left;">एकूण</th><th>0</th><th>0</th><th>0</th></tr>
+      </tbody>
+    </table>
+    <table class="info-table">
+        <tr>
+          <td  style=" text-align:left;"><strong> अक्षरी रक्कम रुपये  </strong></td>
+          <td></td>
+          <td></td>
+          <td><strong> मिळाले. </strong></td>
+      </tr>
+    </table>
+     <div class="footer" style="margin-top: 80px;">
+    <div>दिनांक : .................. २०...........</div>
+    <div>वसूल करणाऱ्याची सही व नाव .</div>
+  </div>
+  </div>
+</body>
+</html>

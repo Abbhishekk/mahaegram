@@ -156,54 +156,68 @@
                 <a class="dropdown-item text-center small text-gray-500" href="#">View All Taks</a>
             </div>
         </li>
-        <li class="nav-item no-arrow mx-1" > 
-            <div class="card px-5 " >
-               <div class="row align-items-center gap-2">
-                                        
-                                        <div class=" mr-4 my-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">User ID
-                                            </div>
-                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $_SESSION['user_id'] ?> </div>
+        <li class="nav-item no-arrow mx-1">
+            <div class="card px-5 ">
+                <div class="row align-items-center gap-2">
 
-                                        </div>
-                                        <div class=" mr-4 my-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">State
-                                            </div>
-                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $_SESSION['state'] ?> </div>
+                    <div class=" mr-4 my-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">User ID
+                        </div>
+                        <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                            <?php echo $_SESSION['user_id'] ?>
+                        </div>
 
-                                        </div>
-                                        <div class=" mr-4 my-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">District Name
-                                            </div>
-                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $_SESSION['district_name'] ?> </div>
+                    </div>
+                    <div class=" mr-4 my-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">State
+                        </div>
+                        <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                            <?php echo $_SESSION['state'] ?>
+                        </div>
 
-                                        </div>
-                                        <div class=" mr-4 my-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">Panchayat Name
-                                            </div>
-                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $_SESSION['panchayat_name'] ?> </div>
+                    </div>
+                    <div class=" mr-4 my-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">District Name
+                        </div>
+                        <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                            <?php echo $_SESSION['district_name'] ?>
+                        </div>
 
-                                        </div>
-                                        <div class=" mr-4 my-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">Village Name
-                                            </div>
-                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $_SESSION['village_name'] ?> </div>
+                    </div>
+                    <div class=" mr-4 my-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">Block Name
+                        </div>
+                        <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                            <?php echo $_SESSION['block_name'] ?>
+                        </div>
 
-                                        </div>
-                                        <div class=" mr-4 my-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">LGD Code
-                                            </div>
-                                            <div class="text-xs mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $_SESSION['district_code'] ?> </div>
+                    </div>
+                    <div class=" mr-4 my-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">Panchayat Name
+                        </div>
+                        <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                            <?php echo $_SESSION['panchayat_name'] ?>
+                        </div>
 
-                                        </div>
+                    </div>
+                    <div class=" mr-4 my-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">Village Name
+                        </div>
+                        <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                            <?php echo $_SESSION['village_name'] ?>
+                        </div>
 
-                                    </div>
+                    </div>
+                    <div class=" mr-4 my-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">LGD Code
+                        </div>
+                        <div class="text-xs mb-0 font-weight-bold text-gray-800">
+                            <?php echo $_SESSION['panchayat_code'] ?>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
         </li>
         <div class="topbar-divider d-none d-sm-block"></div>
@@ -214,7 +228,7 @@
                 <span class="ml-2 d-none d-lg-inline text-white small"> <?php echo $_SESSION['user_name']; ?> </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                
+
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -226,5 +240,5 @@
 </nav>
 
 <?php
-    include('./include/logoutModal.php');
+include('./include/logoutModal.php');
 ?>

@@ -21,7 +21,7 @@ $yearArray = $fun->getYearArray($periodsWithReasons);
         <!-- Sidebar -->
         <?php
         $page = 'namuna7';
-        $subpage = 'master';
+        $subpage = 'yearlyWork';
         include('include/sidebar.php');
         ?>
         <!-- Sidebar -->
@@ -38,7 +38,7 @@ $yearArray = $fun->getYearArray($periodsWithReasons);
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="./">माहईग्राम</a></li>
                             <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 7</li>
-                            <li class="breadcrumb-item active" aria-current="page">मास्टर्स</li>
+                            <li class="breadcrumb-item active" aria-current="page">वार्षिक कामकाज</li>
                             <li class="breadcrumb-item active" aria-current="page">वर्षाच्या सुरवातीची शिल्लक</li>
                         </ol>
                     </div>

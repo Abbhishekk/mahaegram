@@ -113,7 +113,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                                         <option>--निवडा--</option>
                                         <?php foreach ($malmatta_details as $malmatta) {
                                             // print_r($malmatta);
-                                        ?>
+                                            ?>
                                             <option value="<?php echo $malmatta['malmatta_id']; ?>">
                                                 <?php echo $malmatta['malmatta_no']; ?>
                                             </option>
@@ -153,6 +153,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                                     <select class="form-control" name="pavati_kramanak" id="pavati_kramanak" required>
                                         <option value="">--प्रथम पुस्तक निवडा--</option>
                                     </select>
+                                    <small id="pavati-feedback" class="form-text"></small>
                                 </div>
                             </div>
                             <div class="row my-5 justify-content-center ">
@@ -289,7 +290,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                                                 name="previous_vasul_padsar_tax" id="previous_vasul_padsar_tax"
                                                 value="0.00">
                                             <input type="text" class="form-control my-2" name="previous_vasul_dand_tax"
-                                                id="previous_mangani_dand_tax" value="0.00">
+                                                id="previous_vasul_dand_tax" value="0.00">
                                             <input type="text" class="form-control my-2 highlight-green"
                                                 name="previous_vasul_sut_tax" id="previous_vasul_sut_tax" value="0.00">
                                             <input type="text" class="form-control my-2" name="previous_vasul_total_tax"
@@ -432,8 +433,8 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                         <div class="col-md-12 text-center">
                             <button type="submit" class="btn btn-primary">साठवणे</button>
                             <button type="reset" class="btn btn-secondary">रद्द करणे</button>
-                            <button type="button" class="btn btn-info">पावती</button>
-                            <button type="button" class="btn btn-outline-primary">अहवाल</button>
+                            <a href="./namuna10_ahaval_kar_va_fi.php" class="btn btn-info">पावती</a>
+                            <a href="./namuna10_ahaval_kar_va_fi.php" class="btn btn-outline-primary">अहवाल</a>
                         </div>
                     </div>
                 </div>
@@ -454,10 +455,10 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
 
     <?php include('include/scripts.php'); ?>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // When malmatta_kramanak is changed
             $("#not_available").hide();
-            $('#malamatta_kramanak').change(function() {
+            $('#malamatta_kramanak').change(function () {
                 var malmattaId = $(this).val();
                 $('#current_mangani_building_tax').val('0.00');
                 $('#current_mangani_health_tax').val('0.00');
@@ -476,7 +477,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                             malmatta_id: malmattaId
                         },
                         dataType: 'json',
-                        success: function(data) {
+                        success: function (data) {
                             if (data.success) {
                                 // Update ward number
                                 console.log(data);
@@ -528,13 +529,13 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                                     calculateTaxTotals();
                                 } else {
                                     $('#not_available').show();
-                                    setTimeout(function() {
+                                    setTimeout(function () {
                                         $('#not_available').hide();
                                     }, 5000);
                                 }
                             }
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error("AJAX Error: " + status + " - " + error);
                         }
                     });
@@ -579,21 +580,21 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
             $('#current_mangani_total_tax').val(
                 (currBuilding + currHealth +
                     currLight + currWater +
-                    currPadsar + currDand +
+                    currPadsar + currDand -
                     currSut).toFixed(2)
             );
 
             $("#previous_mangani_total_tax").val(
                 (prevBuilding + prevHealth +
                     prevLight + prevWater +
-                    prevPadsar + prevDand +
+                    prevPadsar + prevDand -
                     prevSut).toFixed(2)
             );
             // Calculate grand total for Mangani
             const manganiTotal = (prevBuilding + currBuilding + prevHealth + currHealth +
                 prevLight + currLight + prevWater + currWater +
-                prevPadsar + currPadsar + prevDand + currDand +
-                prevSut + currSut).toFixed(2);
+                prevPadsar + currPadsar + prevDand + currDand -
+                prevSut - currSut).toFixed(2);
             $('#total_mangani_total_tax').val(manganiTotal);
 
             // Calculate for Vasul (Collection) section
@@ -628,8 +629,8 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
             // Calculate grand total for Vasul
             const vasulTotal = (prevVasulBuilding + currVasulBuilding + prevVasulHealth + currVasulHealth +
                 prevVasulLight + currVasulLight + prevVasulWater + currVasulWater +
-                prevVasulPadsar + currVasulPadsar + prevVasulDand + currVasulDand +
-                prevVasulSut + currVasulSut).toFixed(2);
+                prevVasulPadsar + currVasulPadsar + prevVasulDand + currVasulDand -
+                prevVasulSut - currVasulSut).toFixed(2);
             $('#total_vasul_total_tax').val(vasulTotal);
         }
 
@@ -665,6 +666,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
             $('#current_vasul_dand_tax').val($('#current_mangani_dand_tax').val());
             $('#current_vasul_sut_tax').val($('#current_mangani_sut_tax').val());
             $('#current_vasul_total_tax').val($('#current_mangani_total_tax').val());
+            checkDateAndApplyDiscount();
         }
 
         function resetCurrentVasuli() {
@@ -702,9 +704,10 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
         }
         // Call this function in your document ready
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             // When malmatta_kramanak is changed
             $("#not_available").hide();
+            $("#vasul_dinank").val(new Date().toISOString().split('T')[0]);
             // Setup calculation listeners
             setupCalculationListeners();
 
@@ -741,40 +744,33 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                     url: 'api/get_book_receipt_numbers.php',
                     type: 'GET',
                     dataType: 'json',
-                    success: function(data) {
+                    success: function (data) {
                         if (data.success) {
                             // Populate pustak_kramanak (x values)
                             $('#pustak_kramanak').empty();
                             $('#pustak_kramanak').append('<option value="">--निवडा--</option>');
-                            data.books.forEach(function(book) {
-                                $('#pustak_kramanak').append('<option value="' + book.x + '">' +
-                                    book.x + '</option>');
+                            data.books.forEach(function (book) {
+                                $('#pustak_kramanak').append('<option value="' + book + '">' +
+                                    book + '</option>');
                             });
-
+                            const pavati_total = parseInt(data.pavatiNumber);
                             // When pustak_kramanak changes, populate pavati_kramanak (y values)
-                            $('#pustak_kramanak').change(function() {
+                            $('#pustak_kramanak').change(function () {
                                 var selectedX = $(this).val();
                                 $('#pavati_kramanak').empty();
                                 $('#pavati_kramanak').append(
                                     '<option value="">--निवडा--</option>');
 
-                                if (selectedX) {
-                                    console.log(selectedX);
 
-                                    var selectedBook = data.books.find(book => book.x ==
-                                        selectedX);
-                                    console.log(selectedBook);
-                                    if (selectedBook) {
-                                        for (let y = 1; y <= selectedBook.max_y; y++) {
-                                            $('#pavati_kramanak').append('<option value="' + y +
-                                                '">' + y + '</option>');
-                                        }
-                                    }
+                                for (let y = 1; y <= pavati_total; y++) {
+                                    $('#pavati_kramanak').append('<option value="' + y +
+                                        '">' + y + '</option>');
                                 }
+
                             });
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error("AJAX Error: " + status + " - " + error);
                     }
                 });
@@ -784,9 +780,115 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
             populateBookReceiptDropdowns();
 
             // Rest of your existing code...
-            $('#malamatta_kramanak').change(function() {
+            $('#malamatta_kramanak').change(function () {
                 // Your existing malmatta change handler
             });
+        });
+    </script>
+
+    <script>
+        // Add this function to check date and apply discount
+        function checkDateAndApplyDiscount() {
+            const vasulDate = new Date($('#vasul_dinank').val());
+            if (!vasulDate) return; // No date selected
+
+            // Create September 30th of current year
+            const cutoffDate = new Date(vasulDate.getFullYear(), 8, 30); // Month is 0-indexed (8 = September)
+
+            if (vasulDate < cutoffDate) {
+                // Apply 5% discount
+                const buildingTax = parseFloat($('#current_vasul_building_tax').val()) || 0;
+                const discount = buildingTax * 0.05;
+
+
+                // Show discount in dand_tax field (as negative value)
+                $('#current_vasul_sut_tax').val((discount).toFixed(2));
+            } else {
+                // Reset if date is after September 30th
+                const originalBuildingTax = parseFloat($('#current_mangani_building_tax').val()) || 0;
+                $('#current_vasul_building_tax').val(originalBuildingTax.toFixed(2));
+                $('#current_vasul_sut_tax').val('0.00');
+            }
+
+            // Recalculate totals
+            calculateTaxTotals();
+        }
+
+        // Add event listener for date change
+        $('#vasul_dinank').change(function () {
+            checkDateAndApplyDiscount();
+        });
+
+        // Function to check receipt availability
+        function checkReceiptAvailability(pustak_kramanak, pavati_kramanak, callback) {
+            if (!pustak_kramanak || !pavati_kramanak) {
+                callback(false, 'पुस्तक आणि पावती क्रमांक आवश्यक आहे');
+                return;
+            }
+
+            $.ajax({
+                url: 'api/check_receipt_availability.php',
+                type: 'POST',
+                data: {
+                    pustak_kramanak: pustak_kramanak,
+                    pavati_kramanak: pavati_kramanak
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        callback(response.available, response.message);
+                    } else {
+                        callback(false, response.message);
+                    }
+                },
+                error: function () {
+                    callback(false, 'सर्व्हर त्रूट. कृपया पुन्हा प्रयत्न करा.');
+                }
+            });
+        }
+
+        // Add validation before form submission
+        $('form').submit(function (e) {
+            e.preventDefault();
+
+            const pustak_kramanak = $('#pustak_kramanak').val();
+            const pavati_kramanak = $('#pavati_kramanak').val();
+
+            if (!pustak_kramanak || !pavati_kramanak) {
+                alert('कृपया पुस्तक आणि पावती क्रमांक निवडा');
+                return false;
+            }
+
+            // Show loading indicator
+            const submitBtn = $(this).find('[type="submit"]');
+            submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> प्रक्रिया करत आहे...');
+
+            checkReceiptAvailability(pustak_kramanak, pavati_kramanak, function (isAvailable, message) {
+                if (isAvailable) {
+                    // If available, submit the form programmatically
+                    $('form').off('submit').submit();
+                } else {
+                    // Show error message
+                    alert(message);
+                    submitBtn.prop('disabled', false).html('साठवणे');
+                }
+            });
+        });
+
+        $('#pavati_kramanak').change(function () {
+            const pustak_kramanak = $('#pustak_kramanak').val();
+            const pavati_kramanak = $(this).val();
+
+            if (pustak_kramanak && pavati_kramanak) {
+                checkReceiptAvailability(pustak_kramanak, pavati_kramanak, function (isAvailable, message) {
+                    const feedback = $('#pavati-feedback');
+                    if (isAvailable) {
+                        feedback.removeClass('text-danger').addClass('text-success').text(message);
+                    } else {
+                        feedback.removeClass('text-success').addClass('text-danger').text(message);
+                    }
+                });
+            }
         });
     </script>
 

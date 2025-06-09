@@ -4,9 +4,9 @@ require_once "../include/connect/db.php";
 require_once "../include/connect/fun.php";
 
 header('Content-Type: application/json');
-   $conn = new Connect();
-    $conn = $conn->dbConnect();
-    $fun = new Fun($conn);
+$conn = new Connect();
+$conn = $conn->dbConnect();
+$fun = new Fun($conn);
 // Initialize response
 $response = [
     'success' => false,
@@ -28,7 +28,7 @@ try {
         'ward_kramanak' => $_POST['ward_kramanak'] ?? '',
         'kar_denaryache_nav' => $_POST['kar_denaryache_nav'] ?? '',
         'vasul_dinank' => $_POST['vasul_dinank'] ?? '',
-        'pustak_kramanak' => $_POST['pustak_kramanak']."/".$_POST['pavati_kramanak'] ?? '',
+        'pustak_kramanak' => $_POST['pustak_kramanak'] ?? '',
         'pavati_kramanak' => $_POST['pavati_kramanak'] ?? '',
         'payment_type' => $_POST['paymentType'] ?? 'cash',
         'bank_name' => $_POST['bank_name'] ?? null,
@@ -47,7 +47,7 @@ try {
         'previous_mangani_dand_tax' => $_POST['previous_mangani_dand_tax'] ?? 0,
         'previous_mangani_sut_tax' => $_POST['previous_mangani_sut_tax'] ?? 0,
         'previous_mangani_total_tax' => $_POST['previous_mangani_total_tax'] ?? 0,
-        
+
         'current_mangani_building_tax' => $_POST['current_mangani_building_tax'] ?? 0,
         'current_mangani_health_tax' => $_POST['current_mangani_health_tax'] ?? 0,
         'current_mangani_divabatti_tax' => $_POST['current_mangani_divabatti_tax'] ?? 0,
@@ -57,7 +57,7 @@ try {
         'current_mangani_sut_tax' => $_POST['current_mangani_sut_tax'] ?? 0,
         'current_mangani_total_tax' => $_POST['current_mangani_total_tax'] ?? 0,
 
-         'previous_vasul_building_tax' => $_POST['previous_vasul_building_tax'] ?? 0,
+        'previous_vasul_building_tax' => $_POST['previous_vasul_building_tax'] ?? 0,
         'previous_vasul_health_tax' => $_POST['previous_vasul_health_tax'] ?? 0,
         'previous_vasul_divabatti_tax' => $_POST['previous_vasul_divabatti_tax'] ?? 0,
         'previous_vasul_panniyojana_tax' => $_POST['previous_vasul_panniyojana_tax'] ?? 0,
@@ -65,7 +65,7 @@ try {
         'previous_vasul_dand_tax' => $_POST['previous_vasul_dand_tax'] ?? 0,
         'previous_vasul_sut_tax' => $_POST['previous_vasul_sut_tax'] ?? 0,
         'previous_vasul_total_tax' => $_POST['previous_vasul_total_tax'] ?? 0,
-        
+
         'current_vasul_building_tax' => $_POST['current_vasul_building_tax'] ?? 0,
         'current_vasul_health_tax' => $_POST['current_vasul_health_tax'] ?? 0,
         'current_vasul_divabatti_tax' => $_POST['current_vasul_divabatti_tax'] ?? 0,
@@ -74,7 +74,7 @@ try {
         'current_vasul_dand_tax' => $_POST['current_vasul_dand_tax'] ?? 0,
         'current_vasul_sut_tax' => $_POST['current_vasul_sut_tax'] ?? 0,
         'current_vasul_total_tax' => $_POST['current_vasul_total_tax'] ?? 0,
-        
+
         'total_mangani_building_tax' => $_POST['total_mangani_building_tax'] ?? 0,
         'total_health_tax' => $_POST['total_vasul_health_tax'] ?? 0,
         'total_mangani_health_tax' => $_POST['total_mangani_health_tax'] ?? 0,
@@ -97,11 +97,11 @@ try {
 
 
     $propertyVerification = $fun->getPropertyVerificationWithMalmattaId($_POST['malamatta_kramanak']);
-    if(!$propertyVerification) {
+    if (!$propertyVerification) {
         throw new Exception('Property verification not found for the given malmatta kramanak');
     }
     $property_verifications_data = [
-        'building_tax' => abs($_POST['total_vasul_building_tax']- $propertyVerification['building_tax']),
+        'building_tax' => abs($_POST['total_vasul_building_tax'] - $propertyVerification['building_tax']),
         'health_tax' => abs($_POST['total_vasul_health_tax'] - $propertyVerification['health_tax']),
         'light_tax' => abs($_POST['total_vasul_divabatti_tax'] - $propertyVerification['light_tax']),
         'water_tax' => abs($_POST['total_vasul_panniyojana_tax'] - $propertyVerification['water_tax']),
@@ -112,10 +112,18 @@ try {
 
     // Validate required fields
     $requiredFields = [
-        'malamatta_kramanak', 'vasul_dinank', 'pustak_kramanak', 'pavati_kramanak',
-        'total_building_tax', 'total_health_tax', 'total_divabatti_tax',
-        'total_panniyojana_tax', 'total_padsar_tax', 'total_dand_tax',
-        'total_sut_tax', 'total_amount'
+        'malamatta_kramanak',
+        'vasul_dinank',
+        'pustak_kramanak',
+        'pavati_kramanak',
+        'total_building_tax',
+        'total_health_tax',
+        'total_divabatti_tax',
+        'total_panniyojana_tax',
+        'total_padsar_tax',
+        'total_dand_tax',
+        'total_sut_tax',
+        'total_amount'
     ];
 
     foreach ($requiredFields as $field) {
@@ -135,9 +143,14 @@ try {
 
     // Convert numeric fields to proper format
     $numericFields = [
-        'total_building_tax', 'total_health_tax', 'total_divabatti_tax',
-        'total_panniyojana_tax', 'total_padsar_tax', 'total_dand_tax',
-        'total_sut_tax', 'total_amount'
+        'total_building_tax',
+        'total_health_tax',
+        'total_divabatti_tax',
+        'total_panniyojana_tax',
+        'total_padsar_tax',
+        'total_dand_tax',
+        'total_sut_tax',
+        'total_amount'
     ];
 
     foreach ($numericFields as $field) {
@@ -148,15 +161,15 @@ try {
     $validPaymentTypes = ['cash', 'cheque', 'neft', 'rtgs', 'card'];
     if (!in_array($data['payment_type'], $validPaymentTypes)) {
         throw new Exception('Invalid payment type');
-    }   
+    }
     print_r($data);
 
 
-    $result = $fun->insertRecord( 'karvasuli_records', $data);
-    
+    $result = $fun->insertRecord('karvasuli_records', $data);
+
     if ($result) {
-        print_r($property_verifications_data);
-        $updatePropertyVerification = $fun->updateRecord('property_verifications', $property_verifications_data, 'malmatta_id="'.$data['malamatta_kramanak'].'"');
+        // print_r($property_verifications_data);
+        $updatePropertyVerification = $fun->updateRecord('property_verifications', $property_verifications_data, 'malmatta_id="' . $data['malamatta_kramanak'] . '"');
         if (!$updatePropertyVerification) {
             throw new Exception('Failed to update property verification');
         }
@@ -176,6 +189,6 @@ try {
 }
 
 echo json_encode($response);
- $_SESSION['message'] = "" . $response['message'];
-        $_SESSION['message_type'] = $response['success'] ? "success" : "error";
+$_SESSION['message'] = "" . $response['message'];
+$_SESSION['message_type'] = $response['success'] ? "success" : "error";
 header('Location: ../namuna10_dainandinkamkaj_gharpatti_karvasuli.php');

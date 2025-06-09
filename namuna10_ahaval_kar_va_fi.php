@@ -1,33 +1,40 @@
-<?php 
-    require_once './include/auth_middleware.php';
+<?php
+require_once './include/auth_middleware.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php 
+<?php
 $title = "नमुना नं.10 कर व फी पावती अहवाल";
 ?>
 <?php include('include/header.php'); ?>
 <?php
-    $newName = $fun->getNewName();
-    $periods = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी",$_SESSION['district_code']);
-    if (empty($periods)) {
-        $_SESSION['message'] = "कालावधी उपलब्ध नाही.";
-        $_SESSION['message_type'] = "danger";
-      
+$newName = $fun->getNewName();
+$periods = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
+if (empty($periods)) {
+    $_SESSION['message'] = "कालावधी उपलब्ध नाही.";
+    $_SESSION['message_type'] = "danger";
+
+}
+$financialYears = $fun->getYearArray($periods);
+$wards = $fun->getWard($_SESSION['district_code']);
+$karvasuli_records = $fun->getKarVasuliRecords();
+$karvasuli = array();
+if (mysqli_num_rows($karvasuli_records) > 0) {
+    while ($karvasuli_record = mysqli_fetch_assoc($karvasuli_records)) {
+        $karvasuli[] = $karvasuli_record;
     }
-    $financialYears = $fun->getYearArray($periods);
-    $wards = $fun->getWard($_SESSION['district_code']);
+}
 
 ?>
 
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar -->
-        <?php 
+        <?php
         $page = 'namuna10';
         $subpage = 'ahaval';
         include('include/sidebar.php');
-       ?>
+        ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -49,12 +56,12 @@ $title = "नमुना नं.10 कर व फी पावती अहव�
                     </div>
                     <form action="">
                         <?php
-                                if (isset($_SESSION['message'])) {
-                                    echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
-                                    unset($_SESSION['message']);
-                                    unset($_SESSION['message_type']);
-                                }
-                                ?>
+                        if (isset($_SESSION['message'])) {
+                            echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
+                            unset($_SESSION['message']);
+                            unset($_SESSION['message_type']);
+                        }
+                        ?>
                         <div class=" card row p-4">
                             <div class="col-md-12 mb-3">
                                 <label class="me-4 col-md-3 fw-bold text-secondary d-inline-block me-3">
@@ -69,15 +76,15 @@ $title = "नमुना नं.10 कर व फी पावती अहव�
                                     <input type="radio" name="bill_type" value="vasul_dinanknusar" class="me-1"> वसूल
                                     दिनांकानुसार
                                 </label>
-                                <label class="fw-bold col-md-3 text-secondary d-inline-block">
+                                <label class="fw-bold col-md-3 text-secondary d-none">
                                     <input type="radio" name="bill_type" value="pavati_number_nusar" class="me-1"> पावती
                                     नंबर नुसार
                                 </label>
-                                <label class="fw-bold col-md-3 text-secondary d-inline-block">
+                                <label class="fw-bold col-md-3 text-secondary  d-none">
                                     <input type="radio" name="bill_type" value="malmaat_nusar" class="me-1">
                                     मालमात्तेनुसार
                                 </label>
-                                <label class="fw-bold col-md-3 text-secondary d-inline-block">
+                                <label class="fw-bold col-md-3 text-secondary d-none">
                                     <input type="radio" name="bill_type" value="according_to_person" class="me-1">
                                     व्यक्तीनुसार
                                 </label>
@@ -109,7 +116,11 @@ $title = "नमुना नं.10 कर व फी पावती अहव�
                                             class="text-danger">*</span></label>
                                     <select class="form-control" name="malmatta_number" id="malmatta_number">
                                         <option value="">--निवडा--</option>
-
+                                        <?php
+                                        foreach ($karvasuli as $malmattaNumber) {
+                                            echo '<option value="' . $malmattaNumber["malamatta_kramanak"] . '">' . $malmattaNumber["malamatta_kramanak"] . '</option>';
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3 my-2" id="person_name_div">
@@ -303,7 +314,8 @@ $title = "नमुना नं.10 कर व फी पावती अहव�
                             <div class="col-md-12 mb-3 d-flex justify-content-center  ">
 
                                 <div class="col-md-12 mb-3 d-flex justify-content-center  ">
-                                    <button type="submit" class="btn btn-primary me-2 mx-4">तपशील पहा</button>
+                                    <button type="submit" class="btn btn-primary me-2 mx-4" id="generatePdfBtn">तपशील
+                                        पहा</button>
                                     <button class="btn btn-danger">रद्द करणे</button>
                                 </div>
                             </div>
@@ -341,13 +353,6 @@ $title = "नमुना नं.10 कर व फी पावती अहव�
         document.getElementById('gender').value = gender;
     }
 
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const decision_date = document.getElementById('decision_date');
-
-        decision_date.value = new Date().toISOString().split('T')[0];
-
-    });
 
     $(document).ready(function() {
         $("#book_number_div").hide();
@@ -418,6 +423,442 @@ $title = "नमुना नं.10 कर व फी पावती अहव�
             }
 
         });
+    });
+    </script>
+    <script>
+    $(document).ready(function() {
+        // Function to fetch and display data
+        function fetchData() {
+            const filterType = $('input[name="bill_type"]:checked').val();
+            const financialYear = $('#financial_year').val();
+
+            const formData = {
+                filter_type: filterType,
+                financial_year: financialYear
+            };
+
+            // Add additional filter data based on selected type
+            switch (filterType) {
+                case 'book_number':
+                    formData.book_number = $('#book_number').val();
+                    break;
+                case 'vasul_dinanknusar':
+                    formData.start_date = $('#vasul_date_pasun').val();
+                    formData.end_date = $('#vasul_date_paryant').val();
+                    break;
+                case 'pavati_number_nusar':
+                    formData.book_number = $('#book_number').val();
+                    formData.start_receipt = $('#pavati_number_pasun').val();
+                    formData.end_receipt = $('#pavati_number_paryant').val();
+                    break;
+                case 'malmaat_nusar':
+                    formData.malmatta_number = $('#malmatta_number').val();
+                    break;
+                case 'according_to_person':
+                    formData.person_name = $('#person_name').val();
+                    break;
+            }
+
+            // Show loading state
+            $('button[name="see_info"]').prop('disabled', true).html(
+                '<i class="fas fa-spinner fa-spin"></i> लोड होत आहे...');
+
+            $.ajax({
+                url: 'api/fetch_karvasuli_records.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        populateTable(response.data);
+                        calculateTotals(response.data);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('त्रुटी: ' + error);
+                },
+                complete: function() {
+                    $('button[name="see_info"]').prop('disabled', false).html('महिती दखवा');
+                }
+            });
+        }
+
+        // Function to populate the table with data
+        function populateTable(data) {
+            const tbody = $('table tbody');
+            tbody.empty();
+            if (data.length === 0) {
+                tbody.append('<tr><td colspan="29">कोणतीही नोंद आढळली नाही</td></tr>');
+                return;
+            }
+
+            data.forEach((record, index) => {
+                const filterType = $('input[name="bill_type"]:checked').val();
+                const financialYear = $('#financial_year').val();
+                const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${record.financial_year || ''}</td>
+                    <td>${record.malamatta_kramanak || ''}</td>
+                    <td>${record.kar_denaryache_nav || ''}</td>
+                    <td>${record.pustak_kramanak || ''}</td>
+                    <td>${record.pavati_kramanak || ''}</td>
+                    <td>${record.vasul_dinank || ''}</td>
+                    <td>${record.previous_vasul_building_tax || '0.00'}</td>
+                    <td>${record.current_vasul_building_tax || '0.00'}</td>
+                    <td>${(parseFloat(record.previous_vasul_building_tax || 0) + parseFloat(record.current_vasul_building_tax || 0)).toFixed(2)}</td>
+                    <td>${record.previous_vasul_health_tax || '0.00'}</td>
+                    <td>${record.current_vasul_health_tax || '0.00'}</td>
+                    <td>${(parseFloat(record.previous_vasul_health_tax || 0) + parseFloat(record.current_vasul_health_tax || 0)).toFixed(2)}</td>
+                    <td>${record.previous_vasul_divabatti_tax || '0.00'}</td>
+                    <td>${record.current_vasul_divabatti_tax || '0.00'}</td>
+                    <td>${(parseFloat(record.previous_vasul_divabatti_tax || 0) + parseFloat(record.current_vasul_divabatti_tax || 0)).toFixed(2)}</td>
+                    <td>${record.previous_vasul_padsar_tax || '0.00'}</td>
+                    <td>${record.current_vasul_padsar_tax || '0.00'}</td>
+                    <td>${(parseFloat(record.previous_vasul_padsar_tax || 0) + parseFloat(record.current_vasul_padsar_tax || 0)).toFixed(2)}</td>
+                    <td>${record.previous_vasul_panniyojana_tax || '0.00'}</td>
+                    <td>${record.current_vasul_panniyojana_tax || '0.00'}</td>
+                    <td>${(parseFloat(record.previous_vasul_panniyojana_tax || 0) + parseFloat(record.current_vasul_panniyojana_tax || 0)).toFixed(2)}</td>
+                    <td>${record.total_notice_fee || '0.00'}</td>
+                    <td>${record.total_dand_tax || '0.00'}</td>
+                    <td>${record.total_amount || '0.00'}</td>
+                    <td>${getPaymentTypeText(record.payment_type)}</td>
+                    <td><button type="button" class="btn btn-sm btn-primary print-receipt" data-id="${record.id}">पावती</button></td>
+                    <td><button class="btn btn-sm btn-info reprint-receipt" data-id="${record.id}">पावती काढणे</button></td>
+                    <td><button class="btn btn-sm btn-danger cancel-receipt" data-id="${record.id}">पावती रद्द करणे</button></td>
+                </tr>
+            `;
+                tbody.append(row);
+            });
+        }
+
+        // Function to calculate and display totals
+        function calculateTotals(data) {
+            let magilGharpatti = 0;
+            let chaluGharpatti = 0;
+            let sutGharpatti = 0;
+            let magilAarogya = 0;
+            let chaluAarogya = 0;
+            let magilDivabatti = 0;
+            let chaluDivabatti = 0;
+            let magilPaanipatti = 0;
+            let chaluPaanipatti = 0;
+            let notisFee = 0;
+
+            data.forEach(record => {
+                magilGharpatti += parseFloat(record.previous_vasul_building_tax || 0);
+                chaluGharpatti += parseFloat(record.current_vasul_building_tax || 0);
+                sutGharpatti += parseFloat(record.current_vasul_sut_tax || 0);
+                magilAarogya += parseFloat(record.previous_vasul_health_tax || 0);
+                chaluAarogya += parseFloat(record.current_vasul_health_tax || 0);
+                magilDivabatti += parseFloat(record.previous_vasul_divabatti_tax || 0);
+                chaluDivabatti += parseFloat(record.current_vasul_divabatti_tax || 0);
+                magilPaanipatti += parseFloat(record.previous_vasul_panniyojana_tax || 0);
+                chaluPaanipatti += parseFloat(record.current_vasul_panniyojana_tax || 0);
+                notisFee += parseFloat(record.total_dand_tax || 0);
+            });
+
+            // Update the summary fields
+            $('#magil_gharpatti').val(magilGharpatti.toFixed(2));
+            $('#chalu_gharpatti').val(chaluGharpatti.toFixed(2));
+            $('#sut_gharpatti').val(sutGharpatti.toFixed(2));
+            $('#total_amount').val((magilGharpatti + chaluGharpatti - sutGharpatti).toFixed(2));
+
+            $('#magil_aarogya').val(magilAarogya.toFixed(2));
+            $('#chalu_aarogya').val(chaluAarogya.toFixed(2));
+            $('#aarogya_total_amount').val((magilAarogya + chaluAarogya).toFixed(2));
+
+            $('#magil_divabatti').val(magilDivabatti.toFixed(2));
+            $('#chalu_divabatti').val(chaluDivabatti.toFixed(2));
+            $('#total_amount_divabatti').val((magilDivabatti + chaluDivabatti).toFixed(2));
+
+            $('#magil_paanipatti').val(magilPaanipatti.toFixed(2));
+            $('#chalu_paanipatti').val(chaluPaanipatti.toFixed(2));
+            $('#total_amount_pannipatti').val((magilPaanipatti + chaluPaanipatti).toFixed(2));
+
+            $('#notis_fee').val(notisFee.toFixed(2));
+        }
+
+        // Helper function to get payment type text
+        function getPaymentTypeText(type) {
+            const types = {
+                'cash': 'रोख',
+                'cheque': 'चेक',
+                'neft': 'NEFT',
+                'rtgs': 'RTGS',
+                'card': 'कार्ड'
+            };
+            return types[type] || type;
+        }
+
+        // Handle form submission
+        $('form').submit(function(e) {
+            e.preventDefault();
+            fetchData();
+        });
+
+        // Load book numbers when financial year changes
+        $('#financial_year').change(function() {
+            const year = $(this).val();
+            if (year) {
+                $.ajax({
+                    url: 'api/get_book_numbers.php',
+                    type: 'POST',
+                    data: {
+                        financial_year: year
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            const select = $('#book_number');
+                            select.empty().append('<option value="">--निवडा--</option>');
+                            response.data.forEach(book => {
+                                console.log(book);
+                                select.append(
+                                    `<option value="${book.pustak_kramanak}">${book.pustak_kramanak}</option>`
+                                );
+                            });
+                        }
+                    }
+                });
+
+                // Also load malmatta numbers and person names
+                loadMalmattaNumbers(year);
+                loadPersonNames(year);
+            }
+        });
+
+        // Function to load malmatta numbers
+        function loadMalmattaNumbers(year) {
+            $.ajax({
+                url: 'api/get_malmatta_numbers.php',
+                type: 'POST',
+                data: {
+                    financial_year: year
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('#malmatta_number');
+                        select.empty().append('<option value="">--निवडा--</option>');
+                        response.data.forEach(malmatta => {
+                            select.append(
+                                `<option value="${malmatta.id}">${malmatta.number}</option>`
+                            );
+                        });
+                    }
+                }
+            });
+        }
+
+        // Function to load person names
+        function loadPersonNames(year) {
+            $.ajax({
+                url: 'api/get_person_names.php',
+                type: 'POST',
+                data: {
+                    financial_year: year
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('#person_name');
+                        select.empty().append('<option value="">--निवडा--</option>');
+                        response.data.forEach(person => {
+                            select.append(`<option value="${person}">${person}</option>`);
+                        });
+                    }
+                }
+            });
+        }
+
+        // Load receipt numbers when book number changes
+        $('#book_number').change(function() {
+            const bookNumber = $(this).val();
+            if (bookNumber) {
+                $.ajax({
+                    url: 'api/get_receipt_numbers.php',
+                    type: 'POST',
+                    data: {
+                        book_number: bookNumber
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            const startSelect = $('#pavati_number_pasun');
+                            const endSelect = $('#pavati_number_paryant');
+
+                            startSelect.empty().append(
+                                '<option value="">--निवडा--</option>');
+                            endSelect.empty().append('<option value="">--निवडा--</option>');
+
+                            response.data.forEach(receipt => {
+
+
+                                startSelect.append(
+                                    `<option value="${receipt}">${receipt}</option>`
+                                );
+                                endSelect.append(
+                                    `<option value="${receipt}">${receipt}</option>`
+                                );
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+        // Handle receipt print buttons
+        $(document).on('click', '.print-receipt', function() {
+            const recordId = $(this).data('id');
+            window.open(
+                `pdf/individual_pavati_namuna10.php?id=${recordId}`,
+                '_blank');
+        });
+
+        $(document).on('click', '.reprint-receipt', function() {
+            const recordId = $(this).data('id');
+            window.open(`pdf/individual_pavati_namuna10.php?id=${recordId}`, '_blank');
+        });
+
+        $(document).on('click', '.cancel-receipt', function() {
+            const recordId = $(this).data('id');
+            if (confirm('तुम्हाला ही पावती रद्द करायची आहे का?')) {
+                $.ajax({
+                    url: 'api/cancel_receipt.php',
+                    type: 'POST',
+                    data: {
+                        id: recordId
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            alert('पावती यशस्वीरित्या रद्द केली गेली आहे');
+                            fetchData(); // Refresh data
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    // Add this to your existing script
+    $(document).on('click', '#generatePdfBtn', async function() {
+        const financialYear = $('#financial_year').val();
+        const filterType = $('input[name="bill_type"]:checked').val();
+
+        // Validate required fields
+        if (!financialYear) {
+            alert('कृपया आर्थिक वर्ष निवडा');
+            return;
+        }
+
+        // Construct URL with parameters
+        let url = `pdf/namuna_10_pavti.php?financial_year=${financialYear}&filter_type=${filterType}`;
+
+        // Add additional filter parameters based on selected type
+        switch (filterType) {
+            case 'book_number':
+                const bookNumber = $('#book_number').val();
+                if (bookNumber) url += `&book_number=${bookNumber}`;
+                break;
+
+            case 'vasul_dinanknusar':
+                const startDate = $('#vasul_date_pasun').val();
+                const endDate = $('#vasul_date_paryant').val();
+                if (startDate) url += `&start_date=${startDate}`;
+                if (endDate) url += `&end_date=${endDate}`;
+                break;
+
+            case 'pavati_number_nusar':
+                const bookNum = $('#book_number').val();
+                const startReceipt = $('#pavati_number_pasun').val();
+                const endReceipt = $('#pavati_number_paryant').val();
+                if (bookNum) url += `&book_number=${bookNum}`;
+                if (startReceipt) url += `&start_receipt=${startReceipt}`;
+                if (endReceipt) url += `&end_receipt=${endReceipt}`;
+                break;
+
+            case 'malmaat_nusar':
+                const malmattaNumber = $('#malmatta_number').val();
+                if (malmattaNumber) url += `&malmatta_number=${malmattaNumber}`;
+                break;
+
+            case 'according_to_person':
+                const personName = $('#person_name').val();
+                if (personName) url += `&person_name=${encodeURIComponent(personName)}`;
+                break;
+        }
+
+        const res = await fetch(
+            url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        const html = await res.text();
+        const printWindow = window.open('', '_blank');
+        printWindow.document.open();
+        printWindow.document.write(`
+            <html>
+            <head>
+            <title>नमुना 10</title>
+            <style>
+        body {
+            font-family: 'Mangal', 'Noto Sans Devanagari', 'Arial', sans-serif;
+            margin: 20px;
+            color: #000;
+        }
+
+        h1,
+        h2,
+        h3 {
+            text-align: center;
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 4px 6px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        .header-note {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+            }
+        }
+        </style>
+            </head>
+            <body onload="window.print()">
+            ${html}
+            </body>
+            </html>
+    `);
+        printWindow.document.close();
     });
     </script>
 </body>

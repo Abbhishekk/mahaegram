@@ -9,8 +9,8 @@ if (isset($_SESSION['user_id'])) {
 
 <!DOCTYPE html>
 <html lang="en">
-<?php 
-$title = "Mahaegram Login";
+<?php
+$title = "Panchayat Portal Login";
 ?>
 <?php include('include/header.php'); ?>
 
@@ -27,17 +27,17 @@ $title = "Mahaegram Login";
                                 <div class="login-form">
                                     <?php
                                     if (isset($_SESSION['message'])) {
-                                      $message = $_SESSION['message'];
-                                      $message_type = $_SESSION['message_type'];
-                                    
-                                      echo "<div class='alert alert-$message_type'>$message</div>";
-                                  
-                                      // Unset the message so it doesn't persist after refresh
-                                      unset($_SESSION['message']);
-                                      unset($_SESSION['message_type']);
-                                     
-                                  }
-                                  ?>
+                                        $message = $_SESSION['message'];
+                                        $message_type = $_SESSION['message_type'];
+
+                                        echo "<div class='alert alert-$message_type'>$message</div>";
+
+                                        // Unset the message so it doesn't persist after refresh
+                                        unset($_SESSION['message']);
+                                        unset($_SESSION['message_type']);
+
+                                    }
+                                    ?>
 
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Login</h1>

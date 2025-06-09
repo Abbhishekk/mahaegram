@@ -18,8 +18,8 @@ $title = "पावती पुस्तक नोंदणी";
         $_SESSION['message_type'] = 'danger';
         $disabled = 'disabled';
     }else {
-        $yearArray = $fun->getYearArray($periodsWithReasons);
-        $currentYear = date('Y');
+       $yearArray = $fun->getYearArray($periodsWithReasons);
+     $currentYear = date('Y');
         $currentYearIndex = 0;
         // print_r($yearArray);
         for ($i = 0; $i < count($yearArray); $i++) {
@@ -228,7 +228,7 @@ $title = "पावती पुस्तक नोंदणी";
                                                 <label for="pavati_paryant">पावती पर्यंत :<span
                                                         class="text-danger">*</span></label>
                                                 <input type="number" name="pavati_paryant" id="pavati_paryant"
-                                                    class="form-control" required min="1">
+                                                    class="form-control" required min="1" readonly>
                                             </div>
 
                                         </div>
@@ -465,64 +465,99 @@ $title = "पावती पुस्तक नोंदणी";
     });
     // Add this script in your JavaScript section
     $(document).ready(function() {
-        // When material is selected in vitaran form
-        $('#material_number_pavati').on('change', function() {
-            var materialId = $(this).val();
-            if (materialId) {
-                // Fetch material details
-                $.ajax({
-                    url: 'api/getPavatiPustakDetails.php',
-                    type: 'POST',
-                    data: {
-                        id: materialId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            // Generate book number
-                            generateBookNumber(materialId, function(bookNumber) {
-                                $('#book_number').val(bookNumber);
-                            });
+        // When material or namuna number changes in vitaran form
+        $('#material_number_pavati, #namuna_number').on('change', function() {
+            var materialId = $('#material_number_pavati').val();
+            var namunaNumber = $('#namuna_number').val();
 
-                            // Set max values for pavati inputs
-                            $('#pavati_pasun').attr('data-max', response.total_number);
-                            $('#pavati_paryant').attr('data-max', response.total_number);
-                        }
+            if (materialId && namunaNumber) {
+                generateBookNumber(materialId, namunaNumber, function(response) {
+                    if (response.success) {
+                        $('#book_number').val(response.next_book);
+
+                        // Set max values for pavati inputs based on remaining receipts
+                        // You might need to adjust this based on your requirements
+                        $('#pavati_pasun').attr('max', response.total_books *
+                            100); // Assuming 100 receipts per book
+                        $('#pavati_paryant').attr('max', response.total_books * 100);
+                    } else {
+                        alert(response.message);
+                        $('#book_number').val('');
                     }
                 });
             }
         });
 
         // Validate pavati numbers
-        $('#pavati_paryant').on('change', function() {
-            var min = parseInt($('#pavati_pasun').val());
-            var max = parseInt($(this).val());
-            var valueRange = parseInt($(this).attr('data-max'));
-            if (min > max) {
-                alert('पावती संख्या ' + max + ' पेक्षा जास्त असू शकत नाही');
-                $(this).val('');
-            } else if (min < 1) {
+        $('#pavati_pasun').on('change', function() {
+            var start = parseInt($(this).val());
+            var end = $('#pavati_paryant');
+            var limit = $("#pavati_number").val();
+            if (isNaN(start) || start < 1) {
                 alert('पावती संख्या 1 पेक्षा कमी असू शकत नाही');
                 $(this).val('');
-            } else if (max - min > valueRange) {
-                alert('पावती संख्या ' + valueRange + ' असावी लागेल');
+                return;
+            }
+            console.log(start, "Start Value");
+            console.log(limit, "Limit Value");
+            console.log(start + parseInt(limit) - 1, "Calculated End Value");
+            var final_value = start + parseInt(limit) - 1;
+
+
+            end.val(final_value);
+            console.log(end.val(), "End Value");
+
+
+
+        });
+
+        $('#pavati_paryant').on('change', function() {
+            var start = parseInt($('#pavati_pasun').val());
+            var end = parseInt($(this).val());
+
+            if (isNaN(end) || end < 1) {
+                alert('पावती संख्या 1 पेक्षा कमी असू शकत नाही');
                 $(this).val('');
+                return;
+            }
+
+            if (!isNaN(start) && end < start) {
+                alert('पावती संख्या पासूनच्या संख्येपेक्षा कमी असू शकत नाही');
+                $(this).val('');
+                return;
+            }
+
+            // You can add additional validation here if needed
+        });
+
+        // Auto-calculate pavati_paryant when pavati_number changes
+        $('#pavati_number').on('change', function() {
+            var start = parseInt($('#pavati_pasun').val());
+            var count = parseInt($(this).val());
+
+            if (!isNaN(start) && !isNaN(count) && count > 0) {
+                $('#pavati_paryant').val(start + count - 1);
             }
         });
     });
 
-    function generateBookNumber(materialId, callback) {
+    function generateBookNumber(materialId, namunaNumber, callback) {
         $.ajax({
             url: 'api/generateBookNumber.php',
             type: 'POST',
             data: {
-                material_id: materialId
+                material_id: materialId,
+                namuna_number: namunaNumber
             },
             dataType: 'json',
             success: function(response) {
-                if (response.success) {
-                    callback(response.book_number);
-                }
+                callback(response);
+            },
+            error: function() {
+                callback({
+                    success: false,
+                    message: 'Error generating book number'
+                });
             }
         });
     }

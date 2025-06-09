@@ -19,23 +19,31 @@
         <span class="h6" style="color:white;">दैनंदिन कामकाज</span>
     </div>
     <li class="nav-item">
-        <a class="nav-link <?php if ($page == "namuna7") echo ""; else echo "collapsed"; ?>" href="#"
+        <a class="nav-link <?php if ($page == "namuna7")
+            echo "";
+        else
+            echo "collapsed"; ?>" href="#"
             data-toggle="collapse" data-target="#collapseNamuna7" aria-expanded="true" aria-controls="collapseNamuna7">
             <i class="far fa-fw fa-window-maximize"></i>
             <span>नामुना क्रमांक 7</span>
         </a>
-        <div id="collapseNamuna7" class="collapse <?php if ($page == "namuna7") echo "show"; ?> "
+        <div id="collapseNamuna7" class="collapse <?php if ($page == "namuna7")
+            echo "show"; ?> "
             aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
             <ul class="navbar-nav accordion" id="accordionSidebar10">
                 <li class="nav-item">
-                    <a class="nav-link <?php if ($subpage != 'ahaval') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link <?php if ($subpage != 'ahaval') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapNamuna7Ahaval" aria-expanded="true"
                         aria-controls="collapseBootstrapNamuna7Ahaval">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>अहवाल</span>
                     </a>
                     <div id="collapseBootstrapNamuna7Ahaval"
-                        class="collapse <?php if ($subpage == 'ahaval') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'ahaval') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna7_ahaval_samanya_pavti.php">सामान्य पावती अहवात</a>
@@ -44,14 +52,18 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if ($subpage != 'dainandin') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link <?php if ($subpage != 'dainandin') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapNamuna7dainandin" aria-expanded="true"
                         aria-controls="collapseBootstrapNamuna7dainandin">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>दैनंदिन कामकाज</span>
                     </a>
                     <div id="collapseBootstrapNamuna7dainandin"
-                        class="collapse <?php if ($subpage == 'dainandin') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'dainandin') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna7_varshikkamkaj_pavati_pustak_nond.php">पावती
@@ -74,14 +86,18 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapNamuna7YearlyWork" aria-expanded="true"
                         aria-controls="collapseBootstrapNamuna7YearlyWork">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>वार्षिक कामकाज</span>
                     </a>
                     <div id="collapseBootstrapNamuna7YearlyWork"
-                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna7_varshikkamkaj_shillak.php">वर्षाच्या सुरवातीची
@@ -94,14 +110,18 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  <?php if ($subpage != 'master') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link  <?php if ($subpage != 'master') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapNamuna7Master" aria-expanded="true"
                         aria-controls="collapseBootstrapNamuna7Master">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>मास्टर्स</span>
                     </a>
                     <div id="collapseBootstrapNamuna7Master"
-                        class="collapse <?php if ($subpage == 'master') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'master') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna7_masters_shillak.php">वर्षाच्या सुरवातीची
@@ -119,24 +139,32 @@
         </div>
     </li>
     <li class="nav-item">
-        <a class="nav-link <?php if ($page == "namuna8") echo ""; else echo "collapsed"; ?>" href="#"
+        <a class="nav-link <?php if ($page == "namuna8")
+            echo "";
+        else
+            echo "collapsed"; ?>" href="#"
             data-toggle="collapse" data-target="#collapseBootstrap" aria-expanded="true"
             aria-controls="collapseBootstrap">
             <i class="far fa-fw fa-window-maximize"></i>
             <span>नामुना क्रमांक 8</span>
         </a>
-        <div id="collapseBootstrap" class="collapse <?php if ($page == "namuna8") echo "show"; ?> "
+        <div id="collapseBootstrap" class="collapse <?php if ($page == "namuna8")
+            echo "show"; ?> "
             aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
             <ul class="navbar-nav accordion" id="accordionSidebar8">
                 <li class="nav-item">
-                    <a class="nav-link <?php if ($subpage != 'ahaval') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link <?php if ($subpage != 'ahaval') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapAhaval" aria-expanded="true"
                         aria-controls="collapseBootstrapAhaval">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>अहवाल</span>
                     </a>
                     <div id="collapseBootstrapAhaval"
-                        class="collapse <?php if ($subpage == 'ahaval') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'ahaval') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna8_ahaval_assesment_register.php">असेसमेंट रजिस्टर</a>
@@ -152,14 +180,18 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapYearlyWork" aria-expanded="true"
                         aria-controls="collapseBootstrapYearlyWork">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>वार्षिक कामकाज</span>
                     </a>
                     <div id="collapseBootstrapYearlyWork"
-                        class="collapse <?php if ($subpage == 'varshik_kamkaj') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'varshik_kamkaj') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item"
@@ -181,14 +213,18 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if ($subpage != 'malmatta') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link <?php if ($subpage != 'malmatta') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapMalmatta" aria-expanded="true"
                         aria-controls="collapseBootstrapMalmatta">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>मालमत्ता माहिती</span>
                     </a>
                     <div id="collapseBootstrapMalmatta"
-                        class="collapse <?php if ($subpage == 'malmatta') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'malmatta') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="Form_Name_Masters.php">नवीन नाव नोंदणी</a>
@@ -203,14 +239,18 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  <?php if ($subpage != 'wardMaster') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link  <?php if ($subpage != 'wardMaster') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapMaster" aria-expanded="true"
                         aria-controls="collapseBootstrapMaster">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>मास्टर्स</span>
                     </a>
                     <div id="collapseBootstrapMaster"
-                        class="collapse <?php if ($subpage == 'wardMaster') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'wardMaster') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="./wardMaster.php">वार्ड माहिती</a>
@@ -229,24 +269,32 @@
         </div>
     </li>
     <li class="nav-item">
-        <a class="nav-link <?php if ($page == "namuna9") echo ""; else echo "collapsed"; ?>" href="#"
+        <a class="nav-link <?php if ($page == "namuna9")
+            echo "";
+        else
+            echo "collapsed"; ?>" href="#"
             data-toggle="collapse" data-target="#collapseBootstrapNamuna9" aria-expanded="true"
             aria-controls="collapseBootstrapNamuna9">
             <i class="far fa-fw fa-window-maximize"></i>
             <span>नामुना क्रमांक 9</span>
         </a>
-        <div id="collapseBootstrapNamuna9" class="collapse <?php if ($page == "namuna9") echo "show"; ?> "
+        <div id="collapseBootstrapNamuna9" class="collapse <?php if ($page == "namuna9")
+            echo "show"; ?> "
             aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
             <ul class="navbar-nav accordion" id="accordionSidebar9">
                 <li class="nav-item">
-                    <a class="nav-link <?php if ($subpage != 'ahaval') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link <?php if ($subpage != 'ahaval') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapAhavalNamuna9" aria-expanded="true"
                         aria-controls="collapseBootstrapAhavalNamuna9">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>अहवाल</span>
                     </a>
                     <div id="collapseBootstrapAhavalNamuna9"
-                        class="collapse <?php if ($subpage == 'ahaval') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'ahaval') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar9">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna9_ahaval_varshikkarmagni_vasuliyadi.php">वार्षिक कर
@@ -263,14 +311,18 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapYearlyWorkNamuna9" aria-expanded="true"
                         aria-controls="collapseBootstrapYearlyWorkNamuna9">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>वार्षिक कामकाज</span>
                     </a>
                     <div id="collapseBootstrapYearlyWorkNamuna9"
-                        class="collapse <?php if ($subpage == 'varshik_kamkaj') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'varshik_kamkaj') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar9">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna9_varshikkamkaj_varshikkarmagni.php">वार्षिक कर मागणी
@@ -285,24 +337,32 @@
         </div>
     </li>
     <li class="nav-item">
-        <a class="nav-link <?php if ($page == "namuna10") echo ""; else echo "collapsed"; ?>" href="#"
+        <a class="nav-link <?php if ($page == "namuna10")
+            echo "";
+        else
+            echo "collapsed"; ?>" href="#"
             data-toggle="collapse" data-target="#collapseNamuna10" aria-expanded="true"
             aria-controls="collapseNamuna10">
             <i class="far fa-fw fa-window-maximize"></i>
             <span>नामुना क्रमांक 10</span>
         </a>
-        <div id="collapseNamuna10" class="collapse <?php if ($page == "namuna10") echo "show"; ?> "
+        <div id="collapseNamuna10" class="collapse <?php if ($page == "namuna10")
+            echo "show"; ?> "
             aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
             <ul class="navbar-nav accordion" id="accordionSidebar10">
                 <li class="nav-item">
-                    <a class="nav-link <?php if ($subpage != 'ahaval') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link <?php if ($subpage != 'ahaval') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapNamuna10Ahaval" aria-expanded="true"
                         aria-controls="collapseBootstrapNamuna10Ahaval">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>अहवाल</span>
                     </a>
                     <div id="collapseBootstrapNamuna10Ahaval"
-                        class="collapse <?php if ($subpage == 'ahaval') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'ahaval') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna10_ahaval_kar_va_fi.php">कर व फी पावती अहवाल</a>
@@ -311,14 +371,18 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if ($subpage != 'dainandin') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link <?php if ($subpage != 'dainandin') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapNamuna10dainandin" aria-expanded="true"
                         aria-controls="collapseBootstrapNamuna10dainandin">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>दैनंदिन कामकाज</span>
                     </a>
                     <div id="collapseBootstrapNamuna10dainandin"
-                        class="collapse <?php if ($subpage == 'dainandin') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'dainandin') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna10_dainandin_bank_bharne.php">बँक भरणा</a>
@@ -339,14 +403,18 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapNamuna10YearlyWork" aria-expanded="true"
                         aria-controls="collapseBootstrapNamuna10YearlyWork">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>वार्षिक कामकाज</span>
                     </a>
                     <div id="collapseBootstrapNamuna10YearlyWork"
-                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna10_varshikkamkaj_shillak.php">वर्षाच्या सुरवातीची
@@ -360,14 +428,18 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  <?php if ($subpage != 'master') { echo 'collapsed'; } ?>" href="#"
+                    <a class="nav-link  <?php if ($subpage != 'master') {
+                        echo 'collapsed';
+                    } ?>" href="#"
                         data-toggle="collapse" data-target="#collapseBootstrapNamuna10Master" aria-expanded="true"
                         aria-controls="collapseBootstrapNamuna10Master">
                         <i class="far fa-fw fa-window-maximize"></i>
                         <span>मास्टर्स</span>
                     </a>
                     <div id="collapseBootstrapNamuna10Master"
-                        class="collapse <?php if ($subpage == 'master') { echo 'show'; } ?>"
+                        class="collapse <?php if ($subpage == 'master') {
+                            echo 'show';
+                        } ?>"
                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar10">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="namuna10_master_bank.php">बँकांची माहिती</a>
@@ -412,14 +484,18 @@
                             <ul class="navbar-nav accordion" id="accordionSidebar8">
 
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse" data-target="#collapseBootstrapnamuna2_ahaval"
                                         aria-expanded="true" aria-controls="collapseBootstrapnamuna2_ahaval">
                                         <i class="far fa-fw fa-window-maximize"></i>
                                         <span>अहवाल</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna2_ahaval"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item" href="namuna2_ahaval_puravniandajpatrak.php">पुरवणी
@@ -429,7 +505,9 @@
                                 </li>
 
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse"
                                         data-target="#collapseBootstrapnamuna2_varshikkamkaj" aria-expanded="true"
                                         aria-controls="collapseBootstrapnamuna2_varshikkamkaj">
@@ -437,7 +515,9 @@
                                         <span>वार्षिक कामकाज</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna2_varshikkamkaj"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item"
@@ -467,14 +547,18 @@
                             <ul class="navbar-nav accordion" id="accordionSidebar8">
 
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse" data-target="#collapseBootstrapnamuna3_ahaval"
                                         aria-expanded="true" aria-controls="collapseBootstrapnamuna3_ahaval">
                                         <i class="far fa-fw fa-window-maximize"></i>
                                         <span>अहवाल</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna3_ahaval"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item"
@@ -503,14 +587,18 @@
                             <ul class="navbar-nav accordion" id="accordionSidebar8">
 
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse" data-target="#collapseBootstrapnamuna4_ahaval"
                                         aria-expanded="true" aria-controls="collapseBootstrapnamuna4_ahaval">
                                         <i class="far fa-fw fa-window-maximize"></i>
                                         <span>अहवाल</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna4_ahaval"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item"
@@ -539,14 +627,18 @@
                             <ul class="navbar-nav accordion" id="accordionSidebar8">
 
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse" data-target="#collapseBootstrapnamuna5_ahaval"
                                         aria-expanded="true" aria-controls="collapseBootstrapnamuna5_ahaval">
                                         <i class="far fa-fw fa-window-maximize"></i>
                                         <span>अहवाल</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna5_ahaval"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item"
@@ -581,14 +673,18 @@
                             <ul class="navbar-nav accordion" id="accordionSidebar8">
 
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse" data-target="#collapseBootstrapnamuna5c_ahaval"
                                         aria-expanded="true" aria-controls="collapseBootstrapnamuna5c_ahaval">
                                         <i class="far fa-fw fa-window-maximize"></i>
                                         <span>अहवाल</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna5c_ahaval"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item" href="namuna5_k_rokadvahi_dainandin.php">रोकड
@@ -628,14 +724,18 @@
                             <ul class="navbar-nav accordion" id="accordionSidebar8">
 
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse" data-target="#collapseBootstrapnamuna6_ahaval"
                                         aria-expanded="true" aria-controls="collapseBootstrapnamuna6_ahaval">
                                         <i class="far fa-fw fa-window-maximize"></i>
                                         <span>अहवाल</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna6_ahaval"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item" href="alerts.html">जमा-खर्च चे वर्गीकरण</a>
@@ -663,14 +763,18 @@
                             <ul class="navbar-nav accordion" id="accordionSidebar8">
 
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse" data-target="#collapseBootstrapnamuna11_ahaval"
                                         aria-expanded="true" aria-controls="collapseBootstrapnamuna11_ahaval">
                                         <i class="far fa-fw fa-window-maximize"></i>
                                         <span>अहवाल</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna11_ahaval"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item" href="alerts.html">वार्षिक किरकोळ मागणी अहवाल</a>
@@ -679,7 +783,9 @@
                                 </li>
 
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse"
                                         data-target="#collapseBootstrapnamuna11_varshikkamkaj" aria-expanded="true"
                                         aria-controls="collapseBootstrapnamuna11_varshikkamkaj">
@@ -687,7 +793,9 @@
                                         <span>वार्षिक कामकाज</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna11_varshikkamkaj"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item" href="alerts.html">किरकोळ कर मागणी</a>
@@ -696,14 +804,18 @@
                                     </div>
                                 </li>
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse" data-target="#collapseBootstrapnamuna11_masters"
                                         aria-expanded="true" aria-controls="collapseBootstrapnamuna11_masters">
                                         <i class="far fa-fw fa-window-maximize"></i>
                                         <span>मास्टर्स</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna11_masters"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item" href="alerts.html">किरकोळ मागणी स्वरुप</a>
@@ -734,14 +846,18 @@
                             <ul class="navbar-nav accordion" id="accordionSidebar8">
 
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse" data-target="#collapseBootstrapnamuna13_ahaval"
                                         aria-expanded="true" aria-controls="collapseBootstrapnamuna13_ahaval">
                                         <i class="far fa-fw fa-window-maximize"></i>
                                         <span>अहवाल</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna13_ahaval"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item" href="alerts.html">कर्मचारी वर्गाची सूची
@@ -750,14 +866,18 @@
                                     </div>
                                 </li>
                                 <li class="nav-item ml-3">
-                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') { echo 'collapsed'; } ?>"
+                                    <a class="nav-link <?php if ($subpage != 'yearlyWork') {
+                                        echo 'collapsed';
+                                    } ?>"
                                         href="#" data-toggle="collapse" data-target="#collapseBootstrapnamuna13_masters"
                                         aria-expanded="true" aria-controls="collapseBootstrapnamuna13_masters">
                                         <i class="far fa-fw fa-window-maximize"></i>
                                         <span>मास्टर्स</span>
                                     </a>
                                     <div id="collapseBootstrapnamuna13_masters"
-                                        class="collapse <?php if ($subpage == 'yearlyWork') { echo 'show'; } ?>"
+                                        class="collapse <?php if ($subpage == 'yearlyWork') {
+                                            echo 'show';
+                                        } ?>"
                                         aria-labelledby="headingBootstrap" data-parent="#accordionSidebar8">
                                         <div class="bg-white py-2 collapse-inner rounded">
                                             <a class="collapse-item" href="alerts.html">हुद्दा माहिती</a>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <title>करांची मागणी पावती</title>
+  <style>
+    body {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      margin: 20px;
+    }
+    .receipt-box {
+      border: 2px solid black;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    caption {
+      caption-side: top;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 6px;
+      text-align: center;
+    }
+    .header {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+    .info-table td {
+      border: none;
+      padding: 5px;
+      text-align: left;
+    }
+    .section {
+      margin-top: 20px;
+    }
+    .footer-table {
+      width: 100%;
+      border: 1px solid black;
+      margin-top: 30px;
+    }
+    .footer-table td {
+      
+      vertical-align: top;
+      border: 1px solid black;
+      padding: 10px;
+    }
+    .footer-table .full {
+      padding: 10px;
+      text-align: left;
+    }
+    .dashed-border {
+      border-top: 2px dashed black;
+      margin-top: 20px;
+    }
+    @media screen and (max-width: 600px) {
+      .info-table, .footer-table, table {
+        font-size: 16px;
+      }
+      th, td {
+        padding: 4px;
+      }
+    }
+    .boxc{
+      font-size: 32px; border:5px solid black; display: inline-block; padding: 4px; border-radius: 15px; box-shadow: 5px 10px 8px #888888;
+    }
+    .footer {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+    }
+    .note {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt-box">
+
+      <div class="header "><strong>नमुना नं . ७</strong><br>[ नियम ११(९),२२(२),३३(२),३३(४)(क) आणि  ४(च),३५,३६(२) आणि  ३७(२) पहा ] </div>
+    
+    <div class="header " style="font-size: 22px;">
+      सामान्य पावती 
+    </div>
+
+    
+
+    <table class="info-table">
+      <tr>
+        <td colspan="1"><strong>ग्रामपंचायत :</strong> <?php echo $gram_panchayat; ?></td>
+          <td><strong>तालुका :</strong> <?php echo $taluka; ?></td>
+        <td><strong>जिल्हा :</strong> <?php echo $district; ?></td><td></td>
+      </tr>
+      <tr>
+        <td colspan="2"><strong>पुस्तक क्रमांक:प्रमाणपत्र फी</strong> <?php echo $property_no; ?></td>
+         <td colspan="2"><strong>पावती क्रमांक:</strong> <?php echo $bill_no; ?></td>
+      </tr>
+    </table>
+    <hr>
+    <table class="info-table">
+      <tr>
+        <td colspan="3" ><strong >श्री / श्रीमती :- </strong> <?php echo $gram_panchayat; ?></td>
+        <td><strong >कडून </strong></td>
+      </tr>
+      <tr>
+        <td colspan="2" style="text-align:center;"><strong>दाखला फी :-थकबाकी नसल्याचा दाखला </strong> </td>
+          <td style="text-align:left;"><strong> बद्दल रुपये</strong> </td>
+        <td style="text-align:left;"><strong>२०</strong> </td><td></td>
+      </tr>
+      <tr>
+        <td colspan="2" style="text-align:center;">(अक्षरी रुपये :- वीस रुपये फक्त )</td>
+        <td colspan="2" style="text-align:left;"><strong>एवढी रक्कम मिळाली .</strong></td>
+        
+      
+      </tr>
+      
+    </table>
+   
+  <div class="footer" style="margin-top: 80px;">
+     <div>दिनांक : <?php echo $pavtidate; ?></div>
+     <div>सरपंच  </div>
+     <div>सचिव </div>
+     <div> </div>
+  </div>
+  </div>
+  <div class="note">
+    <strong>टीप :</strong><br>
+    (१) या पावतीची कार्बन प्रतिलिपी असावी. <br>
+(२)नमुने देण्यात येतील तेव्हा पुस्तकाचे व पावत्याचे क्रमांक त्यावर छापलेले किंवा शिक्क्याने उमटविलेले असावेत . <br>
+(३)पंचायतीच्या वतीने सरपंचाने किंवा यथास्थिती ,सचिवांने स्वीकारलेल्या रकमेबद्दल हि पावती सरपंचाने किंवा सचिवाने द्यावी . <br>
+
+  </div>
+</body>
+</html>

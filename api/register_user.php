@@ -8,7 +8,8 @@ $conn = $connect->dbConnect();
 $fun = new Fun($conn);
 
 
-function generateUserId($prefix = "USR") {
+function generateUserId($prefix = "USR")
+{
     return $prefix . strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 6));
 }
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -27,8 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo "Invalid email format.";
         exit;
     }
-  
-    
+
+
 
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $state = $_POST['state'];
@@ -50,25 +51,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Insert new user
     $stmt = $conn->prepare("INSERT INTO users (user_id, name, mobile, email, designation, password, state, district_code, panchayat_code ,village_code)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
-$stmt->bind_param("ssssssssss", $user_id, $name, $mobile, $email, $designation, $password, $state, $district_code, $panchayat_code ,$village_code);
-    if ($stmt->execute()) {
-        $_SESSION['message'] = "User registered successfully.";
-        $_SESSION['user_id'] = $user_id;
-        $_SESSION['message_type'] = "success";
-        header("Location: ../register.php");
-        echo "User registered successfully. </br>";
-        echo "User ID: " . $user_id . "</br>";
-        echo "Name: " . $name . "</br>";
-        echo "Mobile: " . $mobile . "</br>";
-        echo "Email: " . $email . "</br>";
-        exit;
-    } else {
+    $stmt->bind_param("ssssssssss", $user_id, $name, $mobile, $email, $designation, $password, $state, $district_code, $panchayat_code, $village_code);
 
-        $_SESSION['message'] = "Error: " . $stmt->error;
-        $_SESSION['message_type'] = "error";
+    try {
+        if ($stmt->execute()) {
+            $_SESSION['message'] = "User registered successfully.";
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['message_type'] = "success";
+            header("Location: ../register.php");
+            echo "User registered successfully. </br>";
+            echo "User ID: " . $user_id . "</br>";
+            echo "Name: " . $name . "</br>";
+            echo "Mobile: " . $mobile . "</br>";
+            echo "Email: " . $email . "</br>";
+            exit;
+        } else {
+
+            $_SESSION['message'] = "Error: " . $stmt->error;
+            $_SESSION['message_type'] = "danger";
+            header("Location: ../register.php");
+            echo "Error: " . $stmt->error;
+            exit;
+        }
+    } catch (\Throwable $th) {
+        $_SESSION['message'] = "Error: " . $th->getMessage();
+        $_SESSION['message_type'] = "danger";
         header("Location: ../register.php");
-        echo "Error: " . $stmt->error;
+        echo "Error: " . $th->getMessage();
         exit;
+    } finally {
+        $stmt->close();
+        $conn->close();
     }
+
 }
 ?>

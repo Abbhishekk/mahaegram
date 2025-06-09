@@ -2818,6 +2818,16 @@ class Fun
         return $result;
     }
 
+    // added
+    public function getUniqueBlock($district_code)
+    {
+        $query = "SELECT DISTINCT `Development_Block_Code`, `Development_Block_Name` FROM `lgdtable` WHERE `District_Code` = '$district_code'";
+        echo $query;
+        $result = mysqli_query($this->db, $query);
+        return $result;
+    }
+
+
     public function getVillagesWithDistrict($district_code)
     {
         $query = "SELECT DISTINCT `Village_Code`, `Village_Name`,`District_Code` FROM `lgdtable` WHERE `District_Code` = '$district_code'";
@@ -2830,9 +2840,12 @@ class Fun
         $result = mysqli_query($this->db, $query);
         return $result;
     }
+
+
+    //changed
     public function getPanchayatWithDistrict($district_code)
     {
-        $query = "SELECT DISTINCT `Village_Panchayat_Code_TLB_Code` as 'panchayat_code', `Village_Panchayat_Name_TLB_Name` as 'panchayat_name' ,`District_Code` FROM `lgdtable` WHERE `District_Code` = '$district_code'";
+        $query = "SELECT DISTINCT `Village_Panchayat_Code_TLB_Code` as 'panchayat_code', `Village_Panchayat_Name_TLB_Name` as 'panchayat_name' ,`District_Code` FROM `lgdtable` WHERE `Development_Block_Code` = '$district_code'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -4286,4 +4299,15 @@ class Fun
         $stmt->execute();
         return $stmt->get_result();
     }
+
+    public function getKarVasuliRecords()
+    {
+        $sql = "SELECT * FROM karvasuli_records kr
+                left outer join malmatta_data_entry mde on mde.id =  kr.malamatta_kramanak
+         WHERE mde.panchayat_code = '" . $_SESSION['panchayat_code'] . "'";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
 }
