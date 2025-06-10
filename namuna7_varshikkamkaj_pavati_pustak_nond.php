@@ -1,46 +1,46 @@
-<?php 
+<?php
 require_once './include/auth_middleware.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php 
+<?php
 $title = "पावती पुस्तक नोंदणी";
 ?>
 <?php include('include/header.php'); ?>
 <?php
-    $financialYears = $fun->getFinancialYears();
-    $banks = $fun->getBanks();
-    $materials = $fun ->getMaterials($_SESSION['district_code']);
-    $periodsWithReasons = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
-    if (mysqli_num_rows($periodsWithReasons) == 0) {
-        $_SESSION['message'] = "कालावधी नोंदणी केलेली नाही. कृपया कालावधी नोंदणी करा.";
-        $_SESSION['message_type'] = 'danger';
-        $disabled = 'ture';
-    }else {
-        $yearArray = $fun->getYearArray($periodsWithReasons);
-        $currentYear = date('Y');
-        $currentYearIndex = 0;
-        // print_r($yearArray);
-        for ($i = 0; $i < count($yearArray); $i++) {
-            $yearRange = explode("-", $yearArray[$i]);
-            $startYear = $yearRange[0];
-            $endYear = $yearRange[1];
-            if ($startYear <= $currentYear && $endYear >= $currentYear) {
-                $currentYearIndex = $i;
-                break;
-            }
+$financialYears = $fun->getFinancialYears();
+$banks = $fun->getBanks();
+$materials = $fun->getMaterials($_SESSION['district_code']);
+$periodsWithReasons = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
+$disabled = '';
+if (mysqli_num_rows($periodsWithReasons) == 0) {
+    $_SESSION['message'] = "कालावधी नोंदणी केलेली नाही. कृपया कालावधी नोंदणी करा.";
+    $_SESSION['message_type'] = 'danger';
+    $disabled = 'disabled';
+} else {
+    $yearArray = $fun->getYearArray($periodsWithReasons);
+    $currentYear = date('Y');
+    $currentYearIndex = 0;
+    // print_r($yearArray);
+    for ($i = 0; $i < count($yearArray); $i++) {
+        $yearRange = explode("-", $yearArray[$i]);
+        $startYear = $yearRange[0];
+        $endYear = $yearRange[1];
+        if ($startYear <= $currentYear && $endYear >= $currentYear) {
+            $currentYearIndex = $i;
+            break;
         }
-        $disabled = 'false';
-
     }
-    $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
-    // print_r($periodsWithReasons);
+    $disabled = '';
+}
+$pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
+
 ?>
 
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar -->
-        <?php 
+        <?php
         $page = 'namuna7';
         $subpage = 'dainandin';
         include('include/sidebar.php');
@@ -110,25 +110,25 @@ $title = "पावती पुस्तक नोंदणी";
                                             <div
                                                 class="form-group col-md-8 d-flex justify-content-start align-items-center">
                                                 <p class="font-weight-bold"> आर्थिक वर्ष :
-                                                    <?php echo $yearArray[$currentYearIndex ?? 0] ?? '' ;  ?>
+                                                    <?php echo $yearArray[$currentYearIndex ?? 0] ?? '';  ?>
                                                 </p>
                                                 <input type="hidden" name="financial_year" id="financial_year"
                                                     class="form-control"
-                                                    value="<?php echo $yearArray[$currentYearIndex ?? 0] ?? '' ;  ?>">
+                                                    value="<?php echo $yearArray[$currentYearIndex ?? 0] ?? '';  ?>">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="material_type">पा.पु/समान प्रकार :</label>
                                                 <select class="form-control" name="material_type" id="material_type">
                                                     <option value="">--निवडा--</option>
                                                     <?php
-                                                        if(mysqli_num_rows($materials) > 0):
-                                                            while($record = mysqli_fetch_assoc($materials)):
+                                                    if (mysqli_num_rows($materials) > 0):
+                                                        while ($record = mysqli_fetch_assoc($materials)):
                                                     ?>
-                                                    <option value="<?php echo $record['material_name']; ?>">
-                                                        <?php echo $record['material_name']; ?></option>
+                                                            <option value="<?php echo $record['material_name']; ?>">
+                                                                <?php echo $record['material_name']; ?></option>
                                                     <?php
-                                                            endwhile;
-                                                        endif;
+                                                        endwhile;
+                                                    endif;
                                                     ?>
                                                 </select>
                                             </div>
@@ -148,7 +148,7 @@ $title = "पावती पुस्तक नोंदणी";
                                         </div>
 
                                         <button type="submit" name="save" class="btn btn-primary"
-                                            disabled="<?php echo $disabled; ?>">साठवणे</button>
+                                            <?php echo $disabled ?>>साठवणे</button>
                                         <button type="reset" class="btn btn-secondary">रद्द करणे</button>
                                     </form>
                                 </div>
@@ -180,14 +180,14 @@ $title = "पावती पुस्तक नोंदणी";
                                                     id="material_number_pavati" required>
                                                     <option value="">--निवडा--</option>
                                                     <?php
-                                                        if(mysqli_num_rows($pavati_pustak) > 0):
-                                                            while($record = mysqli_fetch_assoc($pavati_pustak)):
+                                                    if (mysqli_num_rows($pavati_pustak) > 0):
+                                                        while ($record = mysqli_fetch_assoc($pavati_pustak)):
                                                     ?>
-                                                    <option value="<?php echo $record['id']; ?>">
-                                                        <?php echo $record['material_number']; ?></option>
+                                                            <option value="<?php echo $record['id']; ?>">
+                                                                <?php echo $record['material_number']; ?></option>
                                                     <?php
-                                                            endwhile;
-                                                        endif;
+                                                        endwhile;
+                                                    endif;
                                                     ?>
                                                 </select>
                                             </div>
@@ -227,7 +227,7 @@ $title = "पावती पुस्तक नोंदणी";
                                                 <label for="pavati_paryant">पावती पर्यंत :<span
                                                         class="text-danger">*</span></label>
                                                 <input type="number" name="pavati_paryant" id="pavati_paryant"
-                                                    class="form-control" required min="1">
+                                                    class="form-control" required min="1" readonly>
                                             </div>
 
                                         </div>
@@ -256,42 +256,44 @@ $title = "पावती पुस्तक नोंदणी";
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php 
-                    $records = $fun->getPavatiPustak($_SESSION['district_code']);
-                    if(mysqli_num_rows($records) > 0): 
-                    ?>
-                                            <?php $i = 1; while($record = mysqli_fetch_assoc($records)): ?>
-                                            <tr>
-                                                <td><?= $i ?></td>
-                                                <td><?= date('d-m-Y', strtotime($record['buying_date'])) ?></td>
-                                                <td><?= $record['financial_year'] ?></td>
-                                                <td><?= $record['material_type'] ?></td>
-                                                <td><?= $record['total_number'] ?></td>
-                                                <td><?= $record['material_number'] ?></td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-sm btn-primary" onclick="fillFormData(
+                                            <?php
+                                            $records = $fun->getPavatiPustak($_SESSION['district_code']);
+                                            if (mysqli_num_rows($records) > 0):
+                                            ?>
+                                                <?php $i = 1;
+                                                while ($record = mysqli_fetch_assoc($records)): ?>
+                                                    <tr>
+                                                        <td><?= $i ?></td>
+                                                        <td><?= date('d-m-Y', strtotime($record['buying_date'])) ?></td>
+                                                        <td><?= $record['financial_year'] ?></td>
+                                                        <td><?= $record['material_type'] ?></td>
+                                                        <td><?= $record['total_number'] ?></td>
+                                                        <td><?= $record['material_number'] ?></td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-sm btn-primary" onclick="fillFormData(
                                     '<?= $record['id'] ?>',
                                     '<?= $record['buying_date'] ?>',
                                     '<?= $record['material_type'] ?>',
                                     '<?= $record['material_number'] ?>',
                                     '<?= $record['total_number'] ?>'
                                 )">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <a href="api/pavati_pustak.php?delete=<?= $record['id'] ?>"
-                                                            class="btn btn-sm btn-danger"
-                                                            onclick="return confirm('तुम्हाला ही नोंद नक्की हटवायची आहे का?')">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <?php $i++; endwhile; ?>
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                                <a href="api/pavati_pustak.php?delete=<?= $record['id'] ?>"
+                                                                    class="btn btn-sm btn-danger"
+                                                                    onclick="return confirm('तुम्हाला ही नोंद नक्की हटवायची आहे का?')">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php $i++;
+                                                endwhile; ?>
                                             <?php else: ?>
-                                            <tr>
-                                                <td colspan="7" class="text-center">नोंद सापडली नाही</td>
-                                            </tr>
+                                                <tr>
+                                                    <td colspan="7" class="text-center">नोंद सापडली नाही</td>
+                                                </tr>
                                             <?php endif; ?>
                                         </tbody>
                                     </table>
@@ -317,26 +319,27 @@ $title = "पावती पुस्तक नोंदणी";
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php 
-                    $distributions = $fun->getPavatiPustakVitaran($_SESSION['district_code']);
-                    if(mysqli_num_rows($distributions) > 0): 
-                    ?>
-                                            <?php $i = 1; while($record = mysqli_fetch_assoc($distributions)):
-                            // print_r($record);
-                        ?>
-                                            <tr>
-                                                <td><?= $i ?></td>
-                                                <td><?= $record['plan_name'] ?></td>
-                                                <td><?= $record['financial_year'] ?></td>
-                                                <td><?= $record['namuna_number'] ?></td>
-                                                <td><?= $record['book_number'] ?></td>
-                                                <td><?= $record['pavati_number'] ?></td>
-                                                <td><?= $record['given_person_name'] ?></td>
-                                                <td><?= $record['pavati_pasun'] ?></td>
-                                                <td><?= $record['pavati_paryant'] ?></td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-sm btn-primary" onclick="fillDistributionFormData(
+                                            <?php
+                                            $distributions = $fun->getPavatiPustakVitaran($_SESSION['district_code']);
+                                            if (mysqli_num_rows($distributions) > 0):
+                                            ?>
+                                                <?php $i = 1;
+                                                while ($record = mysqli_fetch_assoc($distributions)):
+                                                    // print_r($record);
+                                                ?>
+                                                    <tr>
+                                                        <td><?= $i ?></td>
+                                                        <td><?= $record['plan_name'] ?></td>
+                                                        <td><?= $record['financial_year'] ?></td>
+                                                        <td><?= $record['namuna_number'] ?></td>
+                                                        <td><?= $record['book_number'] ?></td>
+                                                        <td><?= $record['pavati_number'] ?></td>
+                                                        <td><?= $record['given_person_name'] ?></td>
+                                                        <td><?= $record['pavati_pasun'] ?></td>
+                                                        <td><?= $record['pavati_paryant'] ?></td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-sm btn-primary" onclick="fillDistributionFormData(
                                     '<?= $record['id'] ?>',
                                     '<?= $record['plan_name'] ?>',
                                     '<?= $record['material_id'] ?>',
@@ -348,21 +351,22 @@ $title = "पावती पुस्तक नोंदणी";
                                     '<?= $record['pavati_paryant'] ?>',
                                     '<?= $record['financial_year'] ?>'
                                 )">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <a href="api/pavati_pustak_vitaran.php?delete=<?= $record['id'] ?>"
-                                                            class="btn btn-sm btn-danger"
-                                                            onclick="return confirm('तुम्हाला ही नोंद नक्की हटवायची आहे का?')">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <?php $i++; endwhile; ?>
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                                <a href="api/pavati_pustak_vitaran.php?delete=<?= $record['id'] ?>"
+                                                                    class="btn btn-sm btn-danger"
+                                                                    onclick="return confirm('तुम्हाला ही नोंद नक्की हटवायची आहे का?')">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php $i++;
+                                                endwhile; ?>
                                             <?php else: ?>
-                                            <tr>
-                                                <td colspan="10" class="text-center">वितरण नोंद सापडली नाही</td>
-                                            </tr>
+                                                <tr>
+                                                    <td colspan="10" class="text-center">वितरण नोंद सापडली नाही</td>
+                                                </tr>
                                             <?php endif; ?>
                                         </tbody>
                                     </table>
@@ -386,145 +390,180 @@ $title = "पावती पुस्तक नोंदणी";
 
     <?php include('include/scripts.php'); ?>
     <script>
-    // Fill registration form with existing data
-    function fillFormData(id, buyingDate, materialType, materialNumber, totalNumber) {
-        // Set ID
-        $('#balance_id').val(id);
+        // Fill registration form with existing data
+        function fillFormData(id, buyingDate, materialType, materialNumber, totalNumber) {
+            // Set ID
+            $('#balance_id').val(id);
 
-        // Set form fields
-        $('#buying_date').val(buyingDate);
-        $('#material_type').val(materialType);
-        $('#material_number').val(materialNumber);
-        $('#total_number').val(totalNumber);
+            // Set form fields
+            $('#buying_date').val(buyingDate);
+            $('#material_type').val(materialType);
+            $('#material_number').val(materialNumber);
+            $('#total_number').val(totalNumber);
 
-        // Change button text
-        $('button[name="save"]').text('अपडेट करा');
+            // Change button text
+            $('button[name="save"]').text('अपडेट करा');
 
-        // Scroll to form
-        $('html, body').animate({
-            scrollTop: $('form').offset().top
-        }, 500);
-    }
+            // Scroll to form
+            $('html, body').animate({
+                scrollTop: $('form').offset().top
+            }, 500);
+        }
 
-    // Fill distribution form with existing data
-    function fillDistributionFormData(id, planName, materialId, namunaNumber, pavatiNumber,
-        givenPersonName, bookNumber, pavatiPasun, pavatiParyant, financial_year) {
-        // Set ID
-        $('#distribution_id').val(id);
+        // Fill distribution form with existing data
+        function fillDistributionFormData(id, planName, materialId, namunaNumber, pavatiNumber,
+            givenPersonName, bookNumber, pavatiPasun, pavatiParyant, financial_year) {
+            // Set ID
+            $('#distribution_id').val(id);
 
-        // Set form fields
-        $('#plan_name').val(planName);
-        $('#material_number_pavati').val(materialId);
-        console.log(materialId);
+            // Set form fields
+            $('#plan_name').val(planName);
+            $('#material_number_pavati').val(materialId);
+            console.log(materialId);
 
 
-        $('#namuna_number').val(namunaNumber);
-        $('#pavati_number').val(pavatiNumber);
-        $('#given_person_name').val(givenPersonName);
-        $('#book_number').val(bookNumber);
-        $('#pavati_pasun').val(pavatiPasun);
-        $('#pavati_paryant').val(pavatiParyant);
-        $('#financial_year').val(financial_year);
+            $('#namuna_number').val(namunaNumber);
+            $('#pavati_number').val(pavatiNumber);
+            $('#given_person_name').val(givenPersonName);
+            $('#book_number').val(bookNumber);
+            $('#pavati_pasun').val(pavatiPasun);
+            $('#pavati_paryant').val(pavatiParyant);
+            $('#financial_year').val(financial_year);
 
-        // Change button text
-        $('button[name="save"]', '#vitaran-form').text('अपडेट करा');
+            // Change button text
+            $('button[name="save"]', '#vitaran-form').text('अपडेट करा');
 
-        // Scroll to form
-        $('html, body').animate({
-            scrollTop: $('#vitaran-form').offset().top
-        }, 500);
-    }
+            // Scroll to form
+            $('html, body').animate({
+                scrollTop: $('#vitaran-form').offset().top
+            }, 500);
+        }
 
-    // Reset forms when cancel button is clicked
-    $('button[type="reset"]').click(function() {
-        $('#balance_id').val('');
-        $('#distribution_id').val('');
-        $('#buying_date').val('<?= date('Y-m-d') ?>');
-        $('button[name="save"]').text('साठवणे');
-    });
-
-    // Show/hide forms and tables based on selected radio button
-    $(document).ready(function() {
-        $('#vitaran-form').hide();
-        $('#vitaran-table').hide();
-
-        $('input[name="pavati_actions"]').on('change', function() {
-            if ($(this).val() == 'nondani') {
-                $('#nondani-form').show();
-                $('#vitaran-form').hide();
-                $('#nondani-table').show();
-                $('#vitaran-table').hide();
-            } else {
-                $('#nondani-form').hide();
-                $('#vitaran-form').show();
-                $('#nondani-table').hide();
-                $('#vitaran-table').show();
-            }
-        });
-    });
-    // Add this script in your JavaScript section
-    $(document).ready(function() {
-        // When material is selected in vitaran form
-        $('#material_number_pavati').on('change', function() {
-            var materialId = $(this).val();
-            if (materialId) {
-                // Fetch material details
-                $.ajax({
-                    url: 'api/getPavatiPustakDetails.php',
-                    type: 'POST',
-                    data: {
-                        id: materialId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            // Generate book number
-                            generateBookNumber(materialId, function(bookNumber) {
-                                $('#book_number').val(bookNumber);
-                            });
-
-                            // Set max values for pavati inputs
-                            $('#pavati_pasun').attr('data-max', response.total_number);
-                            $('#pavati_paryant').attr('data-max', response.total_number);
-                        }
-                    }
-                });
-            }
+        // Reset forms when cancel button is clicked
+        $('button[type="reset"]').click(function() {
+            $('#balance_id').val('');
+            $('#distribution_id').val('');
+            $('#buying_date').val('<?= date('Y-m-d') ?>');
+            $('button[name="save"]').text('साठवणे');
         });
 
-        // Validate pavati numbers
-        $('#pavati_paryant').on('change', function() {
-            var min = parseInt($('#pavati_pasun').val());
-            var max = parseInt($(this).val());
-            var valueRange = parseInt($(this).attr('data-max'));
-            if (min > max) {
-                alert('पावती संख्या ' + max + ' पेक्षा जास्त असू शकत नाही');
-                $(this).val('');
-            } else if (min < 1) {
-                alert('पावती संख्या 1 पेक्षा कमी असू शकत नाही');
-                $(this).val('');
-            } else if (max - min > valueRange) {
-                alert('पावती संख्या ' + valueRange + ' असावी लागेल');
-                $(this).val('');
-            }
-        });
-    });
+        // Show/hide forms and tables based on selected radio button
+        $(document).ready(function() {
+            $('#vitaran-form').hide();
+            $('#vitaran-table').hide();
 
-    function generateBookNumber(materialId, callback) {
-        $.ajax({
-            url: 'api/generateBookNumber.php',
-            type: 'POST',
-            data: {
-                material_id: materialId
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    callback(response.book_number);
+            $('input[name="pavati_actions"]').on('change', function() {
+                if ($(this).val() == 'nondani') {
+                    $('#nondani-form').show();
+                    $('#vitaran-form').hide();
+                    $('#nondani-table').show();
+                    $('#vitaran-table').hide();
+                } else {
+                    $('#nondani-form').hide();
+                    $('#vitaran-form').show();
+                    $('#nondani-table').hide();
+                    $('#vitaran-table').show();
                 }
-            }
+            });
         });
-    }
+        // Add this script in your JavaScript section
+        $(document).ready(function() {
+            // When material or namuna number changes in vitaran form
+            $('#material_number_pavati, #namuna_number').on('change', function() {
+                var materialId = $('#material_number_pavati').val();
+                var namunaNumber = $('#namuna_number').val();
+
+                if (materialId && namunaNumber) {
+                    generateBookNumber(materialId, namunaNumber, function(response) {
+                        if (response.success) {
+                            $('#book_number').val(response.next_book);
+
+                            // Set max values for pavati inputs based on remaining receipts
+                            // You might need to adjust this based on your requirements
+                            $('#pavati_pasun').attr('max', response.total_books *
+                                100); // Assuming 100 receipts per book
+                            $('#pavati_paryant').attr('max', response.total_books * 100);
+                        } else {
+                            alert(response.message);
+                            $('#book_number').val('');
+                        }
+                    });
+                }
+            });
+
+            // Validate pavati numbers
+            $('#pavati_pasun').on('change', function() {
+                var start = parseInt($(this).val());
+                var end = $('#pavati_paryant');
+                var limit = $("#pavati_number").val();
+                if (isNaN(start) || start < 1) {
+                    alert('पावती संख्या 1 पेक्षा कमी असू शकत नाही');
+                    $(this).val('');
+                    return;
+                }
+                console.log(start, "Start Value");
+                console.log(limit, "Limit Value");
+                console.log(start + parseInt(limit) - 1, "Calculated End Value");
+                var final_value = start + parseInt(limit) - 1;
+
+
+                end.val(final_value);
+                console.log(end.val(), "End Value");
+
+
+
+            });
+
+            $('#pavati_paryant').on('change', function() {
+                var start = parseInt($('#pavati_pasun').val());
+                var end = parseInt($(this).val());
+
+                if (isNaN(end) || end < 1) {
+                    alert('पावती संख्या 1 पेक्षा कमी असू शकत नाही');
+                    $(this).val('');
+                    return;
+                }
+
+                if (!isNaN(start) && end < start) {
+                    alert('पावती संख्या पासूनच्या संख्येपेक्षा कमी असू शकत नाही');
+                    $(this).val('');
+                    return;
+                }
+
+                // You can add additional validation here if needed
+            });
+
+            // Auto-calculate pavati_paryant when pavati_number changes
+            $('#pavati_number').on('change', function() {
+                var start = parseInt($('#pavati_pasun').val());
+                var count = parseInt($(this).val());
+
+                if (!isNaN(start) && !isNaN(count) && count > 0) {
+                    $('#pavati_paryant').val(start + count - 1);
+                }
+            });
+        });
+
+        function generateBookNumber(materialId, namunaNumber, callback) {
+            $.ajax({
+                url: 'api/generateBookNumber.php',
+                type: 'POST',
+                data: {
+                    material_id: materialId,
+                    namuna_number: namunaNumber
+                },
+                dataType: 'json',
+                success: function(response) {
+                    callback(response);
+                },
+                error: function() {
+                    callback({
+                        success: false,
+                        message: 'Error generating book number'
+                    });
+                }
+            });
+        }
     </script>
 
 </body>

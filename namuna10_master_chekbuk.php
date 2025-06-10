@@ -1,25 +1,25 @@
-<?php 
-    require_once './include/auth_middleware.php';
+<?php
+require_once './include/auth_middleware.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php 
+<?php
 $title = "बँकांची माहिती";
 ?>
 <?php include('include/header.php'); ?>
 <?php
-    $banks = $fun->getBanks();
+$banks = $fun->getBanks();
 
 ?>
 
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar -->
-        <?php 
+        <?php
         $page = 'namuna10';
         $subpage = 'master';
         include('include/sidebar.php');
-       ?>
+        ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -44,37 +44,37 @@ $title = "बँकांची माहिती";
                             <div class="card mb-4">
                                 <?php
 
-if (isset($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    $message_type = $_SESSION['message_type'];
+                                if (isset($_SESSION['message'])) {
+                                    $message = $_SESSION['message'];
+                                    $message_type = $_SESSION['message_type'];
 
-    echo "<div class='alert alert-$message_type'>$message</div>";
+                                    echo "<div class='alert alert-$message_type'>$message</div>";
 
-    // Unset the message so it doesn't persist after refresh
-    unset($_SESSION['message']);
-    unset($_SESSION['message_type']);
-}
-?>
+                                    // Unset the message so it doesn't persist after refresh
+                                    unset($_SESSION['message']);
+                                    unset($_SESSION['message_type']);
+                                }
+                                ?>
                                 <div class="card-body">
 
                                     <form method="post" action="api/checkbook.php">
                                         <input type="hidden" name="checkbook_id" id="checkbook_id" value="">
                                         <div class="row">
                                             <div class="form-group col-md-12">
-    <label for="plan_name">योजनेचे नाव <span class="text-danger">*</span></label>
-    <select class="form-control mb-3" name="plan_name" id="plan_name" required>
-        <option value=""> -- निवडा -- </option>
-        <option value="ग्रामनिधी">ग्रामनिधी</option>
-        <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
-    </select>
-</div>
+                                                <label for="plan_name">योजनेचे नाव <span class="text-danger">*</span></label>
+                                                <select class="form-control mb-3" name="plan_name" id="plan_name" required>
+                                                    <option value=""> -- निवडा -- </option>
+                                                    <option value="ग्रामनिधी">ग्रामनिधी</option>
+                                                    <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
+                                                </select>
+                                            </div>
 
-<div class="form-group col-md-6">
-    <label for="bank_name">बँकेचे नाव <span class="text-danger">*</span></label>
-    <select class="form-control mb-3" name="bank_name" id="bank_name" required >
-        <option value=""> -- प्रथम योजना निवडा -- </option>
-    </select>
-</div>
+                                            <div class="form-group col-md-6">
+                                                <label for="bank_name">बँकेचे नाव <span class="text-danger">*</span></label>
+                                                <select class="form-control mb-3" name="bank_name" id="bank_name" required>
+                                                    <option value=""> -- प्रथम योजना निवडा -- </option>
+                                                </select>
+                                            </div>
                                             <div class="form-group col-md-6">
                                                 <label for="checkbook_no">चेकबुक क्रमांक <span
                                                         class="text-danger">*</span>
@@ -142,23 +142,23 @@ if (isset($_SESSION['message'])) {
                                         </thead>
                                         <tbody>
                                             <?php
-                        $checkbooks = $fun->getCheckbooks($_SESSION['district_code']);
-                        if(mysqli_num_rows($checkbooks) > 0){
-                            $i = 1;
-                            while($checkbook = mysqli_fetch_assoc($checkbooks)){
-                    ?>
-                                            <tr>
-                                                <td><?php echo $i; ?></td>
-                                                <td><?php echo $checkbook['plan_name']; ?></td>
-                                                <td><?php echo $fun->getBankName($checkbook['bank_id']); ?></td>
-                                                <td><?php echo $checkbook['checkbook_no']; ?></td>
-                                                <td><?php echo $checkbook['first_check_no']; ?></td>
-                                                <td><?php echo $checkbook['check_no']; ?></td>
-                                                <td><?php echo $checkbook['last_check_no']; ?></td>
-                                                <td><?php echo date('d-m-Y', strtotime($checkbook['date'])); ?></td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <a href="#" class="btn btn-sm btn-primary" onclick="fillCheckbookData(
+                                            $checkbooks = $fun->getCheckbooks($_SESSION['district_code']);
+                                            if (mysqli_num_rows($checkbooks) > 0) {
+                                                $i = 1;
+                                                while ($checkbook = mysqli_fetch_assoc($checkbooks)) {
+                                            ?>
+                                                    <tr>
+                                                        <td><?php echo $i; ?></td>
+                                                        <td><?php echo $checkbook['plan_name']; ?></td>
+                                                        <td><?php echo $fun->getBankName($checkbook['bank_id']); ?></td>
+                                                        <td><?php echo $checkbook['checkbook_no']; ?></td>
+                                                        <td><?php echo $checkbook['first_check_no']; ?></td>
+                                                        <td><?php echo $checkbook['check_no']; ?></td>
+                                                        <td><?php echo $checkbook['last_check_no']; ?></td>
+                                                        <td><?php echo date('d-m-Y', strtotime($checkbook['date'])); ?></td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <a href="#" class="btn btn-sm btn-primary" onclick="fillCheckbookData(
                                         '<?php echo $checkbook['id']; ?>',
                                         '<?php echo $checkbook['plan_name']; ?>',
                                         '<?php echo $checkbook['bank_id']; ?>',
@@ -168,23 +168,23 @@ if (isset($_SESSION['message'])) {
                                         '<?php echo $checkbook['last_check_no']; ?>',
                                         '<?php echo $checkbook['date']; ?>'
                                     )">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        <a href="api/checkbook.php?delete=<?php echo $checkbook['id']; ?>"
-                                                            class="btn btn-sm btn-danger"
-                                                            onclick="return confirm('तुम्हाला ही चेकबुक माहिती नक्की हटवायची आहे का?')">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <a href="api/checkbook.php?delete=<?php echo $checkbook['id']; ?>"
+                                                                    class="btn btn-sm btn-danger"
+                                                                    onclick="return confirm('तुम्हाला ही चेकबुक माहिती नक्की हटवायची आहे का?')">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                             <?php
-                            $i++;
-                            }
-                        } else {
-                            echo "<tr><td colspan='9' class='text-center'>चेकबुक माहिती सापडली नाही</td></tr>";
-                        }
-                    ?>
+                                                    $i++;
+                                                }
+                                            } else {
+                                                echo "<tr><td colspan='9' class='text-center'>चेकबुक माहिती सापडली नाही</td></tr>";
+                                            }
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -211,113 +211,115 @@ if (isset($_SESSION['message'])) {
 
     <?php include('include/scripts.php'); ?>
     <script>
-    function fillCheckbookData(id, plan_name, bank_id, checkbook_no, first_check_no, check_no, last_check_no, date) {
-        // Set the checkbook ID
-        document.getElementById('checkbook_id').value = id;
+        function fillCheckbookData(id, plan_name, bank_id, checkbook_no, first_check_no, check_no, last_check_no, date) {
+            // Set the checkbook ID
+            document.getElementById('checkbook_id').value = id;
 
-        // Fill form fields
-        document.getElementById('plan_name').value = plan_name;
-        document.getElementById('bank_name').value = bank_id;
-        document.getElementById('checkbook_no').value = checkbook_no;
-        document.getElementById('first_check_no').value = first_check_no;
-        document.getElementById('check_no').value = check_no;
-        document.getElementById('last_check_no').value = last_check_no;
-        document.getElementById('date').value = date;
+            // Fill form fields
+            document.getElementById('plan_name').value = plan_name;
+            document.getElementById('bank_name').value = bank_id;
+            document.getElementById('checkbook_no').value = checkbook_no;
+            document.getElementById('first_check_no').value = first_check_no;
+            document.getElementById('check_no').value = check_no;
+            document.getElementById('last_check_no').value = last_check_no;
+            document.getElementById('date').value = date;
 
-        // Change button text
-        document.querySelector('button[name="add"]').textContent = 'अपडेट करा';
+            // Change button text
+            document.querySelector('button[name="add"]').textContent = 'अपडेट करा';
 
-        // Scroll to form
-        document.getElementById('plan_name').scrollIntoView({
-            behavior: 'smooth'
+            // Scroll to form
+            document.getElementById('plan_name').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Reset form when cancel button is clicked
+        document.querySelector('button[type="reset"]').addEventListener('click', function() {
+            document.getElementById('checkbook_id').value = '';
+            document.querySelector('button[name="add"]').textContent = 'साठवणे';
         });
-    }
 
-    // Reset form when cancel button is clicked
-    document.querySelector('button[type="reset"]').addEventListener('click', function() {
-        document.getElementById('checkbook_id').value = '';
-        document.querySelector('button[name="add"]').textContent = 'साठवणे';
-    });
+        // Also reset when form is successfully submitted
+        <?php if (isset($_SESSION['message']) && $_SESSION['message_type'] == 'success'): ?>
+            document.getElementById('checkbook_id').value = '';
+            document.querySelector('button[name="add"]').textContent = 'साठवणे';
+        <?php endif; ?>
 
-    // Also reset when form is successfully submitted
-    <?php if (isset($_SESSION['message']) && $_SESSION['message_type'] == 'success'): ?>
-    document.getElementById('checkbook_id').value = '';
-    document.querySelector('button[name="add"]').textContent = 'साठवणे';
-    <?php endif; ?>
-
-    document.getElementById('check_no').addEventListener('input', function() {
-        var firstCheckNo = parseInt(document.getElementById('first_check_no').value);
-        var checkNo = parseInt(document.getElementById('check_no').value);
-        var lastCheckNo = firstCheckNo + checkNo - 1;
-        document.getElementById('last_check_no').value = lastCheckNo;
-    });
+        document.getElementById('check_no').addEventListener('input', function() {
+            var firstCheckNo = parseInt(document.getElementById('first_check_no').value);
+            var checkNo = parseInt(document.getElementById('check_no').value);
+            var lastCheckNo = firstCheckNo + checkNo - 1;
+            document.getElementById('last_check_no').value = lastCheckNo;
+        });
     </script>
     <script>
-// Function to load banks based on selected plan
-function loadBanksByPlan(planName) {
-    if (!planName) {
-        $('#bank_name').html('<option value="">-- निवडा --</option>');
-        return;
-    }
-
-    $.ajax({
-        url: 'api/checkbook.php?getBanksByPlan=1',
-        type: 'GET',
-        data: { plan_name: planName },
-        dataType: 'json',
-        success: function(response) {
-            console.log(response);
-            if (response) {
-                var options = '<option value="">-- निवडा --</option>';
-                $.each(response, function(index, bank) {
-                    options += '<option value="' + bank.id + '">' + bank.bank_name + '</option>';
-                });
-                $('#bank_name').html(options);
+        // Function to load banks based on selected plan
+        function loadBanksByPlan(planName) {
+            if (!planName) {
+                $('#bank_name').html('<option value="">-- निवडा --</option>');
+                return;
             }
-        },
-        error: function(xhr, status, error) {
-            console.error("Error fetching banks:", error);
+
+            $.ajax({
+                url: 'api/checkbook.php?getBanksByPlan=1',
+                type: 'GET',
+                data: {
+                    plan_name: planName
+                },
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    if (response) {
+                        var options = '<option value="">-- निवडा --</option>';
+                        $.each(response, function(index, bank) {
+                            options += '<option value="' + bank.id + '">' + bank.bank_name + '</option>';
+                        });
+                        $('#bank_name').html(options);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching banks:", error);
+                }
+            });
         }
-    });
-}
 
-// Event listener for plan selection change
-$('#plan_name').change(function() {
-    var selectedPlan = $(this).val();
-    loadBanksByPlan(selectedPlan);
-});
+        // Event listener for plan selection change
+        $('#plan_name').change(function() {
+            var selectedPlan = $(this).val();
+            loadBanksByPlan(selectedPlan);
+        });
 
-// Existing fillCheckbookData function with bank selection
-function fillCheckbookData(id, plan_name, bank_id, checkbook_no, first_check_no, check_no, last_check_no, date) {
-    // Set the checkbook ID
-    $('#checkbook_id').val(id);
+        // Existing fillCheckbookData function with bank selection
+        function fillCheckbookData(id, plan_name, bank_id, checkbook_no, first_check_no, check_no, last_check_no, date) {
+            // Set the checkbook ID
+            $('#checkbook_id').val(id);
 
-    // First set the plan name
-    $('#plan_name').val(plan_name).trigger('change');
-    
-    // After a small delay (to allow banks to load), set the bank
-    setTimeout(function() {
-        $('#bank_name').val(bank_id);
-    }, 300);
+            // First set the plan name
+            $('#plan_name').val(plan_name).trigger('change');
 
-    // Fill other form fields
-    $('#checkbook_no').val(checkbook_no);
-    $('#first_check_no').val(first_check_no);
-    $('#check_no').val(check_no);
-    $('#last_check_no').val(last_check_no);
-    $('#date').val(date);
+            // After a small delay (to allow banks to load), set the bank
+            setTimeout(function() {
+                $('#bank_name').val(bank_id);
+            }, 300);
 
-    // Change button text
-    $('button[name="add"]').text('अपडेट करा');
+            // Fill other form fields
+            $('#checkbook_no').val(checkbook_no);
+            $('#first_check_no').val(first_check_no);
+            $('#check_no').val(check_no);
+            $('#last_check_no').val(last_check_no);
+            $('#date').val(date);
 
-    // Scroll to form
-    $('html, body').animate({
-        scrollTop: $('#plan_name').offset().top
-    }, 500);
-}
+            // Change button text
+            $('button[name="add"]').text('अपडेट करा');
 
-// Rest of your existing JavaScript...
-</script>
+            // Scroll to form
+            $('html, body').animate({
+                scrollTop: $('#plan_name').offset().top
+            }, 500);
+        }
+
+        // Rest of your existing JavaScript...
+    </script>
 </body>
 
 </html>

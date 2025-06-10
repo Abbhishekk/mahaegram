@@ -113,7 +113,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                                         <option>--निवडा--</option>
                                         <?php foreach ($malmatta_details as $malmatta) {
                                             // print_r($malmatta);
-                                            ?>
+                                        ?>
                                             <option value="<?php echo $malmatta['malmatta_id']; ?>">
                                                 <?php echo $malmatta['malmatta_no']; ?>
                                             </option>
@@ -455,10 +455,10 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
 
     <?php include('include/scripts.php'); ?>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // When malmatta_kramanak is changed
             $("#not_available").hide();
-            $('#malamatta_kramanak').change(function () {
+            $('#malamatta_kramanak').change(function() {
                 var malmattaId = $(this).val();
                 $('#current_mangani_building_tax').val('0.00');
                 $('#current_mangani_health_tax').val('0.00');
@@ -477,7 +477,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                             malmatta_id: malmattaId
                         },
                         dataType: 'json',
-                        success: function (data) {
+                        success: function(data) {
                             if (data.success) {
                                 // Update ward number
                                 console.log(data);
@@ -529,13 +529,13 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                                     calculateTaxTotals();
                                 } else {
                                     $('#not_available').show();
-                                    setTimeout(function () {
+                                    setTimeout(function() {
                                         $('#not_available').hide();
                                     }, 5000);
                                 }
                             }
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             console.error("AJAX Error: " + status + " - " + error);
                         }
                     });
@@ -704,7 +704,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
         }
         // Call this function in your document ready
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             // When malmatta_kramanak is changed
             $("#not_available").hide();
             $("#vasul_dinank").val(new Date().toISOString().split('T')[0]);
@@ -744,18 +744,18 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                     url: 'api/get_book_receipt_numbers.php',
                     type: 'GET',
                     dataType: 'json',
-                    success: function (data) {
+                    success: function(data) {
                         if (data.success) {
                             // Populate pustak_kramanak (x values)
                             $('#pustak_kramanak').empty();
                             $('#pustak_kramanak').append('<option value="">--निवडा--</option>');
-                            data.books.forEach(function (book) {
+                            data.books.forEach(function(book) {
                                 $('#pustak_kramanak').append('<option value="' + book + '">' +
                                     book + '</option>');
                             });
                             const pavati_total = parseInt(data.pavatiNumber);
                             // When pustak_kramanak changes, populate pavati_kramanak (y values)
-                            $('#pustak_kramanak').change(function () {
+                            $('#pustak_kramanak').change(function() {
                                 var selectedX = $(this).val();
                                 $('#pavati_kramanak').empty();
                                 $('#pavati_kramanak').append(
@@ -770,7 +770,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                             });
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.error("AJAX Error: " + status + " - " + error);
                     }
                 });
@@ -780,7 +780,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
             populateBookReceiptDropdowns();
 
             // Rest of your existing code...
-            $('#malamatta_kramanak').change(function () {
+            $('#malamatta_kramanak').change(function() {
                 // Your existing malmatta change handler
             });
         });
@@ -815,7 +815,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
         }
 
         // Add event listener for date change
-        $('#vasul_dinank').change(function () {
+        $('#vasul_dinank').change(function() {
             checkDateAndApplyDiscount();
         });
 
@@ -834,21 +834,21 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
                     pavati_kramanak: pavati_kramanak
                 },
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         callback(response.available, response.message);
                     } else {
                         callback(false, response.message);
                     }
                 },
-                error: function () {
+                error: function() {
                     callback(false, 'सर्व्हर त्रूट. कृपया पुन्हा प्रयत्न करा.');
                 }
             });
         }
 
         // Add validation before form submission
-        $('form').submit(function (e) {
+        $('form').submit(function(e) {
             e.preventDefault();
 
             const pustak_kramanak = $('#pustak_kramanak').val();
@@ -863,7 +863,7 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
             const submitBtn = $(this).find('[type="submit"]');
             submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> प्रक्रिया करत आहे...');
 
-            checkReceiptAvailability(pustak_kramanak, pavati_kramanak, function (isAvailable, message) {
+            checkReceiptAvailability(pustak_kramanak, pavati_kramanak, function(isAvailable, message) {
                 if (isAvailable) {
                     // If available, submit the form programmatically
                     $('form').off('submit').submit();
@@ -875,12 +875,12 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
             });
         });
 
-        $('#pavati_kramanak').change(function () {
+        $('#pavati_kramanak').change(function() {
             const pustak_kramanak = $('#pustak_kramanak').val();
             const pavati_kramanak = $(this).val();
 
             if (pustak_kramanak && pavati_kramanak) {
-                checkReceiptAvailability(pustak_kramanak, pavati_kramanak, function (isAvailable, message) {
+                checkReceiptAvailability(pustak_kramanak, pavati_kramanak, function(isAvailable, message) {
                     const feedback = $('#pavati-feedback');
                     if (isAvailable) {
                         feedback.removeClass('text-danger').addClass('text-success').text(message);

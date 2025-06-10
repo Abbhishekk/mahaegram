@@ -12,7 +12,11 @@ try {
 
     // Get all unique book numbers (x/y format) from your database
     // This query depends on your actual table structure
-    $query = "SELECT DISTINCT book_number, pavati_number FROM pavati_pustak_vitaran where `panchayat_code` = '$_SESSION[panchayat_code]' and namuna_number= 10; ";
+    $namunna = 10; // Default value
+    if (isset($_GET["namuna_number"])) $namunna = $_GET["namuna_number"];
+    else $namunna = 10;
+    // print_r($namunna);
+    $query = "SELECT DISTINCT book_number, pavati_number FROM pavati_pustak_vitaran where `panchayat_code` = '$_SESSION[panchayat_code]' and namuna_number= '$namunna'; ";
     $result = $conn->query($query);
 
     $books = [];
@@ -27,11 +31,9 @@ try {
     $response['books'] = array_values($books);
     $response['pavatiNumber'] = array_values($pavatiNumber);
     $response['success'] = true;
-
 } catch (Exception $e) {
     $response['error'] = $e->getMessage();
 }
 
 header('Content-Type: application/json');
 echo json_encode($response);
-?>

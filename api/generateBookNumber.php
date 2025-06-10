@@ -13,7 +13,7 @@ if (isset($_POST['material_id'])) {
     $fun = new Fun($conn);
 
     // Get the material details
-    $material = $conn->query("SELECT * FROM pavati_pustak WHERE id = $materialId AND panchayat_code = $_SESSION[panchayat_code]")->fetch_assoc();
+    $material = $conn->query("SELECT * FROM pavati_pustak WHERE id = $materialId AND panchayat_code = '$_SESSION[panchayat_code]'")->fetch_assoc();
     // print_r($material);
     if (empty($material)) {
         echo json_encode(['success' => false, 'message' => 'Material not found']);
@@ -27,7 +27,7 @@ if (isset($_POST['material_id'])) {
     // Get the last distributed book number for this material and namuna
     $lastBook = $conn->query(
         "SELECT MAX(book_number) as last_book FROM pavati_pustak_vitaran 
-         WHERE material_id = $materialId AND namuna_number = $namunaNumber AND panchayat_code = $_SESSION[panchayat_code];"
+         WHERE material_id = '$materialId' AND namuna_number = '$namunaNumber' AND panchayat_code = '$_SESSION[panchayat_code]';"
     )->fetch_assoc();
     // print_r($lastBook);
     $nextBookNumber = 1;
@@ -67,4 +67,3 @@ if (isset($_POST['material_id'])) {
 
 header('Content-Type: application/json');
 echo json_encode($response);
-?>

@@ -1,25 +1,25 @@
-<?php 
+<?php
 require_once './include/auth_middleware.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php 
+<?php
 $title = "वर्षाच्या सुरवातीची शिल्लक";
 ?>
 <?php include('include/header.php'); ?>
 <?php
-    $balances = $fun->getYearStartBalances($_SESSION['district_code']);
-    $financialYears = $fun->getFinancialYears();
-    $banks = $fun->getBanks();
-    $periodsWithReasons = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
-    $yearArray = $fun->getYearArray($periodsWithReasons);
-    // print_r($periodsWithReasons);
+$balances = $fun->getYearStartBalances($_SESSION['district_code']);
+$financialYears = $fun->getFinancialYears();
+$banks = $fun->getBanks();
+$periodsWithReasons = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
+$yearArray = $fun->getYearArray($periodsWithReasons);
+// print_r($periodsWithReasons);
 ?>
 
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar -->
-        <?php 
+        <?php
         $page = 'namuna10';
         $subpage = 'yearlyWork';
         include('include/sidebar.php');
@@ -100,8 +100,8 @@ $title = "वर्षाच्या सुरवातीची शिल्�
                                                 <select class="form-control" name="financial_year" id="financial_year"
                                                     required>
                                                     <option value="">--निवडा--</option>
-                                                    <?php foreach($yearArray as $year): ?>
-                                                    <option value="<?= $year ?>"><?= $year ?></option>
+                                                    <?php foreach ($yearArray as $year): ?>
+                                                        <option value="<?= $year ?>"><?= $year ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
@@ -120,9 +120,9 @@ $title = "वर्षाच्या सुरवातीची शिल्�
                                                 <label for="bank_id">बँकेचे नाव</label>
                                                 <select class="form-control" name="bank_id" id="bank_id">
                                                     <option value="">--निवडा--</option>
-                                                    <?php foreach($banks['data'] as $bank): ?>
-                                                    <option value="<?= $bank['id'] ?>"><?= $bank['bank_name'] ?>
-                                                    </option>
+                                                    <?php foreach ($banks['data'] as $bank): ?>
+                                                        <option value="<?= $bank['id'] ?>"><?= $bank['bank_name'] ?>
+                                                        </option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
@@ -190,26 +190,27 @@ $title = "वर्षाच्या सुरवातीची शिल्�
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php if(mysqli_num_rows($balances) > 0): ?>
-                                            <?php $i = 1; while($balance = mysqli_fetch_assoc($balances)): ?>
-                                            <tr>
-                                                <td><?= $i ?></td>
-                                                <td><?= $balance['plan_name'] ?></td>
-                                                <td><?= $balance['financial_year'] ?></td>
-                                                <td><?= $balance['balance_type'] ?></td>
-                                                <td>₹<?= number_format($balance['amount'], 2) ?></td>
-                                                <td> <?= $fun->getBankName($balance['bank_id']) == ""? "-" : $fun->getBankName($balance['bank_id']) ?>
-                                                </td>
-                                                <td>
+                                            <?php if (mysqli_num_rows($balances) > 0): ?>
+                                                <?php $i = 1;
+                                                while ($balance = mysqli_fetch_assoc($balances)): ?>
+                                                    <tr>
+                                                        <td><?= $i ?></td>
+                                                        <td><?= $balance['plan_name'] ?></td>
+                                                        <td><?= $balance['financial_year'] ?></td>
+                                                        <td><?= $balance['balance_type'] ?></td>
+                                                        <td>₹<?= number_format($balance['amount'], 2) ?></td>
+                                                        <td> <?= $fun->getBankName($balance['bank_id']) == "" ? "-" : $fun->getBankName($balance['bank_id']) ?>
+                                                        </td>
+                                                        <td>
 
-                                                    <?= $balance['post_name'] == ""? "-" : $balance['post_name'] ?>
+                                                            <?= $balance['post_name'] == "" ? "-" : $balance['post_name'] ?>
 
-                                                </td>
-                                                <td><?= $balance['thev_yojana_name'] == ""? "-" : $balance['thev_yojana_name'] ?>
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-sm btn-primary" onclick="fillBalanceData(
+                                                        </td>
+                                                        <td><?= $balance['thev_yojana_name'] == "" ? "-" : $balance['thev_yojana_name'] ?>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-sm btn-primary" onclick="fillBalanceData(
                                                                     '<?= $balance['id'] ?>',
                                                                     '<?= $balance['balance_type'] ?>',
                                                                     '<?= $balance['financial_year'] ?>',
@@ -221,21 +222,22 @@ $title = "वर्षाच्या सुरवातीची शिल्�
                                                                     '<?= $balance['ifsc_code'] ?>',
                                                                     '<?= $balance['amount'] ?>'
                                                                 )">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <a href="api/year_start_balance.php?delete=<?= $balance['id'] ?>"
-                                                            class="btn btn-sm btn-danger"
-                                                            onclick="return confirm('तुम्हाला ही शिल्लक माहिती नक्की हटवायची आहे का?')">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <?php $i++; endwhile; ?>
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                                <a href="api/year_start_balance.php?delete=<?= $balance['id'] ?>"
+                                                                    class="btn btn-sm btn-danger"
+                                                                    onclick="return confirm('तुम्हाला ही शिल्लक माहिती नक्की हटवायची आहे का?')">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php $i++;
+                                                endwhile; ?>
                                             <?php else: ?>
-                                            <tr>
-                                                <td colspan="8" class="text-center">शिल्लक माहिती सापडली नाही</td>
-                                            </tr>
+                                                <tr>
+                                                    <td colspan="8" class="text-center">शिल्लक माहिती सापडली नाही</td>
+                                                </tr>
                                             <?php endif; ?>
                                         </tbody>
                                     </table>
@@ -259,79 +261,79 @@ $title = "वर्षाच्या सुरवातीची शिल्�
 
     <?php include('include/scripts.php'); ?>
     <script>
-    // Show/hide fields based on balance type selection
-    $('input[name="balance_type"]').change(function() {
-        $('.bank-fields, .post-fields').hide();
-        $('.bank-fields select, .post-fields input').removeAttr('required');
-        $('#theve_yojana').hide();
-        if ($(this).val() === 'हात शिल्लक') {
+        // Show/hide fields based on balance type selection
+        $('input[name="balance_type"]').change(function() {
             $('.bank-fields, .post-fields').hide();
             $('.bank-fields select, .post-fields input').removeAttr('required');
             $('#theve_yojana').hide();
+            if ($(this).val() === 'हात शिल्लक') {
+                $('.bank-fields, .post-fields').hide();
+                $('.bank-fields select, .post-fields input').removeAttr('required');
+                $('#theve_yojana').hide();
 
-        } else if ($(this).val() === 'बँक शिल्लक') {
-            $('.bank-fields').show();
-            $('.bank-fields select').attr('required', 'required');
-            $('#theve_yojana').hide();
+            } else if ($(this).val() === 'बँक शिल्लक') {
+                $('.bank-fields').show();
+                $('.bank-fields select').attr('required', 'required');
+                $('#theve_yojana').hide();
 
-        } else if ($(this).val() === 'पोस्ट शिल्लक') {
-            $('.post-fields').show();
-            $('.post-fields input').attr('required', 'required');
-            $('#theve_yojana').hide();
+            } else if ($(this).val() === 'पोस्ट शिल्लक') {
+                $('.post-fields').show();
+                $('.post-fields input').attr('required', 'required');
+                $('#theve_yojana').hide();
 
-        } else if ($(this).val() === 'ठेवी') {
-            $('#theve_yojana').show();
-            $('#theve_yojana input').attr('required', 'required');
-        } else {
-            $('#theve_yojana').hide();
+            } else if ($(this).val() === 'ठेवी') {
+                $('#theve_yojana').show();
+                $('#theve_yojana input').attr('required', 'required');
+            } else {
+                $('#theve_yojana').hide();
+            }
+        });
+
+        // Fill form with existing balance data
+        function fillBalanceData(id, balanceType, financialYear, planName, bankId, postName, postBranch, accountNo,
+            ifscCode, amount) {
+            // Set ID
+            $('#balance_id').val(id);
+
+            // Set basic fields
+            $(`input[name="balance_type"][value="${balanceType}"]`).prop('checked', true).trigger('change');
+            $('#financial_year').val(financialYear);
+            $('#plan_name').val(planName);
+            $('#amount').val(amount);
+
+            // Set bank/post fields based on type
+            if (bankId) $('#bank_id').val(bankId);
+            if (postName) $('#post_name').val(postName);
+            if (postBranch) $('#post_branch').val(postBranch);
+
+            // Set common fields
+            $('#account_no').val(accountNo);
+            $('#ifsc_code').val(ifscCode);
+
+            // Change button text
+            $('button[name="save"]').text('अपडेट करा');
+
+            // Scroll to form
+            $('html, body').animate({
+                scrollTop: $('form').offset().top
+            }, 500);
         }
-    });
 
-    // Fill form with existing balance data
-    function fillBalanceData(id, balanceType, financialYear, planName, bankId, postName, postBranch, accountNo,
-        ifscCode, amount) {
-        // Set ID
-        $('#balance_id').val(id);
+        // Reset form when cancel button is clicked
+        $('button[type="reset"]').click(function() {
+            $('#balance_id').val('');
+            $('button[name="save"]').text('साठवणे');
+            $('.bank-fields, .post-fields').hide();
+            $('input[name="balance_type"]').prop('checked', false);
+        });
 
-        // Set basic fields
-        $(`input[name="balance_type"][value="${balanceType}"]`).prop('checked', true).trigger('change');
-        $('#financial_year').val(financialYear);
-        $('#plan_name').val(planName);
-        $('#amount').val(amount);
-
-        // Set bank/post fields based on type
-        if (bankId) $('#bank_id').val(bankId);
-        if (postName) $('#post_name').val(postName);
-        if (postBranch) $('#post_branch').val(postBranch);
-
-        // Set common fields
-        $('#account_no').val(accountNo);
-        $('#ifsc_code').val(ifscCode);
-
-        // Change button text
-        $('button[name="save"]').text('अपडेट करा');
-
-        // Scroll to form
-        $('html, body').animate({
-            scrollTop: $('form').offset().top
-        }, 500);
-    }
-
-    // Reset form when cancel button is clicked
-    $('button[type="reset"]').click(function() {
-        $('#balance_id').val('');
-        $('button[name="save"]').text('साठवणे');
-        $('.bank-fields, .post-fields').hide();
-        $('input[name="balance_type"]').prop('checked', false);
-    });
-
-    // Also reset when form is successfully submitted
-    <?php if (isset($_SESSION['message']) && $_SESSION['message_type'] == 'success'): ?>
-    $('#balance_id').val('');
-    $('button[name="save"]').text('साठवणे');
-    $('.bank-fields, .post-fields').hide();
-    $('input[name="balance_type"]').prop('checked', false);
-    <?php endif; ?>
+        // Also reset when form is successfully submitted
+        <?php if (isset($_SESSION['message']) && $_SESSION['message_type'] == 'success'): ?>
+            $('#balance_id').val('');
+            $('button[name="save"]').text('साठवणे');
+            $('.bank-fields, .post-fields').hide();
+            $('input[name="balance_type"]').prop('checked', false);
+        <?php endif; ?>
     </script>
 </body>
 
