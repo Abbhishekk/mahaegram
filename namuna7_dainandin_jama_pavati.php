@@ -83,7 +83,8 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
 
                                             <div class="form-group col-md-3">
                                                 <label for="deposit_date">जमा दिनांक <span>*</span></label>
-                                                <input type="date" class="form-control" name="deposit_date" id="deposit_date" required>
+                                                <input type="date" class="form-control" name="deposit_date"
+                                                    id="deposit_date" required>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="deposit_type">जमा प्रकार <span>*</span></label>
@@ -96,11 +97,15 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
 
 
                                             <div class="form-group col-md-6">
-                                                <label for="bank_name">बँकेचे नाव <span class="text-danger">*</span></label>
-                                                <select class="form-control mb-3" name="bank_name" id="bank_name" required>
+                                                <label for="bank_name">बँकेचे नाव <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-control mb-3" name="bank_name" id="bank_name"
+                                                    required>
                                                     <option value=""> -- प्रथम योजना निवडा -- </option>
-                                                    <?php foreach ($banks2["data"] as $bank) : ?>
-                                                        <option value="<?php echo $bank['id']; ?>"><?php echo $bank['bank_name']; ?></option>
+                                                    <?php foreach ($banks2["data"] as $bank): ?>
+                                                        <option value="<?php echo $bank['id']; ?>">
+                                                            <?php echo $bank['bank_name']; ?>
+                                                        </option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
@@ -115,47 +120,59 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                                             <div class="col-md-3 my-2">
                                                 <label class="form-label" for="pustak_kramanak">पुस्तक क्रमांक: <span
                                                         class="text-danger">*</span></label>
-                                                <select class="form-control" name="pustak_kramanak" id="pustak_kramanak" required>
+                                                <select class="form-control" name="pustak_kramanak" id="pustak_kramanak"
+                                                    required>
                                                     <option value="">--निवडा--</option>
                                                     <!-- Will be populated by JavaScript -->
                                                 </select>
                                             </div>
                                             <div class="col-md-3 my-2">
                                                 <label class="form-label" for="pavati_kramanak">पावती क्रमांक:</label>
-                                                <select class="form-control" name="pavati_kramanak" id="pavati_kramanak" required>
+                                                <select class="form-control" name="pavati_kramanak" id="pavati_kramanak"
+                                                    required>
                                                     <option value="">--प्रथम पुस्तक निवडा--</option>
                                                 </select>
                                                 <small id="pavati-feedback" class="form-text"></small>
                                             </div>
 
                                             <div class="form-group col-md-3">
-                                                <label for="kacchi_pavasti_pustak">कच्ची पावती पुस्तक <span>*</span></label>
-                                                <input type="text" class="form-control" name="kacchi_pavasti_pustak" readonly id="kacchi_pavasti_pustak">
+                                                <label for="kacchi_pavasti_pustak">कच्ची पावती पुस्तक
+                                                    <span>*</span></label>
+                                                <input type="text" class="form-control" name="kacchi_pavasti_pustak"
+                                                    readonly id="kacchi_pavasti_pustak">
                                             </div>
                                             <div class="form-group col-md-3">
-                                                <label for="kacchi_pavati_kramank">कच्ची पावती क्रमांक <span>*</span></label>
-                                                <input type="text" name="kacchi_pavati_kramank" id="kacchi_pavati_kramank" readonly class="form-control">
+                                                <label for="kacchi_pavati_kramank">कच्ची पावती क्रमांक
+                                                    <span>*</span></label>
+                                                <input type="text" name="kacchi_pavati_kramank"
+                                                    id="kacchi_pavati_kramank" readonly class="form-control">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="jama_karyana">जमा करणाऱ्यांचे नाव :<span>*</span></label>
-                                                <input type="text" class="form-control" name="jama_karyana" id="jama_karyana" required>
+                                                <input type="text" class="form-control" name="jama_karyana"
+                                                    id="jama_karyana" required>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="jama_rakkam">जमा रक्कम : <span>*</span></label>
-                                                <input type="number" class="form-control" name="jama_rakkam" id="jama_rakkam" required>
+                                                <input type="number" class="form-control" name="jama_rakkam"
+                                                    id="jama_rakkam" required>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="check_bank_name">चेक जमा बॅंकेचे नाव</label>
-                                                <select class="form-control mb-3" name="check_bank_name" id="check_bank_name" required>
+                                                <select class="form-control mb-3" name="check_bank_name"
+                                                    id="check_bank_name" required>
                                                     <option value=""> -- निवडा -- </option>
-                                                    <?php foreach ($banks["data"] as $bank) : ?>
-                                                        <option value="<?php echo $bank['id']; ?>"><?php echo $bank['bank_name']; ?></option>
+                                                    <?php foreach ($banks["data"] as $bank): ?>
+                                                        <option value="<?php echo $bank['id']; ?>">
+                                                            <?php echo $bank['bank_name']; ?>
+                                                        </option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="check_date">चेक दिनांक</label>
-                                                <input type="date" name="check_date" id="check_date" class="form-control">
+                                                <input type="date" name="check_date" id="check_date"
+                                                    class="form-control">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>बॅंकेचे नाव</label>
@@ -163,15 +180,18 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="check_number">चेक नं :</label>
-                                                <input type="text" name="check_number" id="check_number" class="form-control">
+                                                <input type="text" name="check_number" id="check_number"
+                                                    class="form-control">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="neft_rtgs_ref_1">NEFT/RTGS REF 1</label>
-                                                <input type="text" class="form-control" name="neft_rtgs_ref_1" id="neft_rtgs_ref_1">
+                                                <input type="text" class="form-control" name="neft_rtgs_ref_1"
+                                                    id="neft_rtgs_ref_1">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="neft_rtgs_ref_2">NEFT/RTGS REF 2</label>
-                                                <input type="text" class="form-control" name="neft_rtgs_ref_2" id="neft_rtgs_ref_2">
+                                                <input type="text" class="form-control" name="neft_rtgs_ref_2"
+                                                    id="neft_rtgs_ref_2">
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary">साठवणे</button>
@@ -190,6 +210,7 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                                             <tr>
                                                 <th>अ.क्र.</th>
                                                 <th>जमा करण्याचे नाव</th>
+                                                <th>आर्थिक वर्ष</th>
                                                 <th>जमा रक्सम</th>
                                                 <th>जमा दिनांक</th>
                                                 <th>पुस्तक क्रमांक</th>
@@ -242,17 +263,17 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                     plan_name: planName
                 },
                 dataType: 'json',
-                success: function(response) {
+                success: function (response) {
                     if (response.success) {
                         var options = '<option value="">-- निवडा --</option>';
-                        $.each(response.data, function(index, bank) {
+                        $.each(response.data, function (index, bank) {
                             options += '<option value="' + bank.id + '">' + bank.bank_name +
                                 '</option>';
                         });
                         $('#bank_name').html(options).prop('disabled', false);
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error("Error fetching banks:", error);
                     $('#bank_name').html('<option value="">-- Error loading banks --</option>');
                 }
@@ -263,29 +284,29 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
         $('#balance_inhand').prop('disabled', true);
         $('#total_amount').prop('disabled', true);
         // Event listener for plan selection change
-        $('#plan_name').change(function() {
+        $('#plan_name').change(function () {
             var selectedPlan = $(this).val();
             loadBanksByPlan(selectedPlan);
         });
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             function populateBookReceiptDropdowns() {
                 $.ajax({
                     url: 'api/get_book_receipt_numbers.php?namuna_number=7',
                     type: 'GET',
                     dataType: 'json',
-                    success: function(data) {
+                    success: function (data) {
                         if (data.success) {
                             // Populate pustak_kramanak (x values)
                             $('#pustak_kramanak').empty();
                             $('#pustak_kramanak').append('<option value="">--निवडा--</option>');
-                            data.books.forEach(function(book) {
+                            data.books.forEach(function (book) {
                                 $('#pustak_kramanak').append('<option value="' + book + '">' +
                                     book + '</option>');
                             });
                             const pavati_total = parseInt(data.pavatiNumber);
                             // When pustak_kramanak changes, populate pavati_kramanak (y values)
-                            $('#pustak_kramanak').change(function() {
+                            $('#pustak_kramanak').change(function () {
                                 var selectedX = $(this).val();
                                 $('#pavati_kramanak').empty();
                                 $('#pavati_kramanak').append(
@@ -300,7 +321,7 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                             });
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error("AJAX Error: " + status + " - " + error);
                     }
                 });
@@ -311,8 +332,8 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
         });
     </script>
     <script>
-        $(document).ready(function() {
-            $('#jamaForm').submit(function(e) {
+        $(document).ready(function () {
+            $('#jamaForm').submit(function (e) {
                 e.preventDefault();
 
                 // Collect form data
@@ -342,7 +363,7 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(formData),
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success) {
                             alert(response.message);
                             $('#jamaForm')[0].reset();
@@ -352,7 +373,7 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                             alert(response.message);
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         alert('त्रुटी: ' + error);
                     }
                 });
@@ -366,16 +387,17 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                     data: {
                         panchayat_code: '<?php echo $_SESSION["panchayat_code"]; ?>'
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success) {
                             var tbody = $('#vitaran-table tbody');
                             tbody.empty();
 
                             if (response.data.length > 0) {
-                                $.each(response.data, function(index, record) {
+                                $.each(response.data, function (index, record) {
                                     var row = `<tr>
                                 <td>${index + 1}</td>
                                 <td>${record.jama_karyana}</td>
+                                <td>${record.financial_year}</td>
                                 <td>${record.jama_rakkam}</td>
                                 <td>${record.deposit_date}</td>
                                 <td>${record.pustak_kramanak}</td>
@@ -390,11 +412,13 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                                     tbody.append(row);
                                 });
                             } else {
-                                tbody.append('<tr><td colspan="12" class="text-center">No records to display.</td></tr>');
+                                tbody.append(
+                                    '<tr><td colspan="12" class="text-center">No records to display.</td></tr>'
+                                );
                             }
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Error loading records:', error);
                     }
                 });

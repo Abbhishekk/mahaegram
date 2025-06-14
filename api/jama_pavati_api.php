@@ -10,7 +10,34 @@ $conn = $connect->dbConnect();
 $fun = new Fun($connect->dbConnect());
 
 $response = ['success' => false, 'message' => ''];
+$periodsWithReasons = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नंबर 8 कालावधी", $_SESSION['district_code']);
+$yearArray = $fun->getYearArray($periodsWithReasons);
 
+// Step 1: Determine current financial year
+$currentMonth = date('n'); // Numeric representation of current month (1-12)
+$currentYear = date('Y');
+
+if ($currentMonth >= 4) {
+    // If April or later, financial year starts from current year
+    $financialYearStart = $currentYear;
+    $financialYearEnd = $currentYear + 1;
+} else {
+    // If Jan-March, financial year started last year
+    $financialYearStart = $currentYear - 1;
+    $financialYearEnd = $currentYear;
+}
+
+$currentFinancialYear = $financialYearStart . "-" . $financialYearEnd;
+
+// Step 2: Find matching index in the array
+$currentYearIndex = 0;
+for ($i = 0; $i < count($yearArray); $i++) {
+    if ($yearArray[$i] === $currentFinancialYear) {
+        $currentYearIndex = $i;
+        break;
+    }
+}
+$financial_year = $yearArray[$currentYearIndex] ?? $currentFinancialYear;
 // Get records endpoint
 if (isset($_GET['get_records'])) {
     try {
@@ -85,8 +112,8 @@ try {
             panchayat_code, account_name, deposit_date, deposit_type, bank_id, 
             vasul_type, pustak_kramanak, pavati_kramanak, kacchi_pavasti_pustak, 
             kacchi_pavati_kramank, jama_karyana, jama_rakkam, check_bank_id, 
-            check_date, check_bank_name, check_number, neft_rtgs_ref_1, neft_rtgs_ref_2
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            check_date, check_bank_name, check_number, neft_rtgs_ref_1, neft_rtgs_ref_2, financial_year
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ";
 
     $stmt = $conn->prepare($sql);
@@ -96,7 +123,7 @@ try {
 
     // Bind parameters - note the different type specifiers for NULL values
     $stmt->bind_param(
-        "ssssisssssssdsssss",
+        "ssssisssssssdssssss",
         $_SESSION['panchayat_code'],
         $input['plan_name'],
         $input['deposit_date'],
@@ -114,7 +141,8 @@ try {
         $check_bank_name,
         $check_number,
         $neft_rtgs_ref_1,
-        $neft_rtgs_ref_2
+        $neft_rtgs_ref_2,
+        $financial_year
     );
 
     if ($stmt->execute()) {
