@@ -879,9 +879,9 @@ class Fun
         return $result;
     }
 
-    public function addMalmattaDataEntry($period, $village_name, $ward_no, $road_name, $malmatta_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $remarks, $lgdcode)
+    public function addMalmattaDataEntry($period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $remarks, $lgdcode)
     {
-        $query = "INSERT INTO `malmatta_data_entry`(`period`, `village_name`, `ward_no`, `road_name`, `malmatta_no`, `city_survey_no`, `group_no`, `washroom_available`, `owner_name`, `wife_name`, `occupant_name`, `remarks`, `lgdcode`, `panchayat_code`) VALUES ('$period', '$village_name', '$ward_no', '$road_name', '$malmatta_no', '$city_survey_no', '$group_no', '$washroom_available', '$owner_name', '$wife_name', '$occupant_name', '$remarks', '$lgdcode', '$_SESSION[panchayat_code]')";
+        $query = "INSERT INTO `malmatta_data_entry`(`period`, `village_name`, `ward_no`, `road_name`, `malmatta_no`, `khasara_no` ,`city_survey_no`, `group_no`, `washroom_available`, `owner_name`, `wife_name`, `occupant_name`, `remarks`, `lgdcode`, `panchayat_code`) VALUES ('$period', '$village_name', '$ward_no', '$road_name', '$malmatta_no', '$khasara_no' ,'$city_survey_no', '$group_no', '$washroom_available', '$owner_name', '$wife_name', '$occupant_name', '$remarks', '$lgdcode', '$_SESSION[panchayat_code]')";
         $result = mysqli_query($this->db, $query);
         if ($result) {
             return mysqli_insert_id($this->db);
@@ -939,9 +939,9 @@ class Fun
         return $result;
     }
 
-    public function updateMalmattaDataEntry($id, $period, $village_name, $ward_no, $road_name, $malmatta_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $remarks)
+    public function updateMalmattaDataEntry($id, $period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $remarks)
     {
-        $query = "UPDATE `malmatta_data_entry` SET `period`='$period', `village_name`='$village_name', `ward_no`='$ward_no', `road_name`='$road_name', `malmatta_no`='$malmatta_no', `city_survey_no`='$city_survey_no', `group_no`='$group_no', `washroom_available`='$washroom_available', `owner_name`='$owner_name', `wife_name`='$wife_name', `occupant_name`='$occupant_name', `remarks`='$remarks' WHERE `id` = '$id'";
+        $query = "UPDATE `malmatta_data_entry` SET `period`='$period', `khasara_no` = '$khasara_no' ,`village_name`='$village_name', `ward_no`='$ward_no', `road_name`='$road_name', `malmatta_no`='$malmatta_no', `city_survey_no`='$city_survey_no', `group_no`='$group_no', `washroom_available`='$washroom_available', `owner_name`='$owner_name', `wife_name`='$wife_name', `occupant_name`='$occupant_name', `remarks`='$remarks' WHERE `id` = '$id'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -1077,6 +1077,7 @@ class Fun
                     'ward_no' => $row['ward_no'],
                     'road_name' => $row['road_name'],
                     'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
                     'city_survey_no' => $row['city_survey_no'],
                     'group_no' => $row['group_no'],
                     'washroom_available' => $row['washroom_available'],
@@ -1098,7 +1099,7 @@ class Fun
             if (!empty($row['property_id'])) {
                 $years = $row['construction_year'];
                 $redirecFinancialYear = explode('-', $row['financial_years'])[0];
-                $year = $row['construction_year_type'] == "building_age" ? $years : $redirecFinancialYear - $years;
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
                 $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
                     (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
                 ));
@@ -1243,6 +1244,7 @@ class Fun
                     'ward_no' => $row['ward_no'],
                     'road_name' => $row['road_name'],
                     'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
                     'city_survey_no' => $row['city_survey_no'],
                     'group_no' => $row['group_no'],
                     'washroom_available' => $row['washroom_available'],
@@ -1264,7 +1266,7 @@ class Fun
             if (!empty($row['property_id'])) {
                 $years = $row['construction_year'];
                 $redirecFinancialYear = explode('-', $row['financial_years'])[0];
-                $year = $row['construction_year_type'] == "building_age" ? $years : $redirecFinancialYear - $years;
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
                 $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
                     (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
                 ));
@@ -1409,6 +1411,7 @@ class Fun
                     'ward_no' => $row['ward_no'],
                     'road_name' => $row['road_name'],
                     'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
                     'city_survey_no' => $row['city_survey_no'],
                     'group_no' => $row['group_no'],
                     'washroom_available' => $row['washroom_available'],
@@ -1430,7 +1433,7 @@ class Fun
             if (!empty($row['property_id'])) {
                 $years = $row['construction_year'];
                 $redirecFinancialYear = explode('-', $row['financial_years'])[0];
-                $year = $row['construction_year_type'] == "building_age" ? $years : $redirecFinancialYear - $years;
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
                 $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
                     (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
                 ));
@@ -1575,6 +1578,7 @@ class Fun
                     'ward_no' => $row['ward_no'],
                     'road_name' => $row['road_name'],
                     'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
                     'city_survey_no' => $row['city_survey_no'],
                     'group_no' => $row['group_no'],
                     'washroom_available' => $row['washroom_available'],
@@ -1596,7 +1600,7 @@ class Fun
             if (!empty($row['property_id'])) {
                 $years = $row['construction_year'];
                 $redirecFinancialYear = explode('-', $row['financial_years'])[0];
-                $year = $row['construction_year_type'] == "building_age" ? $years : $redirecFinancialYear - $years;
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
                 $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
                     (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
                 ));
@@ -1741,6 +1745,7 @@ class Fun
                     'ward_no' => $row['ward_no'],
                     'road_name' => $row['road_name'],
                     'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
                     'city_survey_no' => $row['city_survey_no'],
                     'group_no' => $row['group_no'],
                     'washroom_available' => $row['washroom_available'],
@@ -1762,7 +1767,7 @@ class Fun
             if (!empty($row['property_id'])) {
                 $years = $row['construction_year'];
                 $redirecFinancialYear = explode('-', $row['financial_years'])[0];
-                $year = $row['construction_year_type'] == "building_age" ? $years : $redirecFinancialYear - $years;
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
                 $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
                     (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
                 ));
@@ -1907,6 +1912,7 @@ class Fun
                     'ward_no' => $row['ward_no'],
                     'road_name' => $row['road_name'],
                     'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
                     'city_survey_no' => $row['city_survey_no'],
                     'group_no' => $row['group_no'],
                     'washroom_available' => $row['washroom_available'],
@@ -1928,7 +1934,341 @@ class Fun
             if (!empty($row['property_id'])) {
                 $years = $row['construction_year'];
                 $redirecFinancialYear = explode('-', $row['financial_years'])[0];
-                $year = $row['construction_year_type'] == "building_age" ? $years : $redirecFinancialYear - $years;
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
+                $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
+                    (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
+                ));
+                $ghasaraTax = 100;
+                if ($year > 0 && $year <= 2) {
+                    $ghasaraTax = $group[0];
+                } else if ($year > 2 && $year <= 5) {
+                    $ghasaraTax = $group[1];
+                } else if ($year > 5 && $year <= 10) {
+                    $ghasaraTax = $group[2];
+                } else if ($year > 10 && $year <= 20) {
+                    $ghasaraTax = $group[3];
+                } else if ($year > 20 && $year <= 30) {
+                    $ghasaraTax = $group[4];
+                } else if ($year > 30 && $year <= 40) {
+                    $ghasaraTax = $group[5];
+                } else if ($year > 40 && $year <= 50) {
+                    $ghasaraTax = $group[6];
+                } else if ($year > 50 && $year <= 60) {
+                    $ghasaraTax = $group[7];
+                } else if ($year > 60) {
+                    $ghasaraTax = $group[8];
+                }
+                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
+                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $bharank = $malmatta_use_tax[$row["malmatta_use"]];
+                $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
+                $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $total_bhandavali += $bhandavali;
+                if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $padsar_total_value += $building_value;
+                } else {
+                    $building_total_value += $building_value;
+                }
+                $malmattas[$id]['properties'][] = [
+                    'property_id' => $row['property_id'],
+                    'directions' => $row['directions'],
+                    'tax_exempt' => $row['tax_exempt'],
+                    'property_use' => $row['property_use'],
+                    'property_tax_type' => $row['property_tax_type'],
+                    'redirecconar_parts' => $row['redirecconar_parts'],
+                    'construction_year_type' => $row['construction_year_type'],
+                    'construction_year' => $row['construction_year'],
+                    'floor' => $row['floor'],
+                    'measuring_unit' => $row['measuring_unit'],
+                    'lenght' => $row['lenght'],
+                    'width' => $row['width'],
+                    'areaInMt' => round($area, 2),
+                    'areaInFoot' => round($areaInFoot, 2),
+                    'yearly_tax' => $row['yearly_tax'],
+                    'construction_tax' => $constructionTax,
+                    'ghasara_tax' => $ghasaraTax / 100,
+                    "bharank" => $bharank,
+                    "malmatta_use" => $row["malmatta_use"],
+                    "bhandavali" => round($bhandavali, 2),
+                    "building_value" => round($building_value, 2),
+                    "milkat_fixed_tax" => $milkatFixedTax,
+                    "property_photo_path" => $row['property_photo_path'],
+
+                ];
+            }
+            $malmattas[$id]['total_bhandavali'] = round($total_bhandavali);
+            $malmattas[$id]['building_total_value'] = round($building_total_value);
+            $malmattas[$id]['padsar_total_value'] = round($padsar_total_value);
+        }
+
+        return array_values($malmattas);
+    }
+    public function getMalmattaWithPropertiesAccordingToPeriodAndVillage($period, $village)
+    {
+        $query = "
+        SELECT 
+            *, 
+            mpi.id AS property_id,
+            mpi.directions, 
+            mpi.tax_exempt, 
+            mpi.property_use, 
+            mpi.property_tax_type, 
+            mpi.redirecconar_parts, 
+            mpi.construction_year_type, 
+            mpi.construction_year, 
+            mpi.floor, 
+            mpi.measuring_unit, 
+            mpi.lenght, 
+            mpi.width, 
+            mpi.area,
+             mde.`id` as `malmatta_id`, mde.`malmatta_no` as 'malmatta_number', nno.`person_name` as `owner_name`, nno1.`person_name` as `wife_name`, nno2.`person_name` as `occupant_name`
+        FROM malmatta_data_entry mde
+        Left Join malmatta_property_info mpi on mde.`id` = mpi.`malmatta_id`
+                    left join period_details pd on mde.`period` = pd.`id`
+                    left join malmatta_water_tax mw on mde.`id` = mw.`malmatta_id`
+                    left join road_details rd on mde.`road_name` = rd.`id`
+                    left join ward_details wd on mde.`ward_no`= wd.`id`
+                    left join new_name nno on mde.`owner_name` = nno.`id`
+                    left join new_name nno1 on mde.`wife_name` = nno1.`id`
+                    left join new_name nno2 on mde.`occupant_name` = nno2.`id`
+                     left join property_verifications pv on mde.`id` = pv.`malmatta_id`
+                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`id`
+        Where mde.`period` = '" . $period . "' and mde.`village_name` = '" . $village . "' and mde.`lgdcode` = '" . $_SESSION['district_code'] . "' and mde.`approved` = '1' and mde.`verified` = '1'
+    ";
+
+        $result = mysqli_query($this->db, $query);
+        if (!$result) {
+            return []; // or handle error
+        }
+        $milkatTaxInfo = $this->getMilkatTaxInfoDarCons($_SESSION['district_code']);
+        if (mysqli_num_rows($milkatTaxInfo) > 0) {
+            $milkatTaxInfo = mysqli_fetch_assoc($milkatTaxInfo);
+        } else {
+            $milkatTaxInfo = [];
+        }
+
+        $milkatTaxFixed = $this->getMilkatTaxInfoDarFixed($_SESSION['district_code']);
+        if (mysqli_num_rows($milkatTaxFixed) > 0) {
+            $milkatTaxFixed = mysqli_fetch_assoc($milkatTaxFixed);
+        } else {
+            $milkatTaxFixed = [];
+        }
+
+        $malmattas = [];
+        $total_bhandavali = 0;
+        $building_total_value = 0;
+        $padsar_total_value = 0;
+
+        $malmattas = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $id = $row['id']; // malmatta id
+            $malmatta_use_tax = [
+                "रहिवाशी" => 1,
+                "वाणिज्य/व्यापार" => 1.2,
+                "औद्योगिक" => 1.5
+            ];
+            if (!isset($malmattas[$id])) {
+                $malmattas[$id] = [
+                    'malmatta_id' => $id,
+                    'village' => $row['village_name'],
+                    'period' => $row['period'],
+                    'village_name' => $row['village_name'],
+                    'ward_no' => $row['ward_no'],
+                    'road_name' => $row['road_name'],
+                    'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
+                    'city_survey_no' => $row['city_survey_no'],
+                    'group_no' => $row['group_no'],
+                    'washroom_available' => $row['washroom_available'],
+                    'owner_name' => $row['owner_name'],
+                    'wife_name' => $row['wife_name'],
+                    'occupant_name' => $row['occupant_name'],
+                    'remarks' => $row['remarks'],
+                    'lgdcode' => $row['lgdcode'],
+                    'ward_name' => $row['ward_name'],
+                    'properties' => [],
+                    'readyrec_type' => $row['readyrec_type'],
+                    'light_tax' => $row['light_tax'],
+                    'water_tax' => $row['water_tax'],
+                    'health_tax' => $row['health_tax'],
+                ];
+            }
+
+            // If property info exists
+            if (!empty($row['property_id'])) {
+                $years = $row['construction_year'];
+                $redirecFinancialYear = explode('-', $row['financial_years'])[0];
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
+                $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
+                    (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
+                ));
+                $ghasaraTax = 100;
+                if ($year > 0 && $year <= 2) {
+                    $ghasaraTax = $group[0];
+                } else if ($year > 2 && $year <= 5) {
+                    $ghasaraTax = $group[1];
+                } else if ($year > 5 && $year <= 10) {
+                    $ghasaraTax = $group[2];
+                } else if ($year > 10 && $year <= 20) {
+                    $ghasaraTax = $group[3];
+                } else if ($year > 20 && $year <= 30) {
+                    $ghasaraTax = $group[4];
+                } else if ($year > 30 && $year <= 40) {
+                    $ghasaraTax = $group[5];
+                } else if ($year > 40 && $year <= 50) {
+                    $ghasaraTax = $group[6];
+                } else if ($year > 50 && $year <= 60) {
+                    $ghasaraTax = $group[7];
+                } else if ($year > 60) {
+                    $ghasaraTax = $group[8];
+                }
+                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
+                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $bharank = $malmatta_use_tax[$row["malmatta_use"]];
+                $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
+                $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $total_bhandavali += $bhandavali;
+                if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $padsar_total_value += $building_value;
+                } else {
+                    $building_total_value += $building_value;
+                }
+                $malmattas[$id]['properties'][] = [
+                    'property_id' => $row['property_id'],
+                    'directions' => $row['directions'],
+                    'tax_exempt' => $row['tax_exempt'],
+                    'property_use' => $row['property_use'],
+                    'property_tax_type' => $row['property_tax_type'],
+                    'redirecconar_parts' => $row['redirecconar_parts'],
+                    'construction_year_type' => $row['construction_year_type'],
+                    'construction_year' => $row['construction_year'],
+                    'floor' => $row['floor'],
+                    'measuring_unit' => $row['measuring_unit'],
+                    'lenght' => $row['lenght'],
+                    'width' => $row['width'],
+                    'areaInMt' => round($area, 2),
+                    'areaInFoot' => round($areaInFoot, 2),
+                    'yearly_tax' => $row['yearly_tax'],
+                    'construction_tax' => $constructionTax,
+                    'ghasara_tax' => $ghasaraTax / 100,
+                    "bharank" => $bharank,
+                    "malmatta_use" => $row["malmatta_use"],
+                    "bhandavali" => round($bhandavali, 2),
+                    "building_value" => round($building_value, 2),
+                    "milkat_fixed_tax" => $milkatFixedTax,
+                    "property_photo_path" => $row['property_photo_path'],
+
+                ];
+            }
+            $malmattas[$id]['total_bhandavali'] = round($total_bhandavali);
+            $malmattas[$id]['building_total_value'] = round($building_total_value);
+            $malmattas[$id]['padsar_total_value'] = round($padsar_total_value);
+        }
+
+        return array_values($malmattas);
+    }
+    public function getMalmattaWithPropertiesAccordingToPeriodAndKhasara($period, $khasara)
+    {
+        $query = "
+        SELECT 
+            *, 
+            mpi.id AS property_id,
+            mpi.directions, 
+            mpi.tax_exempt, 
+            mpi.property_use, 
+            mpi.property_tax_type, 
+            mpi.redirecconar_parts, 
+            mpi.construction_year_type, 
+            mpi.construction_year, 
+            mpi.floor, 
+            mpi.measuring_unit, 
+            mpi.lenght, 
+            mpi.width, 
+            mpi.area,
+             mde.`id` as `malmatta_id`, mde.`malmatta_no` as 'malmatta_number', nno.`person_name` as `owner_name`, nno1.`person_name` as `wife_name`, nno2.`person_name` as `occupant_name`
+        FROM malmatta_data_entry mde
+        Left Join malmatta_property_info mpi on mde.`id` = mpi.`malmatta_id`
+                    left join period_details pd on mde.`period` = pd.`id`
+                    left join malmatta_water_tax mw on mde.`id` = mw.`malmatta_id`
+                    left join road_details rd on mde.`road_name` = rd.`id`
+                    left join ward_details wd on mde.`ward_no`= wd.`id`
+                    left join new_name nno on mde.`owner_name` = nno.`id`
+                    left join new_name nno1 on mde.`wife_name` = nno1.`id`
+                    left join new_name nno2 on mde.`occupant_name` = nno2.`id`
+                     left join property_verifications pv on mde.`id` = pv.`malmatta_id`
+                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`id`
+        Where mde.`period` = '" . $period . "' and mde.`khasara_no` = '" . $khasara . "' and mde.`lgdcode` = '" . $_SESSION['district_code'] . "' and mde.`approved` = '1' and mde.`verified` = '1'
+    ";
+
+        $result = mysqli_query($this->db, $query);
+        if (!$result) {
+            return []; // or handle error
+        }
+        $milkatTaxInfo = $this->getMilkatTaxInfoDarCons($_SESSION['district_code']);
+        if (mysqli_num_rows($milkatTaxInfo) > 0) {
+            $milkatTaxInfo = mysqli_fetch_assoc($milkatTaxInfo);
+        } else {
+            $milkatTaxInfo = [];
+        }
+
+        $milkatTaxFixed = $this->getMilkatTaxInfoDarFixed($_SESSION['district_code']);
+        if (mysqli_num_rows($milkatTaxFixed) > 0) {
+            $milkatTaxFixed = mysqli_fetch_assoc($milkatTaxFixed);
+        } else {
+            $milkatTaxFixed = [];
+        }
+
+        $malmattas = [];
+        $total_bhandavali = 0;
+        $building_total_value = 0;
+        $padsar_total_value = 0;
+
+        $malmattas = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $id = $row['id']; // malmatta id
+            $malmatta_use_tax = [
+                "रहिवाशी" => 1,
+                "वाणिज्य/व्यापार" => 1.2,
+                "औद्योगिक" => 1.5
+            ];
+            if (!isset($malmattas[$id])) {
+                $malmattas[$id] = [
+                    'malmatta_id' => $id,
+                    'village' => $row['village_name'],
+                    'period' => $row['period'],
+                    'village_name' => $row['village_name'],
+                    'ward_no' => $row['ward_no'],
+                    'road_name' => $row['road_name'],
+                    'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
+                    'city_survey_no' => $row['city_survey_no'],
+                    'group_no' => $row['group_no'],
+                    'washroom_available' => $row['washroom_available'],
+                    'owner_name' => $row['owner_name'],
+                    'wife_name' => $row['wife_name'],
+                    'occupant_name' => $row['occupant_name'],
+                    'remarks' => $row['remarks'],
+                    'lgdcode' => $row['lgdcode'],
+                    'ward_name' => $row['ward_name'],
+                    'properties' => [],
+                    'readyrec_type' => $row['readyrec_type'],
+                    'light_tax' => $row['light_tax'],
+                    'water_tax' => $row['water_tax'],
+                    'health_tax' => $row['health_tax'],
+                ];
+            }
+
+            // If property info exists
+            if (!empty($row['property_id'])) {
+                $years = $row['construction_year'];
+                $redirecFinancialYear = explode('-', $row['financial_years'])[0];
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
                 $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
                     (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
                 ));
@@ -2073,6 +2413,7 @@ class Fun
                     'ward_no' => $row['ward_no'],
                     'road_name' => $row['road_name'],
                     'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
                     'city_survey_no' => $row['city_survey_no'],
                     'group_no' => $row['group_no'],
                     'washroom_available' => $row['washroom_available'],
@@ -2094,7 +2435,7 @@ class Fun
             if (!empty($row['property_id'])) {
                 $years = $row['construction_year'];
                 $redirecFinancialYear = explode('-', $row['financial_years'])[0];
-                $year = $row['construction_year_type'] == "building_age" ? $years : $redirecFinancialYear - $years;
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
                 $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
                     (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
                 ));
@@ -2241,6 +2582,7 @@ class Fun
                     'ward_no' => $row['ward_no'],
                     'road_name' => $row['road'],
                     'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
                     'city_survey_no' => $row['city_survey_no'],
                     'group_no' => $row['group_no'],
                     'washroom_available' => $row['washroom_available'],
@@ -2262,7 +2604,176 @@ class Fun
             if (!empty($row['property_id'])) {
                 $years = $row['construction_year'];
                 $redirecFinancialYear = explode('-', $row['financial_years'])[0];
-                $year = $row['construction_year_type'] == "building_age" ? $years : $redirecFinancialYear - $years;
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
+                $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
+                    (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
+                ));
+                $ghasaraTax = 100;
+                if ($year > 0 && $year <= 2) {
+                    $ghasaraTax = $group[0];
+                } else if ($year > 2 && $year <= 5) {
+                    $ghasaraTax = $group[1];
+                } else if ($year > 5 && $year <= 10) {
+                    $ghasaraTax = $group[2];
+                } else if ($year > 10 && $year <= 20) {
+                    $ghasaraTax = $group[3];
+                } else if ($year > 20 && $year <= 30) {
+                    $ghasaraTax = $group[4];
+                } else if ($year > 30 && $year <= 40) {
+                    $ghasaraTax = $group[5];
+                } else if ($year > 40 && $year <= 50) {
+                    $ghasaraTax = $group[6];
+                } else if ($year > 50 && $year <= 60) {
+                    $ghasaraTax = $group[7];
+                } else if ($year > 60) {
+                    $ghasaraTax = $group[8];
+                }
+                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
+                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $bharank = $malmatta_use_tax[$row["malmatta_use"]];
+                $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
+                $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $total_bhandavali += $bhandavali;
+                if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $padsar_total_value += $building_value;
+                } else {
+                    $building_total_value += $building_value;
+                }
+                $malmattas[$id]['properties'][] = [
+                    'property_id' => $row['property_id'],
+                    'directions' => $row['directions'],
+                    'tax_exempt' => $row['tax_exempt'],
+                    'property_use' => $row['property_use'],
+                    'property_tax_type' => $row['property_tax_type'],
+                    'redirecconar_parts' => $row['redirecconar_parts'],
+                    'construction_year_type' => $row['construction_year_type'],
+                    'construction_year' => $row['construction_year'],
+                    'floor' => $row['floor'],
+                    'measuring_unit' => $row['measuring_unit'],
+                    'lenght' => $row['lenght'],
+                    'width' => $row['width'],
+                    'areaInMt' => round($area, 2),
+                    'areaInFoot' => round($areaInFoot, 2),
+                    'yearly_tax' => $row['yearly_tax'],
+                    'construction_tax' => $constructionTax,
+                    'ghasara_tax' => $ghasaraTax / 100,
+                    "bharank" => $bharank,
+                    "malmatta_use" => $row["malmatta_use"],
+                    "bhandavali" => round($bhandavali, 2),
+                    "building_value" => round($building_value, 2),
+                    "milkat_fixed_tax" => $milkatFixedTax,
+                    "property_photo_path" => $row['property_photo_path'],
+                ];
+            }
+            $malmattas[$id]['total_bhandavali'] = round($total_bhandavali);
+            $malmattas[$id]['building_total_value'] = round($building_total_value);
+            $malmattas[$id]['padsar_total_value'] = round($padsar_total_value);
+        }
+
+
+        return array_values($malmattas);
+    }
+    public function getMalmattaWithPropertiesAccordingToAll($approved = 1, $verfied = 1)
+    {
+        $query = "
+        SELECT 
+            *, 
+            mpi.id AS property_id,
+            mpi.directions, 
+            mpi.tax_exempt, 
+            mpi.property_use, 
+            mpi.property_tax_type, 
+            mpi.redirecconar_parts, 
+            mpi.construction_year_type, 
+            mpi.construction_year, 
+            mpi.floor, 
+            mpi.measuring_unit, 
+            mpi.lenght, 
+            mpi.width, 
+            mpi.area,
+            rd.`road_name` as `road`,
+             mde.`id` as `malmatta_id`, mde.`malmatta_no` as 'malmatta_number', nno.`person_name` as `owner_name`, nno1.`person_name` as `wife_name`, nno2.`person_name` as `occupant_name`
+        FROM malmatta_data_entry mde
+        Left Join malmatta_property_info mpi on mde.`id` = mpi.`malmatta_id`
+                    left join period_details pd on mde.`period` = pd.`id`
+                    left join malmatta_water_tax mw on mde.`id` = mw.`malmatta_id`
+                    left join road_details rd on mde.`road_name` = rd.`id`
+                    left join ward_details wd on mde.`ward_no`= wd.`id`
+                    left join new_name nno on mde.`owner_name` = nno.`id`
+                    left join new_name nno1 on mde.`wife_name` = nno1.`id`
+                    left join new_name nno2 on mde.`occupant_name` = nno2.`id`
+                    left join property_verifications pv on mde.`id` = pv.`malmatta_id`
+                      left join readyrec_info r on mpi.`redirecconar_parts` = r.`id` and r.`panchayat_code` = '" . $_SESSION['panchayat_code'] . "'
+        Where  mde.`lgdcode` = '" . $_SESSION['district_code'] . "' and mde.`panchayat_code` = '" . $_SESSION['panchayat_code'] . "' and mde.`approved` = '$approved' and mde.`verified` = '$verfied'
+    ";
+
+        $result = mysqli_query($this->db, $query);
+        if (!$result) {
+            return []; // or handle error
+        }
+        $milkatTaxInfo = $this->getMilkatTaxInfoDarCons($_SESSION['district_code']);
+        if (mysqli_num_rows($milkatTaxInfo) > 0) {
+            $milkatTaxInfo = mysqli_fetch_assoc($milkatTaxInfo);
+        } else {
+            $milkatTaxInfo = [];
+        }
+
+        $milkatTaxFixed = $this->getMilkatTaxInfoDarFixed($_SESSION['district_code']);
+        if (mysqli_num_rows($milkatTaxFixed) > 0) {
+            $milkatTaxFixed = mysqli_fetch_assoc($milkatTaxFixed);
+        } else {
+            $milkatTaxFixed = [];
+        }
+
+        $malmattas = [];
+        $total_bhandavali = 0;
+        $building_total_value = 0;
+        $padsar_total_value = 0;
+
+        $malmattas = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $id = $row['malmatta_id']; // malmatta id
+            //    print_r($row);
+            $malmatta_use_tax = [
+                "रहिवाशी" => 1,
+                "वाणिज्य/व्यापार" => 1.2,
+                "औद्योगिक" => 1.5
+            ];
+            if (!isset($malmattas[$id])) {
+                $malmattas[$id] = [
+                    'malmatta_id' => $id,
+                    'village' => $row['village_name'],
+                    'period' => $row['period'],
+                    'village_name' => $row['village_name'],
+                    'ward_no' => $row['ward_no'],
+                    'road_name' => $row['road'],
+                    'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
+                    'city_survey_no' => $row['city_survey_no'],
+                    'group_no' => $row['group_no'],
+                    'washroom_available' => $row['washroom_available'],
+                    'owner_name' => $row['owner_name'],
+                    'wife_name' => $row['wife_name'],
+                    'occupant_name' => $row['occupant_name'],
+                    'remarks' => $row['remarks'],
+                    'lgdcode' => $row['lgdcode'],
+                    'ward_name' => $row['ward_name'],
+                    'properties' => [],
+                    'readyrec_type' => $row['readyrec_type'],
+                    'light_tax' => $row['light_tax'],
+                    'water_tax' => $row['water_tax'],
+                    'health_tax' => $row['health_tax'],
+                ];
+            }
+
+            // If property info exists
+            if (!empty($row['property_id'])) {
+                $years = $row['construction_year'];
+                $redirecFinancialYear = explode('-', $row['financial_years'])[0];
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
                 $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
                     (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
                 ));
@@ -2407,6 +2918,7 @@ class Fun
                     'ward_no' => $row['ward_no'],
                     'road_name' => $row['road'],
                     'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
                     'city_survey_no' => $row['city_survey_no'],
                     'group_no' => $row['group_no'],
                     'washroom_available' => $row['washroom_available'],
@@ -2426,7 +2938,7 @@ class Fun
             if (!empty($row['property_id'])) {
                 $years = $row['construction_year'];
                 $redirecFinancialYear = explode('-', $row['financial_years'])[0];
-                $year = $row['construction_year_type'] == "building_age" ? $years : $redirecFinancialYear - $years;
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
                 $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
                     (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
                 ));
@@ -2573,6 +3085,7 @@ class Fun
                     'road_id' => $row['road_id'],
 
                     'malmatta_no' => $row['malmatta_no'],
+                    'khasara_no' => $row['khasara_no'],
                     'city_survey_no' => $row['city_survey_no'],
                     'group_no' => $row['group_no'],
                     'washroom_available' => $row['washroom_available'],
@@ -2595,7 +3108,7 @@ class Fun
             if (!empty($row['property_id'])) {
                 $years = $row['construction_year'];
                 $redirecFinancialYear = explode('-', $row['financial_years'])[0];
-                $year = $row['construction_year_type'] == "building_age" ? $years : $redirecFinancialYear - $years;
+                $year = $row['construction_year_type'] == "building_age" ? $years : intval($redirecFinancialYear) - intval($years);
                 $group = (in_array($row['property_use'], $this->propertyUseGroupA) ? $this->ghasaraDarGroupA : (
                     (in_array($row['property_use'], $this->propertyUseGroupB) ? $this->ghasaraDarGroupB : [1, 1, 1, 1, 1, 1, 1, 1, 1])
                 ));
@@ -3159,7 +3672,7 @@ class Fun
             $data['check_no'],
             $data['last_check_no'],
             $data['date'],
-            $id,
+            $id
         );
 
         return $stmt->execute();
@@ -4305,6 +4818,14 @@ class Fun
         $sql = "SELECT * FROM karvasuli_records kr
                 left outer join malmatta_data_entry mde on mde.id =  kr.malamatta_kramanak
          WHERE mde.panchayat_code = '" . $_SESSION['panchayat_code'] . "'";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+    public function getKhasaraNoFromMalmatta()
+    {
+        $sql = "SELECT DISTINCT `khasara_no` FROM `malmatta_data_entry` WHERE `panchayat_code` = '$_SESSION[panchayat_code]'";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->get_result();

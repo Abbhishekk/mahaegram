@@ -20,7 +20,7 @@ try {
 
     // Check if this is an add or update operation
     $isEdit = isset($_POST['is_edit']) && $_POST['is_edit'] === '1';
-    $malmatta_id = $isEdit ? (int)($_POST['edit_id'] ?? 0) : 0;
+    $malmatta_id = $isEdit ? (int) ($_POST['edit_id'] ?? 0) : 0;
 
     // Validate and sanitize input data
     $requiredFields = [
@@ -28,6 +28,7 @@ try {
         'revenue_village' => 'revenue_village',
         'ward_name' => 'ward_name',
         'malmatta_no' => 'malmatta_no',
+        'khasara_no' => 'khasara_no',
         'owner_name' => 'owner_name',
         'occupant_name' => 'occupant_name',
         'toilet_available' => 'toilet_available'
@@ -43,8 +44,15 @@ try {
 
     // Collect additional data
     $additionalFields = [
-        'road_name', 'owner_wife_name', 'city_survey_no', 'group_number', 'remarks',
-        'drainage_type', 'tap_numbers', 'tap_width', 'tap_owner_name'
+        'road_name',
+        'owner_wife_name',
+        'city_survey_no',
+        'group_number',
+        'remarks',
+        'drainage_type',
+        'tap_numbers',
+        'tap_width',
+        'tap_owner_name'
     ];
 
     foreach ($additionalFields as $field) {
@@ -75,14 +83,15 @@ try {
                 $data['ward_name'],
                 $data['road_name'],
                 $data['malmatta_no'],
+                $data['khasara_no'],
                 $data['city_survey_no'],
                 $data['group_number'],
                 $data['toilet_available'],
                 $data['owner_name'],
                 $data['owner_wife_name'],
                 $data['occupant_name'],
-                $data['remarks'],
-              
+                $data['remarks']
+
             );
 
             if (!$updated) {
@@ -100,6 +109,7 @@ try {
                 $data['ward_name'],
                 $data['road_name'],
                 $data['malmatta_no'],
+                $data['khasara_no'],
                 $data['city_survey_no'],
                 $data['group_number'],
                 $data['toilet_available'],
@@ -118,7 +128,7 @@ try {
         // Process each property
         foreach ($income_data as $index => $entry) {
             $photoPath = processPropertyPhoto($index, $entry);
-            
+
             $insert_property = $fun->addMalmattaPropertyInfo(
                 $malmatta_id,
                 $entry['incomeOtherInfo'] ?? '',
@@ -160,10 +170,10 @@ try {
 
         $response = [
             'success' => true,
-            'message' => $isEdit ? 
-                "✅ मालमत्ता यशस्वीरीत्या अद्यतनित केली गेली!" : 
+            'message' => $isEdit ?
+                "✅ मालमत्ता यशस्वीरीत्या अद्यतनित केली गेली!" :
                 "✅ मालमत्ता यशस्वीरीत्या जतन केली गेली!",
-            'redirect' => 
+            'redirect' =>
                 "namuna8_pramanit_kar.php?malmatta_id=" . $malmatta_id
         ];
 
@@ -177,10 +187,10 @@ try {
     }
 
 } catch (mysqli_sql_exception $e) {
-    $response['message'] = ($e->getCode() == 1062) ? 
-        "⚠️ ही मालमत्ता आधीच अस्तित्वात आहे!" : 
+    $response['message'] = ($e->getCode() == 1062) ?
+        "⚠️ ही मालमत्ता आधीच अस्तित्वात आहे!" :
         "❌ डेटाबेस त्रुटी: " . $e->getMessage();
-    
+
 } catch (Exception $e) {
     $response['message'] = $e->getMessage();
 }
@@ -193,10 +203,11 @@ exit();
 /**
  * Process property photo upload (either file upload or base64)
  */
-function processPropertyPhoto($index, $entry) {
+function processPropertyPhoto($index, $entry)
+{
     $photoPath = null;
     $uploadDir = '../uploads/property_photos/';
-    
+
     // Create directory if it doesn't exist
     if (!file_exists($uploadDir)) {
         mkdir($uploadDir, 0755, true);
@@ -207,7 +218,7 @@ function processPropertyPhoto($index, $entry) {
         $tmpName = $_FILES['property_photos']['tmp_name'][$index];
         $fileName = basename($_FILES['property_photos']['name'][$index]);
         $filePath = $uploadDir . uniqid() . '_' . $fileName;
-        
+
         if (move_uploaded_file($tmpName, $filePath)) {
             $photoPath = 'uploads/property_photos/' . basename($filePath);
         }
@@ -217,36 +228,36 @@ function processPropertyPhoto($index, $entry) {
         $photoData = $entry['propertyPhoto'];
         $fileName = uniqid('property_') . '_' . ($entry['photoName'] ?? 'property.jpg');
         $filePath = $uploadDir . $fileName;
-        
+
         if (preg_match('/^data:image\/(\w+);base64,/', $photoData, $type)) {
             $photoData = substr($photoData, strpos($photoData, ',') + 1);
             $photoData = base64_decode($photoData);
-            
+
             if ($photoData !== false && file_put_contents($filePath, $photoData)) {
                 $photoPath = 'uploads/property_photos/' . $fileName;
             }
         }
     }
-    
+
     return $photoPath;
 }
 
 // Handle deletion separately
 if (isset($_GET['delete'])) {
     try {
-        $malmatta_id = (int)$_GET['delete'];
+        $malmatta_id = (int) $_GET['delete'];
         $deleted = $fun->deleteMalmatta($malmatta_id);
-        
-        $_SESSION['message'] = $deleted ? 
-            "✅ मालमत्ता यशस्वीरीत्या हटवली गेली!" : 
+
+        $_SESSION['message'] = $deleted ?
+            "✅ मालमत्ता यशस्वीरीत्या हटवली गेली!" :
             "❌ मालमत्ता हटवण्यात अयशस्वी!";
         $_SESSION['message_type'] = $deleted ? "success" : "error";
-        
+
     } catch (Exception $e) {
         $_SESSION['message'] = "❌ डेटाबेस त्रुटी: " . $e->getMessage();
         $_SESSION['message_type'] = "error";
     }
-    
+
     header("Location: ../Form_Malmatta_N8.php");
     exit();
 }

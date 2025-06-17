@@ -78,6 +78,8 @@ $redyrecs = $fun->getReadyrecInfo();
 $buildingFloors = $fun->getBuildingFloors();
 $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
 
+
+$allMalmattaEnteries = $fun->getMalmattaWithPropertiesAccordingToAll(1, 1);
 if (isset($_GET['edit_id'])) {
     $editId = $_GET['edit_id'];
     $malmattaData = $fun->getMalmattaWithPropertiesWithIdNotApproved($editId, $_SESSION['district_code']);
@@ -265,6 +267,14 @@ if (isset($_GET['edit_id'])) {
                                                         id="malmatta_no" aria-describedby="emailHelp"
                                                         placeholder="मालमत्ता क्रमांक" required>
                                                     <small id="malmattaNoHelp" class="form-text text-muted"></small>
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label for="khasara_no">खसारा क्रमांक <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="khasara_no"
+                                                        id="khasara_no" aria-describedby="emailHelp"
+                                                        placeholder="खसारा क्रमांक" required>
+                                                    <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
                                                 </div>
                                                 <div class="form-group col-md-5 mx-auto">
                                                     <label for="owner_name">मालमत्ता धारकाचे नाव <span
@@ -703,7 +713,7 @@ if (isset($_GET['edit_id'])) {
                             <div class="card">
 
                                 <div class="table-responsive">
-                                    <table class="table align-items-center table-flush">
+                                    <table class="table align-items-center table-flush" id="dataTable">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>अ.क्र.</th>
@@ -782,8 +792,217 @@ if (isset($_GET['edit_id'])) {
 
 
 
+                    <div class="col-lg-12">
+                        <div class="card py-5">
+
+                            <div class="table-responsive">
+                                <table class="table align-items-center table-flush">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>अ.क्र.</th>
+                                            <th>वॉर्डचे नाव</th>
+                                            <th>रस्त्याचे नाव</th>
+                                            <th>मि नं.</th>
+                                            <th>खसारा नं.</th>
+                                            <th>गट /सर्वे नं</th>
+                                            <th>मालमत्ता धारकाचे नाव</th>
+                                            <th>भोगवटाधारक</th>
+
+                                            <th>मालमत्ता</th>
+                                            <!-- <th>जमिन दर</th>
+                                                        <th>बांधकाम दर</th> -->
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        if (count($allMalmattaEnteries) > 0) {
+                                            $i = 1;
+                                            foreach ($allMalmattaEnteries as $name) {
+                                                // print_r($name);
+                                                // echo "<br>";
+                                        
+                                                $malmatta_use_tax = [
+                                                    "रहिवाशी" => 1,
+                                                    "वाणिज्य/व्यापार" => 1.2,
+                                                    "औद्योगिक" => 1.5
+                                                ];
+                                                // $bharank = $malmatta_use_tax[$name["malmatta_use"]];
+                                                ?>
+                                                <tr>
+                                                    <td><a href="#"><?php echo $i; ?></a></td>
+                                                    <td><?php echo $name['ward_name']; ?></td>
+                                                    <td><?php echo $name['road_name']; ?></td>
+                                                    <td><?php echo $name['malmatta_no']; ?></td>
+                                                    <td><?php echo $name['khasara_no']; ?></td>
+                                                    <td><?php echo $name['group_no'] . "/" . $name['city_survey_no']; ?></td>
+                                                    <td><?php echo $name['owner_name']; ?></td>
+                                                    <td><?php echo $name['occupant_name']; ?></td>
+
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                            data-target="#modal<?php echo $name['malmatta_id'] ?>"
+                                                            id="#modalCenter<?php echo $name['malmatta_id'] ?>">View
+                                                            Properties</button>
+                                                        <div class="modal fade" id="modal<?php echo $name['malmatta_id'] ?>"
+                                                            tabindex="-1" role="dialog"
+                                                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document"
+                                                                style="width: 90% !important;">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalCenterTitle">
+                                                                            Property
+                                                                            Details
+                                                                        </h5>
+                                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                            aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="table-responsive mt-4">
+                                                                            <table id="propertyTable"
+                                                                                class="table table-bordered table-striped text-center align-middle">
+                                                                                <thead class="bg-primary text-white">
+                                                                                    <tr>
+                                                                                        <th>अ क्र</th>
+                                                                                        <th>मालमत्ता क्र.</th>
+                                                                                        <th>मालमत्ता प्रकार</th>
+                                                                                        <th>मजला</th>
+                                                                                        <th>लांबी</th>
+                                                                                        <th>रुंदी</th>
+                                                                                        <th>क्षेत्रफळ(Foot)</th>
+                                                                                        <th>क्षेत्रफळ(mt)</th>
+                                                                                        <th>बांधकाम वर्ष</th>
+                                                                                        <th>रेडीरेकनर दर</th>
+                                                                                        <th>बांधकाम दर</th>
+                                                                                        <th>घसारा दर</th>
+                                                                                        <th>भारांक</th>
+                                                                                        <th>भांडवली मुल्यांकन</th>
+                                                                                        <th>मिळकत कर दर</th>
+                                                                                        <th>इमारत कर</th>
+                                                                                        <th>फोटो</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <?php
+                                                                                    if (isset($name['properties'])) {
+                                                                                        $sr = 1;
+                                                                                        $allModals = ""; // Collect modals here
+                                                                                        foreach ($name['properties'] as $property) {
+                                                                                            // print_r($property);
+                                                                                            $photoCell = $property['property_photo_path'] ?
+                                                                                                '<td><img src="' . $property['property_photo_path'] . '" alt="Property Photo"
+                     width="50" height="50" 
+                     class="thumbnail-img"
+                     style="cursor: pointer;"
+                     data-toggle="modal"
+                     data-target="#modal' . md5($property['property_photo_path']) . '"></td>' :
+                                                                                                '<td>No photo</td>';
+
+                                                                                            // Store modal for later rendering
+                                                                                            if ($property['property_photo_path']) {
+                                                                                                $modalId = md5($property['property_photo_path']); // safe ID
+                                                                                                $allModals .= '<div class="modal fade" id="modal' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Property Photo</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <img src="' . $property['property_photo_path'] . '" alt="Property Photo" class="enlarged-image img-fluid">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
+                                                                                            }
+
+                                                                                            ?>
+                                                                                            <tr>
+                                                                                                <td><?php echo $sr++; ?></td>
+                                                                                                <td><?php echo $name['malmatta_no']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['property_use']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['floor']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['lenght']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['width']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['areaInFoot']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['areaInMt']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['construction_year']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['yearly_tax']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['construction_tax']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['ghasara_tax']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['bharank']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['bhandavali']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['milkat_fixed_tax']; ?>
+                                                                                                </td>
+                                                                                                <td><?php echo $property['building_value']; ?>
+                                                                                                </td>
+                                                                                                <?php echo $photoCell; ?>
+                                                                                            </tr>
+                                                                                            <?php
+                                                                                        }
+                                                                                    } else {
+                                                                                        ?>
+                                                                                        <tr>
+                                                                                            <td colspan="16">No data found</td>
+                                                                                        </tr>
+                                                                                        <?php
+                                                                                    }
+                                                                                    ?>
+                                                                                </tbody>
+
+                                                                                <!-- Echo all modals here, outside the table -->
+                                                                                <?php echo $allModals; ?>
+
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+
+
+
+                                                </tr>
+                                                <?php
+                                            }
+                                        } else {
+                                            echo "<tr><td colspan='4'>No data found</td></tr>";
+                                        }
+                                        ?>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!---Container Fluid-->
+                    </div>
+                    <div class="card-footer"></div>
                 </div>
-                <!---Container Fluid-->
             </div>
             <!-- Footer -->
             <?php include('include/footer.php'); ?>

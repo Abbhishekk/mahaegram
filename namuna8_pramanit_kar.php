@@ -96,6 +96,13 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                                 <input name="malmatta_id" id="malmatta_id" class="form-control d-none" readonly
                                     required />
                             </div>
+                            <div class="form-group col-md-4">
+                                <label for="khasara_no">खसारा क्रमांक <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="khasara_no" id="khasara_no"
+                                    aria-describedby="emailHelp" placeholder="खसारा क्रमांक"
+                                    value="<?= $malmattaWithProperties[0]['khasara_no'] ?? '' ?>" readonly required>
+                                <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
+                            </div>
                             <!-- <div class="col-md-3 d-flex align-items-end">
                                 <button type="button" class="btn btn-primary w-100" id="search-button">शोधा</button>
                             </div> -->
