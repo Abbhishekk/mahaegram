@@ -269,11 +269,10 @@ if (isset($_GET['edit_id'])) {
                                                     <small id="malmattaNoHelp" class="form-text text-muted"></small>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label for="khasara_no">खसारा क्रमांक <span
-                                                            class="text-danger">*</span></label>
+                                                    <label for="khasara_no">खसारा क्रमांक </label>
                                                     <input type="text" class="form-control" name="khasara_no"
                                                         id="khasara_no" aria-describedby="emailHelp"
-                                                        placeholder="खसारा क्रमांक" required>
+                                                        placeholder="खसारा क्रमांक">
                                                     <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
                                                 </div>
                                                 <div class="form-group col-md-5 mx-auto">
@@ -713,7 +712,7 @@ if (isset($_GET['edit_id'])) {
                             <div class="card">
 
                                 <div class="table-responsive">
-                                    <table class="table align-items-center table-flush" id="dataTable">
+                                    <table class="table align-items-center table-flush">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>अ.क्र.</th>
@@ -793,10 +792,10 @@ if (isset($_GET['edit_id'])) {
 
 
                     <div class="col-lg-12">
-                        <div class="card py-5">
+                        <div class="card py-5 px-5">
 
                             <div class="table-responsive">
-                                <table class="table align-items-center table-flush">
+                                <table class="table align-items-center table-flush" id="dataTable">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>अ.क्र.</th>
@@ -830,7 +829,7 @@ if (isset($_GET['edit_id'])) {
                                                 // $bharank = $malmatta_use_tax[$name["malmatta_use"]];
                                                 ?>
                                                 <tr>
-                                                    <td><a href="#"><?php echo $i; ?></a></td>
+                                                    <td><a href="#"><?php echo $i++; ?></a></td>
                                                     <td><?php echo $name['ward_name']; ?></td>
                                                     <td><?php echo $name['road_name']; ?></td>
                                                     <td><?php echo $name['malmatta_no']; ?></td>

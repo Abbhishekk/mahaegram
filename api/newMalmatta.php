@@ -28,7 +28,7 @@ try {
         'revenue_village' => 'revenue_village',
         'ward_name' => 'ward_name',
         'malmatta_no' => 'malmatta_no',
-        'khasara_no' => 'khasara_no',
+
         'owner_name' => 'owner_name',
         'occupant_name' => 'occupant_name',
         'toilet_available' => 'toilet_available'
@@ -48,6 +48,7 @@ try {
         'owner_wife_name',
         'city_survey_no',
         'group_number',
+        'khasara_no',
         'remarks',
         'drainage_type',
         'tap_numbers',
