@@ -67,6 +67,7 @@ $wards = $fun->getWard($_SESSION['district_code']);
 $newNames = $fun->getNewName();
 $wifeNames = $fun->getNewName();
 $occupant_name = $fun->getNewName();
+$other_occupant_name = $fun->getNewName();
 $tapOwner = $fun->getNewName();
 $drainageTypes = $fun->getDrainageTypes();
 
@@ -275,11 +276,12 @@ if (isset($_GET['edit_id'])) {
                                                         placeholder="खसारा क्रमांक">
                                                     <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
                                                 </div>
-                                                <div class="form-group col-md-5 mx-auto">
+                                                <div class="form-group col-md-3 mx-auto">
                                                     <label for="owner_name">मालमत्ता धारकाचे नाव <span
                                                             class="text-danger">*</span>
                                                     </label>
-                                                    <select name="owner_name" id="owner_name" class="form-control">
+                                                    <select name="owner_name" id="owner_name"
+                                                        class="form-control select2-single-placeholder">
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($newNames) > 0) {
@@ -292,18 +294,18 @@ if (isset($_GET['edit_id'])) {
 
                                                 </div>
                                                 <div class="form-group col-md-2 d-flex align-items-end">
-                                                    <a href="Form_Name_Masters.php"> <button
-                                                            class="btn btn-primary bg-gradient-success">
-                                                            नवीन
-                                                            नाव नोंद </button></a>
+                                                    <a href="Form_Name_Masters.php"
+                                                        class="btn btn-primary bg-gradient-success">
+                                                        नवीन
+                                                        नाव नोंद </a>
                                                 </div>
 
-                                                <div class="form-group col-md-6 mx-auto">
+                                                <div class="form-group col-md-3 mx-auto">
                                                     <label for="owner_wife_name">पत्नीचे नाव <span
                                                             class="text-danger">*</span>
                                                     </label>
                                                     <select name="owner_wife_name" id="owner_wife_name"
-                                                        class="form-control" required>
+                                                        class="form-control select2-single-placeholder" required>
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($wifeNames) > 0) {
@@ -316,17 +318,35 @@ if (isset($_GET['edit_id'])) {
 
                                                 </div>
 
-                                                <div class="form-group col-md-6 mx-auto">
+                                                <div class="form-group col-md-3 mx-auto">
                                                     <label for="occupant_name">भोगवटा धारकाचे नाव <span
                                                             class="text-danger">*</span>
                                                     </label>
-                                                    <select name="occupant_name" id="occupant_name" class="form-control"
-                                                        required>
+                                                    <select name="occupant_name" id="occupant_name"
+                                                        class="form-control select2-single-placeholder" required>
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($occupant_name) > 0) {
                                                             while ($newName = mysqli_fetch_assoc($occupant_name)) {
                                                                 echo '<option value="' . $newName['id'] . '">' . $newName['person_name'] . '</option>';
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
+
+                                                </div>
+                                                <div class="form-group col-md-3 mx-auto">
+                                                    <label for="other_occupant_name">इतर भोगवटा धारकाचे नाव <span
+                                                            class="text-danger">*</span>
+                                                    </label>
+                                                    <select name="other_occupant_name[]" multiple="multiple"
+                                                        id="other_occupant_name" class="form-control select2-multiple"
+                                                        required>
+                                                        <option value="" selected>--निवडा--</option>
+                                                        <?php
+                                                        if (mysqli_num_rows($other_occupant_name) > 0) {
+                                                            while ($newName = mysqli_fetch_assoc($other_occupant_name)) {
+                                                                echo '<option value="' . $newName['person_name'] . '">' . $newName['person_name'] . '</option>';
                                                             }
                                                         }
                                                         ?>
@@ -805,6 +825,8 @@ if (isset($_GET['edit_id'])) {
                                             <th>खसारा नं.</th>
                                             <th>गट /सर्वे नं</th>
                                             <th>मालमत्ता धारकाचे नाव</th>
+                                            <th>भोगवटा धारकाचे नाव</th>
+                                            <th>इतर भोगवटा धारकाचे नाव</th>
                                             <th>भोगवटाधारक</th>
 
                                             <th>मालमत्ता</th>
@@ -837,6 +859,9 @@ if (isset($_GET['edit_id'])) {
                                                     <td><?php echo $name['group_no'] . "/" . $name['city_survey_no']; ?></td>
                                                     <td><?php echo $name['owner_name']; ?></td>
                                                     <td><?php echo $name['occupant_name']; ?></td>
+                                                    <td><?php echo $name['other_occupant_name']; ?></td>
+                                                    <td><?php echo $name['occupant_name']; ?></td>
+
 
                                                     <td>
                                                         <button type="button" class="btn btn-primary" data-toggle="modal"

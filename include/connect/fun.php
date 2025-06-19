@@ -879,9 +879,9 @@ class Fun
         return $result;
     }
 
-    public function addMalmattaDataEntry($period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $remarks, $lgdcode)
+    public function addMalmattaDataEntry($period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $other_occupant_name, $remarks, $lgdcode)
     {
-        $query = "INSERT INTO `malmatta_data_entry`(`period`, `village_name`, `ward_no`, `road_name`, `malmatta_no`, `khasara_no` ,`city_survey_no`, `group_no`, `washroom_available`, `owner_name`, `wife_name`, `occupant_name`, `remarks`, `lgdcode`, `panchayat_code`) VALUES ('$period', '$village_name', '$ward_no', '$road_name', '$malmatta_no', '$khasara_no' ,'$city_survey_no', '$group_no', '$washroom_available', '$owner_name', '$wife_name', '$occupant_name', '$remarks', '$lgdcode', '$_SESSION[panchayat_code]')";
+        $query = "INSERT INTO `malmatta_data_entry`(`period`, `village_name`, `ward_no`, `road_name`, `malmatta_no`, `khasara_no` ,`city_survey_no`, `group_no`, `washroom_available`, `owner_name`, `wife_name`, `occupant_name`,`other_occupant_name` ,`remarks`, `lgdcode`, `panchayat_code`) VALUES ('$period', '$village_name', '$ward_no', '$road_name', '$malmatta_no', '$khasara_no' ,'$city_survey_no', '$group_no', '$washroom_available', '$owner_name', '$wife_name', '$occupant_name', '$other_occupant_name' ,'$remarks', '$lgdcode', '$_SESSION[panchayat_code]')";
         $result = mysqli_query($this->db, $query);
         if ($result) {
             return mysqli_insert_id($this->db);
@@ -1084,6 +1084,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -1251,6 +1252,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -1418,6 +1420,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -1585,6 +1588,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -1752,6 +1756,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -1919,6 +1924,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -2086,6 +2092,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -2253,6 +2260,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -2420,6 +2428,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -2589,6 +2598,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -2758,6 +2768,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -2925,6 +2936,7 @@ class Fun
                     'owner_name' => $row['owner_name'],
                     'wife_name' => $row['wife_name'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],
@@ -3095,6 +3107,7 @@ class Fun
                     'wife_id' => $row['wife_id'],
                     'occupant_id' => $row['occupant_id'],
                     'occupant_name' => $row['occupant_name'],
+                    'other_occupant_name' => $row['other_occupant_name'],
                     'remarks' => $row['remarks'],
                     'lgdcode' => $row['lgdcode'],
                     'ward_name' => $row['ward_name'],

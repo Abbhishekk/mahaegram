@@ -18,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Validate inputs
         $errors = [];
-        
+
         // Name validation
         if (empty($personName)) {
             $errors[] = "व्यक्तीचे नाव आवश्यक आहे.";
-        } 
+        }
         // elseif (!preg_match("/^[\p{Marathi} ]+$/u", $personName)) {
         //     $errors[] = "व्यक्तीचे नाव फक्त मराठी अक्षरे असावे.";
         // }
@@ -84,6 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Redirect back to the form
-    header("Location: ../Form_Name_Masters.php");
+    header("Location: ../Form_Malmatta_N8.php");
     exit();
 }

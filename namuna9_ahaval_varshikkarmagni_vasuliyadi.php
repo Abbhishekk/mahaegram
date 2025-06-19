@@ -4,7 +4,7 @@ require_once './include/auth_middleware.php';
 <!DOCTYPE html>
 <html lang="en">
 <?php
-$title = "मालमत्ता माहिती प्रमाणिकरण";
+$title = "वार्षिक कर मागणी व वसुली यादी";
 ?>
 <?php include('include/header.php'); ?>
 <?php
@@ -77,22 +77,23 @@ $wards = $fun->getWard($_SESSION['district_code']);
                                             class="me-1 my-2"> एकत्रीकरण
                                     </label>
                                     <label class="col-md-3 fw-bold text-primary mt-5">
-                                        <input type="radio" name="criteria" id="all_register" value="all_register" checked
-                                            class="me-1 my-2"> संपूर्ण रजिस्टर
+                                        <input type="radio" name="criteria" id="all_register" value="all_register"
+                                            checked class="me-1 my-2"> संपूर्ण रजिस्टर
                                     </label>
                                     <label class="fw-bold col-md-3 text-primary mt-5">
                                         <input type="radio" name="criteria" id="gava_mangani" value="gava_mangani"
                                             class="me-1 my-2"> गावानुसार मागणी
                                     </label>
                                     <label class="fw-bold col-md-3 text-primary mt-5">
-                                        <input type="radio" name="criteria" id="malmatta_mangani" value="malmatta_mangani"
-                                            class="me-1 my-2"> मालमत्तेनुसार मागणी
+                                        <input type="radio" name="criteria" id="malmatta_mangani"
+                                            value="malmatta_mangani" class="me-1 my-2"> मालमत्तेनुसार मागणी
                                     </label>
                                 </div>
 
                                 <div class="col-md-6 my-2">
                                     <label class="form-label fw-bold">आर्थिक वर्ष :</label>
-                                    <select class="form-control border-primary" name="financial_year" id="financial_year">
+                                    <select class="form-control border-primary" name="financial_year"
+                                        id="financial_year">
                                         <option value=""> --निवडा-- </option>
                                         <?php foreach ($financialYears as $year): ?>
                                             <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
@@ -137,7 +138,8 @@ $wards = $fun->getWard($_SESSION['district_code']);
                                         <option>--निवडा--</option>
                                         <?php
                                         foreach ($property_verifications as $property) {
-                                            if ($property['status'] != 0) continue; // Skip if malmatta_id is 0
+                                            if ($property['status'] != 0)
+                                                continue; // Skip if malmatta_id is 0
                                             echo "<option value='{$property['malmatta_id']}'>{$property['malmatta_no']}</option>";
                                         }
                                         ?>
@@ -148,7 +150,8 @@ $wards = $fun->getWard($_SESSION['district_code']);
                                 </div>
                                 <div class="col-md-6 my-2 ">
                                     <label class="form-label" for="kardena_name">कर देणाऱ्याचे नाव</label>
-                                    <select class="form-select form-control" readonly name="kardena_name" id="kardena_name">
+                                    <select class="form-select form-control" readonly name="kardena_name"
+                                        id="kardena_name">
                                         <option>--निवडा--</option>
                                     </select>
                                 </div>
@@ -197,7 +200,7 @@ $wards = $fun->getWard($_SESSION['district_code']);
         }
     </script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Initialize Select2 for the revenue village dropdown
             $('#revenue_village').select2({
                 placeholder: 'गाव निवडा',
@@ -218,7 +221,7 @@ $wards = $fun->getWard($_SESSION['district_code']);
         });
     </script>
     <script>
-        document.getElementById('pdfForm').addEventListener('submit', async function(e) {
+        document.getElementById('pdfForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const criteria = $('input[name="criteria"]:checked').val();
             const financial_year = $('#financial_year').val();
@@ -257,11 +260,11 @@ $wards = $fun->getWard($_SESSION['district_code']);
             // 👇 Fetch table HTML from your PHP backend
             const res = await fetch(
                 url, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             const html = await res.text();
 
             // 👇 Open in new tab and print
@@ -270,7 +273,7 @@ $wards = $fun->getWard($_SESSION['district_code']);
             printWindow.document.write(`
             <html>
             <head>
-            <title>नमुना ८</title>
+            <title>वार्षिक कर मागणी व वसुली यादी</title>
             <style>
         body {
             font-family: 'Mangal', 'Noto Sans Devanagari', 'Arial', sans-serif;
@@ -325,7 +328,7 @@ $wards = $fun->getWard($_SESSION['district_code']);
         });
     </script>
     <script>
-        $('#malmatta_id').change(function() {
+        $('#malmatta_id').change(function () {
             const malmatta_id = $(this).val();
 
             if (malmatta_id) {
@@ -336,21 +339,25 @@ $wards = $fun->getWard($_SESSION['district_code']);
                         malmattaId: malmatta_id
                     },
                     dataType: 'json',
-                    success: function(data) {
+                    success: function (data) {
                         if (data.success) {
                             $('#kardena_name').empty();
                             $('#kardena_name').append('<option value="">--निवडा--</option>');
 
                             if (data.owner_name) {
-                                $('#kardena_name').append(`<option value="${data.owner_name}">${data.owner_name}</option>`);
+                                $('#kardena_name').append(
+                                    `<option value="${data.owner_name}">${data.owner_name}</option>`
+                                );
                             }
 
                             if (data.occupant_name && data.occupant_name !== data.owner_name) {
-                                $('#kardena_name').append(`<option value="${data.occupant_name}">${data.occupant_name}</option>`);
+                                $('#kardena_name').append(
+                                    `<option value="${data.occupant_name}">${data.occupant_name}</option>`
+                                );
                             }
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error("AJAX Error: " + status + " - " + error);
                     }
                 });
@@ -361,7 +368,7 @@ $wards = $fun->getWard($_SESSION['district_code']);
         });
 
         // Show/hide fields based on selected criteria
-        $('input[name="criteria"]').change(function() {
+        $('input[name="criteria"]').change(function () {
             const criteria = $(this).val();
 
 

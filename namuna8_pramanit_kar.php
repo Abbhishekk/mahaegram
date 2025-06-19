@@ -146,6 +146,14 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                                     <?= $malmattaWithProperties['occupant_name'] ?? '' ?>
                                 </textarea>
                             </div>
+                            <div class="form-group col-md-3 mx-auto">
+                                <label for="other_occupant_name">इतर भोगवटा धारकाचे नाव <span
+                                        class="text-danger">*</span>
+                                </label>
+                                <input type="text" value="<?= $malmattaWithProperties['other_occupant_name']?? '' ?>"
+                                    readonly class="form-control" name="other_occupant_name" id="other_occupant_name">
+
+                            </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">मागील कर आकारणी नुसार कर</label>
                                 <input type="text" class="form-control" name="previous_tax" id="previous_year_tax"
@@ -346,6 +354,7 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                     document.getElementById('road_name').value = info.road_name || '';
                     document.getElementById('group_no').value = info.group_no || '';
                     document.getElementById('occupant_name').value = info.occupant_name || '';
+                    document.getElementById('other_occupant_name').value = info.other_occupant_name || '';
                     document.getElementById('light_tax').value = taxRates.divabatti_prap_tharabaila_rate ||
                         0;
                     document.getElementById('health_tax').value = taxRates.arogya_prap_tharabaila_rate || 0;

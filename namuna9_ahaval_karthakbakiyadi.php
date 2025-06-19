@@ -4,7 +4,7 @@ require_once './include/auth_middleware.php';
 <!DOCTYPE html>
 <html lang="en">
 <?php
-$title = "मालमत्ता माहिती प्रमाणिकरण";
+$title = "कर थकबाकी यादी";
 ?>
 <?php include('include/header.php'); ?>
 <?php
@@ -263,7 +263,7 @@ $roads = $fun->getRoad($_SESSION['district_code']);
                 printWindow.document.write(`
             <html>
             <head>
-            <title>नमुना 9</title>
+            <title>कर थकबाकी यादी</title>
             <style>
         body {
             font-family: 'Mangal', 'Noto Sans Devanagari', 'Arial', sans-serif;

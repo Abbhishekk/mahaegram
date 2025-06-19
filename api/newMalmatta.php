@@ -61,7 +61,7 @@ try {
     }
 
     $data['lgdcode'] = $_SESSION['district_code'] ?? '';
-
+    $data['other_occupant_name'] = $_POST['other_occupant_name'] ?? [];
     // Process property data
     $income_data = [];
     if (!empty($_POST['income_data'])) {
@@ -117,6 +117,7 @@ try {
                 $data['owner_name'],
                 $data['owner_wife_name'],
                 $data['occupant_name'],
+                implode(",", $data['other_occupant_name']),
                 $data['remarks'],
                 $data['lgdcode']
             );
