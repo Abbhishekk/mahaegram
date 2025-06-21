@@ -85,6 +85,7 @@ try {
                 $data['road_name'],
                 $data['malmatta_no'],
                 $data['khasara_no'],
+                implode(",", $data['other_occupant_name']),
                 $data['city_survey_no'],
                 $data['group_number'],
                 $data['toilet_available'],

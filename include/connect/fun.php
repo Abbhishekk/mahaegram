@@ -939,9 +939,9 @@ class Fun
         return $result;
     }
 
-    public function updateMalmattaDataEntry($id, $period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $remarks)
+    public function updateMalmattaDataEntry($id, $period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $other_occupant_name,$city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $remarks)
     {
-        $query = "UPDATE `malmatta_data_entry` SET `period`='$period', `khasara_no` = '$khasara_no' ,`village_name`='$village_name', `ward_no`='$ward_no', `road_name`='$road_name', `malmatta_no`='$malmatta_no', `city_survey_no`='$city_survey_no', `group_no`='$group_no', `washroom_available`='$washroom_available', `owner_name`='$owner_name', `wife_name`='$wife_name', `occupant_name`='$occupant_name', `remarks`='$remarks' WHERE `id` = '$id'";
+        $query = "UPDATE `malmatta_data_entry` SET `period`='$period', `khasara_no` = '$khasara_no', `other_occupant_name`='$other_occupant_name' ,`village_name`='$village_name', `ward_no`='$ward_no', `road_name`='$road_name', `malmatta_no`='$malmatta_no', `city_survey_no`='$city_survey_no', `group_no`='$group_no', `washroom_available`='$washroom_available', `owner_name`='$owner_name', `wife_name`='$wife_name', `occupant_name`='$occupant_name', `remarks`='$remarks' WHERE `id` = '$id'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -999,7 +999,7 @@ class Fun
 
     public function deleteMalmattaPropertyInfo($id)
     {
-        $query = "DELETE FROM `malmatta_property_info` WHERE `id` = '$id'";
+        $query = "DELETE FROM `malmatta_property_info` WHERE `malmatta_id` = '$id'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -1065,8 +1065,8 @@ class Fun
             $id = $row['malmatta_id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -1233,8 +1233,8 @@ class Fun
             $id = $row['malmatta_id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -1401,8 +1401,8 @@ class Fun
             $id = $row['malmatta_id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -1569,8 +1569,8 @@ class Fun
             $id = $row['malmatta_id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -1737,8 +1737,8 @@ class Fun
             $id = $row['malmatta_id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -1905,8 +1905,8 @@ class Fun
             $id = $row['malmatta_id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -2073,8 +2073,8 @@ class Fun
             $id = $row['id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -2241,8 +2241,8 @@ class Fun
             $id = $row['id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -2409,8 +2409,8 @@ class Fun
             $id = $row['id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -2579,8 +2579,8 @@ class Fun
             //    print_r($row);
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -2749,8 +2749,8 @@ class Fun
             //    print_r($row);
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -2918,8 +2918,8 @@ class Fun
             $id = $row['malmatta_id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [
@@ -2994,7 +2994,10 @@ class Fun
                     'tax_exempt' => $row['tax_exempt'],
                     'property_use' => $row['property_use'],
                     'property_tax_type' => $row['property_tax_type'],
+                    'property_tax_type_name' => $row['readyrec_type'],
                     'redirecconar_parts' => $row['redirecconar_parts'],
+                    'redirecconar_parts_name' => $row['land_type'],
+                    'redirecenar_dar' => $row['yearly_tax'],
                     'construction_year_type' => $row['construction_year_type'],
                     'construction_year' => $row['construction_year'],
                     'floor' => $row['floor'],
@@ -3084,8 +3087,8 @@ class Fun
             $id = $row['malmatta_id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
-                "वाणिज्य/व्यापार" => 1.2,
-                "औद्योगिक" => 1.5
+                "वाणिज्य/व्यापार" => 1.25,
+                "औद्योगिक" => 1.2
             ];
             if (!isset($malmattas[$id])) {
                 $malmattas[$id] = [

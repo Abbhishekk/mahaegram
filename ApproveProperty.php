@@ -143,7 +143,7 @@ if (isset($_SESSION['message'])) {
                                                         // $bharank = $malmatta_use_tax[$name["malmatta_use"]];
                                              ?>
                                             <tr>
-                                                <td><a href="#"><?php echo $i; ?></a></td>
+                                                <td><a href="#"><?php echo $i++; ?></a></td>
                                                 <td><?php echo $name['ward_name']; ?></td>
                                                 <td><?php echo $name['road_name']; ?></td>
                                                 <td><?php echo $name['malmatta_no']; ?></td>
