@@ -573,13 +573,13 @@ if (isset($_GET['edit_id'])) {
                                                         <label for="tap_numbers">नळ संख्या</label>
                                                         <input type="number" class="form-control" name="tap_numbers"
                                                             id="tap_numbers" aria-describedby="emailHelp"
-                                                            placeholder="नळ संख्या"
+                                                            placeholder="नळ संख्या" <?php echo $isEditMode && !empty($waterTariff) && $waterTariff['water_usage_type'] == "वापर नाही" ? 'disabled' : ''; ?>
                                                             value="<?php echo $isEditMode && !empty($waterTariff) ? htmlspecialchars($waterTariff['no_of_taps']) : '0'; ?>">
                                                     </div>
                                                     <div class="form-group col-md-3 mx-auto">
                                                         <label for="tap_width">नळ व्यास</label>
-                                                        <select name="tap_width" id="tap_width" class="form-control"
-                                                            required>
+                                                        <select name="tap_width" id="tap_width" class="form-control"  <?php echo $isEditMode && !empty($waterTariff) && $waterTariff['water_usage_type'] == "वापर नाही" ? 'disabled' : ''; ?>
+                                                            >
                                                             <option value="" selected>--निवडा--</option>
                                                             <option value="1/2" <?php echo $isEditMode && !empty($waterTariff) && $waterTariff['tap_width'] == '1/2' ? 'selected' : ''; ?>>
                                                                 1/2</option>
@@ -592,7 +592,7 @@ if (isset($_GET['edit_id'])) {
                                                     <div class="form-group col-md-3 mx-auto">
                                                         <label for="tap_owner_name">नळ धारकाचे नाव</label>
                                                         <select name="tap_owner_name" id="tap_owner_name"
-                                                            class="form-control">
+                                                            class="form-control" <?php echo $isEditMode && !empty($waterTariff) && $waterTariff['water_usage_type'] == "वापर नाही" ? 'disabled' : ''; ?>>
                                                             <option value="" selected>--निवडा--</option>
                                                             <?php
                                                             if (mysqli_num_rows($tapOwner) > 0) {
@@ -1069,9 +1069,9 @@ if (isset($_GET['edit_id'])) {
                             $("#tap_width").prop("disabled", true).val('').prop("required", false);
                             $("#tap_owner_name").prop("disabled", true).val('').prop("required", false);
                         } else {
-                            $("#tap_numbers").prop("disabled", false).prop("required", true);
-                            $("#tap_width").prop("disabled", false).prop("required", true);
-                            $("#tap_owner_name").prop("disabled", false).prop("required", true);
+                            $("#tap_numbers").prop("disabled", false).prop("required", true).prop('readonly', false);
+                            $("#tap_width").prop("disabled", false).prop("required", true).prop('readonly', false);
+                            $("#tap_owner_name").prop("disabled", false).prop("required", true).prop('readonly', false);
                         }
                     });
                 });

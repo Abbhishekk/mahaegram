@@ -323,7 +323,7 @@ if (isset($_GET['edit_id'])) {
                                                     </label>
                                                     <select name="occupant_name" id="occupant_name"
                                                         class="form-control select2-single-placeholder" required>
-                                                        <option value="" selected>--निवडा--</option>
+                                                        <option value="" >--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($occupant_name) > 0) {
                                                             while ($newName = mysqli_fetch_assoc($occupant_name)) {
@@ -675,8 +675,8 @@ if (isset($_GET['edit_id'])) {
 
                                                         </label>
                                                         <select name="tap_owner_name" id="tap_owner_name"
-                                                            class="form-control">
-                                                            <option value="" selected>--निवडा--</option>
+                                                            class="form-control select2-single-placeholder">
+                                                            <option value="" >--निवडा--</option>
                                                             <?php
                                                             if (mysqli_num_rows($tapOwner) > 0) {
                                                                 while ($tapOwners = mysqli_fetch_assoc($tapOwner)) {
