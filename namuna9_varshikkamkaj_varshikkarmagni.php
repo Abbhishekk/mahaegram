@@ -218,6 +218,20 @@ if (mysqli_num_rows($periods) == 0) {
                                             id="arogya_kar_ekun_rakkam">
                                     </div>
                                 </div>
+                                <div class="col-md-3 mb-2">
+                                    <div class="p-3 shadow-sm bg-white rounded">
+                                        <h6 class="text-primary fw-bold">सफाई कर </h6>
+                                        <label>मागील बाकी</label>
+                                        <input type="text" class="form-control mb-1" name="safai_kar_magil_baki"
+                                            id="safai_kar_magil_baki">
+                                        <label>चालू कर</label>
+                                        <input type="text" class="form-control mb-1" readonly
+                                            name="safai_kar_chalu_kar" id="safai_kar_chalu_kar">
+                                        <label>एकूण रक्कम</label>
+                                        <input type="text" class="form-control" readonly name="safai_kar_ekun_rakkam"
+                                            id="safai_kar_ekun_rakkam">
+                                    </div>
+                                </div>
 
                                 <div class="col-md-3 mb-2">
                                     <div class="p-3 shadow-sm bg-white rounded">
@@ -318,6 +332,7 @@ if (mysqli_num_rows($periods) == 0) {
                                                 <th>दिवाबत्ती कर</th>
                                                 <th>आरोग्य कर</th>
                                                 <th>सार्वजनिक पाणीपट्टी</th>
+                                                <th>सफाई कर</th>
                                                 <th>पडसर कर</th>
                                                 <th>दंड</th>
                                                 <th>नोटीस-सूट (-)रक्कम</th>
@@ -342,6 +357,10 @@ if (mysqli_num_rows($periods) == 0) {
                                     <div class="col-md-2 m-2">
                                         <input type="text" class="form-control" name="divabatti_kar" id="divabatti_kar"
                                             placeholder="दिवाबत्ती कर">
+                                    </div>
+                                    <div class="col-md-2 m-2">
+                                        <input type="text" class="form-control" name="safai_kar" id="safai_kar"
+                                            placeholder="सफाई कर">
                                     </div>
                                     <div class="col-md-2 m-2">
                                         <input type="text" class="form-control" name="arogy_kar" id="arogy_kar"
@@ -398,6 +417,7 @@ if (mysqli_num_rows($periods) == 0) {
                                                 <th>दिवाबत्ती कर</th>
                                                 <th>आरोग्य कर</th>
                                                 <th>सार्वजनिक पाणीपट्टी</th>
+                                                <th>सफाई कर</th>
                                                 <th>पडसर कर</th>
                                                 <th>दंड</th>
                                                 <th>नोटीस-सूट (-)रक्कम</th>
@@ -422,6 +442,7 @@ if (mysqli_num_rows($periods) == 0) {
                                                                 <td>{$row['light_tax']}</td>
                                                                 <td>{$row['health_tax']}</td>
                                                                 <td>{$row['water_tax']}</td>
+                                                                <td>{$row['safai_tax']}</td>
                                                                 <td>{$row['padsar_tax']}</td>
                                                                 <td>{$row['fine']}</td>
                                                                 <td>{$row['notice_fee']} - {$row['discount']}</td>
@@ -518,6 +539,7 @@ if (mysqli_num_rows($periods) == 0) {
                         document.getElementById('divabatti_kar_magil_baki').value = data.previous_taxes.light ||
                             '0';
                         document.getElementById('arogya_kar_magil_baki').value = data.previous_taxes.health || '0';
+                        document.getElementById('safai_kar_magil_baki').value = data.previous_taxes.safai || '0';
                         document.getElementById('sarvajanik_panipatty_magil_baki').value = data.previous_taxes
                             .water || '0';
                         document.getElementById('padsar_kar_magil_baki').value = data.previous_taxes.padsar || '0';
@@ -530,6 +552,7 @@ if (mysqli_num_rows($periods) == 0) {
                             '0';
                         document.getElementById('divabatti_kar_chalu_kar').value = data.light_tax || '0';
                         document.getElementById('arogya_kar_chalu_kar').value = data.health_tax || '0';
+                        document.getElementById('safai_kar_chalu_kar').value = data.safai_tax || '0';
                         document.getElementById('sarvajanik_panipatty_chalu_kar').value = data.water_tax ||
                             '0';
                         document.getElementById('padsar_kar_chalu_kar').value = data.padsar_tax || '0';
@@ -562,6 +585,12 @@ if (mysqli_num_rows($periods) == 0) {
                     document.getElementById('arogya_kar_ekun_rakkam').value = (healthPrev + healthCurrent).toFixed(
                         2);
 
+                    // Health tax
+                    const safaiPrev = parseFloat(document.getElementById('safai_kar_magil_baki').value) || 0;
+                    const safaiCurrent = parseFloat(document.getElementById('safai_kar_chalu_kar').value) || 0;
+                    document.getElementById('safai_kar_ekun_rakkam').value = (safaiPrev + safaiCurrent).toFixed(
+                        2);
+
                     // Water tax
                     const waterPrev = parseFloat(document.getElementById('sarvajanik_panipatty_magil_baki')
                         .value) || 0;
@@ -586,8 +615,8 @@ if (mysqli_num_rows($periods) == 0) {
                     const discount = parseFloat(document.getElementById('suit_rakkam').value) || 0;
 
                     // Calculate grand totals
-                    const totalPrev = buildingPrev + lightPrev + healthPrev + waterPrev + padsarPrev + finePrev;
-                    const totalCurrent = buildingCurrent + lightCurrent + healthCurrent + waterCurrent +
+                    const totalPrev = buildingPrev + lightPrev + healthPrev + waterPrev + padsarPrev + finePrev + safaiPrev;
+                    const totalCurrent = buildingCurrent + lightCurrent + healthCurrent + waterCurrent + safaiCurrent +
                         padsarCurrent + fineCurrent;
                     const totalAmount = totalPrev + totalCurrent - discount;
 
@@ -634,6 +663,11 @@ if (mysqli_num_rows($periods) == 0) {
                             current: document.getElementById('arogya_kar_chalu_kar').value,
                             total: document.getElementById('arogya_kar_ekun_rakkam').value
                         },
+                        safai_tax: {
+                            previous: document.getElementById('safai_kar_magil_baki').value,
+                            current: document.getElementById('safai_kar_chalu_kar').value,
+                            total: document.getElementById('safai_kar_ekun_rakkam').value
+                        },
                         water_tax: {
                             previous: document.getElementById('sarvajanik_panipatty_magil_baki').value,
                             current: document.getElementById('sarvajanik_panipatty_chalu_kar').value,
@@ -668,6 +702,7 @@ if (mysqli_num_rows($periods) == 0) {
                 <td>${formData.light_tax.total}</td>
                 <td>${formData.health_tax.total}</td>
                 <td>${formData.water_tax.total}</td>
+                <td>${formData.safai_tax.total}</td>
                 <td>${formData.padsar_tax.total}</td>
                 <td>${formData.fine.total}</td>
                 <td>${formData.notice_fee}</td>
@@ -679,6 +714,7 @@ if (mysqli_num_rows($periods) == 0) {
                     document.getElementById('imarat_kar').value = formData.building_tax.current;
                     document.getElementById('divabatti_kar').value = formData.light_tax.current;
                     document.getElementById('arogy_kar').value = formData.health_tax.current;
+                    document.getElementById('safai_kar').value = formData.safai_tax.current;
                     document.getElementById('samany_panni').value = formData.water_tax.current;
                     document.getElementById('padsar_kar').value = formData.padsar_tax.current;
                     document.getElementById('dand_rakkam').value = formData.fine.current;
@@ -687,7 +723,7 @@ if (mysqli_num_rows($periods) == 0) {
                     document.getElementById('ekun_rakkam_new').value = formData.grand_total;
                 });
 
-                $("#imarat_kar, #divabatti_kar, #arogy_kar, #samany_panni, #padsar_kar, #dand_rakkam, #notis_fi, #sut_rakkam, #ekun_rakkam_new")
+                $("#imarat_kar, #divabatti_kar, #safai_tax ,#arogy_kar, #samany_panni, #padsar_kar, #dand_rakkam, #notis_fi, #sut_rakkam, #ekun_rakkam_new")
                     .on('change', function() {
                         console.log("Tax inputs changed");
 
@@ -696,6 +732,7 @@ if (mysqli_num_rows($periods) == 0) {
                             (parseFloat($("#imarat_kar").val() || 0) +
                                 parseFloat($("#divabatti_kar").val() || 0) +
                                 parseFloat($("#arogy_kar").val() || 0) +
+                                parseFloat($("#safai_kar").val() || 0) +
                                 parseFloat($("#samany_panni").val() || 0) +
                                 parseFloat($("#padsar_kar").val() || 0) +
                                 parseFloat($("#dand_rakkam").val() || 0) -
@@ -728,6 +765,10 @@ if (mysqli_num_rows($periods) == 0) {
                         previous_remaining_health_tax: document.getElementById('arogya_kar_magil_baki')
                             .value || 0,
                         current_health_tax: document.getElementById('arogya_kar_chalu_kar').value || 0,
+                        safai_tax: document.getElementById('safai_kar').value || 0,
+                        previous_remaining_safai_tax: document.getElementById('safai_kar_magil_baki')
+                            .value || 0,
+                        current_safai_tax: document.getElementById('safai_kar_chalu_kar').value || 0,
                         water_tax: document.getElementById('samany_panni').value || 0,
                         previous_remaining_water_tax: document.getElementById(
                             'sarvajanik_panipatty_magil_baki').value || 0,
@@ -799,6 +840,13 @@ if (mysqli_num_rows($periods) == 0) {
                     document.getElementById('arogya_kar_ekun_rakkam').value = healthTotal.toFixed(2);
                     document.getElementById('arogy_kar').value = healthTotal.toFixed(2);
 
+                    // Safai tax section
+                    const safaiPrev = parseFloat(document.getElementById('safai_kar_magil_baki').value) || 0;
+                    const safaiCurrent = parseFloat(document.getElementById('safai_kar_chalu_kar').value) || 0;
+                    const safaiTotal = safaiPrev + safaiCurrent;
+                    document.getElementById('safai_kar_ekun_rakkam').value = safaiTotal.toFixed(2);
+                    document.getElementById('safai_kar').value = safaiTotal.toFixed(2);
+
                     // Water tax section
                     const waterPrev = parseFloat(document.getElementById('sarvajanik_panipatty_magil_baki')
                         .value) || 0;
@@ -844,6 +892,7 @@ if (mysqli_num_rows($periods) == 0) {
                 const taxInputs = [
                     'imarativariil_magil_kar', 'imarativariil_chalu_kar',
                     'divabatti_kar_magil_baki', 'divabatti_kar_chalu_kar',
+                    'safai_kar_magil_baki', 'safai_kar_chalu_kar',
                     'arogya_kar_magil_baki', 'arogya_kar_chalu_kar',
                     'sarvajanik_panipatty_magil_baki', 'sarvajanik_panipatty_chalu_kar',
                     'padsar_kar_magil_baki', 'padsar_kar_chalu_kar',
@@ -857,7 +906,7 @@ if (mysqli_num_rows($periods) == 0) {
 
                 // Also add listeners to the individual tax inputs at the bottom
                 const bottomTaxInputs = [
-                    'imarat_kar', 'divabatti_kar', 'arogy_kar',
+                    'imarat_kar', 'divabatti_kar', 'safai_kar' ,'arogy_kar',
                     'samany_panni', 'padsar_kar', 'dand_rakkam',
                     'notis_fi', 'sut_rakkam'
                 ];
@@ -871,10 +920,16 @@ if (mysqli_num_rows($periods) == 0) {
                         } else if (inputId === 'divabatti_kar') {
                             document.getElementById('divabatti_kar_chalu_kar').value = this.value ||
                                 '0';
-                        } else if (inputId === 'arogy_kar') {
+                        } 
+                        else if (inputId === 'arogy_kar') {
                             document.getElementById('arogya_kar_chalu_kar').value = this.value ||
                                 '0';
-                        } else if (inputId === 'samany_panni') {
+                        } 
+                        else if (inputId === 'safai_kar') {
+                            document.getElementById('safai_kar_chalu_kar').value = this.value ||
+                                '0';
+                        } 
+                        else if (inputId === 'samany_panni') {
                             document.getElementById('sarvajanik_panipatty_chalu_kar').value = this
                                 .value || '0';
                         } else if (inputId === 'padsar_kar') {

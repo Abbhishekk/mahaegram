@@ -29,7 +29,6 @@ $total_current_mangani = 0;
 $total_previous_vasul = 0;
 $total_current_vasul = 0;
 $total_balance = 0;
-
 // Calculate totals if data exists
 if (!empty($data)) {
     foreach ($data as $row) {
@@ -40,6 +39,7 @@ if (!empty($data)) {
         $total_balance += (($row['previous_mangani_total_tax'] ?? 0) + ($row['current_mangani_total_tax'] ?? 0)) -
             (($row['previous_vasul_total_tax'] ?? 0) + ($row['current_vasul_total_tax'] ?? 0));
     }
+
 }
 $rawResult = $data; // assuming $result is your mysqli_result
 $result = [];
@@ -180,9 +180,9 @@ ob_start();
                 <th rowspan="2" colspan="4">मालमत्ता धारकाचे नाव </th>
                 <th rowspan="2" colspan="6">कर देणाऱ्याचे नाव </th>
 
-                <th colspan="9">मागणी </th>
+                <th colspan="10">मागणी </th>
                 <th colspan="2" rowspan="2">बुक क्र. <br>पावती क्र. <br>पावती दिनांक </th>
-                <th colspan="10">वसूल</th>
+                <th colspan="11">वसूल</th>
                 <th rowspan="2">बाकी </th>
 
             </tr>
@@ -190,6 +190,7 @@ ob_start();
                 <th>घरपट्टी कर </th>
                 <th>आरोग्य कर </th>
                 <th>दिवाबत्ती कर</th>
+                <th>सफाई कर</th>
                 <th>पाणीपट्टी कर</th>
                 <th>पडसर जमीन </th>
                 <th>दंड</th>
@@ -197,7 +198,9 @@ ob_start();
                 <th colspan="2">एकूण मागणी </th>
                 <th>घरपट्टी कर </th>
                 <th>आरोग्य कर </th>
+                
                 <th>दिवाबत्ती कर</th>
+                <th>सफाई कर</th>
                 <th>पाणीपट्टी कर</th>
                 <th>पडसर जमीन </th>
                 <th>दंड</th>
@@ -217,6 +220,7 @@ ob_start();
                         'building' => 0,
                         'health' => 0,
                         'light' => 0,
+                        'safai' => 0,
                         'water' => 0,
                         'padsar' => 0,
                         'fine' => 0,
@@ -227,6 +231,7 @@ ob_start();
                         'building' => 0,
                         'health' => 0,
                         'light' => 0,
+                        'safai' => 0,
                         'water' => 0,
                         'padsar' => 0,
                         'fine' => 0,
@@ -237,6 +242,7 @@ ob_start();
                         'building' => 0,
                         'health' => 0,
                         'light' => 0,
+                        'safai' => 0,
                         'water' => 0,
                         'padsar' => 0,
                         'fine' => 0,
@@ -247,6 +253,7 @@ ob_start();
                     'curr_vasul' => [
                         'building' => 0,
                         'health' => 0,
+                        'safai' => 0,
                         'light' => 0,
                         'water' => 0,
                         'padsar' => 0,
@@ -271,6 +278,7 @@ ob_start();
                         <td><?= htmlspecialchars($row['previous_mangani_building_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['previous_mangani_health_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['previous_mangani_divabatti_tax'] ?? 0) ?></td>
+                        <td><?= htmlspecialchars($row['previous_mangani_safai_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['previous_mangani_panniyojana_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['previous_mangani_padsar_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['previous_mangani_dand_tax'] ?? 0) ?></td>
@@ -287,6 +295,7 @@ ob_start();
                         <td><?= htmlspecialchars($row['previous_vasul_building_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['previous_vasul_health_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['previous_vasul_divabatti_tax'] ?? 0) ?></td>
+                        <td><?= htmlspecialchars($row['previous_vasul_safai_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['previous_vasul_panniyojana_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['previous_vasul_padsar_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['previous_vasul_dand_tax'] ?? 0) ?></td>
@@ -305,6 +314,7 @@ ob_start();
                         <td><?= htmlspecialchars($row['current_mangani_building_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['current_mangani_health_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['current_mangani_divabatti_tax'] ?? 0) ?></td>
+                        <td><?= htmlspecialchars($row['current_mangani_safai_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['current_mangani_panniyojana_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['current_mangani_padsar_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['current_mangani_dand_tax'] ?? 0) ?></td>
@@ -315,6 +325,7 @@ ob_start();
                         <td><?= htmlspecialchars($row['current_vasul_building_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['current_vasul_health_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['current_vasul_divabatti_tax'] ?? 0) ?></td>
+                        <td><?= htmlspecialchars($row['current_vasul_safai_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['current_vasul_panniyojana_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['current_vasul_padsar_tax'] ?? 0) ?></td>
                         <td><?= htmlspecialchars($row['current_vasul_dand_tax'] ?? 0) ?></td>
@@ -331,6 +342,8 @@ ob_start();
                         <td><?= htmlspecialchars(($row['previous_mangani_health_tax'] ?? 0) + ($row['current_mangani_health_tax'] ?? 0)) ?>
                         </td>
                         <td><?= htmlspecialchars(($row['previous_mangani_divabatti_tax'] ?? 0) + ($row['current_mangani_divabatti_tax'] ?? 0)) ?>
+                        </td>
+                        <td><?= htmlspecialchars(($row['previous_mangani_safai_tax'] ?? 0) + ($row['current_mangani_safai_tax'] ?? 0)) ?>
                         </td>
                         <td><?= htmlspecialchars(($row['previous_mangani_panniyojana_tax'] ?? 0) + ($row['current_mangani_panniyojana_tax'] ?? 0)) ?>
                         </td>
@@ -349,6 +362,8 @@ ob_start();
                         <td><?= htmlspecialchars(($row['previous_vasul_health_tax'] ?? 0) + ($row['current_vasul_health_tax'] ?? 0)) ?>
                         </td>
                         <td><?= htmlspecialchars(($row['previous_vasul_divabatti_tax'] ?? 0) + ($row['current_vasul_divabatti_tax'] ?? 0)) ?>
+                        </td>
+                        <td><?= htmlspecialchars(($row['previous_vasul_safai_tax'] ?? 0) + ($row['current_vasul_safai_tax'] ?? 0)) ?>
                         </td>
                         <td><?= htmlspecialchars(($row['previous_vasul_panniyojana_tax'] ?? 0) + ($row['current_vasul_panniyojana_tax'] ?? 0)) ?>
                         </td>
@@ -403,6 +418,7 @@ ob_start();
                 $totals = [
                     'building' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
                     'health' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
+                    'safai' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
                     'light' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
                     'water' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
                     'padsar' => ['prev_demand' => 0, 'curr_demand' => 0, 'prev_collect' => 0, 'curr_collect' => 0],
@@ -421,6 +437,11 @@ ob_start();
                     $totals['health']['curr_demand'] += $row['current_mangani_health_tax'] ?? 0;
                     $totals['health']['prev_collect'] += $row['previous_vasul_health_tax'] ?? 0;
                     $totals['health']['curr_collect'] += $row['current_vasul_health_tax'] ?? 0;
+
+                    $totals['safai']['prev_demand'] += $row['previous_mangani_safai_tax'] ?? 0;
+                    $totals['safai']['curr_demand'] += $row['current_mangani_safai_tax'] ?? 0;
+                    $totals['safai']['prev_collect'] += $row['previous_vasul_safai_tax'] ?? 0;
+                    $totals['safai']['curr_collect'] += $row['current_vasul_safai_tax'] ?? 0;
 
                     $totals['light']['prev_demand'] += $row['previous_mangani_divabatti_tax'] ?? 0;
                     $totals['light']['curr_demand'] += $row['current_mangani_divabatti_tax'] ?? 0;
@@ -513,6 +534,21 @@ ob_start();
                     <td><?= $totals['light']['prev_demand'] - $totals['light']['prev_collect'] ?></td>
                     <td><?= $totals['light']['curr_demand'] - $totals['light']['curr_collect'] ?></td>
                     <td><?= ($totals['light']['prev_demand'] + $totals['light']['curr_demand']) - ($totals['light']['prev_collect'] + $totals['light']['curr_collect']) ?>
+                    </td>
+                </tr>
+
+                <!-- Safai Tax -->
+                <tr>
+                    <td>सफाई कर</td>
+                    <td><?= $totals['safai']['prev_demand'] ?></td>
+                    <td><?= $totals['safai']['curr_demand'] ?></td>
+                    <td><?= $totals['safai']['prev_demand'] + $totals['safai']['curr_demand'] ?></td>
+                    <td><?= $totals['safai']['prev_collect'] ?></td>
+                    <td><?= $totals['safai']['curr_collect'] ?></td>
+                    <td><?= $totals['safai']['prev_collect'] + $totals['safai']['curr_collect'] ?></td>
+                    <td><?= $totals['safai']['prev_demand'] - $totals['safai']['prev_collect'] ?></td>
+                    <td><?= $totals['safai']['curr_demand'] - $totals['safai']['curr_collect'] ?></td>
+                    <td><?= ($totals['safai']['prev_demand'] + $totals['safai']['curr_demand']) - ($totals['safai']['prev_collect'] + $totals['safai']['curr_collect']) ?>
                     </td>
                 </tr>
 

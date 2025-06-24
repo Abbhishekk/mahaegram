@@ -15,13 +15,16 @@ if (isset($_POST['add'])) {
     $decisionNo = $_POST['descisionNo'];
     $isHealthTaxChecked = isset($_POST['healthTax']) ? 1 : 0;
     $isLightTaxChecked = isset($_POST['lightTax']) ? 1 : 0;
+    $isSafaiTaxChecked = isset($_POST['safaiTax']) ? 1 : 0;
+    print_r($_POST);
     $health = $_POST['health'];
 $divabatti = $_POST['divabatti'];
+$safai = $_POST['safai'];
 
 $merged = [];
 foreach ($health as $key => $healthRow) {
     $divabattiRow = $divabatti[$key] ?? [];
-
+    $safaiRow = $safai[$key] ?? [];
     // If health tax is checked, zero out all health-related values
     if ($isHealthTaxChecked) {
         $healthRow['kiman_rate'] = 0;
@@ -36,6 +39,14 @@ foreach ($health as $key => $healthRow) {
         $divabattiRow['tharabaila_rate'] = 0;
     }
 
+    if($isSafaiTaxChecked){
+        $safaiRow['safai_kiman_rate'] = 0;
+        $safaiRow['safai_kamal_rate'] = 0;
+        $safaiRow['safai_tharabaila_rate'] = 0;
+    }
+
+    
+
     $merged[] = [
         'id' => $key,
         'health_kiman_rate' => $healthRow['kiman_rate'] ?? 0,
@@ -44,6 +55,9 @@ foreach ($health as $key => $healthRow) {
         'divabatti_kiman_rate' => $divabattiRow['kiman_rate'] ?? 0,
         'divabatti_kamal_rate' => $divabattiRow['kamal_rate'] ?? 0,
         'divabatti_tharabaila_rate' => $divabattiRow['tharabaila_rate'] ?? 0,
+        'safai_kiman_rate' => $safaiRow['kiman_rate'] ?? 0,
+        'safai_kamal_rate' => $safaiRow['kamal_rate'] ?? 0,
+        'safai_tharabaila_rate' => $safaiRow['tharabaila_rate'] ?? 0
     ];
 }
 
@@ -80,7 +94,7 @@ print_r($merged);
                    
                     try {
                         //code...
-                        $update= $fun->updateTaxInfo($row['id'], $row['health_kiman_rate'], $row['health_kamal_rate'], $row['health_tharabaila_rate'], $row['divabatti_kiman_rate'], $row['divabatti_kamal_rate'], $row['divabatti_tharabaila_rate'],$decisionNo);
+                        $update= $fun->updateTaxInfo($row['id'], $row['health_kiman_rate'], $row['health_kamal_rate'], $row['health_tharabaila_rate'], $row['divabatti_kiman_rate'], $row['divabatti_kamal_rate'], $row['divabatti_tharabaila_rate'], $row['safai_kiman_rate'], $row['safai_kamal_rate'], $row['safai_tharabaila_rate'],$decisionNo);
                     } catch (mysqli_sql_exception $e) {
                         //throw $th;
                         handleDatabaseError($e);

@@ -270,7 +270,7 @@ $total_tax_amount = 0;
                         <td colspan="2"><?= htmlspecialchars($property['property_use']) ?></td>
                         <td colspan="2"><?= htmlspecialchars($property['construction_year'] ?? '') ?></td>
                         <td colspan="2"><?= htmlspecialchars($property['areaInMt'] . ' / ' . $property['areaInFoot']) ?></td>
-                        <td><?= htmlspecialchars($property['areaInFoot'] ?? '') ?></td>
+                        <td><?= htmlspecialchars($property['yearly_tax'] ?? '') ?></td>
                         <td><?= htmlspecialchars($property['building_rate'] ?? '') ?></td>
                         <td><?= htmlspecialchars($property['construction_tax']) ?></td>
                         <td class=""><?= htmlspecialchars($property['ghasara_tax']) ?></td>

@@ -766,7 +766,7 @@ class Fun
         return $result;
     }
 
-    public function updateTaxInfo($id, $arogya_kiman_rate, $arogya_kamal_rate, $arogya_prap_tharabaila_rate, $divabatti_kiman_rate, $divabatti_kamal_rate, $divabatti_prap_tharabaila_rate, $decision_no)
+    public function updateTaxInfo($id, $arogya_kiman_rate, $arogya_kamal_rate, $arogya_prap_tharabaila_rate, $divabatti_kiman_rate, $divabatti_kamal_rate, $divabatti_prap_tharabaila_rate, $safai_kiman_rate, $safai_kamal_rate, $safai_prap_tharabaila_rate ,$decision_no)
     {
         $query = "UPDATE `tax_info` SET  
             `arogya_kiman_rate`='$arogya_kiman_rate', 
@@ -775,6 +775,9 @@ class Fun
             `divabatti_kiman_rate`='$divabatti_kiman_rate', 
             `divabatti_kamal_rate`='$divabatti_kamal_rate', 
             `divabatti_prap_tharabaila_rate`='$divabatti_prap_tharabaila_rate',
+            `safai_kiman_rate`='$safai_kiman_rate',
+            `safai_kamal_rate`='$safai_kamal_rate',
+            `safai_prap_tharabaila_rate`='$safai_prap_tharabaila_rate',
             `tharava_no`='$decision_no', 
             `status`='0' 
             WHERE `id` = '$id'";
@@ -3921,13 +3924,13 @@ class Fun
         $sql = "INSERT INTO property_verifications 
             (formula, village_code, period_id, malmatta_id, ward_no, owner_name, 
              road_name, group_no, occupant_name, previous_tax, building_tax, 
-             light_tax, health_tax, water_tax, padsar_tax, capital_value, 
+             light_tax, health_tax, water_tax, safai_tax, padsar_tax, capital_value, 
              total_tax, discount, final_tax, verification_date, district_code) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param(
-            "ssiisssssddddddddddss",
+            "ssiisssssdddddddddddss",
             $data['formula'],
             $data['village_code'],
             $data['period_id'],
@@ -3942,6 +3945,7 @@ class Fun
             $data['light_tax'],
             $data['health_tax'],
             $data['water_tax'],
+            $data['safai_tax'],
             $data['padsar_tax'],
             $data['capital_value'],
             $data['total_tax'],
@@ -3974,6 +3978,7 @@ class Fun
             light_tax = ?,
             health_tax = ?,
             water_tax = ?,
+            safai_tax = ?,
             padsar_tax = ?,
             capital_value = ?,
             total_tax = ?,
@@ -3984,7 +3989,7 @@ class Fun
 
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param(
-            "ssiisssssddddddddddssi",
+            "ssiisssssdddddddddddssi",
             $data['formula'],
             $data['village_code'],
             $data['period_id'],
@@ -3999,6 +4004,7 @@ class Fun
             $data['light_tax'],
             $data['health_tax'],
             $data['water_tax'],
+            $data['safai_tax'],
             $data['padsar_tax'],
             $data['capital_value'],
             $data['total_tax'],
@@ -4008,7 +4014,7 @@ class Fun
             $id,
             $data['district_code']
         );
-
+       
         return $stmt->execute();
     }
 
@@ -4709,6 +4715,13 @@ class Fun
     IFNULL(kr.current_vasul_divabatti_tax, 0) AS "current_vasul_divabatti_tax",
     IFNULL(kr.total_divabatti_tax, 0) AS "total_vasul_divabatti_tax",
 
+    IFNULL(kr.previous_mangani_safai_tax, td.previous_safai_tax) AS "previous_mangani_safai_tax",
+    IFNULL(kr.current_mangani_safai_tax, td.current_safai_tax) AS "current_mangani_safai_tax",
+    IFNULL(kr.total_mangani_safai_tax, td.safai_tax) AS "total_mangani_safai_tax",
+    IFNULL(kr.previous_vasul_safai_tax, 0) AS "previous_vasul_safai_tax",
+    IFNULL(kr.current_vasul_safai_tax, 0) AS "current_vasul_safai_tax",
+    IFNULL(kr.total_safai_tax, 0) AS "total_vasul_safai_tax",
+
     IFNULL(kr.previous_mangani_panniyojana_tax, td.previous_water_tax) AS "previous_mangani_panniyojana_tax",
     IFNULL(kr.current_mangani_panniyojana_tax, td.current_water_tax) AS "current_mangani_panniyojana_tax",
     IFNULL(kr.total_mangani_panniyojana_tax, td.water_tax) AS "total_mangani_panniyojana_tax",
@@ -4741,6 +4754,7 @@ class Fun
         IFNULL(kr.previous_mangani_building_tax, td.previous_building_tax) +
         IFNULL(kr.previous_mangani_health_tax, td.previous_health_tax) +
         IFNULL(kr.previous_mangani_divabatti_tax, td.previous_light_tax) +
+        IFNULL(kr.previous_mangani_safai_tax, td.previous_safai_tax) +
         IFNULL(kr.previous_mangani_panniyojana_tax, td.previous_water_tax) +
         IFNULL(kr.previous_mangani_padsar_tax, td.previous_padsar_tax) +
         IFNULL(kr.previous_mangani_dand_tax, td.previous_fine)
@@ -4750,6 +4764,7 @@ class Fun
         IFNULL(kr.current_mangani_building_tax, td.current_building_tax) +
         IFNULL(kr.current_mangani_health_tax, td.current_health_tax) +
         IFNULL(kr.current_mangani_divabatti_tax, td.current_light_tax) +
+        IFNULL(kr.current_mangani_safai_tax, td.current_safai_tax) +
         IFNULL(kr.current_mangani_panniyojana_tax, td.current_water_tax) +
         IFNULL(kr.current_mangani_padsar_tax, td.current_padsar_tax) +
         IFNULL(kr.current_mangani_dand_tax, td.current_fine)
@@ -4760,6 +4775,7 @@ class Fun
         IFNULL(kr.previous_mangani_health_tax, td.previous_health_tax) +
         IFNULL(kr.previous_mangani_divabatti_tax, td.previous_light_tax) +
         IFNULL(kr.previous_mangani_panniyojana_tax, td.previous_water_tax) +
+        IFNULL(kr.previous_mangani_safai_tax, td.previous_safai_tax) +
         IFNULL(kr.previous_mangani_padsar_tax, td.previous_padsar_tax) +
         IFNULL(kr.previous_mangani_dand_tax, td.previous_fine) +
         IFNULL(kr.current_mangani_building_tax, td.current_building_tax) +
@@ -4773,6 +4789,7 @@ class Fun
     (
         IFNULL(kr.previous_vasul_building_tax, 0) +
         IFNULL(kr.previous_vasul_health_tax, 0) +
+        IFNULL(kr.previous_vasul_safai_tax, 0) +
         IFNULL(kr.previous_vasul_divabatti_tax, 0) +
         IFNULL(kr.previous_vasul_panniyojana_tax, 0) +
         IFNULL(kr.previous_vasul_padsar_tax, 0) +
@@ -4782,6 +4799,7 @@ class Fun
     (
         IFNULL(kr.current_vasul_building_tax, 0) +
         IFNULL(kr.current_vasul_health_tax, 0) +
+        IFNULL(kr.current_vasul_safai_tax, 0) +
         IFNULL(kr.current_vasul_divabatti_tax, 0) +
         IFNULL(kr.current_vasul_panniyojana_tax, 0) +
         IFNULL(kr.current_vasul_padsar_tax, 0) +
@@ -4791,12 +4809,14 @@ class Fun
     (
         IFNULL(kr.previous_vasul_building_tax, 0) +
         IFNULL(kr.previous_vasul_health_tax, 0) +
+        IFNULL(kr.previous_vasul_safai_tax, 0) +
         IFNULL(kr.previous_vasul_divabatti_tax, 0) +
         IFNULL(kr.previous_vasul_panniyojana_tax, 0) +
         IFNULL(kr.previous_vasul_padsar_tax, 0) +
         IFNULL(kr.previous_vasul_dand_tax, 0) +
         IFNULL(kr.current_vasul_building_tax, 0) +
         IFNULL(kr.current_vasul_health_tax, 0) +
+        IFNULL(kr.current_vasul_safai_tax, 0) +
         IFNULL(kr.current_vasul_divabatti_tax, 0) +
         IFNULL(kr.current_vasul_panniyojana_tax, 0) +
         IFNULL(kr.current_vasul_padsar_tax, 0) +

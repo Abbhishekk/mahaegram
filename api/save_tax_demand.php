@@ -28,7 +28,7 @@ try {
     // Validate required fields
     $requiredFields = [
         'ward', 'malmatta_id', 'owner_name', 'financial_year',
-        'building_tax', 'light_tax', 'health_tax', 'water_tax',
+        'building_tax', 'light_tax', 'health_tax', 'water_tax', 'safai_tax',
         'padsar_tax', 'total_amount'
     ];
     
@@ -57,6 +57,9 @@ try {
         'water_tax' => (float)$input['water_tax'],
         'previous_water_tax' => (float)($input['previous_remaining_water_tax'] ?? 0),
         'current_water_tax' => (float)($input['current_water_tax'] ?? 0),
+        'safai_tax' => (float)$input['safai_tax'],
+        'previous_safai_tax' => (float)($input['previous_remaining_safai_tax'] ?? 0),
+        'current_safai_tax' => (float)($input['current_safai_tax'] ?? 0),
         'padsar_tax' => (float)$input['padsar_tax'],
         'previous_padsar_tax' => (float)($input['previous_remaining_padsar_tax'] ?? 0),
         'current_padsar_tax' => (float)($input['current_padsar_tax'] ?? 0),

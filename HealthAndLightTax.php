@@ -13,6 +13,7 @@ $title = "आरोग्य व दिवाबत्ती कर माहि
     $taxInfosArea = $fun->getTaxInfo($_SESSION['district_code']);  
      $taxInfosAarogya = $fun->getTaxInfo($_SESSION['district_code']);
     $taxInfosDivabatti = $fun->getTaxInfo($_SESSION['district_code']);
+    $taxInfosSafai = $fun->getTaxInfo($_SESSION['district_code']);
     $isTharavExists = $fun->isTharavExists($periods['total_period']);
     $getTharavByPeriod = $fun->getTharavByPeriod($periods['total_period']);
     if (mysqli_num_rows($getTharavByPeriod) > 0) {
@@ -110,6 +111,7 @@ if (isset($_SESSION['message'])) {
                                                     <?php echo ($isTharavExists)?"disabled":"" ?> id="descisionNo">
 
                                             </div>
+                                            <div class="col-12 my-3" ></div>
                                             <div class="form-group col-md-2" id="simple-date1">
                                                 <div class="custom-control custom-checkbox">
                                                     <input type="checkbox" class="custom-control-input" id="healthTax"
@@ -125,6 +127,15 @@ if (isset($_SESSION['message'])) {
                                                         <?php echo ($isTharavExists)?"disabled":"" ?> name="lightTax"
                                                         value="lightTax">
                                                     <label class="custom-control-label" for="lightTax">दिवाबत्ती कर
+                                                        नसल्यास</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-2" id="simple-date1">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="safaiTax"
+                                                        <?php echo ($isTharavExists)?"disabled":"" ?> name="safaiTax"
+                                                        value="safaiTax">
+                                                    <label class="custom-control-label" for="safaiTax">सफाई कर
                                                         नसल्यास</label>
                                                 </div>
                                             </div>
@@ -153,7 +164,7 @@ if (isset($_SESSION['message'])) {
                                             </div>
 
                                             <!-- आरोग्य कर -->
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="">
                                                     <h5 class="text-center">आरोग्य कर</h5>
                                                     <div class="row">
@@ -186,7 +197,7 @@ if (isset($_SESSION['message'])) {
                                             </div>
 
                                             <!-- दिवाबत्ती कर -->
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="">
                                                     <h5 class="text-center">दिवाबत्ती कर</h5>
                                                     <div class="row">
@@ -218,7 +229,40 @@ if (isset($_SESSION['message'])) {
 
                                                 </div>
                                             </div>
-                                        </div>
+                                            <!-- सफाई कर -->
+                                            <div class="col-md-3">
+                                                <div class="">
+                                                    <h5 class="text-center">सफाई कर</h5>
+                                                    <div class="row">
+                                                        <div class="col-4"><strong>किमान दर</strong></div>
+                                                        <div class="col-4"><strong>कमाल दर</strong></div>
+                                                        <div class="col-4"><strong>प्रा.पं. ठरवलेला दर</strong></div>
+                                                    </div>
+
+                                                    <?php
+                                                        if(mysqli_num_rows($taxInfosSafai) > 0){
+                                                            $i = 0;
+                                                            while($row = mysqli_fetch_assoc($taxInfosSafai)){
+                                                                $i = $row['id'];
+                                                                echo '<div class="row g-2 mt-2">';
+                                                                echo '<div class="col-4"><input type="text" name="safai['.$i.'][kiman_rate]" class="form-control safaiTax" value="'.$row['safai_kiman_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                                                echo '<div class="col-4"><input type="text" name="safai['.$i.'][kamal_rate]" class="form-control safaiTax" value="'.$row['safai_kamal_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                                                echo '<div class="col-4"><input type="text" name="safai['.$i.'][tharabaila_rate]" class="form-control safaiTax" value="'.$row['safai_prap_tharabaila_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                                                echo '</div>';
+                                                                $i++;
+                                                            }
+                                                        }else{
+                                                            echo '<div class="row g-2 mt-2">';
+                                                            echo '<div class="col-4"><input type="text" class="form-control safaiTax" value=""></div>';
+                                                            echo '<div class="col-4"><input type="text" class="form-control safaiTax" value=""></div>';
+                                                            echo '<div class="col-4"><input type="text" class="form-control safaiTax" value=""></div>';
+                                                            echo '</div>';
+                                                        }
+                                                    ?>
+
+                                                </div>
+                                            </div>
+                                        </div>  
 
                                         <!-- सूचना -->
                                         <p class="my-5 text-center text-danger">
@@ -285,13 +329,15 @@ if (isset($_SESSION['message'])) {
     document.addEventListener("DOMContentLoaded", function() {
         const healthTaxCheckbox = document.getElementById("healthTax");
         const noTaxCheckbox = document.getElementById("lightTax");
+        const noSafaiTaxCheckbox = document.getElementById("safaiTax");
 
         const healthTaxInputs = document.querySelectorAll(".healthTax");
         const incomeTaxInputs = document.querySelectorAll(".incomeTax");
+        const safaiTaxInputs = document.querySelectorAll(".safaiTax");
 
         function toggleTaxInputs() {
             const isHealthChecked = healthTaxCheckbox.checked;
-            const isNoTaxChecked = noTaxCheckbox.checked;
+           
 
             // Health Tax inputs
             if (isHealthChecked) {
@@ -304,7 +350,11 @@ if (isset($_SESSION['message'])) {
                 });
             }
 
-            if (isNoTaxChecked) {
+           
+        }
+        function noTaxToggleInputs(){
+ const isNoTaxChecked = noTaxCheckbox.checked;
+  if (isNoTaxChecked) {
                 incomeTaxInputs.forEach(input => {
                     input.readOnly = true; // Clear the value if checked
                 });
@@ -313,18 +363,23 @@ if (isset($_SESSION['message'])) {
                     input.readOnly = false; // Clear the value if checked
                 });
             }
-            // healthTaxInputs.forEach(input => {
-            //     input.readOnly = isHealthChecked || isNoTaxChecked;
-            // });
-
-            // // Income Tax inputs
-            // incomeTaxInputs.forEach(input => {
-            //     input.readOnly = isNoTaxChecked || isHealthChecked;
-            // });
         }
-
+        
+        function toggleSafaiTaxInputs(){
+            const isNotSafaiChecked = noSafaiTaxCheckbox.checked;
+ if(isNotSafaiChecked){
+                safaiTaxInputs.forEach(input => {
+                    input.readOnly = true; // Clear the value if checked
+                });
+            }else{
+                safaiTaxInputs.forEach(input => {
+                    input.readOnly = false; // Clear the value if checked
+                });
+            }
+        }
         healthTaxCheckbox.addEventListener("change", toggleTaxInputs);
-        noTaxCheckbox.addEventListener("change", toggleTaxInputs);
+        noTaxCheckbox.addEventListener("change", noTaxToggleInputs);
+        noSafaiTaxCheckbox.addEventListener("change", toggleSafaiTaxInputs);
     });
     </script>
 </body>

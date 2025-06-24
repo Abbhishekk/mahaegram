@@ -45,6 +45,7 @@ try {
             'light_tax' => $_POST['light_tax'] ?? 0,
             'health_tax' => $_POST['health_tax'] ?? 0,
             'water_tax' => $_POST['water_tax'] ?? 0,
+            'safai_tax' => $_POST['safai_tax'] ?? 0,
             'padsar_tax' => $_POST['padsar_tax'] ?? 0,
             'capital_value' => $_POST['capital_value'] ?? 0,
             'total_tax' => $_POST['total_tax'] ?? 0,
@@ -53,7 +54,7 @@ try {
             'verification_date' => $_POST['verification_date'] ?? '',
             'district_code' => $_SESSION['district_code']
         ];
-        
+        print_r($data);
         // Validate required fields
         $errors = [];
         if (empty($data['village_code'])) $errors[] = 'गावाचे नाव आवश्यक आहे';

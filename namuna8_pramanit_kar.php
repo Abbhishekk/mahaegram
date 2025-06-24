@@ -208,6 +208,11 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                                     readonly>
                             </div>
                             <div class="col-md-2">
+                                <label class="form-label">सफाई कर</label>
+                                <input type="text" class="form-control" name="safai_tax" id="safai_tax" value="0.00"
+                                    readonly>
+                            </div>
+                            <div class="col-md-2">
                                 <label class="form-label">सामान्य पाणीपुरवठा</label>
                                 <input type="text" class="form-control" id="water_tax" name="water_tax" value="0.00"
                                     readonly>
@@ -358,17 +363,19 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                     document.getElementById('light_tax').value = taxRates.divabatti_prap_tharabaila_rate ||
                         0;
                     document.getElementById('health_tax').value = taxRates.arogya_prap_tharabaila_rate || 0;
+                    document.getElementById('safai_tax').value = taxRates.safai_prap_tharabaila_rate || 0;
                     document.getElementById('water_tax').value = waterTariff.fixed_rate || 0;
                     document.getElementById('padsar_tax').value = info.padsar_total_value || 0;
 
                     // Calculate totals
                     const buildingTax = parseFloat(info.building_total_value) || 0;
                     const lightTax = parseFloat(taxRates.divabatti_prap_tharabaila_rate) || 0;
+                    const safaiTax = parseFloat(taxRates.safai_prap_tharabaila_rate) || 0;
                     const healthTax = parseFloat(taxRates.arogya_prap_tharabaila_rate) || 0;
                     const waterTax = parseFloat(waterTariff.fixed_rate) || 0;
                     const padsarTax = parseFloat(info.padsar_total_value) || 0;
 
-                    const totalTax = buildingTax + lightTax + healthTax + waterTax + padsarTax;
+                    const totalTax = buildingTax + lightTax + healthTax + waterTax + safaiTax + padsarTax;
                     document.getElementById('total_tax').value = totalTax.toFixed(2);
 
                     // Calculate final tax after discount
