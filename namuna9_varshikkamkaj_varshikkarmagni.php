@@ -109,7 +109,7 @@ if (mysqli_num_rows($periods) == 0) {
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label" for="malmatta_id">मालमत्ता क्रमांक</label>
-                                    <select class="form-select form-control" name="malmatta_id" id="malmatta_id">
+                                    <select class="form-select form-control select2-single-placeholder" name="malmatta_id" id="malmatta_id">
                                         <option>--निवडा--</option>
                                         <?php
                                         foreach ($property_verifications as $property) {

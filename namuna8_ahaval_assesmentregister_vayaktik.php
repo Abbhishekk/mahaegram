@@ -83,7 +83,7 @@ $title = "मालमत्ता कर आकारणी";
                                 </div>
                                 <div class="col-md-3 my-2" id="malmatta_no_div">
                                     <label class="form-label fw-bold" for="malmatta_no">मिळकत नंबर</label>
-                                    <select class="form-control form-select border-primary" name="malmatta_no"
+                                    <select class="form-control form-select border-primary select2-single-placeholder" name="malmatta_no"
                                         id="malmatta_no">
                                         <option value="">--निवडा--</option>
                                         <?php if(count($malmatta_propertyVerifications) > 0) {
