@@ -882,9 +882,9 @@ class Fun
         return $result;
     }
 
-    public function addMalmattaDataEntry($period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $other_occupant_name, $remarks, $lgdcode)
+    public function addMalmattaDataEntry($period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $other_occupant_name, $remarks, $lgdcode, $address)
     {
-        $query = "INSERT INTO `malmatta_data_entry`(`period`, `village_name`, `ward_no`, `road_name`, `malmatta_no`, `khasara_no` ,`city_survey_no`, `group_no`, `washroom_available`, `owner_name`, `wife_name`, `occupant_name`,`other_occupant_name` ,`remarks`, `lgdcode`, `panchayat_code`) VALUES ('$period', '$village_name', '$ward_no', '$road_name', '$malmatta_no', '$khasara_no' ,'$city_survey_no', '$group_no', '$washroom_available', '$owner_name', '$wife_name', '$occupant_name', '$other_occupant_name' ,'$remarks', '$lgdcode', '$_SESSION[panchayat_code]')";
+        $query = "INSERT INTO `malmatta_data_entry`(`period`, `village_name`, `ward_no`, `road_name`, `malmatta_no`, `khasara_no` ,`city_survey_no`, `group_no`, `washroom_available`, `owner_name`, `wife_name`, `occupant_name`,`other_occupant_name` ,`remarks`, `lgdcode`, `panchayat_code`,`address`) VALUES ('$period', '$village_name', '$ward_no', '$road_name', '$malmatta_no', '$khasara_no' ,'$city_survey_no', '$group_no', '$washroom_available', '$owner_name', '$wife_name', '$occupant_name', '$other_occupant_name' ,'$remarks', '$lgdcode', '$_SESSION[panchayat_code]','$address')";
         $result = mysqli_query($this->db, $query);
         if ($result) {
             return mysqli_insert_id($this->db);
@@ -3286,9 +3286,9 @@ class Fun
         return $result;
     }
 
-    public function addMalmattaWaterTax($malmatta_id, $water_usage_type, $no_of_taps, $tap_width, $tap_owner_name)
+    public function addMalmattaWaterTax($malmatta_id, $water_usage_type, $no_of_taps, $tap_width, $tap_owner_name, $meter_reading)
     {
-        $query = "INSERT INTO `malmatta_water_tax`(`malmatta_id`, `water_usage_type`, `no_of_taps`, `tap_width`, `tap_owner_name`) VALUES ('$malmatta_id', '$water_usage_type', '$no_of_taps', '$tap_width', '$tap_owner_name')";
+        $query = "INSERT INTO `malmatta_water_tax`(`malmatta_id`, `water_usage_type`, `no_of_taps`, `tap_width`, `tap_owner_name`,`meter_reading`) VALUES ('$malmatta_id', '$water_usage_type', '$no_of_taps', '$tap_width', '$tap_owner_name', '$meter_reading')";
         $result = mysqli_query($this->db, $query);
         return $result;
     }

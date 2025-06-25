@@ -53,7 +53,9 @@ try {
         'drainage_type',
         'tap_numbers',
         'tap_width',
-        'tap_owner_name'
+        'tap_owner_name',
+        'address',
+        'meter_reading'
     ];
 
     foreach ($additionalFields as $field) {
@@ -120,7 +122,8 @@ try {
                 $data['occupant_name'],
                 implode(",", $data['other_occupant_name']),
                 $data['remarks'],
-                $data['lgdcode']
+                $data['lgdcode'],
+                $data['address']
             );
 
             if (!$malmatta_id) {
@@ -161,7 +164,8 @@ try {
             $data['drainage_type'],
             $data['tap_numbers'],
             $data['tap_width'],
-            $data['tap_owner_name']
+            $data['tap_owner_name'],
+            $data['meter_reading'] ?? ''
         );
 
         if (!$water_added) {

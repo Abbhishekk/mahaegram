@@ -366,9 +366,15 @@ if (isset($_GET['edit_id'])) {
                                                             नाही</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-4 mx-auto d-flex align-items-end">
-                                                    <p>( मिळकत माहिती महा ई-ग्राम मोबाईल अँप वरती उपलब्ध होण्यासाठी
-                                                        कृपया मिळकत धारकाचा मोबाईल क्रमांक अचूक नोंद करा.)</p>
+                                                   <div class="form-group col-md-4 mx-auto">
+                                                    <label for="address">Address</label>
+                                                    <textarea name="address" id="address" class="form-control"
+                                                        placeholder="Address"></textarea>
+                                                </div>
+                                             <div class="col-md-4 mx-auto d-flex align-items-end">
+                                                    <p>( मिळकत माहिती ऑनलाइन पोर्टल वरती उपलब्ध होण्यासाठी
+                                                        कृपया
+                                                        मिळकत धारकाचा मोबाईल क्रमांक अचूक नोंद करा.)</p>
                                                 </div>
                                             </div>
 
@@ -589,10 +595,19 @@ if (isset($_GET['edit_id'])) {
                                                                 3/4</option>
                                                         </select>
                                                     </div>
+                                                                                    <div class="form-group col-md-3 mx-auto" id="meter_reading_div" style="display: none;" >
+                                                        <label for="meter_reading">नळ मीटर रीडिंग
+                                                        </label>
+                                                        <input type="number" class="form-control" name="meter_reading"
+                                                            id="meter_reading" aria-describedby="emailHelp"
+                                                            placeholder="नळ मीटर रीडिंग" value="0">
+
+
+                                                    </div>
                                                     <div class="form-group col-md-3 mx-auto">
                                                         <label for="tap_owner_name">नळ धारकाचे नाव</label>
                                                         <select name="tap_owner_name" id="tap_owner_name"
-                                                            class="form-control" <?php echo $isEditMode && !empty($waterTariff) && $waterTariff['water_usage_type'] == "वापर नाही" ? 'disabled' : ''; ?>>
+                                                            class="form-control select2-single-placeholder" <?php echo $isEditMode && !empty($waterTariff) && $waterTariff['water_usage_type'] == "वापर नाही" ? 'disabled' : ''; ?>>
                                                             <option value="" selected>--निवडा--</option>
                                                             <?php
                                                             if (mysqli_num_rows($tapOwner) > 0) {
@@ -1068,10 +1083,23 @@ if (isset($_GET['edit_id'])) {
                             $("#tap_numbers").prop("disabled", true).val('').prop("required", false);
                             $("#tap_width").prop("disabled", true).val('').prop("required", false);
                             $("#tap_owner_name").prop("disabled", true).val('').prop("required", false);
-                        } else {
+                        }else if(selectedValue === "विशेष पाणीपट्टी (मीटर रीडिंग अनुसार)" || selectedValue === "विशेष पाणीपट्टी (मीटर रीडिंग अनुसार) (विशेष)"){
+                $("#meter_reading").prop("disabled", false);
+                $("#meter_reading").prop("required", true);
+                $("#meter_reading_div").show();
+                 $("#tap_numbers").prop("disabled", false).prop("required", true).prop('readonly', false);
+                            $("#tap_width").prop("disabled", false).prop("required", true).prop('readonly', false);
+                            $("#tap_owner_name").prop("disabled", false).prop("required", true).prop('readonly', false);
+            }
+            
+            else {
                             $("#tap_numbers").prop("disabled", false).prop("required", true).prop('readonly', false);
                             $("#tap_width").prop("disabled", false).prop("required", true).prop('readonly', false);
                             $("#tap_owner_name").prop("disabled", false).prop("required", true).prop('readonly', false);
+                            $("#meter_reading").prop("disabled", true);
+               
+                $("#meter_reading").prop("required", false);
+                $("#meter_reading_div").hide();
                         }
                     });
                 });

@@ -323,7 +323,7 @@ if (isset($_GET['edit_id'])) {
                                                     </label>
                                                     <select name="occupant_name" id="occupant_name"
                                                         class="form-control select2-single-placeholder" required>
-                                                        <option value="" >--निवडा--</option>
+                                                        <option value="">--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($occupant_name) > 0) {
                                                             while ($newName = mysqli_fetch_assoc($occupant_name)) {
@@ -394,6 +394,11 @@ if (isset($_GET['edit_id'])) {
                                                         <option value="no">नाही</option>
                                                     </select>
 
+                                                </div>
+                                                <div class="form-group col-md-4 mx-auto">
+                                                    <label for="address">Address</label>
+                                                    <textarea name="address" id="address" class="form-control"
+                                                        placeholder="Address"></textarea>
                                                 </div>
                                                 <div class="col-md-4 mx-auto d-flex align-items-end">
                                                     <p>( मिळकत माहिती ऑनलाइन पोर्टल वरती उपलब्ध होण्यासाठी
@@ -657,6 +662,15 @@ if (isset($_GET['edit_id'])) {
 
 
                                                     </div>
+                                                    <div class="form-group col-md-3 mx-auto" id="meter_reading_div" style="display: none;" >
+                                                        <label for="meter_reading">नळ मीटर रीडिंग
+                                                        </label>
+                                                        <input type="number" class="form-control" name="meter_reading"
+                                                            id="meter_reading" aria-describedby="emailHelp"
+                                                            placeholder="नळ मीटर रीडिंग" value="0">
+
+
+                                                    </div>
                                                     <div class="form-group col-md-3 mx-auto">
                                                         <label for="tap_width">नळ व्यास
 
@@ -676,7 +690,7 @@ if (isset($_GET['edit_id'])) {
                                                         </label>
                                                         <select name="tap_owner_name" id="tap_owner_name"
                                                             class="form-control select2-single-placeholder">
-                                                            <option value="" >--निवडा--</option>
+                                                            <option value="">--निवडा--</option>
                                                             <?php
                                                             if (mysqli_num_rows($tapOwner) > 0) {
                                                                 while ($tapOwners = mysqli_fetch_assoc($tapOwner)) {
@@ -1007,7 +1021,7 @@ if (isset($_GET['edit_id'])) {
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <a href="form_n8.php?edit_id=<?php echo $name['malmatta_id']; ?>" >
+                                                        <a href="form_n8.php?edit_id=<?php echo $name['malmatta_id']; ?>">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                                 fill="currentColor" class="bi bi-pencil-square"
                                                                 viewBox="0 0 16 16">
@@ -1088,13 +1102,23 @@ if (isset($_GET['edit_id'])) {
                 $("#tap_owner_name").val();
                 $("#tap_owner_name").prop("required", false);
 
-            } else {
+            }else if(selectedValue === "विशेष पाणीपट्टी (मीटर रीडिंग अनुसार)" || selectedValue === "विशेष पाणीपट्टी (मीटर रीडिंग अनुसार) (विशेष)"){
+                $("#meter_reading").prop("disabled", false);
+                $("#meter_reading").prop("required", true);
+                $("#meter_reading_div").show();
+            }
+            
+            else {
                 $("#tap_numbers").prop("disabled", false);
                 $("#tap_numbers").prop("required", true);
                 $("#tap_width").prop("disabled", false);
                 $("#tap_width").prop("required", true);
                 $("#tap_owner_name").prop("disabled", false);
                 $("#tap_owner_name").prop("required", true);
+                $("#meter_reading").prop("disabled", true);
+               
+                $("#meter_reading").prop("required", false);
+                $("#meter_reading_div").hide();
             }
         });
 
