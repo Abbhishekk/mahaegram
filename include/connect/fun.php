@@ -1136,8 +1136,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -1304,8 +1304,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -1472,8 +1472,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -1640,8 +1640,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -1808,8 +1808,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -1976,8 +1976,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -2144,8 +2144,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -2312,8 +2312,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -2480,8 +2480,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -2650,8 +2650,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -2820,8 +2820,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -2986,8 +2986,8 @@ class Fun
                 $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -3160,8 +3160,8 @@ class Fun
                 $area = round(($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']), 2);
                 $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
 
-                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]];
-                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]];
+                $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
+                $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
@@ -3392,19 +3392,19 @@ class Fun
 
     public function getMilkatTaxInfoDarMin($lgd_code)
     {
-        $query = "SELECT * FROM `milkat_tax_info` where `district_code` = '$lgd_code' and `dar` = 'min'";
+        $query = "SELECT * FROM `milkat_tax_info` where `district_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]' and `dar` = 'min'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
     public function getMilkatTaxInfoDarMax($lgd_code)
     {
-        $query = "SELECT * FROM `milkat_tax_info` where `district_code` = '$lgd_code' and `dar` = 'max'";
+        $query = "SELECT * FROM `milkat_tax_info` where `district_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]' and `dar` = 'max'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
     public function getMilkatTaxInfoDarCons($lgd_code)
     {
-        $query = "SELECT * FROM `milkat_tax_info` where `district_code` = '$lgd_code' and `dar` = 'construction'";
+        $query = "SELECT * FROM `milkat_tax_info` where `district_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]' and `dar` = 'construction'";
         $result = mysqli_query($this->db, $query);
         if ($result === false) {
             return null;
@@ -3413,14 +3413,14 @@ class Fun
     }
     public function getMilkatTaxInfoDarFixed($lgd_code)
     {
-        $query = "SELECT * FROM `milkat_tax_info` where `district_code` = '$lgd_code' and `dar` = 'fixed'";
+        $query = "SELECT * FROM `milkat_tax_info` where `district_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]' and `dar` = 'fixed'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
-    public function addMilkatTaxInfo($district_code, $dar, $kacche_ghar, $ardha_pakke_ghar, $padsar, $itar_pakke_ghar, $rcc, $manora_type_ghar, $manora_khuli_jaga_sarvasadharan, $manora_khuli_jaga_mnc)
+    public function addMilkatTaxInfo($district_code, $panchayat_code,$dar, $kacche_ghar, $ardha_pakke_ghar, $padsar, $itar_pakke_ghar, $rcc, $manora_type_ghar, $manora_khuli_jaga_sarvasadharan, $manora_khuli_jaga_mnc)
     {
-        $query = "INSERT INTO `milkat_tax_info`(`district_code`, `dar`, `kache_ghar`, `ardha_pakke_ghar`, `padsar`, `itar_pakke_ghar`, `rcc`, `manora_type_ghar`, `manora_khuli_jaga_sarvasadharan`, `manora_khuli_jaga_mnc`) VALUES ('$district_code', '$dar', '$kacche_ghar', '$ardha_pakke_ghar', '$padsar', '$itar_pakke_ghar', '$rcc', '$manora_type_ghar', '$manora_khuli_jaga_sarvasadharan', '$manora_khuli_jaga_mnc')";
+        $query = "INSERT INTO `milkat_tax_info`(`district_code`, `panchayat_code`,`dar`, `kache_ghar`, `ardha_pakke_ghar`, `padsar`, `itar_pakke_ghar`, `rcc`, `manora_type_ghar`, `manora_khuli_jaga_sarvasadharan`, `manora_khuli_jaga_mnc`) VALUES ('$district_code', '$panchayat_code','$dar', '$kacche_ghar', '$ardha_pakke_ghar', '$padsar', '$itar_pakke_ghar', '$rcc', '$manora_type_ghar', '$manora_khuli_jaga_sarvasadharan', '$manora_khuli_jaga_mnc')";
         // $query = "INSERT INTO `milkat_tax_info`(`district_code`, `dar`, `min_rate`, `max_rate`, `fixed_rate`, `construction_rate`) VALUES ('$district_code', '$dar', '$min_rate', '$max_rate', '$fixed_rate', '$construction_rate')";
         $result = mysqli_query($this->db, $query);
         return $result;
@@ -3428,7 +3428,7 @@ class Fun
 
     public function isMilkatTaxInfoExists($district_code, $dar)
     {
-        $query = "SELECT * FROM `milkat_tax_info` WHERE `district_code` = '$district_code' and `dar` = '$dar'";
+        $query = "SELECT * FROM `milkat_tax_info` WHERE `district_code` = '$district_code' and `panchayat_code` = '$_SESSION[panchayat_code]'  and `dar` = '$dar'";
         $result = mysqli_query($this->db, $query);
         return mysqli_num_rows($result) > 0;
     }

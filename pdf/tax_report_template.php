@@ -256,7 +256,7 @@ $total_tax_amount = 0;
                     $total_light_tax += $row['light_tax'] ?? 0;
                     $total_health_tax += $row['health_tax'] ?? 0;
                     $total_water_tax += $row['water_tax'] ?? 0;
-                    $total_padsar_tax += $property['ghasara_tax'] ?? 0;
+                    $total_padsar_tax += $property['property_use'] == "पडसर/खुली जागा" ? $property['construction_tax'] : 0;
                     $total_tax_amount += $total_tax;
 
                     ?>

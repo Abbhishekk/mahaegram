@@ -26,7 +26,6 @@ try {
     $requiredFields = [
         'period' => 'period',
         'revenue_village' => 'revenue_village',
-        'ward_name' => 'ward_name',
         'malmatta_no' => 'malmatta_no',
 
         'owner_name' => 'owner_name',
@@ -55,7 +54,8 @@ try {
         'tap_width',
         'tap_owner_name',
         'address',
-        'meter_reading'
+        'meter_reading',
+        'ward_name'
     ];
 
     foreach ($additionalFields as $field) {

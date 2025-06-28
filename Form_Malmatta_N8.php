@@ -231,8 +231,7 @@ if (isset($_GET['edit_id'])) {
                                                 <input type="hidden" name="edit_id"
                                                     value="<?= $isEditMode ? $editId : '' ?>">
                                                 <div class="form-group col-md-4">
-                                                    <label for="road_name">गल्लीचे नाव/ अंतर्गत रस्त्याचे नाव<span
-                                                            class="text-danger">*</span>
+                                                    <label for="road_name">गल्लीचे नाव/ अंतर्गत रस्त्याचे नाव
                                                     </label>
                                                     <select name="road_name" id="road_name" class="form-control">
                                                         <option value="" selected>--निवडा--</option>
@@ -247,7 +246,7 @@ if (isset($_GET['edit_id'])) {
 
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label for="ward_name">वॉर्ड क्रं <span class="text-danger">*</span>
+                                                    <label for="ward_name">वॉर्ड क्रं 
                                                     </label>
                                                     <select name="ward_name" id="ward_name" class="form-control">
                                                         <option value="" selected>--निवडा--</option>

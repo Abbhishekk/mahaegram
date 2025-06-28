@@ -22,20 +22,26 @@ $title = "मिळकत कर दर माहिती";
     }
     if(mysqli_num_rows($minDar) > 0){
         $minDar = mysqli_fetch_assoc($minDar);
+        $isMinAvailable = false;
     }else{
         $minDar = null;
+        $isMinAvailable = true;
     }
     $maxDar = $fun->getMilkatTaxInfoDarMax($_SESSION['district_code']);
     if(mysqli_num_rows($maxDar) > 0){
         $maxDar = mysqli_fetch_assoc($maxDar);
+        $isMaxAvailable = false;
     }else{
         $maxDar = null;
+        $isMaxAvailable = true;
     }
     $dar = $fun->getMilkatTaxInfoDarCons($_SESSION['district_code']);
     if(mysqli_num_rows($dar) > 0){
         $dar = mysqli_fetch_assoc($dar);
+        $isDarAvailable = false;
     }else{
         $dar = null;
+        $isDarAvailable = true;
     }
 ?>
 
@@ -120,14 +126,14 @@ if (isset($_SESSION['message'])) {
                                                         <tr>
                                                             <td>१. कच्चे घर (झोपडी किंवा मातीचे घर)</td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $minDar['kache_ghar'] ?>"
+                                                                    value="<?php echo $minDar['kache_ghar'] ?? "0" ?>"
                                                                     name="minDar_kache_ghar" class="form-control"
-                                                                    readonly>
+                                                                    <?php echo $isMinAvailable ? (""): ("readonly")?>>
                                                             </td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $maxDar['kache_ghar']?>"
+                                                                    value="<?php echo $maxDar['kache_ghar'] ?? "0"?>"
                                                                     name="maxDar_kache_ghar" class="form-control"
-                                                                    readonly>
+                                                                    <?php echo $isMaxAvailable ? (""): ("readonly")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_kache_ghar"
@@ -136,20 +142,20 @@ if (isset($_SESSION['message'])) {
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="construction_kache_ghar"
-                                                                    value="<?php echo $dar['kache_ghar']?>" readonly>
+                                                                    value="<?php echo $dar['kache_ghar'] ?? "0"?>" <?php echo $isDarAvailable ? (""): ("readonly")?>>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>२. अर्ध पक्के घर (दगड विटांचे मातीचे घर)</td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $minDar['ardha_pakke_ghar']?>"
-                                                                    name="minDar_ardha_pakke_ghar" class="form-control"
-                                                                    readonly>
+                                                                    value="<?php echo $minDar['ardha_pakke_ghar'] ?? "0" ?>"
+                                                                    name="minDar_ardha_pakke_ghar" class="form-control" <?php echo $isMinAvailable ? (""): ("readonly")?>>
+                                                                    
                                                             </td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $maxDar['ardha_pakke_ghar']?>"
-                                                                    name="maxDar_ardha_pakke_ghar" class="form-control"
-                                                                    readonly>
+                                                                    value="<?php echo $maxDar['ardha_pakke_ghar'] ?? "0" ?>"
+                                                                    name="maxDar_ardha_pakke_ghar" class="form-control" <?php echo $isMaxAvailable ? (""): ("readonly")?>
+                                                                    >
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_ardha_pakke_ghar"
@@ -157,18 +163,18 @@ if (isset($_SESSION['message'])) {
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
-                                                                    value="<?php echo $dar['ardha_pakke_ghar']?>"
-                                                                    name="construction_ardha_pakke_ghar" readonly></td>
+                                                                    value="<?php echo $dar['ardha_pakke_ghar'] ?? "0" ?>" <?php echo $isDarAvailable ? (""): ("readonly")?>
+                                                                    name="construction_ardha_pakke_ghar"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>३. पडसर / खुली जागा</td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $minDar['padsar']?>"
-                                                                    name="minDar_padsar" class="form-control" readonly>
+                                                                    value="<?php echo $minDar['padsar'] ?? "0" ?>"
+                                                                    name="minDar_padsar" class="form-control" <?php echo $isMinAvailable ? (""): ("readonly")?>>
                                                             </td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $maxDar['padsar']?>"
-                                                                    name="maxDar_padsar" class="form-control" readonly>
+                                                                    value="<?php echo $maxDar['padsar'] ?? "0" ?>"
+                                                                    name="maxDar_padsar" class="form-control" <?php echo $isMaxAvailable ? (""): ("readonly")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_padsar"
@@ -177,19 +183,19 @@ if (isset($_SESSION['message'])) {
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="construction_padsar"
-                                                                    value="<?php echo $dar['padsar']?>" readonly></td>
+                                                                    value="<?php echo $dar['padsar'] ?? "0" ?>" <?php echo $isDarAvailable ? (""): ("readonly")?> ></td>
                                                         </tr>
                                                         <tr>
                                                             <td>४. इतर पक्के घर</td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $minDar['itar_pakke_ghar']?>"
-                                                                    name="minDar_itar_pakke_ghar" class="form-control"
-                                                                    readonly>
+                                                                    value="<?php echo $minDar['itar_pakke_ghar'] ?? "0" ?>"
+                                                                    name="minDar_itar_pakke_ghar" class="form-control" <?php echo $isMinAvailable ? (""): ("readonly")?>
+                                                                    >
                                                             </td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $maxDar['itar_pakke_ghar']?>"
-                                                                    name="maxDar_itar_pakke_ghar" class="form-control"
-                                                                    readonly>
+                                                                    value="<?php echo $maxDar['itar_pakke_ghar'] ?? "0" ?>"
+                                                                    name="maxDar_itar_pakke_ghar" class="form-control" <?php echo $isMaxAvailable ? (""): ("readonly")?> 
+                                                                    >
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_itar_pakke_ghar"
@@ -197,16 +203,16 @@ if (isset($_SESSION['message'])) {
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
-                                                                    value="<?php echo $dar['itar_pakke_ghar']?>"
-                                                                    name="construction_itar_pakke_ghar" readonly></td>
+                                                                    value="<?php echo $dar['itar_pakke_ghar'] ?? "0" ?>" <?php echo $isDarAvailable ? (""): ("readonly")?>
+                                                                    name="construction_itar_pakke_ghar"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>५. आरसीसी पद्धतीचे बांधकाम</td>
-                                                            <td><input type="text" value="<?php echo $minDar['rcc']?>"
-                                                                    name="minDar_rcc" class="form-control" readonly>
+                                                            <td><input type="text" value="<?php echo $minDar['rcc'] ?? "0" ?>"
+                                                                    name="minDar_rcc" class="form-control" <?php echo $isMinAvailable ? (""): ("readonly")?>>
                                                             </td>
-                                                            <td><input type="text" value="<?php echo $maxDar['rcc']?>"
-                                                                    name="maxDar_rcc" class="form-control" readonly>
+                                                            <td><input type="text" value="<?php echo $maxDar['rcc'] ?? "0" ?>"
+                                                                    name="maxDar_rcc" class="form-control" <?php echo $isMaxAvailable ? (""): ("readonly")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_rcc"
@@ -214,39 +220,39 @@ if (isset($_SESSION['message'])) {
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
-                                                                    value="<?php echo $dar['rcc']?>"
-                                                                    name="construction_rcc" readonly></td>
+                                                                    value="<?php echo $dar['rcc'] ?? "0" ?>" <?php echo $isDarAvailable ? (""): ("readonly")?> 
+                                                                    name="construction_rcc"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>६. मनोरा टाइप घर</td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $minDar['manora_type_ghar']?>"
-                                                                    name="minDar_manora_type_ghar" class="form-control"
-                                                                    readonly></td>
+                                                                    value="<?php echo $minDar['manora_type_ghar'] ?? "0" ?>"
+                                                                    name="minDar_manora_type_ghar" class="form-control" <?php echo $isMinAvailable ? (""): ("readonly")?> 
+                                                                    ></td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $maxDar['manora_type_ghar']?>"
-                                                                    name="maxDar_manora_type_ghar" class="form-control"
-                                                                    readonly></td>
+                                                                    value="<?php echo $maxDar['manora_type_ghar'] ?? "0" ?>"
+                                                                    name="maxDar_manora_type_ghar" class="form-control" <?php echo $isMaxAvailable ? (""): ("readonly")?>
+                                                                    ></td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_manora_type_ghar"
                                                                     value="<?php echo $isFixedAvailable? $fixedDar['manora_type_ghar']: ("0.00")?>"
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
-                                                                    value="<?php echo $dar['manora_type_ghar']?>"
-                                                                    name="construction_manora_type_ghar" readonly></td>
+                                                                    value="<?php echo $dar['manora_type_ghar'] ?? "0" ?>" <?php echo $isDarAvailable ? (""): ("readonly")?>
+                                                                    name="construction_manora_type_ghar" ></td>
                                                         </tr>
                                                         <tr>
                                                             <td>७. मनोरा खुली जागा सर्वसाधारण</td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $minDar['manora_khuli_jaga_sarvasadharan']?>"
-                                                                    name="minDar_manora_khuli_jaga_sarvasadharan"
-                                                                    class="form-control" readonly>
+                                                                    value="<?php echo $minDar['manora_khuli_jaga_sarvasadharan'] ?? "0" ?>"
+                                                                    name="minDar_manora_khuli_jaga_sarvasadharan" <?php echo $isMinAvailable ? (""): ("readonly")?>
+                                                                    class="form-control" >
                                                             </td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $maxDar['manora_khuli_jaga_sarvasadharan']?>"
-                                                                    name="maxDar_manora_khuli_jaga_sarvasadharan"
-                                                                    class="form-control" readonly>
+                                                                    value="<?php echo $maxDar['manora_khuli_jaga_sarvasadharan'] ?? "0" ?>"
+                                                                    name="maxDar_manora_khuli_jaga_sarvasadharan" <?php echo $isMaxAvailable ? (""): ("readonly")?>
+                                                                    class="form-control" >
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_manora_khuli_jaga_sarvasadharan"
@@ -254,21 +260,21 @@ if (isset($_SESSION['message'])) {
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
-                                                                    value="<?php echo $dar['manora_khuli_jaga_sarvasadharan']?>"
-                                                                    name="construction_manora_khuli_jaga_sarvasadharan"
-                                                                    readonly></td>
+                                                                    value="<?php echo $dar['manora_khuli_jaga_sarvasadharan'] ?? "0" ?>"
+                                                                    name="construction_manora_khuli_jaga_sarvasadharan" <?php echo $isDarAvailable ? (""): ("readonly")?>
+                                                                    ></td>
                                                         </tr>
                                                         <tr>
                                                             <td>८. मनोरा खुली जागा महानगरपालिका</td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $minDar['manora_khuli_jaga_mnc']?>"
-                                                                    name="minDar_manora_khuli_jaga_mnc"
-                                                                    class="form-control" readonly>
+                                                                    value="<?php echo $minDar['manora_khuli_jaga_mnc'] ?? "0" ?>"
+                                                                    name="minDar_manora_khuli_jaga_mnc" <?php echo $isMinAvailable ? (""): ("readonly")?>
+                                                                    class="form-control" >
                                                             </td>
                                                             <td><input type="text"
-                                                                    value="<?php echo $maxDar['manora_khuli_jaga_mnc']?>"
-                                                                    name="maxDar_manora_khuli_jaga_mnc"
-                                                                    class="form-control" readonly>
+                                                                    value="<?php echo $maxDar['manora_khuli_jaga_mnc'] ?? "0" ?>"
+                                                                    name="maxDar_manora_khuli_jaga_mnc" <?php echo $isMaxAvailable ? (""): ("readonly")?>
+                                                                    class="form-control">
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_manora_khuli_jaga_mnc"
@@ -276,8 +282,8 @@ if (isset($_SESSION['message'])) {
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
                                                             <td><input type="text" class="form-control"
-                                                                    value="<?php echo $dar['manora_khuli_jaga_mnc']?>"
-                                                                    name="construction_manora_khuli_jaga_mnc" readonly>
+                                                                    value="<?php echo $dar['manora_khuli_jaga_mnc'] ?? "0" ?>" <?php echo $isDarAvailable ? (""): ("readonly")?>
+                                                                    name="construction_manora_khuli_jaga_mnc">
                                                             </td>
                                                         </tr>
                                                     </tbody>
