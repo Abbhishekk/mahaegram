@@ -16,12 +16,14 @@ if (isset($_POST['add'])) {
     $isHealthTaxChecked = isset($_POST['healthTax']) ? 1 : 0;
     $isLightTaxChecked = isset($_POST['lightTax']) ? 1 : 0;
     $isSafaiTaxChecked = isset($_POST['safaiTax']) ? 1 : 0;
-    print_r($_POST);
+
     $health = $_POST['health'];
 $divabatti = $_POST['divabatti'];
 $safai = $_POST['safai'];
 
 $merged = [];
+$ranges = ["1 to 300", "301 to 700", "701 to 9999"];
+$id = 0;
 foreach ($health as $key => $healthRow) {
     $divabattiRow = $divabatti[$key] ?? [];
     $safaiRow = $safai[$key] ?? [];
@@ -49,6 +51,7 @@ foreach ($health as $key => $healthRow) {
 
     $merged[] = [
         'id' => $key,
+        'area_range' => $ranges[$id++],
         'health_kiman_rate' => $healthRow['kiman_rate'] ?? 0,
         'health_kamal_rate' => $healthRow['kamal_rate'] ?? 0,
         'health_tharabaila_rate' => $healthRow['tharabaila_rate'] ?? 0,
@@ -57,7 +60,8 @@ foreach ($health as $key => $healthRow) {
         'divabatti_tharabaila_rate' => $divabattiRow['tharabaila_rate'] ?? 0,
         'safai_kiman_rate' => $safaiRow['kiman_rate'] ?? 0,
         'safai_kamal_rate' => $safaiRow['kamal_rate'] ?? 0,
-        'safai_tharabaila_rate' => $safaiRow['tharabaila_rate'] ?? 0
+        'safai_tharabaila_rate' => $safaiRow['tharabaila_rate'] ?? 0,
+        'panchayat_code' => $_SESSION['panchayat_code']
     ];
 }
 
@@ -94,7 +98,10 @@ print_r($merged);
                    
                     try {
                         //code...
-                        $update= $fun->updateTaxInfo($row['id'], $row['health_kiman_rate'], $row['health_kamal_rate'], $row['health_tharabaila_rate'], $row['divabatti_kiman_rate'], $row['divabatti_kamal_rate'], $row['divabatti_tharabaila_rate'], $row['safai_kiman_rate'], $row['safai_kamal_rate'], $row['safai_tharabaila_rate'],$decisionNo);
+                       
+                       $addTaxInfo = $fun->addTaxInfo($row['area_range'], $row['health_kiman_rate'], $row['health_kamal_rate'], $row['health_tharabaila_rate'], $row['divabatti_kiman_rate'], $row['divabatti_kamal_rate'], $row['divabatti_tharabaila_rate'], $_SESSION['district_code'], $_SESSION['panchayat_code'], $decisionNo, $row['safai_kiman_rate'], $row['safai_kamal_rate'], $row['safai_tharabaila_rate']);
+
+                        // $update= $fun->updateTaxInfo($row['id'], $row['health_kiman_rate'], $row['health_kamal_rate'], $row['health_tharabaila_rate'], $row['divabatti_kiman_rate'], $row['divabatti_kamal_rate'], $row['divabatti_tharabaila_rate'], $row['safai_kiman_rate'], $row['safai_kamal_rate'], $row['safai_tharabaila_rate'],$decisionNo);
                     } catch (mysqli_sql_exception $e) {
                         //throw $th;
                         handleDatabaseError($e);

@@ -571,7 +571,7 @@ if (isset($_GET['edit_id'])) {
                                                     <div class="form-group col-md-4 mx-auto">
                                                         <label for="area">क्षेत्रफळ (Area)</label>
                                                         <input type="number" class="form-control" name="area" id="area"
-                                                            aria-describedby="emailHelp" placeholder="0" readonly>
+                                                            aria-describedby="emailHelp" placeholder="0" >
                                                         <small id="areaUnit" class="form-text text-muted">फूट (Square
                                                             Feet)</small>
                                                     </div>
@@ -581,7 +581,7 @@ if (isset($_GET['edit_id'])) {
                                                             Area)</label>
                                                         <input type="number" class="form-control" name="converted_area"
                                                             id="converted_area" aria-describedby="emailHelp"
-                                                            placeholder="0" readonly>
+                                                            placeholder="0"     >
                                                         <small id="convertedAreaUnit" class="form-text text-muted">मीटर
                                                             (Square Meters)</small>
                                                     </div>

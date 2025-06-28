@@ -160,7 +160,7 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                                             <div class="form-group col-md-3">
                                                 <label for="khasara_no">खसारा क्रं <span class="text-danger">*</span>
                                                 </label>
-                                                <select name="khasara_no" id="khasara_no" class="form-control">
+                                                <select name="khasara_no" id="khasara_no" class="form-control select2-single-placeholder">
                                                     <option value="" selected>--निवडा--</option>
                                                     <?php
                                                     if (mysqli_num_rows($khasaraNos) > 0) {

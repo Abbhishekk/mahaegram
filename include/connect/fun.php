@@ -195,7 +195,7 @@ class Fun
 
     public function getPeriodDetailsLastValue($lgd_code)
     {
-        $query = "SELECT `total_period`, `id` FROM `period_details` Where `lgd_code` = '$lgd_code' ORDER BY `id` DESC LIMIT 1";
+        $query = "SELECT `total_period`, `id` FROM `period_details` Where `lgd_code` = '$lgd_code' and `panchayat_code` = '$_SESSION[panchayat_code]' ORDER BY `id` DESC LIMIT 1";
         $result = mysqli_query($this->db, $query);
 
         if (mysqli_num_rows($result) > 0) {
@@ -728,14 +728,19 @@ class Fun
 
     public function getTaxInfo($lgdcode)
     {
-        $query = "SELECT * FROM `tax_info` where `lgdcode` = '$lgdcode'";
+        $query = "SELECT * FROM `tax_info` where `lgdcode` = '$lgdcode' and `panchayat_code` = '$_SESSION[panchayat_code]'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
 
-    public function addTaxInfo($area_range, $arogya_kiman_rate, $arogya_kamal_rate, $arogya_prap_tharabaila_rate, $divabatti_kiman_rate, $divabatti_kamal_rate, $divabatti_prap_tharabaila_rate, $lgdcode)
+    public function addTaxInfo($area_range, $arogya_kiman_rate, $arogya_kamal_rate, $arogya_prap_tharabaila_rate, $divabatti_kiman_rate, $divabatti_kamal_rate, $divabatti_prap_tharabaila_rate, $lgdcode, $panchayat_code, $tharava_no, $safai_kiman_rate, $safai_kamal_rate, $safai_prap_tharabaila_rate)
     {
-        $query = "INSERT INTO `tax_info`(`area_range`, `arogya_kiman_rate`, `arogya_kamal_rate`, `arogya_prap_tharabaila_rate`, `divabatti_kiman_rate`, `divabatti_kamal_rate`, `divabatti_prap_tharabaila_rate`) VALUES ('$area_range', '$arogya_kiman_rate', '$arogya_kamal_rate', '$arogya_prap_tharabaila_rate', '$divabatti_kiman_rate', '$divabatti_kamal_rate', '$divabatti_prap_tharabaila_rate', '$lgdcode')";
+        if($tharava_no == '' || $tharava_no == null){
+            $status = '1';
+        }else{
+            $status = '0';
+        }
+        $query = "INSERT INTO `tax_info`(`area_range`, `arogya_kiman_rate`, `arogya_kamal_rate`, `arogya_prap_tharabaila_rate`, `divabatti_kiman_rate`, `divabatti_kamal_rate`, `divabatti_prap_tharabaila_rate`, `lgdcode`, `panchayat_code`, `status`, `tharava_no`, `safai_kiman_rate`, `safai_kamal_rate`, `safai_prap_tharabaila_rate`) VALUES ('$area_range', '$arogya_kiman_rate', '$arogya_kamal_rate', '$arogya_prap_tharabaila_rate', '$divabatti_kiman_rate', '$divabatti_kamal_rate', '$divabatti_prap_tharabaila_rate', '$lgdcode', '$panchayat_code', '$status', '$tharava_no', '$safai_kiman_rate', '$safai_kamal_rate', '$safai_prap_tharabaila_rate')";
 
         $result = mysqli_query($this->db, $query);
         return $result;
@@ -786,6 +791,7 @@ class Fun
         return $result;
     }
 
+ 
     //tharav
     public function getTharav()
     {
