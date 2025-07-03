@@ -10,7 +10,7 @@ $title = "मिळकत कर दर माहिती";
 <?php
     $durationReason = $fun->getDurationReason();
     $periods = $fun->getPeriodDetails($_SESSION['district_code']);
-    $periods = $fun->getPeriodDetailsLastValue($_SESSION['district_code']);
+    $periods = $fun->getPeriodDetailsLastValueByPeriodReason("नमुना नंबर 8 कालावधी",$_SESSION['district_code']);
     $minDar = $fun->getMilkatTaxInfoDarMin($_SESSION['district_code']);
     $fixedDar = $fun->getMilkatTaxInfoDarFixed($_SESSION['district_code']);
     if(mysqli_num_rows($fixedDar) > 0){

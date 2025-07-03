@@ -116,7 +116,7 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण नोंदी 
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna7data["total_records"] ?></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna7data["total_records"]?? 0 ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -125,7 +125,7 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण रक्कम
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna7data["total_amount"] ?></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna7data["total_amount"]?? 0 ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -134,7 +134,7 @@ $title = "Dashboard";
                                         <div class="col-auto">
                                              <div class="text-s font-weight-bold text-uppercase mb-1">नमुना  ७
                                             </div>
-                                            <i class="fas fa-users fa-2x text-info"></i>
+                                          <i class="fa-solid fa-receipt" style="font-size:2rem;margin:auto;color:green"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -148,7 +148,7 @@ $title = "Dashboard";
                                        <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">मालमत्ता नोंदी 
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo count($namauna8Data) ?></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo count($namauna8Data)??0 ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -157,16 +157,16 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण रक्कम
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total_tax_amount ?></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total_tax_amount?? 0 ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto flex justify-content-center align-items-center flex-column">
                                               <div class="text-s font-weight-bold text-uppercase mb-1">नमुना ८
                                             </div>
-                                            <i class="fas fa-calendar fa-2x text-primary"></i>
+                                            <i class="fa-solid fa-house-user" style="font-size:2rem;margin:auto;color:green"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -180,7 +180,7 @@ $title = "Dashboard";
                                        <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण नोंदी 
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna9Data["total_records"] ?></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna9Data["total_records"]??0 ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -189,7 +189,7 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण मागणी
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna9Data["total_amount"] ?></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna9Data["total_amount"]??0 ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -198,7 +198,7 @@ $title = "Dashboard";
                                         <div class="col-auto">
                                               <div class="text-s font-weight-bold text-uppercase mb-1">नमुना ९
                                             </div>
-                                            <i class="fas fa-shopping-cart fa-2x text-success"></i>
+                                            <i class="fa-solid fa-money-bill" style="font-size:2rem;margin:auto;color:green"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -212,7 +212,7 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण नोंदी 
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna10Data["total_records"] ?></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna10Data["total_records"]??0 ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -221,7 +221,7 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण वसुली 
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna10Data["total_amount"] ?></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna10Data["total_amount"]??0 ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -230,7 +230,7 @@ $title = "Dashboard";
                                         <div class="col-auto">
                                               <div class="text-s font-weight-bold text-uppercase mb-1">नमुना १०
                                             </div>
-                                            <i class="fas fa-comments fa-2x text-warning"></i>
+                                            <i class="fa-solid fa-money-check-dollar" style="font-size:2rem;margin:auto; color:green;"></i>
                                         </div>
                                     </div>
                                 </div>
