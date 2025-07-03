@@ -50,13 +50,13 @@ $title = "आरोग्य व दिवाबत्ती कर माहि
         <?php 
         $page = 'namuna8';
         $subpage = 'wardMaster';
-        include('include/sidebar.php');
        ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar -->
-                <?php include('include/topbar.php'); ?>
+                <?php include('include/topbar.php');
+        include('include/sidebar.php'); ?>
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->

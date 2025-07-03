@@ -18,13 +18,13 @@ $title = "बँकांची माहिती";
         <?php 
         $page = 'namuna7';
         $subpage = 'master';
-        include('include/sidebar.php');
        ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar -->
-                <?php include('include/topbar.php'); ?>
+                <?php include('include/topbar.php');
+                include('include/sidebar.php');?>
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->
@@ -32,7 +32,7 @@ $title = "बँकांची माहिती";
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">धनादेश (चेकबुक) माहिती</h1>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="./">माहईग्राम</a></li>
+                            <li class="breadcrumb-item"><a href="./">पंचायत पोर्टल</a></li>
                             <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 7</li>
                             <li class="breadcrumb-item active" aria-current="page">मास्टर्स</li>
                             <li class="breadcrumb-item active" aria-current="page">धनादेश (चेकबुक) माहिती</li>

@@ -13,8 +13,13 @@ $title = "मालमत्ता माहिती प्रमाणिक�
 ?>
 
 <body id="page-top">
+ 
     <div id="wrapper">
         <!-- Sidebar -->
+           <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- TopBar -->
+                <?php include('include/topbar.php'); ?>
         <?php 
         $page = 'namuna8';
         $subpage = 'varshik_kamkaj';

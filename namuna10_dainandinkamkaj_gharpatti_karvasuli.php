@@ -64,13 +64,13 @@ $malmatta_details = $fun->getTaxDemands($_SESSION['district_code'], $yearArray[$
         <?php
         $page = 'namuna10';
         $subpage = 'yearlyWork';
-        include('include/sidebar.php');
         ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar -->
-                <?php include('include/topbar.php'); ?>
+                <?php include('include/topbar.php'); 
+        include('include/sidebar.php');?>
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->

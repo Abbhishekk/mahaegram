@@ -24,13 +24,13 @@ $title = "मालमत्ता माहिती प्रमाणिक�
         <?php 
         $page = 'namuna9';
         $subpage = 'ahaval';
-        include('include/sidebar.php');
        ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar -->
-                <?php include('include/topbar.php'); ?>
+                <?php include('include/topbar.php'); 
+        include('include/sidebar.php');?>
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->
