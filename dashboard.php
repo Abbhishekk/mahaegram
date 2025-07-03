@@ -7,7 +7,22 @@
 $title = "Dashboard";
 ?>
 <?php include('include/header.php'); 
+    $namuna7data = $fun->getJamaPavatiDataNamuna7();
+    $namuna7data = $namuna7data->fetch_assoc();
+    $namauna8Data = $fun->getMalmattaWithPropertiesAccordingToAll();
+    $namuna9Data = $fun->getTaxDemandsDataNamuna9();
+    $namuna10Data = $fun->getKarvasuliRecordsNamuna10();
+        $total_tax_amount = 0;
+            foreach ($namauna8Data as $row){
+                foreach ($row['properties'] as $property){
+                    $total_tax = $row['light_tax'] + $row['health_tax'] + $row['water_tax'] + $property['building_value'];
+                   
+                    $total_tax_amount += $total_tax;
 
+                
+                }
+       
+            }
 
 ?>
 
@@ -101,7 +116,7 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण नोंदी 
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">768</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna7data["total_records"] ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -110,7 +125,7 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण रक्कम
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">12345</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna7data["total_amount"] ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -133,7 +148,7 @@ $title = "Dashboard";
                                        <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">मालमत्ता नोंदी 
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">768</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo count($namauna8Data) ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -142,7 +157,7 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण रक्कम
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">12345</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total_tax_amount ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -165,7 +180,7 @@ $title = "Dashboard";
                                        <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण नोंदी 
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">768</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna9Data["total_records"] ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -174,7 +189,7 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण मागणी
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">12345</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna9Data["total_amount"] ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -197,7 +212,7 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण नोंदी 
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">768</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna10Data["total_records"] ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>
@@ -206,7 +221,7 @@ $title = "Dashboard";
                                         <div class="col mr-2">
                                             <div class="text-s font-weight-bold text-uppercase mb-1">एकूण वसुली 
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">12345</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $namuna10Data["total_amount"] ?></div>
                                             <div class="mt-2 mb-0 text-muted text-xs">
                                                 
                                                 <span></span>

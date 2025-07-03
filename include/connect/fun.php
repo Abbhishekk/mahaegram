@@ -4873,4 +4873,27 @@ class Fun
         return $stmt->get_result();
     }
 
+    public function getJamaPavatiDataNamuna7(){
+        $sql = "SELECT count(*) as total_records, SUM(`jama_rakkam`) as total_amount FROM `jama_pavati` WHERE `panchayat_code` = '$_SESSION[panchayat_code]';";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+    public function getTaxDemandsDataNamuna9(){
+        $sql = "SELECT count(*) as total_records, SUM(`total_amount`) as total_amount FROM `tax_demands` td Left join malmatta_data_entry mde on mde.id = td.malmatta_id 
+where mde.panchayat_code = '$_SESSION[panchayat_code]';";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+    public function getKarvasuliRecordsNamuna10(){
+        $sql = "SELECT count(*) as total_records, SUM(`total_amount`) as total_amount FROM `karvasuli_records` kr 
+left join malmatta_data_entry mde on mde.id = kr.malamatta_kramanak WHERE mde.panchayat_code = '$_SESSION[panchayat_code]';";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
 }
