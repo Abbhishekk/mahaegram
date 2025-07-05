@@ -4896,4 +4896,19 @@ left join malmatta_data_entry mde on mde.id = kr.malamatta_kramanak WHERE mde.pa
         return $stmt->get_result()->fetch_assoc();
     }
 
+    public function getWaterTariffForPanniReading(){
+        $sql = "SELECT * FROM `water_tariff` WHERE `drainage_type` = 'विशेष पाणीपट्टी (मीटर रीडिंग अनुसार)' or `drainage_type` = 'विशेष पाणीपट्टी (मीटर रीडिंग अनुसार) (विशेष)' and `panchayat_code` = '$_SESSION[panchayat_code]';";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+    public function getWaterTaxEntries($district_code) {
+    $sql = "SELECT *, mde.malmatta_no as malmatta_no_mde FROM water_tax
+            left join malmatta_data_entry mde on water_tax.malmatta_no = mde.id
+            left join water_tariff wt on water_tax.pani_prakar = wt.id
+     where water_tax.panchayat_code = '$_SESSION[panchayat_code]' ORDER BY created_at ";
+    return mysqli_query($this->db, $sql);
+}
+
 }

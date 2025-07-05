@@ -112,6 +112,7 @@
                             <a class="dropdown-item dropdown-toggle" href="#">वार्षिक कामकाज</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item"href="namuna9_varshikkamkaj_varshikkarmagni.php">वार्षिक कर मागणी (नमुना-९)</a></li>
+                                <li><a class="dropdown-item"href="namuna9_varshikkamkaj_panni_reading.php">पाणीपट्टी रेड़ीन्ग </a></li>
                             </ul>
                             </li>
                         </ul>
