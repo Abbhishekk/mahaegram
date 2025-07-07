@@ -4904,7 +4904,7 @@ left join malmatta_data_entry mde on mde.id = kr.malamatta_kramanak WHERE mde.pa
     }
 
     public function getWaterTaxEntries($district_code) {
-    $sql = "SELECT *, mde.malmatta_no as malmatta_no_mde FROM water_tax
+    $sql = "SELECT *, mde.malmatta_no as malmatta_no_mde, water_tax.khasara_no as khasara_no_wt FROM water_tax
             left join malmatta_data_entry mde on water_tax.malmatta_no = mde.id
             left join water_tariff wt on water_tax.pani_prakar = wt.id
      where water_tax.panchayat_code = '$_SESSION[panchayat_code]' ORDER BY created_at ";

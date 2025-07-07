@@ -71,6 +71,22 @@ if ($periodCount == 0) {
                                     <form id="waterTaxForm">
 
                                         <div class="row mb-3">
+                                             <div class="form-group col-md-4">
+                                                    <label for="khasara_no">खसारा क्रमांक </label>
+                                                    <select name="khasara_no" id="khasara_no"
+                                                        class="form-control">
+                                                        <option value="" selected>--निवडा--</option>
+                                                        <?php
+                                                        $khasaraNos = $fun->getKhasaraWard();
+                                                        if (mysqli_num_rows($khasaraNos) > 0) {
+                                                            while ($ward = mysqli_fetch_assoc($khasaraNos)) {
+                                                                echo '<option value="' . $ward['khasara_no'] . '">' . $ward['khasara_no'] . '</option>';
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                    <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
+                                                </div>
                                             <div class="col-md-3">
                                                 <label class="form-label" for="malmatta_no">मालमत्ता क्रमांक</label>
                                                 <select class="form-select form-control select2-single-placeholder"
@@ -151,6 +167,7 @@ if ($periodCount == 0) {
                                             <tr>
                                                 <th>मालमत्ता क्रमांक</th>
                                                 <th>आर्थिक वर्ष</th>
+                                                <th>खसारा क्रमांक</th>
                                                 <th>पाण्याचा प्रकार</th>
                                                 <th>संपूर्ण टॅक्स </th>
                                                 <th>April</th>
@@ -171,9 +188,11 @@ if ($periodCount == 0) {
                                             <?php
                                             if ($submittedWaterTax && mysqli_num_rows($submittedWaterTax) > 0) {
                                                 while ($tax = mysqli_fetch_assoc($submittedWaterTax)) {
+                                                    // print_r($tax);
                                                     echo "<tr>
                                 <td>{$tax['malmatta_no_mde']}</td>
                                 <td>{$tax['year']}</td>
+                                <td>{$tax['khasara_no_wt']}</td>
                                 <td>{$tax['drainage_type']}</td>
                                 <td>₹{$tax['total_amount']}</td>
                                 <td>{$tax['april_reading']}</td>
@@ -293,6 +312,7 @@ if ($periodCount == 0) {
             const formData = new FormData(this);
             const type = document.getElementById("entryType").value;
             const cols = (type === "monthly") ? months.length : 1;
+            const khasara_no = document.getElementById("khasara_no").value;
 
             for (let i = 0; i < cols; i++) {
                 const monthKey = (type === "monthly") ? months[i].toLowerCase() + "_reading" : "april_reading";
@@ -300,7 +320,7 @@ if ($periodCount == 0) {
             }
 
             formData.append("total_amount", document.getElementById("totalTax").innerText);
-
+            formData.append("khasara_no", khasara_no);
             // Submit data to PHP
             fetch("api/save_water_tax.php", {
                 method: "POST",
