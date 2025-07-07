@@ -4911,4 +4911,38 @@ left join malmatta_data_entry mde on mde.id = kr.malamatta_kramanak WHERE mde.pa
     return mysqli_query($this->db, $sql);
 }
 
+
+// returns an array of ward IDs currently mapped to $khasara_no
+public function getWardsForKhasara($khasara_no) {
+  $sql = "SELECT ward_id FROM khasara_ward WHERE khasara_no = ? and panchayat_code = '$_SESSION[panchayat_code]'";
+  $stmt = $this->db->prepare($sql);
+  $stmt->bind_param("s",$khasara_no);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  $out = [];
+  while($r=$res->fetch_assoc()) {
+    $out[] = (int)$r['ward_id'];
+  }
+  return $out;
+}
+public function getKhasaraWardMappings($district_code) {
+    $sql = "SELECT kw.khasara_no, w.ward_no, w.ward_name
+            FROM khasara_ward kw
+            JOIN ward_details w ON kw.ward_id = w.id
+            WHERE kw.panchayat_code = ?
+            ORDER BY kw.khasara_no, w.ward_no";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+public function getKhasaraWard(){
+    $sql = "SELECT distinct khasara_no FROM khasara_ward WHERE panchayat_code = '$_SESSION[panchayat_code]' ORDER BY khasara_no";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+
 }

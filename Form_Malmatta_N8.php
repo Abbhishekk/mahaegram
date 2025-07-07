@@ -149,8 +149,8 @@ if (isset($_GET['edit_id'])) {
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar -->
-                <?php include('include/topbar.php'); 
-        include('include/sidebar.php');?>
+                <?php include('include/topbar.php');
+                include('include/sidebar.php'); ?>
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->
@@ -246,17 +246,32 @@ if (isset($_GET['edit_id'])) {
 
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label for="ward_name">वॉर्ड क्रं 
-                                                    </label>
-                                                    <select name="ward_name" id="ward_name" class="form-control">
+                                                    <label for="khasara_no">खसारा क्रमांक </label>
+                                                    <select name="khasara_no" id="khasara_no"
+                                                        class="form-control">
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
-                                                        if (mysqli_num_rows($wards) > 0) {
-                                                            while ($ward = mysqli_fetch_assoc($wards)) {
-                                                                echo '<option value="' . $ward['id'] . '">' . $ward['ward_name'] . '</option>';
+                                                        $khasaraNos = $fun->getKhasaraWard();
+                                                        if (mysqli_num_rows($khasaraNos) > 0) {
+                                                            while ($ward = mysqli_fetch_assoc($khasaraNos)) {
+                                                                echo '<option value="' . $ward['khasara_no'] . '">' . $ward['khasara_no'] . '</option>';
                                                             }
                                                         }
                                                         ?>
+                                                    </select>
+                                                    <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
+                                                </div>
+                                                 <div class="form-group col-md-2 d-flex align-items-end">
+                                                    <a href="namuna8_masters_khasara_no.php"
+                                                        class="btn btn-primary bg-gradient-success">
+                                                        खसारा नोंद </a>
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label for="ward_name">वॉर्ड क्रं
+                                                    </label>
+                                                    <select name="ward_name" id="ward_name" class="form-control">
+                                                        <option value="" selected>--निवडा--</option>
+                                                       
                                                     </select>
 
                                                 </div>
@@ -268,13 +283,7 @@ if (isset($_GET['edit_id'])) {
                                                         placeholder="मालमत्ता क्रमांक" required>
                                                     <small id="malmattaNoHelp" class="form-text text-muted"></small>
                                                 </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="khasara_no">खसारा क्रमांक </label>
-                                                    <input type="text" class="form-control" name="khasara_no"
-                                                        id="khasara_no" aria-describedby="emailHelp"
-                                                        placeholder="खसारा क्रमांक">
-                                                    <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
-                                                </div>
+
                                                 <div class="form-group col-md-3 mx-auto">
                                                     <label for="owner_name">मालमत्ता धारकाचे नाव <span
                                                             class="text-danger">*</span>
@@ -570,7 +579,7 @@ if (isset($_GET['edit_id'])) {
                                                     <div class="form-group col-md-4 mx-auto">
                                                         <label for="area">क्षेत्रफळ (Area)</label>
                                                         <input type="number" class="form-control" name="area" id="area"
-                                                            aria-describedby="emailHelp" placeholder="0" >
+                                                            aria-describedby="emailHelp" placeholder="0">
                                                         <small id="areaUnit" class="form-text text-muted">फूट (Square
                                                             Feet)</small>
                                                     </div>
@@ -580,7 +589,7 @@ if (isset($_GET['edit_id'])) {
                                                             Area)</label>
                                                         <input type="number" class="form-control" name="converted_area"
                                                             id="converted_area" aria-describedby="emailHelp"
-                                                            placeholder="0"     >
+                                                            placeholder="0">
                                                         <small id="convertedAreaUnit" class="form-text text-muted">मीटर
                                                             (Square Meters)</small>
                                                     </div>
@@ -661,7 +670,8 @@ if (isset($_GET['edit_id'])) {
 
 
                                                     </div>
-                                                    <div class="form-group col-md-3 mx-auto" id="meter_reading_div" style="display: none;" >
+                                                    <div class="form-group col-md-3 mx-auto" id="meter_reading_div"
+                                                        style="display: none;">
                                                         <label for="meter_reading">नळ मीटर रीडिंग
                                                         </label>
                                                         <input type="number" class="form-control" name="meter_reading"
@@ -1101,12 +1111,12 @@ if (isset($_GET['edit_id'])) {
                 $("#tap_owner_name").val();
                 $("#tap_owner_name").prop("required", false);
 
-            }else if(selectedValue === "विशेष पाणीपट्टी (मीटर रीडिंग अनुसार)" || selectedValue === "विशेष पाणीपट्टी (मीटर रीडिंग अनुसार) (विशेष)"){
+            } else if (selectedValue === "विशेष पाणीपट्टी (मीटर रीडिंग अनुसार)" || selectedValue === "विशेष पाणीपट्टी (मीटर रीडिंग अनुसार) (विशेष)") {
                 $("#meter_reading").prop("disabled", false);
                 $("#meter_reading").prop("required", true);
                 $("#meter_reading_div").show();
             }
-            
+
             else {
                 $("#tap_numbers").prop("disabled", false);
                 $("#tap_numbers").prop("required", true);
@@ -1115,7 +1125,7 @@ if (isset($_GET['edit_id'])) {
                 $("#tap_owner_name").prop("disabled", false);
                 $("#tap_owner_name").prop("required", true);
                 $("#meter_reading").prop("disabled", true);
-               
+
                 $("#meter_reading").prop("required", false);
                 $("#meter_reading_div").hide();
             }
@@ -1925,6 +1935,41 @@ if (isset($_GET['edit_id'])) {
         document.addEventListener("DOMContentLoaded", function () {
             const malmattaNoInput = document.getElementById('malmatta_no');
             const districtCode = '<?php echo $_SESSION['district_code']; ?>';
+            const khasaraNoInput = document.getElementById('khasara_no');
+            function loadWardsForKhasara(kn, targetSelectId) {
+                $.post('api/khasara_ward.php',
+                    { action: 'fetch', khasara_no: kn },
+                    resp => {
+                        if (!resp.success) return;
+                        const sel = $(`#${targetSelectId}`);
+                        // console.log('resp', resp);
+                        let options = `<option value="">-- निवडा --</option>`;
+                        resp.ward_ids.forEach(id => {
+                            if(!id.id || !id.name) return;
+                            options +=  `<option value="${id.id}">${id.name}</option>`;
+                        });
+                        sel.html(options);
+                        // resp.ward_ids.forEach(id => {
+                        //     sel.find(`option[value="${id}"]`).prop('selected', true);
+                        // });
+                        sel.trigger('change');
+                    }, 'json');
+            }
+
+
+            $(document).ready(function () {
+               
+                khasaraNoInput.addEventListener('change', function () {
+                    const khasaraNo = this.value.trim();
+                    console.log('Khasara No:', khasaraNo);
+                    if (khasaraNo) {
+                        loadWardsForKhasara(khasaraNo, 'ward_name');
+                    }
+                });
+            });
+
+
+
 
             // Update the checkMalmattaAvailability function
             function checkMalmattaAvailability(malmattaNo) {

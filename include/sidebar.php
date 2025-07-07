@@ -85,6 +85,7 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="./wardMaster.php">वार्ड माहिती</a></li>
                                 <li><a class="dropdown-item" href="./roadMaster.php">रस्ते माहिती</a></li>
+                                <li><a class="dropdown-item" href="./namuna8_masters_khasara_no.php">खसारा माहिती</a></li>
                                 <li><a class="dropdown-item" href="./durationMaster.php">कालावधी माहिती</a></li>
                                 <li><a class="dropdown-item" href="./HealthAndLightTax.php">आरोग्य व दिवाबत्ती कर माहिती</a></li>
                                 <li><a class="dropdown-item" href="./valmitkar_darMaster.php">मिळकत कर दर माहिती</a></li>
