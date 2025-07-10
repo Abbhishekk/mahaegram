@@ -888,9 +888,9 @@ class Fun
         return $result;
     }
 
-    public function addMalmattaDataEntry($period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $other_occupant_name, $remarks, $lgdcode, $address)
+    public function addMalmattaDataEntry($period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $register_no, $city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $other_occupant_name, $remarks, $lgdcode, $address)
     {
-        $query = "INSERT INTO `malmatta_data_entry`(`period`, `village_name`, `ward_no`, `road_name`, `malmatta_no`, `khasara_no` ,`city_survey_no`, `group_no`, `washroom_available`, `owner_name`, `wife_name`, `occupant_name`,`other_occupant_name` ,`remarks`, `lgdcode`, `panchayat_code`,`address`) VALUES ('$period', '$village_name', '$ward_no', '$road_name', '$malmatta_no', '$khasara_no' ,'$city_survey_no', '$group_no', '$washroom_available', '$owner_name', '$wife_name', '$occupant_name', '$other_occupant_name' ,'$remarks', '$lgdcode', '$_SESSION[panchayat_code]','$address')";
+        $query = "INSERT INTO `malmatta_data_entry`(`period`, `village_name`, `ward_no`, `road_name`, `malmatta_no`, `khasara_no`, `register_no` ,`city_survey_no`, `group_no`, `washroom_available`, `owner_name`, `wife_name`, `occupant_name`,`other_occupant_name` ,`remarks`, `lgdcode`, `panchayat_code`,`address`) VALUES ('$period', '$village_name', '$ward_no', '$road_name', '$malmatta_no', '$khasara_no', '$register_no' ,'$city_survey_no', '$group_no', '$washroom_available', '$owner_name', '$wife_name', '$occupant_name', '$other_occupant_name' ,'$remarks', '$lgdcode', '$_SESSION[panchayat_code]','$address')";
         $result = mysqli_query($this->db, $query);
         if ($result) {
             return mysqli_insert_id($this->db);
@@ -948,9 +948,9 @@ class Fun
         return $result;
     }
 
-    public function updateMalmattaDataEntry($id, $period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $other_occupant_name,$city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $remarks)
+    public function updateMalmattaDataEntry($id, $period, $village_name, $ward_no, $road_name, $malmatta_no, $khasara_no, $register_no ,$other_occupant_name,$city_survey_no, $group_no, $washroom_available, $owner_name, $wife_name, $occupant_name, $remarks)
     {
-        $query = "UPDATE `malmatta_data_entry` SET `period`='$period', `khasara_no` = '$khasara_no', `other_occupant_name`='$other_occupant_name' ,`village_name`='$village_name', `ward_no`='$ward_no', `road_name`='$road_name', `malmatta_no`='$malmatta_no', `city_survey_no`='$city_survey_no', `group_no`='$group_no', `washroom_available`='$washroom_available', `owner_name`='$owner_name', `wife_name`='$wife_name', `occupant_name`='$occupant_name', `remarks`='$remarks' WHERE `id` = '$id'";
+        $query = "UPDATE `malmatta_data_entry` SET `period`='$period', `khasara_no` = '$khasara_no', `register_no` = '$register_no' ,`other_occupant_name`='$other_occupant_name' ,`village_name`='$village_name', `ward_no`='$ward_no', `road_name`='$road_name', `malmatta_no`='$malmatta_no', `city_survey_no`='$city_survey_no', `group_no`='$group_no', `washroom_available`='$washroom_available', `owner_name`='$owner_name', `wife_name`='$wife_name', `occupant_name`='$occupant_name', `remarks`='$remarks' WHERE `id` = '$id'";
         $result = mysqli_query($this->db, $query);
         return $result;
     }
@@ -4928,7 +4928,7 @@ public function getWardsForKhasara($khasara_no) {
 public function getKhasaraWardMappings($district_code) {
     $sql = "SELECT kw.khasara_no, w.ward_no, w.ward_name
             FROM khasara_ward kw
-            JOIN ward_details w ON kw.ward_id = w.id
+           left JOIN ward_details w ON kw.ward_id = w.id
             WHERE kw.panchayat_code = ?
             ORDER BY kw.khasara_no, w.ward_no";
     $stmt = $this->db->prepare($sql);
@@ -4939,6 +4939,27 @@ public function getKhasaraWardMappings($district_code) {
 
 public function getKhasaraWard(){
     $sql = "SELECT distinct khasara_no FROM khasara_ward WHERE panchayat_code = '$_SESSION[panchayat_code]' ORDER BY khasara_no";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+public function getRegisterMalmattaMappings() {
+    $sql = "SELECT rmm.register_no, m.malmatta_no, nn.person_name as owner, nn2.person_name as occupant, rmm.panchayat_code
+            FROM register_malmatta_map rmm
+           left JOIN malmatta_data_entry m ON rmm.malmatta_id = m.id
+           left JOIN new_name nn ON m.owner_name = nn.id
+           left JOIN new_name nn2 ON m.occupant_name = nn2.id
+            WHERE rmm.panchayat_code = ?
+            ORDER BY rmm.register_no ASC";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $_SESSION['panchayat_code']);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+public function getRegister(){
+    $sql = "SELECT DISTINCT `register_no` FROM `register_malmatta_map` WHERE panchayat_code = '$_SESSION[panchayat_code]' ORDER BY register_no";
     $stmt = $this->db->prepare($sql);
     $stmt->execute();
     return $stmt->get_result();

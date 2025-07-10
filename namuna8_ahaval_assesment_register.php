@@ -227,6 +227,7 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
 
                                         <button type="submit" name="add" class="btn btn-primary">साठवणे</button>
                                         <button type="reset" class="btn btn-secondary">रद्द करणे</button>
+                                                    <button id="registerForm" type="button" class="btn btn-primary" >रजिस्टर वाइस</button>
                                     </form>
                                 </div>
                             </div>
@@ -347,6 +348,80 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
             // 👇 Fetch table HTML from your PHP backend
             const res = await fetch(
                 `pdf/tax_report_template.php?period=${period}&ward=${ward}&road=${road}&year=${year}&type=${ahavalType}&khasara_no=${khasara_no}&village=${village}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const html = await res.text();
+
+            // 👇 Open in new tab and print
+            const printWindow = window.open('', '_blank');
+            printWindow.document.open();
+            printWindow.document.write(`
+    <html>
+    <head>
+      <title>नमुना ८</title>
+      <style>
+body {
+    font-family: 'Mangal', 'Noto Sans Devanagari', 'Arial', sans-serif;
+    margin: 20px;
+    color: #000;
+}
+
+h1,
+h2,
+h3 {
+    text-align: center;
+    margin: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid #000;
+    padding: 4px 6px;
+    text-align: center;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+.header-note {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+@media print {
+    @page {
+        size: landscape;
+    }
+}
+</style>
+    </head>
+    <body onload="window.print()">
+      ${html}
+    </body>
+    </html>
+  `);
+            printWindow.document.close();
+        });
+    </script>
+    <script>
+        document.getElementById('registerForm').addEventListener('click', async function (e) {
+            e.preventDefault();
+
+           
+            const res = await fetch(
+                `pdf/namuna_8_register_wise.php`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

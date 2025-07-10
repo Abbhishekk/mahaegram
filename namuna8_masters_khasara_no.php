@@ -64,7 +64,7 @@ $khasaraWardList = $fun->getKhasaraWardMappings($_SESSION['district_code']);
                                                 <input type="text" id="khasara_no" name="khasara_no"
                                                     class="form-control" />
                                             </div>
-                                            <div class="col-md-8">
+                                            <div class="col-md-8 d-none">
                                                 <label>वार्ड निवडा</label>
                                                 <select id="ward_ids" name="ward_ids[]"
                                                     class="form-control select2-multiple" multiple>
@@ -95,8 +95,7 @@ $khasaraWardList = $fun->getKhasaraWardMappings($_SESSION['district_code']);
                     <tr>
                         <th>अ.क्र.</th>
                         <th>खसारा क्रमांक</th>
-                        <th>वॉर्ड क्रमांक</th>
-                        <th>वॉर्ड नाव</th>
+                      
                     </tr>
                 </thead>
                 <tbody>
@@ -122,7 +121,7 @@ $khasaraWardList = $fun->getKhasaraWardMappings($_SESSION['district_code']);
                                     $first = false;
                                     $i++;
                                 }
-                                echo "<td>{$ward['ward_no']}</td><td>{$ward['ward_name']}</td></tr>";
+                                // echo "<td>{$ward['ward_no']}</td><td>{$ward['ward_name']}</td></tr>";
                             }
                         }
                     } else {

@@ -268,13 +268,40 @@ if (isset($_GET['edit_id'])) {
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="ward_name">वॉर्ड क्रं
-                                                    </label>
-                                                    <select name="ward_name" id="ward_name" class="form-control">
+                                                        </label>
+                                                        <select name="ward_name" id="ward_name" class="form-control">
+                                                            <option value="" selected>--निवडा--</option>
+                                                                <?php 
+                                                                if (mysqli_num_rows($wards) > 0) {
+                                                                    while ($ward = mysqli_fetch_assoc($wards)) {
+                                                                        echo '<option value="' . $ward['id'] . '">' . $ward['ward_name'] . '</option>';
+                                                                    }
+                                                                }
+                                                                ?>
+                                                        </select>
+                                                        
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                    <label for="register_no">रजिस्टर क्रमांक </label>
+                                                    <select name="register_no" id="register_no"
+                                                        class="form-control">
                                                         <option value="" selected>--निवडा--</option>
-                                                       
+                                                        <?php
+                                                        $registerNos = $fun->getRegister();
+                                                        if (mysqli_num_rows($registerNos) > 0) {
+                                                            while ($ward = mysqli_fetch_assoc($registerNos)) {
+                                                                echo '<option value="' . $ward['register_no'] . '">' . $ward['register_no'] . '</option>';
+                                                            }
+                                                        }
+                                                        ?>
                                                     </select>
-
+                                                    <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
                                                 </div>
+                                                    <div class="form-group col-md-2 d-flex align-items-end">
+                                                       <a href="namuna8_masters_register.php"
+                                                           class="btn btn-primary bg-gradient-success">
+                                                           रजिस्टर नोंद </a>
+                                                   </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="malmatta_no">मालमत्ता क्रमांक <span
                                                             class="text-danger">*</span></label>
@@ -1957,16 +1984,7 @@ if (isset($_GET['edit_id'])) {
             }
 
 
-            $(document).ready(function () {
-               
-                khasaraNoInput.addEventListener('change', function () {
-                    const khasaraNo = this.value.trim();
-                    console.log('Khasara No:', khasaraNo);
-                    if (khasaraNo) {
-                        loadWardsForKhasara(khasaraNo, 'ward_name');
-                    }
-                });
-            });
+            
 
 
 
