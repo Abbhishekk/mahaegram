@@ -154,7 +154,7 @@ if (isset($_GET['edit_id'])) {
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->
-                <div class="container-fluid" id="container-wrapper">
+               <div class="container-fluid" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">ग्रामपंचायत नमुना 8 डाटा एन्ट्री</h1>
                         <ol class="breadcrumb">
@@ -164,37 +164,31 @@ if (isset($_GET['edit_id'])) {
                             <li class="breadcrumb-item active" aria-current="page">ग्रामपंचायत नमुना 8 डाटा एन्ट्री</li>
                         </ol>
                     </div>
-
+                
                     <div class="row mb-3">
                         <div class="col-lg-12">
-                            <div class="card mb-4">
+                            <div class="card shadow mb-4">
                                 <?php
-
                                 if (isset($_SESSION['message'])) {
                                     $message = $_SESSION['message'];
                                     $message_type = $_SESSION['message_type'];
-
+                
                                     echo "<div class='alert alert-$message_type'>$message</div>";
-
+                
                                     // Unset the message so it doesn't persist after refresh
                                     unset($_SESSION['message']);
                                     unset($_SESSION['message_type']);
                                 }
                                 ?>
+                                <div class="card-header py-3 bg-primary">
+                                    <h6 class="m-0 font-weight-bold text-white">मालमत्ता माहिती</h6>
+                                </div>
                                 <div class="card-body">
-                                    <form method="post" id="malmattaForm" action="api/newMalmatta.php"
-                                        enctype="multipart/form-data">
-                                        <div>
-                                            <h5 class="bg-gradient-primary text-white py-3 px-5 w-25 rounded-pill">
-                                                मालमत्ता
-                                                माहिती
-                                            </h5>
-                                            <div class="row">
-
-                                                <div class="form-group col-md-4">
-                                                    <label for="period">कालावधी<span class="text-danger">*</span>
-                                                    </label>
-                                                    <select name="period" id="period" class="form-control">
+                                    <form method="post" id="malmattaForm" action="api/newMalmatta.php" enctype="multipart/form-data">
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select name="period" id="period" class="form-select border-primary">
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($periodsWithReasons) > 0) {
@@ -204,17 +198,14 @@ if (isset($_GET['edit_id'])) {
                                                         }
                                                         ?>
                                                     </select>
-
-                                                    <input type="number" value="" class="form-control d-none"
-                                                        name="update" id="update" aria-describedby="emailHelp"
-                                                        placeholder="वॉर्डचे नाव">
+                                                    <label for="period">कालावधी<span class="text-danger">*</span></label>
                                                 </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="revenue_village">गावाचे नाव<span
-                                                            class="text-danger">*</span>
-                                                    </label>
-                                                    <select class="form-control select2-single-placeholder mb-3"
-                                                        name="revenue_village" id="revenue_village">
+                                                <input type="number" value="" class="form-control d-none" name="update" id="update" aria-describedby="emailHelp" placeholder="वॉर्डचे नाव">
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select class="form-select border-primary select2-single-placeholder" name="revenue_village" id="revenue_village">
                                                         <option value="" selected>--निवडा.--</option>
                                                         <?php
                                                         if (mysqli_num_rows($lgdVillages) > 0) {
@@ -224,16 +215,16 @@ if (isset($_GET['edit_id'])) {
                                                         }
                                                         ?>
                                                     </select>
-
+                                                    <label for="revenue_village">गावाचे नाव<span class="text-danger">*</span></label>
                                                 </div>
-                                                <input type="hidden" name="is_edit"
-                                                    value="<?= $isEditMode ? '1' : '0' ?>">
-                                                <input type="hidden" name="edit_id"
-                                                    value="<?= $isEditMode ? $editId : '' ?>">
-                                                <div class="form-group col-md-4">
-                                                    <label for="road_name">गल्लीचे नाव/ अंतर्गत रस्त्याचे नाव
-                                                    </label>
-                                                    <select name="road_name" id="road_name" class="form-control">
+                                            </div>
+                                            
+                                            <input type="hidden" name="is_edit" value="<?= $isEditMode ? '1' : '0' ?>">
+                                            <input type="hidden" name="edit_id" value="<?= $isEditMode ? $editId : '' ?>">
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select name="road_name" id="road_name" class="form-select border-primary">
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($roadDetails) > 0) {
@@ -243,12 +234,13 @@ if (isset($_GET['edit_id'])) {
                                                         }
                                                         ?>
                                                     </select>
-
+                                                    <label for="road_name">गल्लीचे नाव/ अंतर्गत रस्त्याचे नाव</label>
                                                 </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="khasara_no">खसारा क्रमांक </label>
-                                                    <select name="khasara_no" id="khasara_no"
-                                                        class="form-control">
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select name="khasara_no" id="khasara_no" class="form-select border-primary">
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         $khasaraNos = $fun->getKhasaraWard();
@@ -259,29 +251,32 @@ if (isset($_GET['edit_id'])) {
                                                         }
                                                         ?>
                                                     </select>
-                                                    <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
+                                                    <label for="khasara_no">खसारा क्रमांक</label>
                                                 </div>
-                                                 <div class="form-group col-md-2 d-flex align-items-end">
-                                                    <a href="namuna8_masters_khasara_no.php"
-                                                        class="btn btn-primary bg-gradient-success">
-                                                        खसारा नोंद </a>
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="ward_name">वॉर्ड क्रं
-                                                        </label>
-                                                        <select name="ward_name" id="ward_name" class="form-control">
-                                                            <option value="" selected>--निवडा--</option>
-                                                                <?php 
+                                            </div>
+                                            
+                                            <div class="col-md-2 d-flex align-items-end">
+                                                <a href="namuna8_masters_khasara_no.php" class="btn btn-primary bg-gradient-primary">
+                                                    खसारा नोंद
+                                                </a>
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select name="ward_name" id="ward_name" class="form-select border-primary">
+                                                        <option value="" selected>--निवडा--</option>
+                                                         <?php 
                                                                 if (mysqli_num_rows($wards) > 0) {
                                                                     while ($ward = mysqli_fetch_assoc($wards)) {
                                                                         echo '<option value="' . $ward['id'] . '">' . $ward['ward_name'] . '</option>';
                                                                     }
                                                                 }
                                                                 ?>
-                                                        </select>
-                                                        
-                                                    </div>
-                                                    <div class="form-group col-md-4">
+                                                    </select>
+                                                    <label for="ward_name">वॉर्ड क्रं</label>
+                                                </div>
+                                            </div>
+                                             <div class="form-group col-md-4">
                                                     <label for="register_no">रजिस्टर क्रमांक </label>
                                                     <select name="register_no" id="register_no"
                                                         class="form-control">
@@ -297,26 +292,22 @@ if (isset($_GET['edit_id'])) {
                                                     </select>
                                                     <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
                                                 </div>
-                                                    <div class="form-group col-md-2 d-flex align-items-end">
+                                             <div class="form-group col-md-2 d-flex align-items-end">
                                                        <a href="namuna8_masters_register.php"
-                                                           class="btn btn-primary bg-gradient-success">
+                                                           class="btn btn-primary bg-gradient-success ">
                                                            रजिस्टर नोंद </a>
                                                    </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="malmatta_no">मालमत्ता क्रमांक <span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" name="malmatta_no"
-                                                        id="malmatta_no" aria-describedby="emailHelp"
-                                                        placeholder="मालमत्ता क्रमांक" required>
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control border-primary" name="malmatta_no" id="malmatta_no" placeholder="मालमत्ता क्रमांक" required>
+                                                    <label for="malmatta_no">मालमत्ता क्रमांक <span class="text-danger">*</span></label>
                                                     <small id="malmattaNoHelp" class="form-text text-muted"></small>
                                                 </div>
-
-                                                <div class="form-group col-md-3 mx-auto">
-                                                    <label for="owner_name">मालमत्ता धारकाचे नाव <span
-                                                            class="text-danger">*</span>
-                                                    </label>
-                                                    <select name="owner_name" id="owner_name"
-                                                        class="form-control select2-single-placeholder">
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select name="owner_name" id="owner_name" class="form-select border-primary select2-single-placeholder">
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($newNames) > 0) {
@@ -326,20 +317,19 @@ if (isset($_GET['edit_id'])) {
                                                         }
                                                         ?>
                                                     </select>
-
+                                                    <label for="owner_name">मालमत्ता धारकाचे नाव <span class="text-danger">*</span></label>
                                                 </div>
-                                                <div class="form-group col-md-2 d-flex align-items-end">
-                                                    <a href="Form_Name_Masters.php"
-                                                        class="btn btn-primary bg-gradient-success">
-                                                        नवीन
-                                                        नाव नोंद </a>
-                                                </div>
-
-                                                <div class="form-group col-md-3 mx-auto">
-                                                    <label for="owner_wife_name">पत्नीचे नाव
-                                                    </label>
-                                                    <select name="owner_wife_name" id="owner_wife_name"
-                                                        class="form-control select2-single-placeholder">
+                                            </div>
+                                            
+                                            <div class="col-md-2 d-flex align-items-end">
+                                                <a href="Form_Name_Masters.php" class="btn btn-primary bg-gradient-primary">
+                                                    नवीन नाव नोंद
+                                                </a>
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select name="owner_wife_name" id="owner_wife_name" class="form-select border-primary select2-single-placeholder">
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($wifeNames) > 0) {
@@ -349,15 +339,13 @@ if (isset($_GET['edit_id'])) {
                                                         }
                                                         ?>
                                                     </select>
-
+                                                    <label for="owner_wife_name">पत्नीचे नाव</label>
                                                 </div>
-
-                                                <div class="form-group col-md-3 mx-auto">
-                                                    <label for="occupant_name">भोगवटा धारकाचे नाव <span
-                                                            class="text-danger">*</span>
-                                                    </label>
-                                                    <select name="occupant_name" id="occupant_name"
-                                                        class="form-control select2-single-placeholder" required>
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select name="occupant_name" id="occupant_name" class="form-select border-primary select2-single-placeholder" required>
                                                         <option value="">--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($occupant_name) > 0) {
@@ -367,15 +355,13 @@ if (isset($_GET['edit_id'])) {
                                                         }
                                                         ?>
                                                     </select>
-
+                                                    <label for="occupant_name">भोगवटा धारकाचे नाव <span class="text-danger">*</span></label>
                                                 </div>
-                                                <div class="form-group col-md-3 mx-auto">
-                                                    <label for="other_occupant_name">इतर भोगवटा धारकाचे नाव <span
-                                                            class="text-danger">*</span>
-                                                    </label>
-                                                    <select name="other_occupant_name[]" multiple="multiple"
-                                                        id="other_occupant_name" class="form-control select2-multiple"
-                                                        required>
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select name="other_occupant_name[]" multiple="multiple" id="other_occupant_name" class="form-select border-primary select2-multiple" required>
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($other_occupant_name) > 0) {
@@ -385,329 +371,297 @@ if (isset($_GET['edit_id'])) {
                                                         }
                                                         ?>
                                                     </select>
-
+                                                    <label for="other_occupant_name">इतर भोगवटा धारकाचे नाव <span class="text-danger">*</span></label>
                                                 </div>
-                                                <!-- <div class="form-group col-md-4">
-                                                    <label for="mobile_no">मोबाईल क्रमांक <span
-                                                            class="text-danger">*</span>
-                                                    </label>
-                                                    <input type="text" class="form-control" name="mobile_no"
-                                                        id="mobile_no" aria-describedby="emailHelp"
-                                                        placeholder="मोबाईल क्रमांक" required>
-
-
-                                                </div> -->
-                                                <div class="form-group col-md-4">
-                                                    <label for="city_survey_no">सिटी सर्वे क्रमांक
-                                                    </label>
-                                                    <input type="text" class="form-control" name="city_survey_no"
-                                                        id="city_survey_no" aria-describedby="emailHelp"
-                                                        placeholder="सिटी सर्वे क्रमांक">
-
-
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control border-primary" name="city_survey_no" id="city_survey_no" placeholder="सिटी सर्वे क्रमांक">
+                                                    <label for="city_survey_no">सिटी सर्वे क्रमांक</label>
                                                 </div>
-
-
-                                                <div class="form-group col-md-4 mx-auto">
-                                                    <label for="group_number">गट क्रमांक / सर्व्हे क्रमांक
-                                                    </label>
-                                                    <input type="text" class="form-control" name="group_number"
-                                                        id="group_number" aria-describedby="emailHelp"
-                                                        placeholder="गट क्रमांक / सर्व्हे क्रमांक">
-
-
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control border-primary" name="group_number" id="group_number" placeholder="गट क्रमांक / सर्व्हे क्रमांक">
+                                                    <label for="group_number">गट क्रमांक / सर्व्हे क्रमांक</label>
                                                 </div>
-
-                                                <div class="form-group col-md-4 mx-auto">
-                                                    <label for="toilet_available">शौचालय आहे <span
-                                                            class="text-danger">*</span>
-                                                    </label>
-                                                    <select name="toilet_available" id="toilet_available"
-                                                        class="form-control" required>
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select name="toilet_available" id="toilet_available" class="form-select border-primary" required>
                                                         <option value="" selected>--निवडा--</option>
                                                         <option value="yes">आहे</option>
                                                         <option value="no">नाही</option>
                                                     </select>
-
+                                                    <label for="toilet_available">शौचालय आहे <span class="text-danger">*</span></label>
                                                 </div>
-                                                <div class="form-group col-md-4 mx-auto">
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <textarea name="address" id="address" class="form-control border-primary" placeholder="Address"></textarea>
                                                     <label for="address">Address</label>
-                                                    <textarea name="address" id="address" class="form-control"
-                                                        placeholder="Address"></textarea>
-                                                </div>
-                                                <div class="col-md-4 mx-auto d-flex align-items-end">
-                                                    <p>( मिळकत माहिती ऑनलाइन पोर्टल वरती उपलब्ध होण्यासाठी
-                                                        कृपया
-                                                        मिळकत धारकाचा मोबाईल क्रमांक अचूक नोंद करा.)</p>
                                                 </div>
                                             </div>
-
-
-                                            <div class="w-75 col-12 card row py-5 px-4 my-5 mx-auto">
-                                                <div class="row">
-
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="income_type">मिळकत प्रकार
-                                                        </label>
-                                                        <select name="income_type" id="income_type"
-                                                            class="form-control">
-                                                            <option value="" selected>--निवडा--</option>
-                                                            <?php
-                                                            if (mysqli_num_rows($incomeTypes) > 0) {
-                                                                while ($incomeType = mysqli_fetch_assoc($incomeTypes)) {
-                                                                    echo '<option value="' . $incomeType['income_type'] . '">' . $incomeType['income_type'] . '</option>';
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </select>
-
-                                                    </div>
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="income_other_info">मिळकत इतर माहिती चतु:सीमा <span
-                                                                class="text-danger">*</span>
-                                                        </label>
-                                                        <input type="text" class="form-control" name="income_other_info"
-                                                            id="income_other_info" aria-describedby="emailHelp"
-                                                            placeholder="पूर्व, पश्चिम, उत्तर, दक्षिण ">
-
-
-                                                    </div>
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="taxable_land">करातून सुट/करपात्र असणाऱ्या जमिनी व
-                                                            इमारती
-                                                            <span class="text-danger">*</span>
-                                                        </label>
-                                                        <select name="taxable_land" id="taxable_land"
-                                                            class="form-control">
-                                                            <option value="" selected>--निवडा--</option>
-                                                            <?php
-                                                            if (mysqli_num_rows($taxExempts) > 0) {
-                                                                while ($taxExempt = mysqli_fetch_assoc($taxExempts)) {
-                                                                    echo '<option value="' . $taxExempt['tax_exempt'] . '">' . $taxExempt['tax_exempt'] . '</option>';
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </select>
-
-                                                    </div>
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="property_use">मालमत्ता वापर
-
-                                                        </label>
-                                                        <select name="property_use" id="property_use"
-                                                            class="form-control">
-                                                            <option value="" selected>--निवडा--</option>
-                                                            <?php
-                                                            if (mysqli_num_rows($malmattaUses) > 0) {
-                                                                while ($malmattaUse = mysqli_fetch_assoc($malmattaUses)) {
-                                                                    echo '<option value="' . $malmattaUse['malmatta_use'] . '">' . $malmattaUse['malmatta_use'] . '</option>';
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </select>
-
-                                                    </div>
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="tax_type">मालमत्ता/जमिनीचा कर प्रकार
-
-                                                        </label>
-                                                        <select name="tax_type" id="tax_type" class="form-control">
-                                                            <option value="" selected>--निवडा--</option>
-                                                            <?php
-                                                            if (mysqli_num_rows($redyrecs) > 0) {
-                                                                while ($redyrec = mysqli_fetch_assoc($redyrecs)) {
-                                                                    echo '<option value="' . $redyrec['rid'] . '">' . $redyrec['land_type'] . '</option>';
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </select>
-
-                                                    </div>
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="redirecenarParts">रेडिरेकनर प्रमाणे भाग / उपविभाग
-
-                                                        </label>
-                                                        <textarea name="redirecenarParts" class="form-control"
-                                                            id="redirecenarParts" readonly></textarea>
-
-
-
-                                                    </div>
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="redirecenarDar">दर
-
-                                                        </label>
-                                                        <textarea name="redirecenarDar" class="form-control"
-                                                            id="redirecenarDar" readonly></textarea>
-
-
-
-                                                    </div>
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <div>
-                                                            <input type="radio" name="construction_year_type"
-                                                                id="construction_year" value="construction_year">
-                                                            <label for="construction_year">बांधकाम वर्ष</label>
-                                                            <input type="radio" name="construction_year_type"
-                                                                id="building_age" value="building_age">
-                                                            <label for="building_age">वय</label>
-
-                                                        </div>
-                                                        <input type="text" class="form-control" name="age" id="age"
-                                                            aria-describedby="emailHelp" placeholder="">
-
-
-                                                    </div>
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="floors">मजला
-
-                                                        </label>
-                                                        <select name="floors" id="floors" class="form-control">
-                                                            <option value="" selected>--निवडा--</option>
-                                                            <?php
-                                                            if (mysqli_num_rows($buildingFloors) > 0) {
-                                                                while ($buildingFloor = mysqli_fetch_assoc($buildingFloors)) {
-                                                                    echo '<option value="' . $buildingFloor['floor_name'] . '">' . $buildingFloor['floor_name'] . '</option>';
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </select>
-
-                                                    </div>
-
-                                                    <div class="form-group col-md-4 mx-auto my-auto">
-                                                        <label for="">इमारतीचे क्षेत्रफळ :</label>
-                                                        <div>
-                                                            <input type="radio" name="measuring_unit" id="ft"
-                                                                value="foot" checked>
-                                                            <label for="ft">फूट (Foot)</label>
-                                                            <input type="radio" name="measuring_unit" id="meter"
-                                                                value="meter">
-                                                            <label for="meter">मीटर (Meter)</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="height">लांबी
-                                                        </label>
-                                                        <input type="number" class="form-control" name="height"
-                                                            id="height" aria-describedby="emailHelp" placeholder="0">
-
-
-                                                    </div>
-
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="width">रुंदी
-                                                        </label>
-                                                        <input type="number" class="form-control" name="width"
-                                                            id="width" aria-describedby="emailHelp" placeholder="0">
-
-
-                                                    </div>
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="area">क्षेत्रफळ (Area)</label>
-                                                        <input type="number" class="form-control" name="area" id="area"
-                                                            aria-describedby="emailHelp" placeholder="0">
-                                                        <small id="areaUnit" class="form-text text-muted">फूट (Square
-                                                            Feet)</small>
-                                                    </div>
-
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="converted_area">रूपांतरित क्षेत्रफळ (Converted
-                                                            Area)</label>
-                                                        <input type="number" class="form-control" name="converted_area"
-                                                            id="converted_area" aria-describedby="emailHelp"
-                                                            placeholder="0">
-                                                        <small id="convertedAreaUnit" class="form-text text-muted">मीटर
-                                                            (Square Meters)</small>
-                                                    </div>
-                                                    <!-- Change the file input in your dynamic property section -->
-                                                    <div class="form-group col-md-4 mx-auto">
-                                                        <label for="property_photo">मालमत्ता फोटो</label>
-                                                        <input type="file" class="form-control property-photo-input"
-                                                            name="property_photos[]" multiple>
-                                                    </div>
-                                                    <!-- <div class="form-group col-md-4 mx-auto my-auto">
-                                                        <button class="btn btn-primary bg-gradient-primary">
-                                                            ADD</button>
-                                                    </div> -->
-                                                </div>
-                                                <button type="button" name="add_property" id="add_property"
-                                                    class="btn btn-primary bg-gradient-primary">add</button>
-
-                                                <input type="hidden" name="income_data" id="income_data" />
-                                            </div>
-                                            <div class="table-responsive">
-                                                <table class="table align-items-center table-flush" id="income_table"
-                                                    border="1">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>मिळकत प्रकार</th>
-                                                            <th>मिळकत इतर माहिती चतु:सीमा</th>
-                                                            <th>करातून सुट/करपात्र असणाऱ्या जमिनी व इमारती</th>
-                                                            <th>मालमत्ता वापर</th>
-                                                            <th>मालमत्ता कर प्रकार</th>
-                                                            <th>रेडिरेकनर प्रमाणे भाग / उपविभाग</th>
-                                                            <th>दर</th>
-                                                            <th>बांधकाम वर्ष/वय</th>
-                                                            <th>मजला</th>
-                                                            <th>इमारतीचे क्षेत्रफळ :</th>
-                                                            <th>लांबी</th>
-                                                            <th>रुंदी</th>
-                                                            <th>क्षेत्रफळ (Area)</th>
-                                                            <th>रूपांतरित क्षेत्रफळ (Converted Area)</th>
-                                                            <th>मालमत्ता फोटो</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                </table>
+                                            
+                                            <div class="col-md-8 d-flex align-items-end">
+                                                <p>( मिळकत माहिती ऑनलाइन पोर्टल वरती उपलब्ध होण्यासाठी कृपया मिळकत धारकाचा मोबाईल क्रमांक अचूक नोंद करा.)</p>
                                             </div>
                                         </div>
-
-                                        <div>
-                                            <h5 class="bg-gradient-primary text-white py-3 px-5 w-25 rounded-pill">
-                                                पाणीवापर
-                                            </h5>
-                                            <div class="w-75 col-12 card row py-5 px-4 my-5 mx-auto">
-                                                <div class="row">
-
-                                                    <div class="form-group col-md-3 mx-auto">
-                                                        <label for="drainage_type">पाणीवापर प्रकार <span
-                                                                class="text-danger">*</span>
-                                                        </label>
-                                                        <select name="drainage_type" id="drainage_type"
-                                                            class="form-control" required>
-                                                            <option value="" selected>--निवडा--</option>
-                                                            <?php
-                                                            if (mysqli_num_rows($drainageTypes) > 0) {
-                                                                while ($drainageType = mysqli_fetch_assoc($drainageTypes)) {
-                                                                    echo '<option value="' . $drainageType['drainage_type'] . '">' . $drainageType['drainage_type'] . '</option>';
+                
+                                        <div class="card shadow my-4">
+                                            <div class="card-header py-3 bg-primary">
+                                                <h6 class="m-0 font-weight-bold text-white">मालमत्ता तपशील</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row g-3">
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <select name="income_type" id="income_type" class="form-select border-primary">
+                                                                <option value="" selected>--निवडा--</option>
+                                                                <?php
+                                                                if (mysqli_num_rows($incomeTypes) > 0) {
+                                                                    while ($incomeType = mysqli_fetch_assoc($incomeTypes)) {
+                                                                        echo '<option value="' . $incomeType['income_type'] . '">' . $incomeType['income_type'] . '</option>';
+                                                                    }
                                                                 }
-                                                            }
-                                                            ?>
-                                                        </select>
-
+                                                                ?>
+                                                            </select>
+                                                            <label for="income_type">मिळकत प्रकार</label>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-3 mx-auto">
-                                                        <label for="tap_numbers">नळ संख्या
-                                                        </label>
-                                                        <input type="number" class="form-control" name="tap_numbers"
-                                                            id="tap_numbers" aria-describedby="emailHelp"
-                                                            placeholder="नळ संख्या" value="0">
-
-
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control border-primary" name="income_other_info" id="income_other_info" placeholder="पूर्व, पश्चिम, उत्तर, दक्षिण">
+                                                            <label for="income_other_info">मिळकत इतर माहिती चतु:सीमा <span class="text-danger">*</span></label>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-3 mx-auto" id="meter_reading_div"
-                                                        style="display: none;">
-                                                        <label for="meter_reading">नळ मीटर रीडिंग
-                                                        </label>
-                                                        <input type="number" class="form-control" name="meter_reading"
-                                                            id="meter_reading" aria-describedby="emailHelp"
-                                                            placeholder="नळ मीटर रीडिंग" value="0">
-
-
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <select name="taxable_land" id="taxable_land" class="form-select border-primary">
+                                                                <option value="" selected>--निवडा--</option>
+                                                                <?php
+                                                                if (mysqli_num_rows($taxExempts) > 0) {
+                                                                    while ($taxExempt = mysqli_fetch_assoc($taxExempts)) {
+                                                                        echo '<option value="' . $taxExempt['tax_exempt'] . '">' . $taxExempt['tax_exempt'] . '</option>';
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                            <label for="taxable_land">करातून सुट/करपात्र असणाऱ्या जमिनी व इमारती <span class="text-danger">*</span></label>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-3 mx-auto" id="meter_no_div"
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <select name="property_use" id="property_use" class="form-select border-primary">
+                                                                <option value="" selected>--निवडा--</option>
+                                                                <?php
+                                                                if (mysqli_num_rows($malmattaUses) > 0) {
+                                                                    while ($malmattaUse = mysqli_fetch_assoc($malmattaUses)) {
+                                                                        echo '<option value="' . $malmattaUse['malmatta_use'] . '">' . $malmattaUse['malmatta_use'] . '</option>';
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                            <label for="property_use">मालमत्ता वापर</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <select name="tax_type" id="tax_type" class="form-select border-primary">
+                                                                <option value="" selected>--निवडा--</option>
+                                                                <?php
+                                                                if (mysqli_num_rows($redyrecs) > 0) {
+                                                                    while ($redyrec = mysqli_fetch_assoc($redyrecs)) {
+                                                                        echo '<option value="' . $redyrec['rid'] . '">' . $redyrec['land_type'] . '</option>';
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                            <label for="tax_type">मालमत्ता/जमिनीचा कर प्रकार</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <textarea name="redirecenarParts" class="form-control border-primary" id="redirecenarParts" readonly></textarea>
+                                                            <label for="redirecenarParts">रेडिरेकनर प्रमाणे भाग / उपविभाग</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <textarea name="redirecenarDar" class="form-control border-primary" id="redirecenarDar" readonly></textarea>
+                                                            <label for="redirecenarDar">दर</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <div class="d-flex gap-3 mb-2">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="construction_year_type" id="construction_year" value="construction_year">
+                                                                    <label class="form-check-label" for="construction_year">बांधकाम वर्ष</label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="construction_year_type" id="building_age" value="building_age">
+                                                                    <label class="form-check-label" for="building_age">वय</label>
+                                                                </div>
+                                                            </div>
+                                                            <input type="text" class="form-control border-primary" name="age" id="age" placeholder="">
+                                                            <label for="age">बांधकाम वर्ष/वय</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <select name="floors" id="floors" class="form-select border-primary">
+                                                                <option value="" selected>--निवडा--</option>
+                                                                <?php
+                                                                if (mysqli_num_rows($buildingFloors) > 0) {
+                                                                    while ($buildingFloor = mysqli_fetch_assoc($buildingFloors)) {
+                                                                        echo '<option value="' . $buildingFloor['floor_name'] . '">' . $buildingFloor['floor_name'] . '</option>';
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                            <label for="floors">मजला</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <div class="d-flex gap-3 mb-2">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="measuring_unit" id="ft" value="foot" checked>
+                                                                    <label class="form-check-label" for="ft">फूट (Foot)</label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="measuring_unit" id="meter" value="meter">
+                                                                    <label class="form-check-label" for="meter">मीटर (Meter)</label>
+                                                                </div>
+                                                            </div>
+                                                            <label for="height">इमारतीचे क्षेत्रफळ :</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <input type="number" class="form-control border-primary" name="height" id="height" placeholder="0">
+                                                            <label for="height">लांबी</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <input type="number" class="form-control border-primary" name="width" id="width" placeholder="0">
+                                                            <label for="width">रुंदी</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <input type="number" class="form-control border-primary" name="area" id="area" placeholder="0">
+                                                            <label for="area">क्षेत्रफळ (Area)</label>
+                                                            <small id="areaUnit" class="form-text text-muted">फूट (Square Feet)</small>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <input type="number" class="form-control border-primary" name="converted_area" id="converted_area" placeholder="0">
+                                                            <label for="converted_area">रूपांतरित क्षेत्रफळ (Converted Area)</label>
+                                                            <small id="convertedAreaUnit" class="form-text text-muted">मीटर (Square Meters)</small>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <input type="file" class="form-control border-primary property-photo-input" name="property_photos[]" multiple>
+                                                            <label for="property_photos">मालमत्ता फोटो</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="text-center mt-4">
+                                                    <button type="button" name="add_property" id="add_property" class="btn btn-primary px-4">
+                                                        <i class="fas fa-plus me-2"></i>Add Property
+                                                    </button>
+                                                </div>
+                                                
+                                                <input type="hidden" name="income_data" id="income_data" />
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="table-responsive">
+                                            <table class="table align-items-center table-flush" id="income_table" border="1">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>मिळकत प्रकार</th>
+                                                        <th>मिळकत इतर माहिती चतु:सीमा</th>
+                                                        <th>करातून सुट/करपात्र असणाऱ्या जमिनी व इमारती</th>
+                                                        <th>मालमत्ता वापर</th>
+                                                        <th>मालमत्ता कर प्रकार</th>
+                                                        <th>रेडिरेकनर प्रमाणे भाग / उपविभाग</th>
+                                                        <th>दर</th>
+                                                        <th>बांधकाम वर्ष/वय</th>
+                                                        <th>मजला</th>
+                                                        <th>इमारतीचे क्षेत्रफळ :</th>
+                                                        <th>लांबी</th>
+                                                        <th>रुंदी</th>
+                                                        <th>क्षेत्रफळ (Area)</th>
+                                                        <th>रूपांतरित क्षेत्रफळ (Converted Area)</th>
+                                                        <th>मालमत्ता फोटो</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                
+                                        <div class="card shadow my-4">
+                                            <div class="card-header py-3 bg-primary">
+                                                <h6 class="m-0 font-weight-bold text-white">पाणीवापर</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row g-3">
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <select name="drainage_type" id="drainage_type" class="form-select border-primary" required>
+                                                                <option value="" selected>--निवडा--</option>
+                                                                <?php
+                                                                if (mysqli_num_rows($drainageTypes) > 0) {
+                                                                    while ($drainageType = mysqli_fetch_assoc($drainageTypes)) {
+                                                                        echo '<option value="' . $drainageType['drainage_type'] . '">' . $drainageType['drainage_type'] . '</option>';
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                            <label for="drainage_type">पाणीवापर प्रकार <span class="text-danger">*</span></label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <input type="number" class="form-control border-primary" name="tap_numbers" id="tap_numbers" placeholder="नळ संख्या" value="0">
+                                                            <label for="tap_numbers">नळ संख्या</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4" id="meter_reading_div" style="display: none;">
+                                                        <div class="form-floating">
+                                                            <input type="number" class="form-control border-primary" name="meter_reading" id="meter_reading" placeholder="नळ मीटर रीडिंग" value="0">
+                                                            <label for="meter_reading">नळ मीटर रीडिंग</label>
+                                                        </div>
+                                                    </div>
+                                                     <div class="form-group col-md-3 mx-auto" id="meter_no_div"
                                                         style="display: none;">
                                                         <label for="meter_no">नळ मीटर क्रमांक
                                                         </label>
@@ -717,79 +671,65 @@ if (isset($_GET['edit_id'])) {
 
 
                                                     </div>
-                                                    <div class="form-group col-md-3 mx-auto">
-                                                        <label for="tap_width">नळ व्यास
-
-                                                        </label>
-                                                        <select name="tap_width" id="tap_width" class="form-control"
-                                                            required>
-                                                            <option value="" selected>--निवडा--</option>
-                                                            <option value="1/2">1/2</option>
-                                                            <option value="1">1</option>
-                                                            <option value="3/4">3/4</option>
-                                                        </select>
-
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <select name="tap_width" id="tap_width" class="form-select border-primary" required>
+                                                                <option value="" selected>--निवडा--</option>
+                                                                <option value="1/2">1/2</option>
+                                                                <option value="1">1</option>
+                                                                <option value="3/4">3/4</option>
+                                                            </select>
+                                                            <label for="tap_width">नळ व्यास</label>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-3 mx-auto">
-                                                        <label for="tap_owner_name">नळ धारकाचे नाव
-
-                                                        </label>
-                                                        <select name="tap_owner_name" id="tap_owner_name"
-                                                            class="form-control select2-single-placeholder">
-                                                            <option value="">--निवडा--</option>
-                                                            <?php
-                                                            if (mysqli_num_rows($tapOwner) > 0) {
-                                                                while ($tapOwners = mysqli_fetch_assoc($tapOwner)) {
-                                                                    echo '<option value="' . $tapOwners['id'] . '">' . $tapOwners['person_name'] . '</option>';
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            <select name="tap_owner_name" id="tap_owner_name" class="form-select border-primary select2-single-placeholder">
+                                                                <option value="">--निवडा--</option>
+                                                                <?php
+                                                                if (mysqli_num_rows($tapOwner) > 0) {
+                                                                    while ($tapOwners = mysqli_fetch_assoc($tapOwner)) {
+                                                                        echo '<option value="' . $tapOwners['id'] . '">' . $tapOwners['person_name'] . '</option>';
+                                                                    }
                                                                 }
-                                                            }
-                                                            ?>
-                                                        </select>
-
+                                                                ?>
+                                                            </select>
+                                                            <label for="tap_owner_name">नळ धारकाचे नाव</label>
+                                                        </div>
                                                     </div>
-
-
                                                 </div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <h5 class="bg-gradient-primary text-white py-3 px-5 w-25 rounded-pill">
-                                                शेरा / बोजा नोंद
-                                            </h5>
-                                            <div class="w-75 col-12 card row py-5 px-4 my-5 mx-auto">
-                                                <div class="row">
-
-                                                    <div class="form-group col-md-12 mx-auto">
-                                                        <label for="remarks">शेरा / बोजा
-                                                        </label>
-                                                        <textarea name="remarks" id="remarks" class="form-control"
-                                                            placeholder="शेरा / बोजा नोंद"></textarea>
-
-                                                    </div>
-
-
-
+                
+                                        <div class="card shadow my-4">
+                                            <div class="card-header py-3 bg-primary">
+                                                <h6 class="m-0 font-weight-bold text-white">शेरा / बोजा नोंद</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-floating">
+                                                    <textarea name="remarks" id="remarks" class="form-control border-primary" placeholder="शेरा / बोजा नोंद"></textarea>
+                                                    <label for="remarks">शेरा / बोजा</label>
                                                 </div>
                                             </div>
                                         </div>
-
-
-                                        <div class="w-100 mx-auto col-md-2">
-                                            <button type="submit" name="<?= $isEditMode ? 'update' : 'add' ?>"
-                                                class="btn btn-primary bg-gradient-primary">
-                                                <?= $isEditMode ? 'अद्यतनित करा' : 'साठवणे' ?>
+                
+                                        <div class="text-center mt-4">
+                                            <button type="submit" name="<?= $isEditMode ? 'update' : 'add' ?>" class="btn btn-primary px-4 me-3">
+                                                <i class="fas fa-save me-2"></i><?= $isEditMode ? 'अद्यतनित करा' : 'साठवणे' ?>
                                             </button>
-                                            <button type="reset" class="btn btn-secondary bg-gradient-secondary">रद्द
-                                                करणे</button>
-
+                                            <button type="reset" class="btn btn-outline-danger px-4">
+                                                <i class="fas fa-times me-2"></i>रद्द करणे
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-lg-12 d-none">
-                            <div class="card">
-
+                            <div class="card shadow">
                                 <div class="table-responsive">
                                     <table class="table align-items-center table-flush">
                                         <thead class="thead-light">
@@ -826,29 +766,22 @@ if (isset($_GET['edit_id'])) {
                                                         <td><?php echo $malmatta['period']; ?></td>
                                                         <td>
                                                             <a href="#" onclick="filldata(
-                    '<?php echo $malmatta['id']; ?>',
-                    '<?php echo $malmatta['ward']; ?>',
-                    '<?php echo $malmatta['malmatta_no']; ?>',
-                    '<?php echo $malmatta['owner_name']; ?>',
-                    '<?php echo $malmatta['occupant_name']; ?>',
-                    '<?php echo $malmatta['mobile_no']; ?>',
-                    '<?php echo $malmatta['city_survey_no']; ?>',
-                    '<?php echo $malmatta['drainage_type']; ?>',
-                    '<?php echo $malmatta['washroom_availbale']; ?>',
-                    '<?php echo $malmatta['period']; ?>',
-                    '<?php echo $malmatta['village'] ?>',
-                    '<?php echo $malmatta['road']; ?>',
-                    '<?php echo $malmatta['wife_name'] ?>',
-                    '<?php echo $malmatta['group_no'] ?>'
-                )">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-pencil-square"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                                                    <path fill-rule="evenodd"
-                                                                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                                                                </svg>
+                                                                '<?php echo $malmatta['id']; ?>',
+                                                                '<?php echo $malmatta['ward']; ?>',
+                                                                '<?php echo $malmatta['malmatta_no']; ?>',
+                                                                '<?php echo $malmatta['owner_name']; ?>',
+                                                                '<?php echo $malmatta['occupant_name']; ?>',
+                                                                '<?php echo $malmatta['mobile_no']; ?>',
+                                                                '<?php echo $malmatta['city_survey_no']; ?>',
+                                                                '<?php echo $malmatta['drainage_type']; ?>',
+                                                                '<?php echo $malmatta['washroom_availbale']; ?>',
+                                                                '<?php echo $malmatta['period']; ?>',
+                                                                '<?php echo $malmatta['village'] ?>',
+                                                                '<?php echo $malmatta['road']; ?>',
+                                                                '<?php echo $malmatta['wife_name'] ?>',
+                                                                '<?php echo $malmatta['group_no'] ?>'
+                                                            )">
+                                                                <i class="fas fa-edit"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -859,20 +792,15 @@ if (isset($_GET['edit_id'])) {
                                             }
                                             ?>
                                         </tbody>
-
                                     </table>
                                 </div>
                                 <div class="card-footer"></div>
                             </div>
                         </div>
                     </div>
-
-
-
-
+                
                     <div class="col-lg-12">
-                        <div class="card py-5 px-5">
-
+                        <div class="card shadow py-4">
                             <div class="table-responsive">
                                 <table class="table align-items-center table-flush" id="dataTable">
                                     <thead class="thead-light">
@@ -887,12 +815,8 @@ if (isset($_GET['edit_id'])) {
                                             <th>भोगवटा धारकाचे नाव</th>
                                             <th>इतर भोगवटा धारकाचे नाव</th>
                                             <th>भोगवटाधारक</th>
-
                                             <th>मालमत्ता</th>
                                             <th>बदल</th>
-                                            <!-- <th>जमिन दर</th>
-                                                        <th>बांधकाम दर</th> -->
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -900,15 +824,11 @@ if (isset($_GET['edit_id'])) {
                                         if (count($allMalmattaEnteries) > 0) {
                                             $i = 1;
                                             foreach ($allMalmattaEnteries as $name) {
-                                                // print_r($name);
-                                                // echo "<br>";
-                                        
                                                 $malmatta_use_tax = [
                                                     "रहिवाशी" => 1,
                                                     "वाणिज्य/व्यापार" => 1.25,
                                                     "औद्योगिक" => 1.2
                                                 ];
-                                                // $bharank = $malmatta_use_tax[$name["malmatta_use"]];
                                                 ?>
                                                 <tr>
                                                     <td><a href="#"><?php echo $i++; ?></a></td>
@@ -921,33 +841,22 @@ if (isset($_GET['edit_id'])) {
                                                     <td><?php echo $name['occupant_name']; ?></td>
                                                     <td><?php echo $name['other_occupant_name']; ?></td>
                                                     <td><?php echo $name['occupant_name']; ?></td>
-
-
                                                     <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                            data-target="#modal<?php echo $name['malmatta_id'] ?>"
-                                                            id="#modalCenter<?php echo $name['malmatta_id'] ?>">View
-                                                            Properties</button>
-                                                        <div class="modal fade" id="modal<?php echo $name['malmatta_id'] ?>"
-                                                            tabindex="-1" role="dialog"
-                                                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered" role="document"
-                                                                style="width: 90% !important;">
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<?php echo $name['malmatta_id'] ?>" id="#modalCenter<?php echo $name['malmatta_id'] ?>">
+                                                            <i class="fas fa-eye me-2"></i>View Properties
+                                                        </button>
+                                                        <div class="modal fade" id="modal<?php echo $name['malmatta_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document" style="width: 90% !important;max-width:100% !important">
                                                                 <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalCenterTitle">
-                                                                            Property
-                                                                            Details
-                                                                        </h5>
-                                                                        <button type="button" class="close" data-dismiss="modal"
-                                                                            aria-label="Close">
+                                                                    <div class="modal-header bg-primary text-white">
+                                                                        <h5 class="modal-title" id="exampleModalCenterTitle">Property Details</h5>
+                                                                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <div class="table-responsive mt-4">
-                                                                            <table id="propertyTable"
-                                                                                class="table table-bordered table-striped text-center align-middle">
+                                                                            <table id="propertyTable" class="table table-bordered table-striped text-center align-middle">
                                                                                 <thead class="bg-primary text-white">
                                                                                     <tr>
                                                                                         <th>अ क्र</th>
@@ -973,75 +882,67 @@ if (isset($_GET['edit_id'])) {
                                                                                     <?php
                                                                                     if (isset($name['properties'])) {
                                                                                         $sr = 1;
-                                                                                        $allModals = ""; // Collect modals here
+                                                                                        $allModals = "";
                                                                                         foreach ($name['properties'] as $property) {
-                                                                                            // print_r($property);
                                                                                             $photoCell = $property['property_photo_path'] ?
-                                                                                                '<td><img src="' . $property['property_photo_path'] . '" alt="Property Photo"
-                     width="50" height="50" 
-                     class="thumbnail-img"
-                     style="cursor: pointer;"
-                     data-toggle="modal"
-                     data-target="#modal' . md5($property['property_photo_path']) . '"></td>' :
+                                                                                                '<td><img src="' . $property['property_photo_path'] . '" alt="Property Photo" width="50" height="50" class="thumbnail-img" style="cursor: pointer;" data-toggle="modal" data-target="#modal' . md5($property['property_photo_path']) . '"></td>' :
                                                                                                 '<td>No photo</td>';
-
-                                                                                            // Store modal for later rendering
+                
                                                                                             if ($property['property_photo_path']) {
-                                                                                                $modalId = md5($property['property_photo_path']); // safe ID
+                                                                                                $modalId = md5($property['property_photo_path']);
                                                                                                 $allModals .= '<div class="modal fade" id="modal' . $modalId . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Property Photo</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body text-center">
-                                    <img src="' . $property['property_photo_path'] . '" alt="Property Photo" class="enlarged-image img-fluid">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>';
+                                                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                                                        <div class="modal-content">
+                                                                                                            <div class="modal-header bg-primary text-white">
+                                                                                                                <h5 class="modal-title">Property Photo</h5>
+                                                                                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                            <div class="modal-body text-center">
+                                                                                                                <img src="' . $property['property_photo_path'] . '" alt="Property Photo" class="enlarged-image img-fluid">
+                                                                                                            </div>
+                                                                                                            <div class="modal-footer">
+                                                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>';
                                                                                             }
-
                                                                                             ?>
                                                                                             <tr>
                                                                                                 <td><?php echo $sr++; ?></td>
-                                                                                                <td><?php echo $name['malmatta_no']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['property_use']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['floor']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['lenght']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['width']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['areaInFoot']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['areaInMt']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['construction_year']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['yearly_tax']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['construction_tax']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['ghasara_tax']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['bharank']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['bhandavali']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['milkat_fixed_tax']; ?>
-                                                                                                </td>
-                                                                                                <td><?php echo $property['building_value']; ?>
-                                                                                                </td>
+                                                                                                <td><?php echo $name['malmatta_no']; ?></td>
+                                                                                                <td><?php echo $property['property_use']; ?></td>
+                                                                                                <td><?php echo $property['floor']; ?></td>
+                                                                                                <td><?php echo $property['lenght']; ?></td>
+                                                                                                <td><?php echo $property['width']; ?></td>
+                                                                                                <td><?php echo $property['areaInFoot']; ?></td>
+                                                                                                <td><?php echo $property['areaInMt']; ?></td>
+                                                                                                <td><?php echo $property['construction_year']; ?></td>
+                                                                                                <td><?php echo $property['yearly_tax']; ?></td>
+                                                                                                <td><?php echo $property['construction_tax']; ?></td>
+                                                                                                <td><?php echo $property['ghasara_tax']; ?></td>
+                                                                                                <td><?php echo $property['bharank']; ?></td>
+                                                                                                <td><?php echo $property['bhandavali']; ?></td>
+                                                                                                <td><?php echo $property['milkat_fixed_tax']; ?></td>
+                                                                                                <td><?php echo $property['building_value']; ?></td>
                                                                                                 <?php echo $photoCell; ?>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td colspan="17" >
+                                                                                                    <p>भांडवली = क्षेत्रफळ * रेडीरेकनर दर + क्षेत्रफळ * बांधकाम दर * घसारा दर * भारांक = <?php echo $property['areaInMt'] ?> * <?php echo $property['yearly_tax'] ?>
+                                                                                                                +  <?php echo $property['areaInMt'] ?> * <?php echo $property['construction_tax'] ?> * <?php echo $property['ghasara_tax'] ?> * <?php echo $property['bharank'] ?></p>
+                                                                                                    
+                                                                                                    <p>भांडवली = <?php echo $property['bhandavali'] ?></p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td colspan="17" >
+                                                                                                    <p>इमारत कर = (भांडवली*मिळकत कर दर) / 1000 = (<?php echo $property['bhandavali'] ?> * <?php echo $property['milkat_fixed_tax'] ?>) / 1000 </p>
+                                                                                                  
+                                                                                                    <p>इमारत कर = <?php echo $property['building_value'] ?></p>
+                                                                                                </td>
                                                                                             </tr>
                                                                                             <?php
                                                                                         }
@@ -1052,35 +953,21 @@ if (isset($_GET['edit_id'])) {
                                                                                         </tr>
                                                                                         <?php
                                                                                     }
+                                                                                    echo $allModals;
                                                                                     ?>
                                                                                 </tbody>
-
-                                                                                <!-- Echo all modals here, outside the table -->
-                                                                                <?php echo $allModals; ?>
-
                                                                             </table>
                                                                         </div>
                                                                     </div>
-
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <a href="form_n8.php?edit_id=<?php echo $name['malmatta_id']; ?>">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                                fill="currentColor" class="bi bi-pencil-square"
-                                                                viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                                                <path fill-rule="evenodd"
-                                                                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                                                            </svg>
+                                                        <a href="form_n8.php?edit_id=<?php echo $name['malmatta_id']; ?>" class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-edit"></i>
                                                         </a>
                                                     </td>
-
-
-
                                                 </tr>
                                                 <?php
                                             }
@@ -1088,15 +975,12 @@ if (isset($_GET['edit_id'])) {
                                             echo "<tr><td colspan='4'>No data found</td></tr>";
                                         }
                                         ?>
-
-
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="card-footer"></div>
                         </div>
-                        <!---Container Fluid-->
                     </div>
-                    <div class="card-footer"></div>
                 </div>
             </div>
             <!-- Footer -->
@@ -1996,7 +1880,16 @@ if (isset($_GET['edit_id'])) {
             }
 
 
-            
+            // $(document).ready(function () {
+               
+            //     khasaraNoInput.addEventListener('change', function () {
+            //         const khasaraNo = this.value.trim();
+            //         console.log('Khasara No:', khasaraNo);
+            //         if (khasaraNo) {
+            //             loadWardsForKhasara(khasaraNo, 'ward_name');
+            //         }
+            //     });
+            // });
 
 
 
@@ -2034,7 +1927,7 @@ if (isset($_GET['edit_id'])) {
             //     checkMalmattaAvailability(this.value);
             // });
 
-            // Also check before form submission
+            // // Also check before form submission
             // document.getElementById('malmatta_no').addEventListener('change', function (e) {
             //     if (malmattaNoInput.value) {
             //         // For immediate feedback, you might want to do a synchronous check here

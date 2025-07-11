@@ -1133,13 +1133,13 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = number_format($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = number_format($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
-                $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
+                $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * number_format($ghasaraTax / 100,2) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
@@ -1301,8 +1301,8 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
@@ -1469,8 +1469,8 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
@@ -1637,8 +1637,8 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
@@ -1805,8 +1805,8 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
@@ -1973,8 +1973,8 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
@@ -2141,8 +2141,8 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
@@ -2309,8 +2309,8 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
@@ -2477,8 +2477,8 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
@@ -2647,8 +2647,8 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0 ;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
@@ -2817,14 +2817,20 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
+                // echo $area . "*". $row['yearly_tax'] . " + " . $area . "*" . $constructionTax . "*(" . $ghasaraTax / 100 . ")*" . $bharank . "<br>";
+                // echo "bhandavali: " . $bhandavali . "<br>";
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                // echo "(" . $bhandavali . "*" . $milkatFixedTax . ")/1000<br>";
+                // echo "building_value: " . $building_value . "<br>";
+                // echo "milkatFixedTax: " . $milkatFixedTax . "<br>";
+                
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
                     $padsar_total_value += $building_value;
@@ -2983,8 +2989,8 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = ($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
@@ -3157,8 +3163,8 @@ class Fun
                 } else if ($year > 60) {
                     $ghasaraTax = $group[8];
                 }
-                $area = round(($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area']), 2);
-                $areaInFoot = ($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76);
+                $area = round(round($row['measuring_unit'] == 'foot' ? $row['area'] / 10.76 : $row['area'],2), 2);
+                $areaInFoot = round($row['measuring_unit'] == 'foot' ? $row['area'] : $row['area'] * 10.76,2);
 
                 $constructionTax = $milkatTaxInfo[$this->milkatObject[$row['property_use']]] ?? 0;
                 $milkatFixedTax = $milkatTaxFixed[$this->milkatObject[$row['property_use']]] ?? 0;
