@@ -3292,9 +3292,9 @@ class Fun
         return $result;
     }
 
-    public function addMalmattaWaterTax($malmatta_id, $water_usage_type, $no_of_taps, $tap_width, $tap_owner_name, $meter_reading)
+    public function addMalmattaWaterTax($malmatta_id, $water_usage_type, $no_of_taps, $tap_width, $tap_owner_name, $meter_reading,  $meter_no)
     {
-        $query = "INSERT INTO `malmatta_water_tax`(`malmatta_id`, `water_usage_type`, `no_of_taps`, `tap_width`, `tap_owner_name`,`meter_reading`) VALUES ('$malmatta_id', '$water_usage_type', '$no_of_taps', '$tap_width', '$tap_owner_name', '$meter_reading')";
+        $query = "INSERT INTO `malmatta_water_tax`(`malmatta_id`, `water_usage_type`, `no_of_taps`, `tap_width`, `tap_owner_name`,`meter_reading`, `meter_no`) VALUES ('$malmatta_id', '$water_usage_type', '$no_of_taps', '$tap_width', '$tap_owner_name', '$meter_reading', '$meter_no')";
         $result = mysqli_query($this->db, $query);
         return $result;
     }

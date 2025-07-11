@@ -613,12 +613,22 @@ if (isset($_GET['edit_id'])) {
                                                                 3/4</option>
                                                         </select>
                                                     </div>
-                                                                                    <div class="form-group col-md-3 mx-auto" id="meter_reading_div" style="display: none;" >
+                                                                                    <div class="form-group col-md-3 mx-auto" id="meter_reading_div" style="display: <?php echo $isEditMode && !empty($waterTariff) && $waterTariff['water_usage_type'] == "विशेष पाणीपट्टी (मीटर रीडिंग अनुसार)" || $waterTariff['water_usage_type'] == "विशेष पाणीपट्टी (मीटर रीडिंग अनुसार) (विशेष)" ? 'none' : ''; ?>;" >
                                                         <label for="meter_reading">नळ मीटर रीडिंग
                                                         </label>
                                                         <input type="number" class="form-control" name="meter_reading"
                                                             id="meter_reading" aria-describedby="emailHelp"
-                                                            placeholder="नळ मीटर रीडिंग" value="0">
+                                                            placeholder="नळ मीटर रीडिंग" value="<?php echo $isEditMode && !empty($waterTariff) ? htmlspecialchars($waterTariff['meter_reading']) : '0'; ?>" <?php echo $isEditMode && !empty($waterTariff) && $waterTariff['water_usage_type'] == "वापर नाही" ? 'disabled' : ''; ?>>
+
+
+                                                    </div>
+                                                    <div class="form-group col-md-3 mx-auto" id="meter_no_div"
+                                                        style="display: <?php echo $isEditMode && !empty($waterTariff) && $waterTariff['water_usage_type'] == "विशेष पाणीपट्टी (मीटर क्रमांक अनुसार)" || $waterTariff['water_usage_type'] == "विशेष पाणीपट्टी (मीटर क्रमांक अनुसार) (विशेष)" ? 'none' : ''; ?>;">
+                                                        <label for="meter_no">नळ मीटर क्रमांक
+                                                        </label>
+                                                        <input type="text" class="form-control" name="meter_no"
+                                                            id="meter_no" aria-describedby="emailHelp"
+                                                            placeholder="नळ मीटर क्रमांक" value="<?php echo $isEditMode && !empty($waterTariff) ? htmlspecialchars($waterTariff['meter_no']) : '0'; ?>" <?php echo $isEditMode && !empty($waterTariff) && $waterTariff['water_usage_type'] == "वापर नाही" ? 'disabled' : ''; ?>>
 
 
                                                     </div>
@@ -1105,6 +1115,8 @@ if (isset($_GET['edit_id'])) {
                 $("#meter_reading").prop("disabled", false);
                 $("#meter_reading").prop("required", true);
                 $("#meter_reading_div").show();
+                $("#meter_no_div").show();
+
                  $("#tap_numbers").prop("disabled", false).prop("required", true).prop('readonly', false);
                             $("#tap_width").prop("disabled", false).prop("required", true).prop('readonly', false);
                             $("#tap_owner_name").prop("disabled", false).prop("required", true).prop('readonly', false);
@@ -1118,6 +1130,8 @@ if (isset($_GET['edit_id'])) {
                
                 $("#meter_reading").prop("required", false);
                 $("#meter_reading_div").hide();
+                $("#meter_no_div").hide();
+
                         }
                     });
                 });

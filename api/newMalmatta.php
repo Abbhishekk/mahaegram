@@ -56,6 +56,7 @@ try {
         'tap_owner_name',
         'address',
         'meter_reading',
+        'meter_no',
         'ward_name'
     ];
 
@@ -168,7 +169,8 @@ try {
             $data['tap_numbers'],
             $data['tap_width'],
             $data['tap_owner_name'],
-            $data['meter_reading'] ?? ''
+            $data['meter_reading'] ?? '',
+            $data['meter_no'] ?? ''
         );
 
         if (!$water_added) {

@@ -707,6 +707,16 @@ if (isset($_GET['edit_id'])) {
 
 
                                                     </div>
+                                                    <div class="form-group col-md-3 mx-auto" id="meter_no_div"
+                                                        style="display: none;">
+                                                        <label for="meter_no">नळ मीटर क्रमांक
+                                                        </label>
+                                                        <input type="text" class="form-control" name="meter_no"
+                                                            id="meter_no" aria-describedby="emailHelp"
+                                                            placeholder="नळ मीटर क्रमांक" value="0">
+
+
+                                                    </div>
                                                     <div class="form-group col-md-3 mx-auto">
                                                         <label for="tap_width">नळ व्यास
 
@@ -1142,6 +1152,7 @@ if (isset($_GET['edit_id'])) {
                 $("#meter_reading").prop("disabled", false);
                 $("#meter_reading").prop("required", true);
                 $("#meter_reading_div").show();
+                $("#meter_no_div").show();
             }
 
             else {
@@ -1155,6 +1166,7 @@ if (isset($_GET['edit_id'])) {
 
                 $("#meter_reading").prop("required", false);
                 $("#meter_reading_div").hide();
+                $("#meter_no_div").hide();
             }
         });
 
