@@ -100,8 +100,9 @@ $roads = $fun->getRoad($_SESSION['district_code']);
                                         <option value="">--निवडा--</option>
                                         <?php
                                         foreach ($property_verifications as $property) {
+                                                $format = ($property['ward_name']!= "" ? $property['ward_name'] :"वॉर्ड नाव")." / ".($property['property_road_name'] != "" ? $property['property_road_name'] : "रस्त्याचे नाव")." / रजिस्टर नं- ".($property['register_no']!="" ? $property['register_no']:"0")." / खासरा नं- ".($property['khasara_no']!="" ? $property['khasara_no']:"0")." / मालमत्ता नं- ".$property['malmatta_no'];
 
-                                            echo "<option value='{$property['malmatta_id']}'>{$property['malmatta_no']}</option>";
+                                            echo "<option value='{$property['malmatta_id']}'>{$format}</option>";
                                         }
                                         ?>
                                     </select>
@@ -160,71 +161,46 @@ $roads = $fun->getRoad($_SESSION['district_code']);
     </script>
     <script>
         $(document).ready(function() {
-            console.log("Document is ready");
+    $('#generatePdfBtn').click(async function() {
+        // Get form values
+        const financial_year = $('#financial_year').val();
+        const malmatta_id = $('#malmatta_id').val() || null;
+        const bill_type = $('input[name="bill_type"]:checked').val();
+        const date = $('#date').val();
 
-            $('#generatePdfBtn').click(async function() {
-                // Get form values
-                console.log("Generate PDF button clicked");
+        // Validate required fields
+        if (!financial_year) {
+            alert('कृपया आर्थिक वर्ष निवडा');
+            return;
+        }
 
-                
-                const financial_year = $('#financial_year').val();
-                const malmatta_id = $('#malmatta_id').val() || null;
-                const bill_type = $('input[name="bill_type"]:checked').val();
-                const date = $('#date').val();
-                const sarpanch_signature = $('#sarpanch_signature').val();
+        if (!date) {
+            alert('कृपया दिनांक निवडा');
+            return;
+        }
 
-                // Validate required fields
-                if (!financial_year) {
-                    alert('कृपया आर्थिक वर्ष निवडा');
-                    return;
-                }
+        // Construct URL with parameters
+        let url = `pdf/namuna9_panni_bill_pavati.php?financial_year=${financial_year}&date=${date}&bill_type=${bill_type}`;
+        
+        if (malmatta_id) {
+            url += `&malmatta_id=${malmatta_id}`;
+        }
 
-
-                if (!date) {
-                    alert('कृपया दिनांक निवडा');
-                    return;
-                }
-
-                if (bill_type === "all_bill" && !financial_year && !date) {
-                    alert('कृपया वॉर्ड किंवा मालमत्ता क्रमांक निवडा');
-                    return;
-                }
-
-                // Construct URL with parameters
-                let url =
-                    `pdf/namuna9_panni_bill_pavati.php?financial_year=${financial_year}&date=${date}`;
-
-                if (malmatta_id) url += `&malmatta_id=${malmatta_id}`;
-                if (bill_type) url += `&bill_type=${bill_type}`;
-
-                // Open in new window for printing
-                const res = await fetch(
-                    url, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                const html = await res.text();
-
-                // 👇 Open in new tab and print
-                const printWindow = window.open('', '_blank');
-                printWindow.document.open();
-                printWindow.document.write(`
-            <html>
-            <head>
-            <title>नमुना 9</title>
-            
-            </head>
-            <body onload="window.print()">
-            ${html}
-            </body>
-            </html>
-    `);
-                printWindow.document.close();
-            });
-
+        // Open in new window for printing
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
+        const html = await res.text();
+
+        const printWindow = window.open('', '_blank');
+        printWindow.document.open();
+        printWindow.document.write(html);
+        printWindow.document.close();
+    });
+});
     </script>
     <script>
         $('#malmatta_id').change(function() {

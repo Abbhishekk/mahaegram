@@ -4965,5 +4965,44 @@ public function getRegister(){
     return $stmt->get_result();
 }
 
+public function getWaterTaxByMalmatta($malmatta_id, $year) {
+    $sql = "SELECT wt.*, p.owner_name, mw.meter_no, mde.address 
+            FROM water_tax wt
+            JOIN property_verifications p ON wt.malmatta_no = p.malmatta_id
+            left join malmatta_data_entry mde on wt.malmatta_no = mde.id
+            left join malmatta_water_tax mw on mw.malmatta_id = wt.malmatta_no
+            LEFT JOIN water_tariff wtf ON wtf.drainage_type = mw.water_usage_type
+            WHERE wt.malmatta_no = ? AND wt.year = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("is", $malmatta_id, $year);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
+
+public function getAllWaterTax($year) {
+    $sql = "SELECT wt.*, p.owner_name, mw.meter_no, mde.address
+            FROM water_tax wt
+            JOIN property_verifications p ON wt.malmatta_no = p.malmatta_id
+            left join malmatta_data_entry mde on wt.malmatta_no = mde.id
+            left join malmatta_water_tax mw on mw.malmatta_id = wt.malmatta_no
+            LEFT JOIN water_tariff wtf ON wtf.drainage_type = mw.water_usage_type
+            WHERE wt.year = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("s", $year);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+public function getPropertyDetails($malmatta_id) {
+    $sql = "SELECT * FROM property_verifications WHERE malmatta_no = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("i", $malmatta_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
+
 
 }

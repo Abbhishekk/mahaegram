@@ -147,6 +147,11 @@ if ($periodCount == 0) {
                                         <div class="mt-3">
                                             <strong>संपूर्ण टॅक्स :</strong> ₹<span id="totalTax">0</span>
                                         </div>
+                                        <div class="mt-3 form-group col-md-4">
+                                            <label for="ittar_aakar">इतर आकार</label>
+                                            <input type="text" class="form-control" id="ittar_aakar"
+                                                name="ittar_aakar" placeholder="इतर आकार भरा">
+                                        </div>
 
                                         <button type="submit" class="btn btn-primary mt-3">Submit</button>
                                     </form>
@@ -170,6 +175,7 @@ if ($periodCount == 0) {
                                                 <th>खसारा क्रमांक</th>
                                                 <th>पाण्याचा प्रकार</th>
                                                 <th>संपूर्ण टॅक्स </th>
+                                                <th>इतर आकार</th>
                                                 <th>April</th>
                                                 <th>May</th>
                                                 <th>Jun</th>
@@ -195,6 +201,7 @@ if ($periodCount == 0) {
                                 <td>{$tax['khasara_no_wt']}</td>
                                 <td>{$tax['drainage_type']}</td>
                                 <td>₹{$tax['total_amount']}</td>
+                                <td>{$tax['ittar_aakar']}</td>
                                 <td>{$tax['april_reading']}</td>
                                 <td>{$tax['may_reading']}</td>
                                 <td>{$tax['jun_reading']}</td>
