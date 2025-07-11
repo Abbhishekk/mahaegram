@@ -90,9 +90,10 @@ $title = "मालमत्ता कर आकारणी";
                                         <?php if(count($malmatta_propertyVerifications) > 0) {
                                             foreach($malmatta_propertyVerifications as $property) {
                                                 // print_r($property);
+                                                $format = ($property['ward_name']!= "" ? $property['ward_name'] :"वॉर्ड नाव")." / ".($property['property_road_name'] != "" ? $property['property_road_name'] : "रस्त्याचे नाव")." / रजिस्टर नं- ".($property['register_no']!="" ? $property['register_no']:"0")." / खासरा नं- ".($property['khasara_no']!="" ? $property['khasara_no']:"0")." / मालमत्ता नं- ".$property['malmatta_no'];
                                             ?>
                                         <option value="<?php echo $property['malmatta_id']; ?>">
-                                            <?php echo $property['malmatta_no']; ?>
+                                            <?php echo $format; ?>
                                         </option>
                                         <?php }
                                         } ?>

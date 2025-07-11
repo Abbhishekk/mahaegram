@@ -206,7 +206,7 @@ if (isset($_GET['edit_id'])) {
                                                     <label for="revenue_village">गावाचे नाव<span
                                                             class="text-danger">*</span></label>
                                                     <select class="form-control select2-single-placeholder mb-3"
-                                                        name="revenue_village" id="revenue_village" required>
+                                                        name="revenue_village" id="revenue_village">
                                                         <option value="" selected>--निवडा.--</option>
                                                         <?php
                                                         if (mysqli_num_rows($lgdVillages) > 0) {
@@ -223,10 +223,9 @@ if (isset($_GET['edit_id'])) {
                                                 <input type="hidden" name="edit_id"
                                                     value="<?= $isEditMode ? $editId : '' ?>">
                                                 <div class="form-group col-md-4">
-                                                    <label for="road_name">गल्लीचे नाव/ अंतर्गत रस्त्याचे नाव<span
-                                                            class="text-danger">*</span></label>
+                                                    <label for="road_name">गल्लीचे नाव/ अंतर्गत रस्त्याचे नाव</label>
                                                     <select name="road_name" id="road_name" class="form-control"
-                                                        required>
+                                                        >
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($roadDetails) > 0) {
@@ -239,10 +238,9 @@ if (isset($_GET['edit_id'])) {
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label for="ward_name">वॉर्ड क्रं <span
-                                                            class="text-danger">*</span></label>
+                                                    <label for="ward_name">वॉर्ड क्रं </label>
                                                     <select name="ward_name" id="ward_name" class="form-control"
-                                                        required>
+                                                        >
                                                         <option value="">--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($wards) > 0) {
@@ -266,11 +264,31 @@ if (isset($_GET['edit_id'])) {
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="khasara_no">खसारा क्रमांक </label>
-                                                    <input type="text" class="form-control" name="khasara_no"
-                                                        id="khasara_no" aria-describedby="emailHelp"
-                                                        placeholder="खसारा क्रमांक"
-                                                        value="<?php echo $isEditMode ? htmlspecialchars($malmatta['khasara_no']) : ''; ?>">
-                                                </div>
+                                                   <select name="khasara_no" id="khasara_no"
+                                                        class="form-control">
+                                                        <option value="" >--निवडा--</option>
+                                                        <?php
+                                                        $khasaraNos = $fun->getKhasaraWard();
+                                                        if (mysqli_num_rows($khasaraNos) > 0) {
+                                                            while ($ward = mysqli_fetch_assoc($khasaraNos)) {
+                                                                // print_r($ward['khasara_no']);
+                                                                // echo $isEditMode ? "true" : 'false';
+                                                                // print_r($malmatta['khasara_no']);
+                                                                if(!$isEditMode){
+                                                                    
+                                                                    echo '<option value="' . $ward['khasara_no'] . '">' . $ward['khasara_no'] . '</option>';
+                                                                }
+                                                                else{
+                                                                    $selected = ($malmatta['khasara_no'] == $ward['khasara_no']) ? 'selected' : '';
+                                                                   
+                                                                    
+                                                                    echo '<option value="' . $ward['khasara_no'] . '" ' . $selected . '>' . $ward['khasara_no'] . '</option>';
+                                                                }
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                      </div>
                                                 <div class="form-group col-md-3 mx-auto">
                                                     <label for="owner_name">मालमत्ता धारकाचे नाव <span
                                                             class="text-danger">*</span></label>
@@ -310,7 +328,7 @@ if (isset($_GET['edit_id'])) {
                                                     <label for="occupant_name">भोगवटा धारकाचे नाव <span
                                                             class="text-danger">*</span></label>
                                                     <select name="occupant_name" id="occupant_name"
-                                                        class="form-control select2-single-placeholder" required>
+                                                        class="form-control select2-single-placeholder" >
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($occupant_name) > 0) {
@@ -327,7 +345,7 @@ if (isset($_GET['edit_id'])) {
                                                             class="text-danger">*</span></label>
                                                     <select name="other_occupant_name[]" multiple="multiple"
                                                         id="other_occupant_name" class="form-control select2-multiple"
-                                                        required>
+                                                        >
                                                         <option value="" >--निवडा--</option>
                                                         <?php
                                                         if (mysqli_num_rows($other_occupant_name) > 0) {
@@ -1074,8 +1092,8 @@ if (isset($_GET['edit_id'])) {
                             .catch(error => console.error('Error:', error));
                     }
 
-                    malmattaNoInput.addEventListener('blur', () => checkMalmattaAvailability(malmattaNoInput
-                        .value));
+                    // malmattaNoInput.addEventListener('blur', () => checkMalmattaAvailability(malmattaNoInput
+                    //     .value));
 
                     $("#drainage_type").change(function () {
                         const selectedValue = $(this).val();

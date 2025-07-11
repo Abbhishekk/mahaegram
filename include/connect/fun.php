@@ -3882,7 +3882,7 @@ class Fun
 
     public function getPropertyVerificationsAccordingToPanchayat()
     {
-        $sql = "SELECT * FROM property_verifications
+        $sql = "SELECT *, property_verifications.ward_no as ward_name, property_verifications.road_name as property_road_name, property_verifications.owner_name as property_owner_name  FROM property_verifications
                 left join malmatta_data_entry mde on property_verifications.malmatta_id = mde.id
              WHERE mde.panchayat_code = ? ORDER BY verification_date DESC";
         $stmt = $this->db->prepare($sql);

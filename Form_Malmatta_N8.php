@@ -2018,19 +2018,19 @@ if (isset($_GET['edit_id'])) {
             }
 
             // Check on blur (when user leaves the field)
-            malmattaNoInput.addEventListener('blur', function () {
-                checkMalmattaAvailability(this.value);
-            });
+            // malmattaNoInput.addEventListener('blur', function () {
+            //     checkMalmattaAvailability(this.value);
+            // });
 
             // Also check before form submission
-            document.getElementById('malmatta_no').addEventListener('change', function (e) {
-                if (malmattaNoInput.value) {
-                    // For immediate feedback, you might want to do a synchronous check here
-                    // or disable the submit button until validation is complete
+            // document.getElementById('malmatta_no').addEventListener('change', function (e) {
+            //     if (malmattaNoInput.value) {
+            //         // For immediate feedback, you might want to do a synchronous check here
+            //         // or disable the submit button until validation is complete
 
-                    checkMalmattaAvailability(malmattaNoInput.value);
-                }
-            });
+            //         checkMalmattaAvailability(malmattaNoInput.value);
+            //     }
+            // });
         });
     </script>
 
