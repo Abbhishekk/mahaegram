@@ -108,6 +108,8 @@
                             <li><a class="dropdown-item" href="namuna9_ahaval_karmagnibil_1.php">कर मागणी बिल (नमुना-९ क) १२९/१</a></li>
                             <li><a class="dropdown-item" href="namuna9_ahaval_karmagnibil_2.php">कर मागणी बिल नोटीस (२९) (ब) १२९/२</a></li>
                             <li><a class="dropdown-item" href="namuna9_ahaval_japticheadhipatra.php">जप्तीचे आधीपत्र १२९/३</a></li>
+                                <li><a class="dropdown-item" href="namuna9_ahaval_panivapar_bill.php">पाणीपट्टी बिल</a></li>
+                            <li><a class="dropdown-item" href="namuna9_ahaval_panivapar_register.php">पाणीपट्टी रेजिस्टर</a></li>
                             </ul>
                             </li>
                             <li class="dropdown-submenu">

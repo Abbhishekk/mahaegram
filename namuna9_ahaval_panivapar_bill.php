@@ -16,7 +16,7 @@ if (empty($periods)) {
 }
 $financialYears = $fun->getYearArray($periods);
 $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
-$property_verifications = $fun->getTaxDemands($_SESSION['district_code']);
+$property_verifications = $fun->getPropertyVerificationsAccordingToPanchayat();
 $wards = $fun->getWard($_SESSION['district_code']);
 $roads = $fun->getRoad($_SESSION['district_code']);
 ?>
@@ -112,10 +112,10 @@ $roads = $fun->getRoad($_SESSION['district_code']);
 
                             <div class="row mb-3">
                                 
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold">सरपंच सही</label>
-                                    <input type="file" class="form-control" name="sarpanch_signature" id="sarpanch_signature">
-                                </div>
+                               <div class="col-md-4">
+    <label class="form-label fw-bold">सरपंच सही</label>
+    <input type="file" class="form-control" name="sarpanch_signature" id="sarpanch_signature" accept="image/*">
+</div>
                                 
                             </div>
 
@@ -160,13 +160,14 @@ $roads = $fun->getRoad($_SESSION['district_code']);
         }
     </script>
     <script>
-        $(document).ready(function() {
+       $(document).ready(function() {
     $('#generatePdfBtn').click(async function() {
         // Get form values
         const financial_year = $('#financial_year').val();
         const malmatta_id = $('#malmatta_id').val() || null;
         const bill_type = $('input[name="bill_type"]:checked').val();
         const date = $('#date').val();
+        const signatureFile = $('#sarpanch_signature')[0].files[0];
 
         // Validate required fields
         if (!financial_year) {
@@ -179,26 +180,33 @@ $roads = $fun->getRoad($_SESSION['district_code']);
             return;
         }
 
-        // Construct URL with parameters
-        let url = `pdf/namuna9_panni_bill_pavati.php?financial_year=${financial_year}&date=${date}&bill_type=${bill_type}`;
-        
-        if (malmatta_id) {
-            url += `&malmatta_id=${malmatta_id}`;
-        }
+        // Create FormData for file upload
+        const formData = new FormData();
+        formData.append('financial_year', financial_year);
+        formData.append('date', date);
+        formData.append('bill_type', bill_type);
+        if (malmatta_id) formData.append('malmatta_id', malmatta_id);
+        if (signatureFile) formData.append('sarpanch_signature', signatureFile);
 
-        // Open in new window for printing
-        const res = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
+        try {
+            const response = await fetch('pdf/namuna9_panni_bill_pavati.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        });
-        const html = await res.text();
-
-        const printWindow = window.open('', '_blank');
-        printWindow.document.open();
-        printWindow.document.write(html);
-        printWindow.document.close();
+            
+            const html = await response.text();
+            const printWindow = window.open('', '_blank');
+            printWindow.document.open();
+            printWindow.document.write(html);
+            printWindow.document.close();
+        } catch (error) {
+            console.error('Error:', error);
+            alert('बिल तयार करताना त्रुटी आली: ' + error.message);
+        }
     });
 });
     </script>
