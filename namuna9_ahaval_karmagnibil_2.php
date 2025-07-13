@@ -50,82 +50,115 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                             टीप : नमुना १ / कर मागणी बिल पूर्ण तयार झाले नंतरच मागणी हुकूम तयार करावे
                         </p>
                     </div>
-                    <form action="">
-                        <?php
-                                if (isset($_SESSION['message'])) {
-                                    echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
-                                    unset($_SESSION['message']);
-                                    unset($_SESSION['message_type']);
-                                }
-                                ?>
-                        <div class="card p-4">
-                            <div class="row mb-3">
-                                <div class="col-md-6 my-2">
-                                    <label class="form-label fw-bold">आर्थिक वर्ष :</label>
-                                    <select class="form-control border-primary" name="financial_year"
-                                        id="financial_year">
-                                        <option value=""> --निवडा-- </option>
-                                        <?php foreach ($financialYears as $year): ?>
-                                        <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold">हुकूम दिनांक <span
-                                            class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" value="2025-05-22">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold">ठराव न. <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
+                    <div class="card shadow mb-4">
+    <div class="card-header py-3 bg-primary">
+        <h6 class="m-0 font-weight-bold text-white">नोटीस तयार करणे</h6>
+    </div>
+    <div class="card-body">
+        <form action="">
+            <?php
+            if (isset($_SESSION['message'])) {
+                echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
+                unset($_SESSION['message']);
+                unset($_SESSION['message_type']);
+            }
+            ?>
+            
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="financial_year" id="financial_year">
+                            <option value="">--निवडा--</option>
+                            <?php foreach ($financialYears as $year): ?>
+                                <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <label for="financial_year" class="fw-bold">आर्थिक वर्ष</label>
+                    </div>
+                </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold">एकरकमी नोटीस रक्कम <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="date" class="form-control border-primary" value="2025-05-22">
+                        <label class="fw-bold">हुकूम दिनांक <span class="text-danger">*</span></label>
+                    </div>
+                </div>
 
-                            <div class="row mb-3 my-2">
-                                <div class="col-md-12 d-flex flex-wrap gap-4">
-                                    <label class="ml-3 col-md-3 fw-bold text-secondary"><input type="radio"
-                                            name="notice_type" class="me-1" checked> ग्रामनिधी नोटीस</label>
-                                    <label class="ml-3 col-md-3 fw-bold text-secondary"><input type="radio"
-                                            name="notice_type" class="me-1"> ग्राम पाणीपुरवठा निधी</label>
-                                    <label class="ml-3 col-md-3 fw-bold text-secondary"><input type="radio"
-                                            name="notice_type" class="me-1"> किरकोळ मागणी</label>
-                                    <label class="ml-3 col-md-2 fw-bold text-secondary"><input type="radio"
-                                            name="notice_type" class="me-1"> वॉर्डनुसार यादी तयार करणे</label>
-                                </div>
-                            </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control border-primary">
+                        <label class="fw-bold">ठराव न. <span class="text-danger">*</span></label>
+                    </div>
+                </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-4 my-2 ">
-                                    <label class="form-label" for="ward">वॉर्ड नाव</label>
-                                    <select class="form-select form-control" name="ward" id="ward">
-                                        <option>निवडा</option>
-                                        <?php
-                                            while($ward = mysqli_fetch_assoc($wards)){
-                                                echo "<option value='{$ward['ward_name']}'>{$ward['ward_name']}</option>";
-                                            }
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control border-primary">
+                        <label class="fw-bold">एकरकमी नोटीस रक्कम <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
 
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row mt-4">
-                                <div class="col-md-12 d-flex gap-2">
-                                    <button class="ml-3 btn btn-primary">मागणी लेखा (नोटीस) तयार करणे</button>
-                                    <button class="ml-3 btn btn-secondary">रद्द करणे</button>
-                                </div>
-                            </div>
-
+            <div class="row mb-4 mt-3">
+                <div class="col-md-12">
+                    <div class="d-flex flex-wrap justify-content-center gap-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="notice_type" id="gramnidhi_notice" checked>
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="gramnidhi_notice">
+                                <i class="fas fa-rupee-sign me-2"></i>ग्रामनिधी नोटीस
+                            </label>
                         </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="notice_type" id="panipuratha_notice">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="panipuratha_notice">
+                                <i class="fas fa-tint me-2"></i>ग्राम पाणीपुरवठा निधी
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="notice_type" id="kirokul_notice">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="kirokul_notice">
+                                <i class="fas fa-store me-2"></i>किरकोळ मागणी
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="notice_type" id="wardwise_notice">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="wardwise_notice">
+                                <i class="fas fa-map-marker-alt me-2"></i>वॉर्डनुसार यादी
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                    </form>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="ward" id="ward">
+                            <option value="">--निवडा--</option>
+                            <?php
+                            while ($ward = mysqli_fetch_assoc($wards)) {
+                                echo "<option value='{$ward['ward_name']}'>{$ward['ward_name']}</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="ward" class="fw-bold">वॉर्ड नाव</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary px-4 me-3">
+                        <i class="fas fa-file-alt me-2"></i>मागणी लेखा (नोटीस) तयार करणे
+                    </button>
+                    <button type="reset" class="btn btn-outline-danger px-4">
+                        <i class="fas fa-times me-2"></i>रद्द करणे
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
                 </div>
 

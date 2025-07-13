@@ -65,7 +65,7 @@ $title = "मिळकत कर दर माहिती";
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">मिळकत कर दर माहिती</h1>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="./">माहईग्राम</a></li>
+                            <li class="breadcrumb-item"><a href="./">पंचायत पोर्टल </a></li>
                             <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 8</li>
                             <li class="breadcrumb-item active" aria-current="page">मास्टर्स</li>
                             <li class="breadcrumb-item active" aria-current="page">मिळकत कर दर माहिती</li>
@@ -73,118 +73,99 @@ $title = "मिळकत कर दर माहिती";
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col-lg-12">
-                            <div class="card mb-4">
-                                <?php
+    <div class="col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 bg-primary">
+                <h6 class="m-0 font-weight-bold text-white">मिळकत कर दर व्यवस्थापन</h6>
+            </div>
+            <div class="card-body">
+                <?php
+                if (isset($_SESSION['message'])) {
+                    $message = $_SESSION['message'];
+                    $message_type = $_SESSION['message_type'];
+                    echo "<div class='alert alert-$message_type'>$message</div>";
+                    unset($_SESSION['message']);
+                    unset($_SESSION['message_type']);
+                }
+                ?>
+                <form method="post" action="api/milkat_dar.php">
+                    <div class="row justify-content-center">
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input type="text" class="form-control border-primary" name="period" id="period" 
+                                       value="<?php echo $periods['total_period']; ?>" readonly>
+                                <label for="period">कालावधी <span class="text-danger">*</span></label>
+                                <input type="number" value="" class="form-control d-none" name="update" id="update">
+                            </div>
+                        </div>
+                    </div>
 
-if (isset($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    $message_type = $_SESSION['message_type'];
-
-    echo "<div class='alert alert-$message_type'>$message</div>";
-
-    // Unset the message so it doesn't persist after refresh
-    unset($_SESSION['message']);
-    unset($_SESSION['message_type']);
-}
-?>
-                                <div class="card-body">
-
-                                    <form method="post" action="api/milkat_dar.php">
-                                        <div class="row">
-                                            <div class="form-group col-md-3 mx-auto">
-                                                <label for="period">कालावधी <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="text" name="period" id="period"
-                                                    value="<?php echo $periods['total_period']; ?>" class="form-control"
-                                                    readonly>
-
-                                                <input type="number" value="" class="form-control d-none" name="update"
-                                                    id="update" aria-describedby="emailHelp">
-
-                                            </div>
-
-
-
-                                        </div>
-
-
-                                        <div class="container mt-4">
-                                            <!-- <h3 class="text-center">मिळकत कर प्रकार</h3> -->
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered table-striped text-start">
-                                                    <thead class="table-primary">
-                                                        <tr>
-                                                            <th>मिळकत कर प्रकार</th>
-                                                            <th>किमान</th>
-                                                            <th>कमाल</th>
-                                                            <th>प्रा.पं.ने ठरवलेला दर</th>
-                                                            <th>बांधकाम दर</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>१. कच्चे घर (झोपडी किंवा मातीचे घर)</td>
-                                                            <td><input type="text"
-                                                                    value="<?php echo $minDar['kache_ghar'] ?? "0.3" ?>"
-                                                                    name="minDar_kache_ghar" class="form-control"
-                                                                    readonly>
-                                                            </td>
-                                                            <td><input type="text"
-                                                                    value="<?php echo $maxDar['kache_ghar'] ?? "0.75"?>"
-                                                                    name="maxDar_kache_ghar" class="form-control"
-                                                                    readonly>
-                                                            </td>
-                                                            <td><input type="text" class="form-control"
-                                                                    name="decided_kache_ghar"
-                                                                    value="<?php echo (isset($fixedDar['kache_ghar'])?($fixedDar['kache_ghar']):("0.00"))?>"
-                                                                    <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
-                                                            </td>
-                                                            <td><input type="text" class="form-control"
-                                                                    name="construction_kache_ghar"
-                                                                    value="<?php echo $dar['kache_ghar'] ?? "0"?>" <?php echo $isDarAvailable ? (""): ("readonly")?>>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>२. अर्ध पक्के घर (दगड विटांचे मातीचे घर)</td>
-                                                            <td><input type="text"
-                                                                    value="<?php echo $minDar['ardha_pakke_ghar'] ?? "0.6" ?>"
-                                                                    name="minDar_ardha_pakke_ghar" class="form-control" readonly>
-                                                                    
-                                                            </td>
-                                                            <td><input type="text"
-                                                                    value="<?php echo $maxDar['ardha_pakke_ghar'] ?? "1.2" ?>"
-                                                                    name="maxDar_ardha_pakke_ghar" class="form-control" readonly>
-                                                            </td>
-                                                            <td><input type="text" class="form-control"
-                                                                    name="decided_ardha_pakke_ghar"
-                                                                    value="<?php echo $isFixedAvailable? $fixedDar['ardha_pakke_ghar']: ("0.00")?>"
-                                                                    <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
-                                                            </td>
-                                                            <td><input type="text" class="form-control"
-                                                                    value="<?php echo $dar['ardha_pakke_ghar'] ?? "0" ?>" <?php echo $isDarAvailable ? (""): ("readonly")?>
-                                                                    name="construction_ardha_pakke_ghar"></td>
-                                                        </tr>
-                                                        <tr>
+                    <div class="table-responsive mt-4">
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>मिळकत कर प्रकार</th>
+                                    <th>किमान</th>
+                                    <th>कमाल</th>
+                                    <th>प्रा.पं.ने ठरवलेला दर</th>
+                                    <th>बांधकाम दर</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Row 1 -->
+                                <tr>
+                                    <td>१. कच्चे घर (झोपडी किंवा मातीचे घर)</td>
+                                    <td><input type="text" value="<?php echo $minDar['kache_ghar'] ?? "0.3" ?>"
+                                            name="minDar_kache_ghar" class="form-control border-primary" readonly></td>
+                                    <td><input type="text" value="<?php echo $maxDar['kache_ghar'] ?? "0.75"?>"
+                                            name="maxDar_kache_ghar" class="form-control border-primary" readonly></td>
+                                    <td><input type="text" class="form-control border-primary"
+                                            name="decided_kache_ghar"
+                                            value="<?php echo (isset($fixedDar['kache_ghar'])?($fixedDar['kache_ghar']):("0.00"))?>"
+                                            <?php echo $isFixedAvailable ? "readonly" : "" ?>></td>
+                                    <td><input type="text" class="form-control border-primary"
+                                            name="construction_kache_ghar"
+                                            value="<?php echo $dar['kache_ghar'] ?? "0"?>" 
+                                            <?php echo $isDarAvailable ? "" : "readonly" ?>></td>
+                                </tr>
+                                
+                                <!-- Row 2 -->
+                                <tr>
+                                    <td>२. अर्ध पक्के घर (दगड विटांचे मातीचे घर)</td>
+                                    <td><input type="text" value="<?php echo $minDar['ardha_pakke_ghar'] ?? "0.6" ?>"
+                                            name="minDar_ardha_pakke_ghar" class="form-control border-primary" readonly></td>
+                                    <td><input type="text" value="<?php echo $maxDar['ardha_pakke_ghar'] ?? "1.2" ?>"
+                                            name="maxDar_ardha_pakke_ghar" class="form-control border-primary" readonly></td>
+                                    <td><input type="text" class="form-control border-primary"
+                                            name="decided_ardha_pakke_ghar"
+                                            value="<?php echo $isFixedAvailable? $fixedDar['ardha_pakke_ghar']: "0.00"?>"
+                                            <?php echo $isFixedAvailable ? "readonly" : "" ?>></td>
+                                    <td><input type="text" class="form-control border-primary"
+                                            value="<?php echo $dar['ardha_pakke_ghar'] ?? "0" ?>" 
+                                            <?php echo $isDarAvailable ? "" : "readonly" ?>
+                                            name="construction_ardha_pakke_ghar"></td>
+                                </tr>
+                                
+                                <tr>
                                                             <td>३. पडसर / खुली जागा</td>
-                                                            <td><input type="text"
-                                                                    value="<?php echo $minDar['padsar'] ?? "1.5" ?>"
-                                                                    name="minDar_padsar" class="form-control" readonly>
+                                                            <td><input type="text" value="<?php echo $minDar['padsar'] ?? "1.5" ?>"
+                                                                    name="minDar_padsar" class="form-control border-primary" readonly>
                                                             </td>
                                                             <td><input type="text"
                                                                     value="<?php echo $maxDar['padsar'] ?? "5" ?>"
-                                                                    name="maxDar_padsar" class="form-control" readonly>
+                                                                    name="maxDar_padsar" class="form-control border-primary" readonly>
                                                             </td>
                                                             <td><input type="text" class="form-control"
                                                                     name="decided_padsar"
                                                                     value="<?php echo $isFixedAvailable? $fixedDar['padsar']: ("0.00")?>"
                                                                     <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
                                                             </td>
-                                                            <td><input type="text" class="form-control"
+                                                            <td><input type="text" class="form-control border-primary"
                                                                     name="construction_padsar"
                                                                     value="<?php echo $dar['padsar'] ?? "0" ?>" <?php echo $isDarAvailable ? (""): ("readonly")?> ></td>
                                                         </tr>
-                                                        <tr>
+                                                        
+                            <tr>
                                                             <td>४. इतर पक्के घर</td>
                                                             <td><input type="text"
                                                                     value="<?php echo $minDar['itar_pakke_ghar'] ?? "0.75" ?>"
@@ -205,7 +186,8 @@ if (isset($_SESSION['message'])) {
                                                                     value="<?php echo $dar['itar_pakke_ghar'] ?? "0" ?>" <?php echo $isDarAvailable ? (""): ("readonly")?>
                                                                     name="construction_itar_pakke_ghar"></td>
                                                         </tr>
-                                                        <tr>
+                                                        
+                            <tr>
                                                             <td>५. आरसीसी पद्धतीचे बांधकाम</td>
                                                             <td><input type="text" value="<?php echo $minDar['rcc'] ?? "1.2" ?>"
                                                                     name="minDar_rcc" class="form-control" readonly>
@@ -222,7 +204,7 @@ if (isset($_SESSION['message'])) {
                                                                     value="<?php echo $dar['rcc'] ?? "0" ?>" <?php echo $isDarAvailable ? (""): ("readonly")?> 
                                                                     name="construction_rcc"></td>
                                                         </tr>
-                                                        <tr>
+                                                                                                                <tr>
                                                             <td>६. मनोरा टाइप घर</td>
                                                             <td><input type="text"
                                                                     value="<?php echo $minDar['manora_type_ghar'] ?? "3" ?>"
@@ -263,49 +245,48 @@ if (isset($_SESSION['message'])) {
                                                                     name="construction_manora_khuli_jaga_sarvasadharan" <?php echo $isDarAvailable ? (""): ("readonly")?>
                                                                     ></td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>८. मनोरा खुली जागा महानगरपालिका</td>
-                                                            <td><input type="text"
-                                                                    value="<?php echo $minDar['manora_khuli_jaga_mnc'] ?? "0.4" ?>"
-                                                                    name="minDar_manora_khuli_jaga_mnc" readonly
-                                                                    class="form-control" >
-                                                            </td>
-                                                            <td><input type="text"
-                                                                    value="<?php echo $maxDar['manora_khuli_jaga_mnc'] ?? "0.8" ?>"
-                                                                    name="maxDar_manora_khuli_jaga_mnc" readonly
-                                                                    class="form-control">
-                                                            </td>
-                                                            <td><input type="text" class="form-control"
-                                                                    name="decided_manora_khuli_jaga_mnc"
-                                                                    value="<?php echo $isFixedAvailable? $fixedDar['manora_khuli_jaga_mnc']: ("0.00")?>"
-                                                                    <?php echo $isFixedAvailable ? ("readonly"): ("")?>>
-                                                            </td>
-                                                            <td><input type="text" class="form-control"
-                                                                    value="<?php echo $dar['manora_khuli_jaga_mnc'] ?? "0" ?>" <?php echo $isDarAvailable ? (""): ("readonly")?>
-                                                                    name="construction_manora_khuli_jaga_mnc">
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                            <!-- Buttons -->
-                                            <div class="text-center mt-3">
-                                                <button type="submit" name="add" id="submit" class="btn btn-primary"
-                                                    <?php echo $isFixedAvailable ? ("disabled"): ("") ?>>साठवणे</button>
-                                                <button type="reset" class="btn btn-secondary">रद्द करणे</button>
-                                                <button class="btn btn-success">बदल</button>
-                                            </div>
-                                        </div>
-
-
-
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
+                                
+                                
+                                
+                                <!-- Row 8 -->
+                                <tr>
+                                    <td>८. मनोरा खुली जागा महानगरपालिका</td>
+                                    <td><input type="text" value="<?php echo $minDar['manora_khuli_jaga_mnc'] ?? "0.4" ?>"
+                                            name="minDar_manora_khuli_jaga_mnc" readonly
+                                            class="form-control border-primary"></td>
+                                    <td><input type="text" value="<?php echo $maxDar['manora_khuli_jaga_mnc'] ?? "0.8" ?>"
+                                            name="maxDar_manora_khuli_jaga_mnc" readonly
+                                            class="form-control border-primary"></td>
+                                    <td><input type="text" class="form-control border-primary"
+                                            name="decided_manora_khuli_jaga_mnc"
+                                            value="<?php echo $isFixedAvailable? $fixedDar['manora_khuli_jaga_mnc']: "0.00"?>"
+                                            <?php echo $isFixedAvailable ? "readonly" : "" ?>></td>
+                                    <td><input type="text" class="form-control border-primary"
+                                            value="<?php echo $dar['manora_khuli_jaga_mnc'] ?? "0" ?>" 
+                                            <?php echo $isDarAvailable ? "" : "readonly" ?>
+                                            name="construction_manora_khuli_jaga_mnc"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <button type="submit" name="add" id="submit" class="btn btn-primary px-4"
+                            <?php echo $isFixedAvailable ? "disabled" : "" ?>>
+                            <i class="fas fa-save me-2"></i>साठवणे
+                        </button>
+                        <button type="reset" class="btn btn-outline-danger px-4">
+                            <i class="fas fa-times me-2"></i>रद्द करणे
+                        </button>
+                        <button type="button" class="btn btn-success px-4">
+                            <i class="fas fa-edit me-2"></i>बदल
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

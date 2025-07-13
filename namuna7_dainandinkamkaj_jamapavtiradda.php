@@ -29,93 +29,104 @@ $title = "पावती रद्द करणे";
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->
-                <div class="container-fluid" id="container-wrapper">
+                <div class="container-fluid border rounded p-3" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">पावती रद्द करणे</h1>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="./">पंचायत पोर्टल</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 7</li>
+                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक ७</li>
                             <li class="breadcrumb-item active" aria-current="page">दैनंदिन कामकाज
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">पावती रद्द करणे</li>
                         </ol>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-lg-12">
-                            <div class="card mb-4">
-                                <?php
-                                         if (isset($_SESSION['message'])) {
-                                             $message = $_SESSION['message'];
-                                             $message_type = $_SESSION['message_type'];
-     
-                                             echo "<div class='alert alert-$message_type'>$message</div>";
-     
-                                             // Unset the message so it doesn't persist after refresh
-                                             unset($_SESSION['message']);
-                                             unset($_SESSION['message_type']);
-                                         }
-                                         ?>
-                                <div class="container card-body border rounded p-3">
-                                    <h5 class="fw-bold text-secondary mb-3">पावती रद्द करणे</h5>
-                                    <form action="api/jama_pavati_radd.php" method="POST" id="pavati_radd_form">
-                                        <div class="row mb-3">
-                                            <div class="col-md-3">
-                                                <label class="form-label fw-bold" for="book_no">बुक नंबर <span
-                                                        class="text-danger">*</span></label>
-                                                <select class="form-control  form-select border-primary" name="book_no"
-                                                    id="book_no">
-                                                    <option>--निवडा--</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label fw-bold" for="receipt_no">पावती नंबर <span
-                                                        class="text-danger">*</span></label>
-                                                <select class="form-control form-select border-primary"
-                                                    name="receipt_no" id="receipt_no">
-                                                    <option>--निवडा--</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label fw-bold" for="reason">पावती रद्द कारण <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control border-primary" name="reason"
-                                                    id="reason" placeholder="पावती रद्द कारण">
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-
-                                            <div class="d-grid gap-2 col-6 mx-auto">
-                                                <button class="btn btn-primary" name="add" id="add"
-                                                    type="submit">साठवा</button>
-                                                <button class="btn btn-primary" type="reset">रद्द करणे</button>
-                                            </div>
-                                        </div>
-                                    </form>
-
-
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead class="table-primary text-center">
-                                                <tr>
-                                                    <th>अ क्रं</th>
-                                                    <th>बुक नंबर</th>
-                                                    <th>पावती नंबर</th>
-                                                    <th>कारण</th>
-                                                    <th>बदल</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="5" class="text-center">No records to display.</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                   <div class="row mb-3">
+    <div class="col-lg-12">
+        <div class="card mb-4 shadow-sm">
+            <?php
+            if (isset($_SESSION['message'])) {
+                $message = $_SESSION['message'];
+                $message_type = $_SESSION['message_type'];
+                echo "<div class='alert alert-$message_type text-center'>$message</div>";
+                unset($_SESSION['message']);
+                unset($_SESSION['message_type']);
+            }
+            ?>
+            <div class="card-header py-3 bg-primary text-white">
+                <div class="d-flex justify-content-center">
+                    <div class="form-check form-check-inline mx-4">
+                        <label class="form-check-label h5 mb-0" for="nondani">
+                            <!--Write Your text here-->
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="border rounded p-3">
+                    <h5 class="fw-bold text-secondary mb-3">पावती रद्द करणे</h5>
+                    
+                    <form action="api/jama_pavati_radd.php" method="POST" id="pavati_radd_form" class="needs-validation" novalidate>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <select class="form-select border-primary" name="book_no" id="book_no" required>
+                                        <option value="">--निवडा--</option>
+                                    </select>
+                                    <label for="book_no" class="fw-bold">बुक नंबर <span class="text-danger">*</span></label>
                                 </div>
-
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <select class="form-select border-primary" name="receipt_no" id="receipt_no" required>
+                                        <option value="">--निवडा--</option>
+                                    </select>
+                                    <label for="receipt_no" class="fw-bold">पावती नंबर <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-primary" name="reason" id="reason" placeholder="पावती रद्द कारण" required>
+                                    <label for="reason" class="fw-bold">पावती रद्द कारण <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 text-center mt-2">
+                                <button class="btn btn-primary px-4 me-2" name="add" id="add" type="submit">
+                                    <i class="fas fa-save me-2"></i>साठवा
+                                </button>
+                                <button class="btn btn-outline-secondary px-4" type="reset">
+                                    <i class="fas fa-times me-2"></i>रद्द करणे
+                                </button>
                             </div>
                         </div>
+                    </form>
+
+                    <div class="table-responsive mt-4">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-primary">
+                                <tr class="text-center">
+                                    <th>अ क्रं</th>
+                                    <th>बुक नंबर</th>
+                                    <th>पावती नंबर</th>
+                                    <th>कारण</th>
+                                    <th>बदल</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="5" class="text-center">No records to display.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                 </div>
 
 

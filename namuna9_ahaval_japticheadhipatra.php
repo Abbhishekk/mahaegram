@@ -51,64 +51,94 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                             टीप : नमुना १ / मागणी लेखा (नोटीस) तयार झाले नंतरच जप्तीच्या अधिपत्राचा नमुना तयार करणे
                         </p>
                     </div>
-                    <form action="">
-                        <?php
-                                if (isset($_SESSION['message'])) {
-                                    echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
-                                    unset($_SESSION['message']);
-                                    unset($_SESSION['message_type']);
-                                }
-                                ?>
-                        <div class="card p-4">
-
-                            <?php
+<div class="card shadow mb-4">
+    <div class="card-header py-3 bg-primary">
+        <h6 class="m-0 font-weight-bold text-white">जप्तीच्या अधिपत्राचा नमुना</h6>
+    </div>
+    
+        <form action="">
+            <?php
+            if (isset($_SESSION['message'])) {
+                echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
+                unset($_SESSION['message']);
+                unset($_SESSION['message_type']);
+            }
+            ?>
+        <div class="card-body">
+             <?php
                             if (isset($_SESSION['message'])) {
                                 echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
                                 unset($_SESSION['message']);
                                 unset($_SESSION['message_type']);
                             }
                             ?>
-                            <div class="row mb-3">
-                                <div class="col-md-6 my-2">
-                                    <label class="form-label fw-bold">आर्थिक वर्ष :</label>
-                                    <select class="form-control border-primary" name="financial_year"
-                                        id="financial_year">
-                                        <option value=""> --निवडा-- </option>
-                                        <?php foreach ($financialYears as $year): ?>
-                                        <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold">तारीख</label>
-                                    <input type="date" class="form-control" value="2025-05-22">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold">ठराव न. क्रमांक <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="financial_year" id="financial_year">
+                            <option value="">--निवडा--</option>
+                            <?php foreach ($financialYears as $year): ?>
+                                <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <label for="financial_year" class="fw-bold">आर्थिक वर्ष</label>
+                    </div>
+                </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <label class="form-label fw-bold">कर</label>
-                                    <div class="d-flex gap-4">
-                                        <label class="ml-3 "><input type="radio" name="kar" checked> इमारत कर</label>
-                                        <label class="ml-3 "><input type="radio" name="kar"> पाणीपट्टी</label>
-                                        <label class="ml-3 "><input type="radio" name="kar"> किरकोळ मागणी</label>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="date" class="form-control border-primary" value="2025-05-22">
+                        <label class="fw-bold">तारीख</label>
+                    </div>
+                </div>
 
-                            <div class="row mt-4">
-                                <div class="col-md-12 d-flex gap-2">
-                                    <button class="ml-3btn btn-primary">जप्तीच्या अधिपत्राचा नमुना तयार करणे</button>
-                                    <button class="ml-3 btn btn-secondary">रद्द करणे</button>
-                                </div>
-                            </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control border-primary">
+                        <label class="fw-bold">ठराव न. क्रमांक <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4 mt-3">
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">कर</label>
+                    <div class="d-flex flex-wrap justify-content-center gap-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="kar" id="imarat_kar" checked>
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="imarat_kar">
+                                <i class="fas fa-building me-2"></i>इमारत कर
+                            </label>
                         </div>
-                    </form>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="kar" id="panipatti">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="panipatti">
+                                <i class="fas fa-tint me-2"></i>पाणीपट्टी
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="kar" id="kirokul_magni">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="kirokul_magni">
+                                <i class="fas fa-store me-2"></i>किरकोळ मागणी
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary px-4 me-3">
+                        <i class="fas fa-file-contract me-2"></i>जप्तीच्या अधिपत्राचा नमुना तयार करणे
+                    </button>
+                    <button type="reset" class="btn btn-outline-danger px-4">
+                        <i class="fas fa-times me-2"></i>रद्द करणे
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
                 </div>
 
 

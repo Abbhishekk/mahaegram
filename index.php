@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+ <?php 
+    include "include/connect/db.php";
+    include "include/connect/fun.php";
+    $connect = new Connect();
+    $db = $connect->dbConnect();
+$fun = new Functions($db);
+$districts = $fun->fetch_districts();
+  ?>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -8,6 +16,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     :root {
       --govt-blue: #002244;
@@ -204,10 +213,10 @@
       <div class="collapse navbar-collapse" id="navbarExample01">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item active"><a class="nav-link dev-font" href="#">मुख्य पृष्ठ</a></li>
-          <li class="nav-item"><a class="nav-link dev-font" href="#">आमच्याबद्दल</a></li>
+          <li class="nav-item"><a class="nav-link dev-font" href="aboutus.php">आमच्याबद्दल</a></li>
           <li class="nav-item"><a class="nav-link dev-font" href="#">संपर्क</a></li>
-          <li class="nav-item ms-lg-3"><a href="register.php" class="btn btn-govt btn-md">Register</a></li>
-          <li class="nav-item ms-lg-2"><a href="login.php" class="btn btn-govt btn-md">Login</a></li>
+          <li class="nav-item ms-lg-3 p-1"><a href="register.php" class="btn btn-govt btn-md">Register</a></li>
+          <li class="nav-item ms-lg-2 p-1"><a href="login.php" class="btn btn-govt btn-md">Login</a></li>
         </ul>
       </div>
     </div>
@@ -230,7 +239,7 @@
                 </div>
               </div>
               <div class="carousel-item h-100">
-                <img src="img/im2.webp" class="d-block w-100 h-100 object-fit-cover" alt="Community Meeting">
+                <img src="img/im2.jpg" class="d-block w-100 h-100 object-fit-cover" alt="Community Meeting">
                 <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
                 <h5>समुदाय सहभाग</h5>
                 <p>शासन निर्णयांमध्ये ग्रामस्थांचा सक्रिय सहभाग</p>
@@ -267,25 +276,35 @@
           <div class="search-form w-100 p-4">
             <h4 class="text-center mb-4" style="color: var(--govt-blue);">ग्रामपंचायत शोधा</h4>
             <form>
+              <!-- जिल्हा निवडा -->
               <div class="mb-3">
                 <label for="district" class="form-label dev-font">जिल्ह्याचे नाव</label>
-                <select class="form-select" id="district" required>
-                  <option value="" selected disabled>-- जिल्हा निवडा --</option>
-                  <option value="पुणे">पुणे</option>
-                  <option value="सातारा">सातारा</option>
-                  <option value="कोल्हापूर">कोल्हापूर</option>
-                  <option value="सांगली">सांगली</option>
-                  <option value="सोलापूर">सोलापूर</option>
+                <select class="form-select" id="district" name="district" required>
+                    <option value="">-- जिल्हा निवडा --</option>
+                    <?php foreach ($districts as $district) {
+                        echo "<option value='$district'>$district</option>";
+                    } ?>
                 </select>
               </div>
+            
+
+              <!-- तालुका निवडा -->
               <div class="mb-3">
-                <label for="taluka" class="form-label dev-font">तालुक्याचे नाव</label>
-                <input type="text" class="form-control" id="taluka" placeholder="तालुक्याचे नाव प्रविष्ट करा" required>
+                <label for="block" class="form-label dev-font">तालुक्याचे नाव</label>
+                <select class="form-select" id="block" name="block" required>
+                  <option value="">-- प्रथम जिल्हा निवडा --</option>
+                </select>
               </div>
+            
+              <!-- ग्रामपंचायत निवडा -->
               <div class="mb-3">
-                <label for="grampanchayat" class="form-label dev-font">ग्रामपंचायतीचे नाव</label>
-                <input type="text" class="form-control" id="grampanchayat" placeholder="ग्रामपंचायतीचे नाव प्रविष्ट करा" required>
+                <label for="village" class="form-label dev-font">ग्रामपंचायतीचे नाव</label>
+                <select class="form-select" id="village" name="village" required>
+                  <option value="">-- प्रथम तालुका निवडा --</option>
+                </select>
               </div>
+            
+              <!-- Search Box -->
               <div class="mb-3">
                 <label for="search" class="form-label">Grampanchayat Name</label>
                 <div class="input-group">
@@ -295,8 +314,10 @@
                   </button>
                 </div>
               </div>
+            
               <button type="submit" class="btn btn-govt w-100 py-2">Submit</button>
             </form>
+
           </div>
         </div>
       </div>
@@ -360,7 +381,7 @@
                   </div>
                   <h5 class="card-title text-success">सूचना (Notice)</h5>
                   <p class="card-text small">
-                    <strong>देय तारखेनंतर:</strong> २% शुल्कासह नोटीस जारी केली जाते.<br>
+                    <strong>देयक तरखेन्टर भरल्या : </strong> दंड सुलखा साहा नोटीस जरी केल्या जेल<br>
                     <strong>देय कालावधी:</strong> बिल जारी केल्यापासून ३० दिवस.
                   </p>
                 </div>
@@ -376,7 +397,7 @@
                   </div>
                   <h5 class="card-title text-warning">अंतिम नोटीस (Final Notice)</h5>
                   <p class="card-text small">
-                    पंचायत समितीच्या मंजुरीनुसार अंतिम नोटीस ग्रामपंचायतीने जारी केली जाते.<br>
+                     ग्रामपंचायतीचा  मंजुरीनुसार अंतिम नोटीस ग्रामपंचायतीने जारी केली जाते.<br>
                     <strong>देय कालावधी:</strong> आधीच्या नोटीसनंतर ७ दिवस.
                   </p>
                 </div>
@@ -501,8 +522,8 @@
         <div class="col-md-4">
           <h5 class="mb-3">Contact</h5>
           <ul class="list-unstyled small">
-            <li><i class="fas fa-phone-alt me-2"></i> +91 1234567890</li>
-            <li><i class="fas fa-envelope me-2"></i> info@panchayatportal.gov.in</li>
+            <li><i class="fas fa-phone-alt me-2"></i></li>
+            <li><i class="fas fa-envelope me-2"></i> info@panchayatportal.com</li>
             <li><i class="fas fa-map-marker-alt me-2"></i> Maharashtra, India</li>
           </ul>
         </div>
@@ -512,5 +533,39 @@
       </div>
     </div>
   </footer>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script>
+$(document).ready(function () {
+  $('#district').change(function () {
+    let district = $(this).val();
+    console.log("Selected district:", district);
+    $.ajax({
+      url: 'fetch_blocks.php',
+      type: 'POST',
+      data: { district: district },
+      success: function (data) {
+        console.log("BLOCKS:", data);
+        $('#block').html(data);
+        $('#village').html('<option value="">-- प्रथम तालुका निवडा --</option>');
+      }
+    });
+  });
+
+  $('#block').change(function () {
+    let block = $(this).val();
+    $.ajax({
+      url: 'fetch_villages.php',
+      type: 'POST',
+      data: { block: block },
+      success: function (data) {
+        console.log("VILLAGES:", data);
+        $('#village').html(data);
+      }
+    });
+  });
+});
+</script>
+
+
 </body>
 </html>

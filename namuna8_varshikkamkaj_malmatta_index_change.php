@@ -22,168 +22,212 @@ $title = "मालमत्ता माहिती प्रमाणिक�
        ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                <!-- TopBar -->
-                <?php include('include/topbar.php');
-                 include('include/sidebar.php');?>
-                <!-- Topbar -->
+    <div id="content">
+        <!-- TopBar -->
+        <?php include('include/topbar.php');
+             include('include/sidebar.php'); ?>
+        <!-- Topbar -->
 
-                <!-- Container Fluid-->
-                <div class="container-fluid bg-white p-4 border rounded">
-                    <div class="mb-3 d-flex justify-content-between align-items-center">
-                        <div><strong>नमुना क्रमांक 8 / मालमत्ता अ.क्र. बदला</strong></div>
-                        <div><a href="#">Home</a> / नमुना क्रमांक 8 / मालमत्ता अ.क्र. बदला</div>
+        <!-- Container Fluid-->
+        <div class="card shadow mb-4">
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <div class="fw-bold">नमुना क्रमांक 8 / मालमत्ता अ.क्र. बदला</div>
+                <div class="text-muted small"><a href="#" class="text-decoration-none">Home</a> / नमुना क्रमांक 8 / मालमत्ता अ.क्र. बदला</div>
+            </div>
+            <div class="card-body">
+                <!-- Breadcrumb -->
+                
+        
+                <!-- Filter Section Card -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-primary">
+                        <h6 class="m-0 font-weight-bold text-white">अहवाल</h6>
                     </div>
-
-                    <!-- Filter Section -->
-                    <div class="row mb-3">
-                        <div class="col-md-2">
-                            <label>कालावधी</label>
-                            <select class="form-control">
-                                <option>2023 - 2027</option>
-                            </select>
+                    <div class="card-body">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <select class="form-select border-primary">
+                                        <option>2023 - 2027</option>
+                                    </select>
+                                    <label class="fw-bold">कालावधी</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <select class="form-select border-primary">
+                                        <option>तलवाडा</option>
+                                    </select>
+                                    <label class="fw-bold">गावाचे नाव</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <select class="form-select border-primary">
+                                        <option>--निवडा--</option>
+                                    </select>
+                                    <label class="fw-bold">रस्त्याचे नाव / गल्लीस क्रमांक <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <select class="form-select border-primary">
+                                        <option>--निवडा--</option>
+                                    </select>
+                                    <label class="fw-bold">वॉर्ड क्र <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-primary" placeholder=" ">
+                                    <label class="fw-bold">मालमत्ता क्रमांक <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-primary" placeholder=" ">
+                                    <label class="fw-bold">मालमत्ता अ.क्र. क्रमांक <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <label>गावाचे नाव</label>
-                            <select class="form-control">
-                                <option>तलवाडा</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label>रस्त्याचे नाव / गल्लीस क्रमांक <span class="text-danger">*</span></label>
-                            <select class="form-control">
-                                <option>--निवडा--</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label>वॉर्ड क्र <span class="text-danger">*</span></label>
-                            <select class="form-control">
-                                <option>--निवडा--</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label>मालमत्ता क्रमांक <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <label>मालमत्ता अ.क्र. क्रमांक <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row mb-4">
-                        <div class="col-md-3">
-                            <label>मालमत्ता धारकाचे नाव <span class="text-danger">*</span></label>
-                            <select class="form-control">
-                                <option>--निवडा--</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label>पत्नीचे नाव</label>
-                            <select class="form-control">
-                                <option>--निवडा--</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label>भोगवटा धारकाचे नाव</label>
-                            <select class="form-control">
-                                <option>--निवडा--</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Search Result Table Header -->
-                    <div class="table-responsive mb-4">
-                        <table class="table table-bordered table-sm text-center">
-                            <thead class="bg-primary text-white">
-                                <tr>
-                                    <th>अ.क्र.</th>
-                                    <th>प्र.प्रकार</th>
-                                    <th>मत्ता</th>
-                                    <th>सांटी</th>
-                                    <th>रेंजी</th>
-                                    <th>क्षेत्रफळ</th>
-                                    <th>भाडे</th>
-                                    <th>कर रक्‍त प्रकार</th>
-                                    <th>मि इतर माहिती</th>
-                                    <th>फरकदार</th>
-                                </tr>
-                                <tr>
-                                    <td colspan="10" class="text-center">No records to display.</td>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-
-                    <!-- Lower Table Data -->
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-sm text-center">
-                            <thead class="bg-primary text-white">
-                                <tr>
-                                    <th>अ.क्र.</th>
-                                    <th>अनुक्रमांक</th>
-                                    <th>वॉर्डचे नाव</th>
-                                    <th>मालमत्ता क्रमांक</th>
-                                    <th>मालमत्ताधारक नाव</th>
-                                    <th>निवडा</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>1723</td>
-                                    <td>वॉर्ड (अ)</td>
-                                    <td>10</td>
-                                    <td>मधुकर देऊ कळसिद्धा</td>
-                                    <td><a href="#"><i class="fa fa-edit"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>1724</td>
-                                    <td>वॉर्ड (अ)</td>
-                                    <td>15</td>
-                                    <td>दया कृष्णा भाक्त</td>
-                                    <td><a href="#"><i class="fa fa-edit"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>1725</td>
-                                    <td>वॉर्ड (अ)</td>
-                                    <td>10</td>
-                                    <td>मधुकर देऊ कळसिद्धा</td>
-                                    <td><a href="#"><i class="fa fa-edit"></i></a></td>
-                                </tr>
-                                <!-- Add more rows as needed -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Pagination and Buttons -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <div>
-                            <button class="btn btn-primary">साठवा</button>
-                            <button class="btn btn-secondary">रद्द करा</button>
-                        </div>
-                        <div class="text-right">
-                            <nav>
-                                <ul class="pagination pagination-sm mb-0">
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <!-- Add more pages as needed -->
-                                </ul>
-                            </nav>
-                            <small class="text-muted">1080 items in 108 pages</small>
+        
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <select class="form-select border-primary">
+                                        <option>--निवडा--</option>
+                                    </select>
+                                    <label class="fw-bold">मालमत्ता धारकाचे नाव <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <select class="form-select border-primary">
+                                        <option>--निवडा--</option>
+                                    </select>
+                                    <label class="fw-bold">पत्नीचे नाव</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <select class="form-select border-primary">
+                                        <option>--निवडा--</option>
+                                    </select>
+                                    <label class="fw-bold">भोगवटा धारकाचे नाव</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!---Container Fluid-->
+        
+                <!-- Search Result Table -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-primary">
+                        <h6 class="m-0 font-weight-bold text-white">माहिती</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm text-center small">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th>अ.क्र.</th>
+                                        <th>प्र.प्रकार</th>
+                                        <th>मत्ता</th>
+                                        <th>सांटी</th>
+                                        <th>रेंजी</th>
+                                        <th>क्षेत्रफळ</th>
+                                        <th>भाडे</th>
+                                        <th>कर रक्‍त प्रकार</th>
+                                        <th>मि इतर माहिती</th>
+                                        <th>फरकदार</th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="10" class="text-center">No records to display.</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Lower Table Data -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-primary">
+                        <h6 class="m-0 font-weight-bold text-white">मालमत्ता तपशील</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm text-center small">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th>अ.क्र.</th>
+                                        <th>अनुक्रमांक</th>
+                                        <th>वॉर्डचे नाव</th>
+                                        <th>मालमत्ता क्रमांक</th>
+                                        <th>मालमत्ताधारक नाव</th>
+                                        <th>निवडा</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>1723</td>
+                                        <td>वॉर्ड (अ)</td>
+                                        <td>10</td>
+                                        <td>मधुकर देऊ कळसिद्धा</td>
+                                        <td><a href="#" class="text-primary"><i class="fa fa-edit fa-sm"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>1724</td>
+                                        <td>वॉर्ड (अ)</td>
+                                        <td>15</td>
+                                        <td>दया कृष्णा भाक्त</td>
+                                        <td><a href="#" class="text-primary"><i class="fa fa-edit fa-sm"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>1725</td>
+                                        <td>वॉर्ड (अ)</td>
+                                        <td>10</td>
+                                        <td>मधुकर देऊ कळसिद्धा</td>
+                                        <td><a href="#" class="text-primary"><i class="fa fa-edit fa-sm"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Pagination and Buttons -->
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <div>
+                        <button class="btn btn-primary px-4 me-3">
+                            <i class="fas fa-save me-2"></i>साठवा
+                        </button>
+                        <button class="btn btn-outline-danger px-4">
+                            <i class="fas fa-times me-2"></i>रद्द करा
+                        </button>
+                    </div>
+                    <div class="text-right">
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            </ul>
+                        </nav>
+                        <small class="text-muted">1080 items in 108 pages</small>
+                    </div>
+                </div>
             </div>
-            <!-- Footer -->
-            <?php include('include/footer.php'); ?>
-            <!-- Footer -->
         </div>
+        <!---Container Fluid-->
+    </div>
+    <!-- Footer -->
+    <?php include('include/footer.php'); ?>
+    <!-- Footer -->
+</div>
     </div>
 
     <!-- Scroll to top -->

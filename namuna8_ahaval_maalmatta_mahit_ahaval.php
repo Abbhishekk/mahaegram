@@ -59,142 +59,157 @@ $title = "मालमत्ता कर आकारणी";
                             <li class="breadcrumb-item active" aria-current="page">मालमत्ता कर आकारणी</li>
                         </ol>
                     </div>
-                    <div class="card rounded p-3">
-                        <form action="" id="pdfForm" class="card-body">
-                            <div class="row mb-3 my-2">
-                                <div class="col-md-12 d-flex flex-wrap gap-4">
-                                    <div class="col-md-3 form-check my-2">
-                                        <input class="form-check-input" type="radio" name="option" value="milkat_no"
-                                            id="milkat_no">
-                                        <label class="form-check-label fw-bold text-primary" for="milkat_no">
-                                            मिळकत नंबर नुसार अहवाल
-                                        </label>
-                                    </div>
-                                    <div class="col-md-3 form-check my-2">
-                                        <input class="form-check-input" type="radio" value="paniwapar" name="option"
-                                            id="paniwapar">
-                                        <label class="form-check-label fw-bold text-primary" for="paniwapar">
-                                            पाणीवापर प्रकार नुसार अहवाल
-                                        </label>
-                                    </div>
-                                    <div class="col-md-3 form-check my-2">
-                                        <input class="form-check-input" type="radio" value="washroom_available"
-                                            name="option" id="washroom_availables">
-                                        <label class="form-check-label fw-bold" for="washroom_availables">
-                                            शौचालय आहे
-                                        </label>
-                                    </div>
-                                    <div class="col-md-3 form-check my-2">
-                                        <input class="form-check-input" type="radio" name="option" value="milkat_type"
-                                            id="milkat_type">
-                                        <label class="form-check-label fw-bold text-primary" for="milkat_type">
-                                            मिळकत प्रकार
-                                        </label>
-                                    </div>
-                                    <div class="col-md-3 form-check my-2 d-none">
-                                        <input class="form-check-input" type="radio" name="option" id="option5">
-                                        <label class="form-check-label fw-bold text-primary" for="option5">
-                                            फेरफार नुसार अहवाल
-                                        </label>
-                                    </div>
-                                    <div class="col-md-3 form-check my-2 d-none">
-                                        <input class="form-check-input" type="radio" name="option" id="option6">
-                                        <label class="form-check-label fw-bold text-primary" for="option6">
-                                            कमी जास्त पत्रक नुसार अहवाल
-                                        </label>
-                                    </div>
-                                    <div class="col-md-3 form-check my-2 d-none">
-                                        <input class="form-check-input" type="radio" name="option" id="option7">
-                                        <label class="form-check-label fw-bold text-primary" for="option7">
-                                            करातून सूट/करमाफ असणाऱ्या जमिनी व इमारती
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-3 my-2" id="period_div">
-                                    <label class="form-label fw-bold" for="period">कालावधी</label>
-                                    <select class="form-control form-select border-primary" name="period" id="period"> >
-                                        <option value="">--निवडा--</option>
-                                        <?php if(mysqli_num_rows($periods) > 0) {
-                                            while($period = mysqli_fetch_assoc($periods)) {
-                                            ?>
-                                        <option value="<?php echo $period['id']; ?>">
-                                            <?php echo $period['total_period']; ?>
-                                        </option>
-                                        <?php }
-                                        } ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 my-2" id="malmatta_no_div">
-                                    <label class="form-label fw-bold" for="malmatta_no">मिळकत नंबर</label>
-                                    <select class="form-control form-select border-primary" name="malmatta_no"
-                                        id="malmatta_no"> >
-                                        <option value="">--निवडा--</option>
-                                        <?php if(count($malmatta_propertyVerifications) > 0) {
-                                            foreach($malmatta_propertyVerifications as $property) {
-                                                // print_r($property);
-                                            ?>
-                                        <option value="<?php echo $property['malmatta_id']; ?>">
-                                            <?php echo $property['malmatta_no']; ?>
-                                        </option>
-                                        <?php }
-                                        } ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 my-2" id="drainage_type_div">
-                                    <label class="form-label fw-bold" for="drainage_type">पाणीवापर प्रकार</label>
-                                    <select class="form-control form-select border-primary" name="drainage_type"
-                                        id="drainage_type">
-                                        <option value="">--निवडा--</option>
-                                        <?php 
-                                            if(mysqli_num_rows($drainage_type) > 0) {
-                                                while($type = mysqli_fetch_assoc($drainage_type)) {
-                                                ?>
-                                        <option value="<?php echo $type['drainage_type']; ?>">
-                                            <?php echo $type['drainage_type']; ?>
-                                        </option>
-                                        <?php }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 my-2" id="washroom_available_div">
-                                    <label class="form-label fw-bold" for="washroom_available">शौचालय आहे</label>
-                                    <select class="form-control form-select border-primary" name="washroom_available"
-                                        id="washroom_available">
-                                        <option value="">--निवडा--</option>
-                                        <option value="yes">आहे</option>
-                                        <option value="no">नाही</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 my-2" id="income_type_div">
-                                    <label class="form-label fw-bold" for="income_type">मिळकत प्रकार</label>
-                                    <select name="income_type" id="income_type" class="form-control">
-                                        <option value="" selected>--निवडा--</option>
-                                        <?php
-                                                                if(mysqli_num_rows($incomeTypes) > 0){
-                                                                    while($incomeType = mysqli_fetch_assoc($incomeTypes)){
-                                                                        echo '<option value="'.$incomeType['income_type'].'">'.$incomeType['income_type'].'</option>';
-                                                                    }
-                                                                }
-                                                            ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 my-2 d-none">
-                                    <label class="form-label fw-bold">करातून सुट/करपात्र असणाऱ्या जमिनी व इमारती</label>
-                                    <select class="form-control form-select border-primary">
-                                        <option>--निवडा--</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <button type="submit" class="btn btn-primary" id="generateReportBtn">अहवाल तयार
-                                    करा</button>
-                            </div>
-                        </form>
+                    <div class="card shadow mb-4">
+    <div class="card-header py-3 bg-primary">
+        <h6 class="m-0 font-weight-bold text-white">मालमत्ता कर आकारणी</h6>
+    </div>
+    <div class="card-body">
+        <form action="" id="pdfForm">
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="d-flex flex-wrap justify-content-center gap-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="option" value="milkat_no" id="milkat_no">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="milkat_no">
+                                <i class="fas fa-hashtag me-2"></i>मिळकत नंबर नुसार अहवाल
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="paniwapar" name="option" id="paniwapar">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="paniwapar">
+                                <i class="fas fa-tint me-2"></i>पाणीवापर प्रकार नुसार अहवाल
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="washroom_available" name="option" id="washroom_availables">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="washroom_availables">
+                                <i class="fas fa-toilet me-2"></i>शौचालय आहे
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="option" value="milkat_type" id="milkat_type">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="milkat_type">
+                                <i class="fas fa-home me-2"></i>मिळकत प्रकार
+                            </label>
+                        </div>
+                        <div class="form-check d-none">
+                            <input class="form-check-input" type="radio" name="option" id="option5">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="option5">
+                                <i class="fas fa-exchange-alt me-2"></i>फेरफार नुसार अहवाल
+                            </label>
+                        </div>
+                        <div class="form-check d-none">
+                            <input class="form-check-input" type="radio" name="option" id="option6">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="option6">
+                                <i class="fas fa-balance-scale me-2"></i>कमी जास्त पत्रक नुसार अहवाल
+                            </label>
+                        </div>
+                        <div class="form-check d-none">
+                            <input class="form-check-input" type="radio" name="option" id="option7">
+                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="option7">
+                                <i class="fas fa-hand-holding-usd me-2"></i>करातून सूट/करमाफ असणाऱ्या जमिनी व इमारती
+                            </label>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-4" id="period_div">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="period" id="period">
+                            <option value="">--निवडा--</option>
+                            <?php if(mysqli_num_rows($periods) > 0) {
+                                while($period = mysqli_fetch_assoc($periods)) { ?>
+                            <option value="<?php echo $period['id']; ?>">
+                                <?php echo $period['total_period']; ?>
+                            </option>
+                            <?php }
+                            } ?>
+                        </select>
+                        <label for="period" class="fw-bold">कालावधी</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4" id="malmatta_no_div">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="malmatta_no" id="malmatta_no">
+                            <option value="">--निवडा--</option>
+                            <?php if(count($malmatta_propertyVerifications) > 0) {
+                                foreach($malmatta_propertyVerifications as $property) { ?>
+                            <option value="<?php echo $property['malmatta_id']; ?>">
+                                <?php echo $property['malmatta_no']; ?>
+                            </option>
+                            <?php }
+                            } ?>
+                        </select>
+                        <label for="malmatta_no" class="fw-bold">मिळकत नंबर</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4" id="drainage_type_div">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="drainage_type" id="drainage_type">
+                            <option value="">--निवडा--</option>
+                            <?php if(mysqli_num_rows($drainage_type) > 0) {
+                                while($type = mysqli_fetch_assoc($drainage_type)) { ?>
+                            <option value="<?php echo $type['drainage_type']; ?>">
+                                <?php echo $type['drainage_type']; ?>
+                            </option>
+                            <?php }
+                            } ?>
+                        </select>
+                        <label for="drainage_type" class="fw-bold">पाणीवापर प्रकार</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4" id="washroom_available_div">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="washroom_available" id="washroom_available">
+                            <option value="">--निवडा--</option>
+                            <option value="yes">आहे</option>
+                            <option value="no">नाही</option>
+                        </select>
+                        <label for="washroom_available" class="fw-bold">शौचालय आहे</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4" id="income_type_div">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="income_type" id="income_type">
+                            <option value="">--निवडा--</option>
+                            <?php if(mysqli_num_rows($incomeTypes) > 0) {
+                                while($incomeType = mysqli_fetch_assoc($incomeTypes)) { ?>
+                            <option value="<?php echo $incomeType['income_type']; ?>">
+                                <?php echo $incomeType['income_type']; ?>
+                            </option>
+                            <?php }
+                            } ?>
+                        </select>
+                        <label for="income_type" class="fw-bold">मिळकत प्रकार</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-none">
+                    <div class="form-floating">
+                        <select class="form-select border-primary">
+                            <option>--निवडा--</option>
+                        </select>
+                        <label class="fw-bold">करातून सुट/करपात्र असणाऱ्या जमिनी व इमारती</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary px-4 me-3" id="generateReportBtn">
+                        <i class="fas fa-file-pdf me-2"></i>अहवाल तयार करा
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
                 </div>
 
                 <!---Container Fluid-->

@@ -77,392 +77,309 @@ if (mysqli_num_rows($periods) == 0) {
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">वार्षिक कर मागणी </h1>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="./">माहईग्राम</a></li>
+                            <li class="breadcrumb-item"><a href="./">पंचायत पोर्टल</a></li>
                             <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 9</li>
                             <li class="breadcrumb-item active" aria-current="page">मास्टर्स</li>
                             <li class="breadcrumb-item active" aria-current="page">वार्षिक कर मागणी</li>
                         </ol>
                     </div>
                     <!-- मालमत्ता धारकाची माहिती -->
-                    <div class="card">
-                        <?php
-                        if (isset($_SESSION['message'])) {
-                            echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
-                            unset($_SESSION['message']);
-                            unset($_SESSION['message_type']);
-                        }
-                        ?>
-                        <div class="border card-body rounded p-3 mb-3">
-                            <h6 class="fw-bold">मालमत्ता धारकाची माहिती</h6>
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label class="form-label" for="ward">वॉर्ड क्र</label>
-                                    <select class="form-select form-control" name="ward" id="ward">
-                                        <option>निवडा</option>
-                                        <?php
-                                        while ($ward = mysqli_fetch_assoc($wards)) {
-                                            echo "<option value='{$ward['ward_name']}'>{$ward['ward_name']}</option>";
-                                        }
-
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label" for="malmatta_id">मालमत्ता क्रमांक</label>
-                                    <select class="form-select form-control select2-single-placeholder" name="malmatta_id" id="malmatta_id">
-                                        <option>--निवडा--</option>
-                                        <?php
-                                        foreach ($property_verifications as $property) {
-                                            if ($property['status'] != 0) continue; // Skip if malmatta_id is 0
-                                            echo "<option value='{$property['malmatta_id']}'>{$property['malmatta_no']}</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 d-flex align-items-end">
-                                    <button class="btn btn-primary w-100" name="find" id="find">शोधा</button>
-                                </div>
-
-                            </div>
-                            <div class="border rounded p-3 mb-3">
-
-                                <div class="row mb-3">
-                                    <input type="hidden" name="financial_year" id="financial_year" class="form-control"
-                                        value="<?php echo $yearArray[$currentYearIndex ?? 0] ?? '';  ?>">
-                                    <div class="col-md-6">
-                                        <label class="form-label" for="kardena_name">कर देणाऱ्याचे नाव</label>
-                                        <select class="form-select form-control" readonly name="kardena_name"
-                                            id="kardena_name">
-                                            <option>--निवडा--</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 ">
-                                        <label class="form-label" for="bhogavata_dharak_name">भोगवटा धारकाचे नाव</label>
-                                        <select class="form-select form-control" readonly name="bhogavata_dharak_name"
-                                            id="bhogavata_dharak_name">
-                                            <option>--निवडा--</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <h6 class="fw-bold">मालमत्तेचे वर्णन </h6>
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label class="form-label" for="ward_name">वॉर्ड क्रं</label>
-                                        <select class="form-select  form-control" readonly name="ward_name"
-                                            id="ward_name">
-                                            <option>निवडा</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label" for="malmatta_no">मालमत्ता क्रमांक</label>
-                                        <select class="form-select  form-control" readonly name="malmatta_no"
-                                            id="malmatta_no">
-                                            <option>--निवडा--</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label" for="malmatta_dharak_name">मालमत्ता धारकाचे
-                                            नाव</label>
-                                        <select class="form-select form-control" readonly name="malmatta_dharak_name"
-                                            id="malmatta_dharak_name">
-                                            <option>--निवडा--</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- कर टॅक्स कार्ड्स -->
-                            <div class="row gy-3">
-                                <!-- Each box is styled as a card -->
-                                <div class="col-md-3 mb-2">
-                                    <div class="p-3 shadow-sm bg-white rounded">
-                                        <h6 class="text-primary fw-bold">इमारतीवरील कर</h6>
-                                        <label>मागील बाकी <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control mb-1" name="imarativariil_magil_kar"
-                                            id="imarativariil_magil_kar">
-                                        <label>चालू कर</label>
-                                        <input type="text" class="form-control mb-1" readonly
-                                            name="imarativariil_chalu_kar" id="imarativariil_chalu_kar">
-                                        <label>एकूण रक्कम</label>
-                                        <input type="text" class="form-control" readonly
-                                            name="imarativariil_ekun_rakkam" id="imarativariil_ekun_rakkam">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3 mb-2">
-                                    <div class="p-3 shadow-sm bg-white rounded">
-                                        <h6 class="text-primary fw-bold">दिवाबत्ती कर</h6>
-                                        <label>मागील बाकी <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control mb-1" name="divabatti_kar_magil_baki"
-                                            id="divabatti_kar_magil_baki">
-                                        <label>चालू कर</label>
-                                        <input type="text" class="form-control mb-1" readonly
-                                            name="divabatti_kar_chalu_kar" id="divabatti_kar_chalu_kar">
-                                        <label>एकूण रक्कम</label>
-                                        <input type="text" class="form-control" readonly
-                                            name="divabatti_kar_ekun_rakkam" id="divabatti_kar_ekun_rakkam">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3 mb-2">
-                                    <div class="p-3 shadow-sm bg-white rounded">
-                                        <h6 class="text-primary fw-bold">आरोग्य कर </h6>
-                                        <label>मागील बाकी</label>
-                                        <input type="text" class="form-control mb-1" name="arogya_kar_magil_baki"
-                                            id="arogya_kar_magil_baki">
-                                        <label>चालू कर</label>
-                                        <input type="text" class="form-control mb-1" readonly
-                                            name="arogya_kar_chalu_kar" id="arogya_kar_chalu_kar">
-                                        <label>एकूण रक्कम</label>
-                                        <input type="text" class="form-control" readonly name="arogya_kar_ekun_rakkam"
-                                            id="arogya_kar_ekun_rakkam">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-2">
-                                    <div class="p-3 shadow-sm bg-white rounded">
-                                        <h6 class="text-primary fw-bold">सफाई कर </h6>
-                                        <label>मागील बाकी</label>
-                                        <input type="text" class="form-control mb-1" name="safai_kar_magil_baki"
-                                            id="safai_kar_magil_baki">
-                                        <label>चालू कर</label>
-                                        <input type="text" class="form-control mb-1" readonly
-                                            name="safai_kar_chalu_kar" id="safai_kar_chalu_kar">
-                                        <label>एकूण रक्कम</label>
-                                        <input type="text" class="form-control" readonly name="safai_kar_ekun_rakkam"
-                                            id="safai_kar_ekun_rakkam">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3 mb-2">
-                                    <div class="p-3 shadow-sm bg-white rounded">
-                                        <h6 class="text-primary fw-bold">सार्वजनिक पाणीपट्टी</h6>
-                                        <label>मागील बाकी <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control mb-1"
-                                            name="sarvajanik_panipatty_magil_baki" id="sarvajanik_panipatty_magil_baki">
-                                        <label>चालू कर</label>
-                                        <input type="text" class="form-control mb-1" readonly
-                                            name="sarvajanik_panipatty_chalu_kar" id="sarvajanik_panipatty_chalu_kar">
-                                        <label>एकूण रक्कम</label>
-                                        <input type="text" class="form-control" readonly
-                                            name="sarvajanik_panipatty_ekun_rakkam"
-                                            id="sarvajanik_panipatty_ekun_rakkam">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="p-3 shadow-sm bg-white rounded">
-                                        <h6 class="text-primary fw-bold">पडसर कर</h6>
-                                        <label>मागील बाकी <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control mb-1" name="padsar_kar_magil_baki"
-                                            id="padsar_kar_magil_baki">
-                                        <label>चालू कर</label>
-                                        <input type="text" class="form-control mb-1" readonly
-                                            name="padsar_kar_chalu_kar" id="padsar_kar_chalu_kar">
-                                        <label>एकूण रक्कम</label>
-                                        <input type="text" class="form-control" readonly name="padsar_kar_ekun_rakkam"
-                                            id="padsar_kar_ekun_rakkam">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="p-3 shadow-sm bg-white rounded">
-                                        <h6 class="text-primary fw-bold">दंड</h6>
-                                        <label>दंड मागील</label>
-                                        <input type="text" class="form-control mb-1" name="dand_magil_baki"
-                                            id="dand_magil_baki">
-                                        <label>दंड चालू</label>
-                                        <input type="text" class="form-control mb-1" readonly name="dand_chalu_kar"
-                                            id="dand_chalu_kar">
-                                        <label>दंड एकूण</label>
-                                        <input type="text" class="form-control" readonly name="dand_ekun_rakkam"
-                                            id="dand_ekun_rakkam">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="p-3 shadow-sm bg-white rounded">
-                                        <h6 class="text-primary fw-bold">नोटीस-सूट (-)रक्कम</h6>
-                                        <label>नोटीस फी</label>
-                                        <input type="text" class="form-control mb-1" readonly name="notis_fee"
-                                            id="notis_fee">
-                                        <label>सूट रक्कम</label>
-                                        <input type="text" class="form-control mb-1" readonly name="suit_rakkam"
-                                            id="suit_rakkam">
-
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="p-3 shadow-sm bg-white rounded">
-                                        <h6 class="text-primary fw-bold">एकूण</h6>
-                                        <label>एकूण मागील बाकी</label>
-                                        <input type="text" class="form-control mb-1" readonly name="ekun_magil_baki"
-                                            id="ekun_magil_baki">
-                                        <label>एकूण चालू कर</label>
-                                        <input type="text" class="form-control mb-1" readonly name="ekun_chalu_kar"
-                                            id="ekun_chalu_kar">
-                                        <label>एकूण रक्कम</label>
-                                        <input type="text" class="form-control" readonly name="ekun_rakkam"
-                                            id="ekun_rakkam">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Action Buttons -->
-                            <div class="mt-4 text-end">
-                                <button class="btn btn-success" name="confirm" id="confirm">साठवा</button>
-                                <button class="btn btn-secondary" name="reset" id="reset">रद्द करा</button>
-                                <button class="btn btn-primary" name="kar_magna" id="kar_magna">कर मागणी</button>
-                            </div>
-                            <div class="container-fluid mt-4">
-
-                                <!-- इतर मिळकतीची माहिती -->
-                                <h6 class="fw-bold">इतर मिळकतीची माहिती</h6>
-                                <div class="table-responsive mb-3">
-                                    <table class="table table-bordered table-sm">
-                                        <thead class="table-primary">
-                                            <tr>
-                                                <th>अ.क्र.</th>
-                                                <th>मू. क्रमांक</th>
-                                                <th>वॉर्ड. क्र.</th>
-                                                <th>मू. क्रमांक</th>
-                                                <th>कर धारकाचे नाव</th>
-                                                <th>आर्थिक वर्ष</th>
-                                                <th>इमारतीवरील कर</th>
-                                                <th>दिवाबत्ती कर</th>
-                                                <th>आरोग्य कर</th>
-                                                <th>सार्वजनिक पाणीपट्टी</th>
-                                                <th>सफाई कर</th>
-                                                <th>पडसर कर</th>
-                                                <th>दंड</th>
-                                                <th>नोटीस-सूट (-)रक्कम</th>
-                                                <th>एकूण</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="20" class="text-center">No records to display.</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <!-- Tax Input Form -->
-                                <div class="row g-2 mb-4">
-                                    <div class="col-md-2 m-2">
-                                        <input type="text" class="form-control" name="imarat_kar" id="imarat_kar"
-                                            placeholder="इमारत कर">
-                                    </div>
-                                    <div class="col-md-2 m-2">
-                                        <input type="text" class="form-control" name="divabatti_kar" id="divabatti_kar"
-                                            placeholder="दिवाबत्ती कर">
-                                    </div>
-                                    <div class="col-md-2 m-2">
-                                        <input type="text" class="form-control" name="safai_kar" id="safai_kar"
-                                            placeholder="सफाई कर">
-                                    </div>
-                                    <div class="col-md-2 m-2">
-                                        <input type="text" class="form-control" name="arogy_kar" id="arogy_kar"
-                                            placeholder="आरोग्य कर">
-                                    </div>
-                                    <div class="col-md-2 m-2">
-                                        <input type="text" class="form-control" name="samany_panni" id="samany_panni"
-                                            placeholder="सामान्य पाणीपट्टी">
-                                    </div>
-                                    <div class="col-md-2 m-2">
-                                        <input type="text" class="form-control" name="padsar_kar" id="padsar_kar"
-                                            placeholder="पडसर/खुली जागा">
-                                    </div>
-                                    <div class="col-md-2 m-2">
-                                        <input type="text" class="form-control" name="dand_rakkam" id="dand_rakkam"
-                                            placeholder="दंड रक्कम">
-                                    </div>
-                                    <div class="col-md-2 m-2">
-                                        <input type="text" class="form-control" name="notis_fi" id="notis_fi"
-                                            placeholder="नोटीस फी">
-                                    </div>
-                                    <div class="col-md-2 m-2">
-                                        <input type="text" class="form-control" name="sut_rakkam" id="sut_rakkam"
-                                            placeholder="सूट रक्कम">
-                                    </div>
-                                    <div class="col-md-2 m-2">
-                                        <input type="text" class="form-control" name="ekun_rakkam_new"
-                                            id="ekun_rakkam_new" readonly placeholder="एकूण देय रक्कम">
-                                    </div>
-                                </div>
-                                <div class="container text-center my-4">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <button class="btn btn-primary mr-3" name="save" id="save"
-                                            type="submit">साठवा</button>
-                                        <button class="btn btn-secondary" name="reset" id="reset" type="reset">रद्द
-                                            करा</button>
-                                    </div>
-                                </div>
-
-
-                                <!-- वार्षिक कर मागणी यादी -->
-                                <h6 class="fw-bold">वार्षिक कर मागणी यादी</h6>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-sm">
-                                        <thead class="table-primary">
-                                            <tr>
-                                                <th>अ.क्र.</th>
-                                                <th>मू. क्रमांक</th>
-                                                <th>वॉर्ड. क्र.</th>
-                                                <th>मू. क्रमांक</th>
-                                                <th>कर धारकाचे नाव</th>
-                                                <th>आर्थिक वर्ष</th>
-                                                <th>इमारतीवरील कर</th>
-                                                <th>दिवाबत्ती कर</th>
-                                                <th>आरोग्य कर</th>
-                                                <th>सार्वजनिक पाणीपट्टी</th>
-                                                <th>सफाई कर</th>
-                                                <th>पडसर कर</th>
-                                                <th>दंड</th>
-                                                <th>नोटीस-सूट (-)रक्कम</th>
-                                                <th>एकूण</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $tax_demands = $fun->getTaxDemands($_SESSION['district_code']);
-                                            if (mysqli_num_rows($tax_demands) > 0) {
-                                                $count = 1;
-                                                while ($row = mysqli_fetch_assoc($tax_demands)) {
-                                                    // print_r($row);
-                                                    echo "<tr>
-                                                                <td>{$count}</td>
-                                                                <td>{$row['malmatta_id']}</td>
-                                                                <td>{$row['ward_no']}</td>
-                                                                <td>{$row['malmatta_no']}</td>
-                                                                <td>{$row['owner_name']}</td>
-                                                                <td>{$row['financial_year']}</td>
-                                                                <td>{$row['building_tax']}</td>
-                                                                <td>{$row['light_tax']}</td>
-                                                                <td>{$row['health_tax']}</td>
-                                                                <td>{$row['water_tax']}</td>
-                                                                <td>{$row['safai_tax']}</td>
-                                                                <td>{$row['padsar_tax']}</td>
-                                                                <td>{$row['fine']}</td>
-                                                                <td>{$row['notice_fee']} - {$row['discount']}</td>
-                                                                <td>{$row['total_amount']}</td>
-                                                            </tr>";
-                                                    $count++;
-                                                }
-                                            } else {
-                                                echo "<tr><td colspan='14' class='text-center'>कोणतेही रेकॉर्ड नाही.</td></tr>";
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-
-
-                            </div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3 bg-primary">
+        <h6 class="m-0 font-weight-bold text-white">मालमत्ता कर मागणी</h6>
+    </div>
+    <div class="card-body">
+        <form action="">
+            <?php
+            if (isset($_SESSION['message'])) {
+                echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
+                unset($_SESSION['message']);
+                unset($_SESSION['message_type']);
+            }
+            ?>
+            
+            <div class="border card-body rounded p-3 mb-3">
+                <h6 class="fw-bold text-primary">मालमत्ता धारकाची माहिती</h6>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select class="form-select border-primary" name="ward" id="ward">
+                                <option value="">--निवडा--</option>
+                                <?php
+                                while ($ward = mysqli_fetch_assoc($wards)) {
+                                    echo "<option value='{$ward['ward_name']}'>{$ward['ward_name']}</option>";
+                                }
+                                ?>
+                            </select>
+                            <label for="ward" class="fw-bold">वॉर्ड क्र</label>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select class="form-select border-primary select2-single-placeholder" name="malmatta_id" id="malmatta_id">
+                                <option value="">--निवडा--</option>
+                                <?php
+                                foreach ($property_verifications as $property) {
+                                    if ($property['status'] != 0) continue;
+                                    echo "<option value='{$property['malmatta_id']}'>{$property['malmatta_no']}</option>";
+                                }
+                                ?>
+                            </select>
+                            <label for="malmatta_id" class="fw-bold">मालमत्ता क्रमांक</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button class="btn btn-primary w-100 py-3" name="find" id="find">
+                            <i class="fas fa-search me-2"></i>शोधा
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border rounded p-3 mb-3">
+                <div class="row g-3">
+                    <input type="hidden" name="financial_year" id="financial_year" class="form-control" value="<?php echo $yearArray[$currentYearIndex ?? 0] ?? ''; ?>">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select border-primary" readonly name="kardena_name" id="kardena_name">
+                                <option value="">--निवडा--</option>
+                            </select>
+                            <label for="kardena_name" class="fw-bold">कर देणाऱ्याचे नाव</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select border-primary" readonly name="bhogavata_dharak_name" id="bhogavata_dharak_name">
+                                <option value="">--निवडा--</option>
+                            </select>
+                            <label for="bhogavata_dharak_name" class="fw-bold">भोगवटा धारकाचे नाव</label>
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold text-primary mt-3">मालमत्तेचे वर्णन</h6>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select class="form-select border-primary" readonly name="ward_name" id="ward_name">
+                                <option value="">निवडा</option>
+                            </select>
+                            <label for="ward_name" class="fw-bold">वॉर्ड क्रं</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select class="form-select border-primary" readonly name="malmatta_no" id="malmatta_no">
+                                <option value="">--निवडा--</option>
+                            </select>
+                            <label for="malmatta_no" class="fw-bold">मालमत्ता क्रमांक</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select class="form-select border-primary" readonly name="malmatta_dharak_name" id="malmatta_dharak_name">
+                                <option value="">--निवडा--</option>
+                            </select>
+                            <label for="malmatta_dharak_name" class="fw-bold">मालमत्ता धारकाचे नाव</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- कर टॅक्स कार्ड्स -->
+            <div class="row gy-3">
+                <!-- Each tax card -->
+                <?php 
+                $taxCards = [
+                    ['title' => 'इमारतीवरील कर', 'id_prefix' => 'imarativariil', 'required' => true],
+                    ['title' => 'दिवाबत्ती कर', 'id_prefix' => 'divabatti_kar', 'required' => true],
+                    ['title' => 'आरोग्य कर', 'id_prefix' => 'arogya_kar', 'required' => false],
+                    ['title' => 'सफाई कर', 'id_prefix' => 'safai_kar', 'required' => false],
+                    ['title' => 'सार्वजनिक पाणीपट्टी', 'id_prefix' => 'sarvajanik_panipatty', 'required' => true],
+                    ['title' => 'पडसर कर', 'id_prefix' => 'padsar_kar', 'required' => true],
+                    ['title' => 'दंड', 'id_prefix' => 'dand', 'required' => false],
+                    ['title' => 'नोटीस-सूट (-)रक्कम', 'id_prefix' => 'notis', 'required' => false],
+                    ['title' => 'एकूण', 'id_prefix' => 'ekun', 'required' => false]
+                ];
+                
+                foreach ($taxCards as $card): ?>
+                <div class="col-md-4">
+                    <div class="card border-primary h-100">
+                        <div class="card-header bg-light">
+                            <h6 class="fw-bold text-primary mb-0"><?= $card['title'] ?></h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control border-primary" 
+                                    name="<?= $card['id_prefix'] ?>_magil_baki" 
+                                    id="<?= $card['id_prefix'] ?>_magil_baki"
+                                    <?= $card['required'] ? 'required' : '' ?>>
+                                <label>मागील बाकी <?= $card['required'] ? '<span class="text-danger">*</span>' : '' ?></label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control border-primary" readonly
+                                    name="<?= $card['id_prefix'] ?>_chalu_kar" 
+                                    id="<?= $card['id_prefix'] ?>_chalu_kar">
+                                <label>चालू कर</label>
+                            </div>
+                            <?php if($card['title'] !== 'नोटीस-सूट (-)रक्कम'): ?>
+                            <div class="form-floating">
+                                <input type="text" class="form-control border-primary" readonly
+                                    name="<?= $card['id_prefix'] ?>_ekun_rakkam" 
+                                    id="<?= $card['id_prefix'] ?>_ekun_rakkam">
+                                <label>एकूण रक्कम</label>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-4 text-center">
+                <button class="btn btn-success px-4 me-3" name="confirm" id="confirm">
+                    <i class="fas fa-save me-2"></i>साठवा
+                </button>
+                <button class="btn btn-secondary px-4 me-3" name="reset" id="reset">
+                    <i class="fas fa-times me-2"></i>रद्द करा
+                </button>
+                <button class="btn btn-primary px-4" name="kar_magna" id="kar_magna">
+                    <i class="fas fa-file-invoice me-2"></i>कर मागणी
+                </button>
+            </div>
+
+            <!-- Tables and remaining form elements -->
+            <div class="container-fluid mt-4">
+                <!-- इतर मिळकतीची माहिती -->
+                <h6 class="fw-bold text-primary">इतर मिळकतीची माहिती</h6>
+                <div class="table-responsive mb-3">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>अ.क्र.</th>
+                                <th>मू. क्रमांक</th>
+                                <th>वॉर्ड. क्र.</th>
+                                <th>मू. क्रमांक</th>
+                                <th>कर धारकाचे नाव</th>
+                                <th>आर्थिक वर्ष</th>
+                                <th>इमारतीवरील कर</th>
+                                <th>दिवाबत्ती कर</th>
+                                <th>आरोग्य कर</th>
+                                <th>सार्वजनिक पाणीपट्टी</th>
+                                <th>सफाई कर</th>
+                                <th>पडसर कर</th>
+                                <th>दंड</th>
+                                <th>नोटीस-सूट (-)रक्कम</th>
+                                <th>एकूण</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="15" class="text-center">No records to display.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tax Input Form -->
+                <h6 class="fw-bold text-primary">कर रक्कम प्रविष्ट करा</h6>
+                <div class="row g-3 mb-4">
+                    <?php 
+                    $taxInputs = [
+                        ['id' => 'imarat_kar', 'placeholder' => 'इमारत कर'],
+                        ['id' => 'divabatti_kar', 'placeholder' => 'दिवाबत्ती कर'],
+                        ['id' => 'safai_kar', 'placeholder' => 'सफाई कर'],
+                        ['id' => 'arogy_kar', 'placeholder' => 'आरोग्य कर'],
+                        ['id' => 'samany_panni', 'placeholder' => 'सामान्य पाणीपट्टी'],
+                        ['id' => 'padsar_kar', 'placeholder' => 'पडसर/खुली जागा'],
+                        ['id' => 'dand_rakkam', 'placeholder' => 'दंड रक्कम'],
+                        ['id' => 'notis_fi', 'placeholder' => 'नोटीस फी'],
+                        ['id' => 'sut_rakkam', 'placeholder' => 'सूट रक्कम'],
+                        ['id' => 'ekun_rakkam_new', 'placeholder' => 'एकूण देय रक्कम', 'readonly' => true]
+                    ];
+                    
+                    foreach ($taxInputs as $input): ?>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control border-primary" 
+                                name="<?= $input['id'] ?>" id="<?= $input['id'] ?>"
+                                placeholder="<?= $input['placeholder'] ?>"
+                                <?= isset($input['readonly']) ? 'readonly' : '' ?>>
+                            <label for="<?= $input['id'] ?>"><?= $input['placeholder'] ?></label>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="text-center my-4">
+                    <button class="btn btn-primary px-4 me-3" name="save" id="save" type="submit">
+                        <i class="fas fa-save me-2"></i>साठवा
+                    </button>
+                    <button class="btn btn-secondary px-4" name="reset" id="reset" type="reset">
+                        <i class="fas fa-times me-2"></i>रद्द करा
+                    </button>
+                </div>
+
+                <!-- वार्षिक कर मागणी यादी -->
+                <h6 class="fw-bold text-primary">वार्षिक कर मागणी यादी</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>अ.क्र.</th>
+                                <th>मू. क्रमांक</th>
+                                <th>वॉर्ड. क्र.</th>
+                                <th>मू. क्रमांक</th>
+                                <th>कर धारकाचे नाव</th>
+                                <th>आर्थिक वर्ष</th>
+                                <th>इमारतीवरील कर</th>
+                                <th>दिवाबत्ती कर</th>
+                                <th>आरोग्य कर</th>
+                                <th>सार्वजनिक पाणीपट्टी</th>
+                                <th>सफाई कर</th>
+                                <th>पडसर कर</th>
+                                <th>दंड</th>
+                                <th>नोटीस-सूट (-)रक्कम</th>
+                                <th>एकूण</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $tax_demands = $fun->getTaxDemands($_SESSION['district_code']);
+                            if (mysqli_num_rows($tax_demands) > 0) {
+                                $count = 1;
+                                while ($row = mysqli_fetch_assoc($tax_demands)) {
+                                    echo "<tr>
+                                        <td>{$count}</td>
+                                        <td>{$row['malmatta_id']}</td>
+                                        <td>{$row['ward_no']}</td>
+                                        <td>{$row['malmatta_no']}</td>
+                                        <td>{$row['owner_name']}</td>
+                                        <td>{$row['financial_year']}</td>
+                                        <td>{$row['building_tax']}</td>
+                                        <td>{$row['light_tax']}</td>
+                                        <td>{$row['health_tax']}</td>
+                                        <td>{$row['water_tax']}</td>
+                                        <td>{$row['safai_tax']}</td>
+                                        <td>{$row['padsar_tax']}</td>
+                                        <td>{$row['fine']}</td>
+                                        <td>{$row['notice_fee']} - {$row['discount']}</td>
+                                        <td>{$row['total_amount']}</td>
+                                    </tr>";
+                                    $count++;
+                                }
+                            } else {
+                                echo "<tr><td colspan='15' class='text-center'>कोणतेही रेकॉर्ड नाही.</td></tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
                     <!---Container Fluid-->
                 </div>

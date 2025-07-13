@@ -41,193 +41,236 @@ $title = "आलेल्या (जमा) चेकची स्थिती";
                         <h1 class="h3 mb-0 text-gray-800">आलेल्या (जमा) चेकची स्थिती</h1>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="./">पंचायत पोर्टल</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 7</li>
+                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक ७</li>
                             <li class="breadcrumb-item active" aria-current="page">दैनंदिन कामकाज
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">आलेल्या (जमा) चेकची स्थिती</li>
                         </ol>
                     </div>
                     <!-- <h5 class="fw-bold text-secondary mb-3">आलेल्या (जमा) चेकची स्थिती</h5> -->
-                    <form action="api/jamacheckchi_sthiti.php" method="POST" id="checkStatusForm">
-                        <div class="card px-5 py-3">
-                            <div class="row mb-3">
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label fw-bold">आर्थिक वर्ष :</label>
-                                    <select class="form-control border-primary" name="financial_year"
-                                        id="financial_year">
-                                        <option value=""> --निवडा-- </option>
-                                        <?php foreach ($financialYears as $year): ?>
-                                        <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label fw-bold" for="plan_name">फंडाचे नाव <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control" name="plan_name" id="plan_name" required>
-                                        <option value="">--निवडा--</option>
-                                        <option value="ग्रामनिधी">ग्रामनिधी</option>
-                                        <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label fw-bold">दिनांक :</label>
-                                    <input type="date" class="form-control border-primary" name="date" id="date">
-                                </div>
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label fw-bold">चेक क्रमांक <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control form-select border-primary" name="check_number"
-                                        id="check_number">
-                                        <option>निवडा</option>
-                                        <?php
-                                            $cheques = $fun->getCheckbooks($_SESSION['district_code']);
-                                            if(mysqli_num_rows($cheques) > 0) {
-                                                while($row = mysqli_fetch_assoc($cheques)) {
-                                                    echo "<option value='{$row['id']}'>{$row['checkbook_no']}</option>";
-                                                }
-                                            } else {
-                                                echo "<option value=''>No Cheques Available</option>";
-                                            }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label fw-bold">चेक मिळालेली दिनांक :</label>
-                                    <input type="date" class="form-control border-primary" name="check_received_date"
-                                        id="check_received_date" readonly>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label fw-bold">बँक नाव</label>
-                                    <input type="text" class="form-control border-primary" name="bank_name"
-                                        id="bank_name" placeholder="बँक नाव" readonly>
-                                </div>
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label fw-bold">चेकची रक्कम</label>
-                                    <input type="text" class="form-control border-primary" name="check_amount"
-                                        id="check_amount" placeholder="चेकची रक्कम">
-                                </div>
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label fw-bold">चेक जमा केलेल्या बँकेचे नाव <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control form-select border-primary" name="bank_deposited"
-                                        id="bank_deposited">
-                                        <option>--निवडा--</option>
-                                        <?php
-                                            $banks = $fun->getBanks();
-                                            if($banks["success"]) {
-                                                foreach($banks["data"] as $row) {
-                                                    
-                                                    echo "<option value='{$row['id']}'>{$row['bank_name']}</option>";
-                                                }
-                                            } else {
-                                                echo "<option value=''>No Banks Available</option>";
-                                            }
-                                            ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label fw-bold">चेक स्थिती <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control form-select border-primary" name="check_status"
-                                        id="check_status">
-                                        <option>निवडा</option>
-                                        <option value="जमा">जमा</option>
-                                        <option value="रद्द">रद्द</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label fw-bold">मिळलेली दिनांक :</label>
-                                    <input type="date" class="form-control border-primary" name="received_date"
-                                        id="received_date">
-                                </div>
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label" for="pustak_kramanak">पुस्तक क्रमांक: <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control" name="pustak_kramanak" id="pustak_kramanak" required>
-                                        <option value="">--निवडा--</option>
-                                        <!-- Will be populated by JavaScript -->
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-3 my-2">
-                                    <label class="form-label" for="pavati_kramanak">पावती क्रमांक:</label>
-                                    <select class="form-control" name="pavati_kramanak" id="pavati_kramanak" required>
-                                        <option value="">--प्रथम पुस्तक निवडा--</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">पावती रद्द कारण <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control border-primary" name="reason" id="reason"
-                                        placeholder="पावती रद्द कारण">
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="d-grid gap-2 col-6 mx-auto">
-                                    <button class="btn btn-primary" type="submit">साठवा</button>
-                                    <button class="btn btn-secondary" type="reset">रद्द करणे</button>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </form>
-                </div>
-                <div class=" px-5 py-3 container-fluid">
-                    <div class="table-responsive card">
-                        <table class="table table-bordered">
-                            <thead class="table-primary text-center">
-                                <tr>
-                                    <th>अ क्रं</th>
-                                    <th>आर्थिक वर्ष</th>
-                                    <th>चेक मिळालेचा दिनांक</th>
-                                    <th>खात्यात</th>
-                                    <th>बँक नाव</th>
-                                    <th>चेक क्रमांक</th>
-                                    <th>चेक स्थिती</th>
-                                    <th>चेकची रक्कम</th>
-                                    <th>चेक जमा केलेल्या बँकेचे नाव</th>
-                                    <th>बदल</th>
-                                    <th>पावती</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    $checkStatusRecords = $fun->getCheckStatus();
-                                    if(mysqli_num_rows($checkStatusRecords) > 0) {
-                                        $i = 1;
-                                        while($row = mysqli_fetch_assoc($checkStatusRecords)) {
-                                            echo "<tr>";
-                                            echo "<td>{$i}</td>";
-                                            echo "<td>{$row['financial_year']}</td>";
-                                            echo "<td>{$row['date']}</td>";
-                                            echo "<td>{$row['check_received_date']}</td>";
-                                            echo "<td>{$row['bank_name']}</td>";
-                                            echo "<td>{$row['checkbook_no']}</td>";
-                                            echo "<td>{$row['check_status']}</td>";
-                                            echo "<td>" . number_format($row['check_amount'], 2) . "</td>";
-                                            echo "<td>{$row['bank_deposited_name']}</td>";
-                                            echo "<td><a href='edit_check_status.php?id={$row['id']}' class='btn btn-warning'>बदल</a></td>";
-                                            echo "<td><a href='pavati.php?id={$row['id']}' class='btn btn-info'>पावती</a></td>";
-                                            echo "</tr>";
-                                            $i++;
-                                        }
-                                    } else {
-                                        echo "<tr><td colspan='11' class='text-center'>कोणतेही रेकॉर्ड नाही</td></tr>";
-                                    }
-                                ?>
-                            </tbody>
-                        </table>
+                    <div class="card-header py-3 bg-primary text-white">
+                <div class="d-flex justify-content-center">
+                    <div class="form-check form-check-inline mx-4">
+                        <label class="form-check-label h5 mb-0" for="nondani">
+                            <!--Write Your text here-->
+                        </label>
                     </div>
                 </div>
+            </div>
+                    <form action="api/jamacheckchi_sthiti.php" method="POST" id="checkStatusForm" class="needs-validation" novalidate>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <!-- First Row -->
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="financial_year" id="financial_year">
+                            <option value="">--निवडा--</option>
+                            <?php foreach ($financialYears as $year): ?>
+                            <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <label class="fw-bold">आर्थिक वर्ष :</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="plan_name" id="plan_name" required>
+                            <option value="">--निवडा--</option>
+                            <option value="ग्रामनिधी">ग्रामनिधी</option>
+                            <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
+                        </select>
+                        <label class="fw-bold" for="plan_name">फंडाचे नाव <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input type="date" class="form-control border-primary" name="date" id="date">
+                        <label class="fw-bold">दिनांक :</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="check_number" id="check_number" required>
+                            <option value="">निवडा</option>
+                            <?php
+                                $cheques = $fun->getCheckbooks($_SESSION['district_code']);
+                                if(mysqli_num_rows($cheques) > 0) {
+                                    while($row = mysqli_fetch_assoc($cheques)) {
+                                        echo "<option value='{$row['id']}'>{$row['checkbook_no']}</option>";
+                                    }
+                                } else {
+                                    echo "<option value=''>No Cheques Available</option>";
+                                }
+                            ?>
+                        </select>
+                        <label class="fw-bold">चेक क्रमांक <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+                
+                <!-- Second Row -->
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input type="date" class="form-control border-primary" name="check_received_date" id="check_received_date" readonly>
+                        <label class="fw-bold">चेक मिळालेली दिनांक :</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control border-primary" name="bank_name" id="bank_name" placeholder="बँक नाव" readonly>
+                        <label class="fw-bold">बँक नाव</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control border-primary" name="check_amount" id="check_amount" placeholder="चेकची रक्कम">
+                        <label class="fw-bold">चेकची रक्कम</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="bank_deposited" id="bank_deposited" required>
+                            <option value="">--निवडा--</option>
+                            <?php
+                                $banks = $fun->getBanks();
+                                if($banks["success"]) {
+                                    foreach($banks["data"] as $row) {
+                                        echo "<option value='{$row['id']}'>{$row['bank_name']}</option>";
+                                    }
+                                } else {
+                                    echo "<option value=''>No Banks Available</option>";
+                                }
+                            ?>
+                        </select>
+                        <label class="fw-bold">चेक जमा केलेल्या बँकेचे नाव <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+                
+                <!-- Third Row -->
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="check_status" id="check_status" required>
+                            <option value="">निवडा</option>
+                            <option value="जमा">जमा</option>
+                            <option value="रद्द">रद्द</option>
+                        </select>
+                        <label class="fw-bold">चेक स्थिती <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input type="date" class="form-control border-primary" name="received_date" id="received_date">
+                        <label class="fw-bold">मिळलेली दिनांक :</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="pustak_kramanak" id="pustak_kramanak" required>
+                            <option value="">--निवडा--</option>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                        <label for="pustak_kramanak">पुस्तक क्रमांक: <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="pavati_kramanak" id="pavati_kramanak" required>
+                            <option value="">--प्रथम पुस्तक निवडा--</option>
+                        </select>
+                        <label for="pavati_kramanak">पावती क्रमांक:</label>
+                    </div>
+                </div>
+                
+                <!-- Fourth Row -->
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control border-primary" name="reason" id="reason" placeholder="पावती रद्द कारण">
+                        <label class="fw-bold">पावती रद्द कारण <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+                
+                <!-- Buttons -->
+                <div class="col-12 text-center mt-3">
+                    <button class="btn btn-primary px-4 me-2" type="submit">
+                        <i class="fas fa-save me-2"></i>साठवा
+                    </button>
+                    <button class="btn btn-outline-secondary px-4" type="reset">
+                        <i class="fas fa-times me-2"></i>रद्द करणे
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+                </div>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="card-header py-3 bg-primary text-white">
+                <div class="d-flex justify-content-center">
+                    <div class="form-check form-check-inline mx-4">
+                        <label class="form-check-label h5 mb-0" for="nondani">
+                            <!--Write Your text here-->
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead class="table-primary">
+                    <tr class="text-center">
+                        <th>अ क्रं</th>
+                        <th>आर्थिक वर्ष</th>
+                        <th>चेक मिळालेचा दिनांक</th>
+                        <th>खात्यात</th>
+                        <th>बँक नाव</th>
+                        <th>चेक क्रमांक</th>
+                        <th>चेक स्थिती</th>
+                        <th>चेकची रक्कम</th>
+                        <th>चेक जमा केलेल्या बँकेचे नाव</th>
+                        <th>बदल</th>
+                        <th>पावती</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $checkStatusRecords = $fun->getCheckStatus();
+                        if(mysqli_num_rows($checkStatusRecords) > 0) {
+                            $i = 1;
+                            while($row = mysqli_fetch_assoc($checkStatusRecords)) {
+                                echo "<tr>";
+                                echo "<td>{$i}</td>";
+                                echo "<td>{$row['financial_year']}</td>";
+                                echo "<td>" . date('d-m-Y', strtotime($row['date'])) . "</td>";
+                                echo "<td>" . date('d-m-Y', strtotime($row['check_received_date'])) . "</td>";
+                                echo "<td>{$row['bank_name']}</td>";
+                                echo "<td>{$row['checkbook_no']}</td>";
+                                echo "<td>{$row['check_status']}</td>";
+                                echo "<td>" . number_format($row['check_amount'], 2) . "</td>";
+                                echo "<td>{$row['bank_deposited_name']}</td>";
+                                echo "<td class='text-center'><a href='edit_check_status.php?id={$row['id']}' class='btn btn-warning btn-sm'><i class='fas fa-edit'></i></a></td>";
+                                echo "<td class='text-center'><a href='pavati.php?id={$row['id']}' class='btn btn-info btn-sm'><i class='fas fa-receipt'></i></a></td>";
+                                echo "</tr>";
+                                $i++;
+                            }
+                        } else {
+                            echo "<tr><td colspan='11' class='text-center'>कोणतेही रेकॉर्ड नाही</td></tr>";
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
                 <!---Container Fluid-->
             </div>

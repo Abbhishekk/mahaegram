@@ -5,8 +5,10 @@
                 <script>
                 document.write(new Date().getFullYear());
                 </script> - developed by
-                <b><a href="#" target="_blank">Namuna Tax</a></b>
+                <b><a href="#" target="_blank">Panchayat portal</a></b>
             </span>
         </div>
     </div>
+  
+
 </footer>

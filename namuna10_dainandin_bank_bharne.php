@@ -66,8 +66,6 @@ $title = "बँक भरणा";
                                     unset($_SESSION['message_type']);
                                 }
                                 ?>
-                               
-                              
                                 <div class="card-body" id="vitaran-form" >
 
                                     <form method="post" action="api/bank_bharane.php">
@@ -96,11 +94,11 @@ $title = "बँक भरणा";
                                                     class="form-control" value="<?= date('Y-m-d') ?>" required>
                                             </div>
                                            <div class="form-group col-md-6">
-    <label for="bank_name">बँकेचे नाव <span class="text-danger">*</span></label>
-    <select class="form-control mb-3" name="bank_name" id="bank_name" required >
-        <option value=""> -- प्रथम योजना निवडा -- </option>
-    </select>
-</div>
+                                                <label for="bank_name">बँकेचे नाव <span class="text-danger">*</span></label>
+                                                <select class="form-control mb-3" name="bank_name" id="bank_name" required >
+                                                    <option value=""> -- प्रथम योजना निवडा -- </option>
+                                                </select>
+                                            </div>
                                             <div class="form-group col-md-6">
                                                 <label for="payer_name">पैसे भरणाऱ्याचे नाव : <span class="text-danger">*</span> </label>
                                                <input type="text" name="payer_name" id="payer_name" class="form-control" required >

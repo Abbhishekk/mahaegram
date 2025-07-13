@@ -45,173 +45,199 @@ $title = "बँक भरणा";
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->
-                <div class="container-fluid" id="container-wrapper">
+                <div class="container-fluid border rounded p-3" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">बँक भरणा </h1>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="./">पंचायत पोर्टल</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 7</li>
+                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक ७</li>
                             <li class="breadcrumb-item active" aria-current="page">दैनंदिन कामकाज</li>
                             <li class="breadcrumb-item active" aria-current="page">बँक भरणा</li>
                         </ol>
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col-lg-12">
-                            <div class="card mb-4">
-                                <?php
-                                if (isset($_SESSION['message'])) {
-                                    echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
-                                    unset($_SESSION['message']);
-                                    unset($_SESSION['message_type']);
-                                }
-                                ?>
+    <div class="col-lg-12">
+        <div class="card mb-4 shadow-sm">
+            <?php
+            if (isset($_SESSION['message'])) {
+                echo "<div class='alert alert-{$_SESSION['message_type']} text-center'>{$_SESSION['message']}</div>";
+                unset($_SESSION['message']);
+                unset($_SESSION['message_type']);
+            }
+            ?>
+            <div class="card-header py-3 bg-primary text-white">
+                <div class="d-flex justify-content-center">
+                    <div class="form-check form-check-inline mx-4">
+                        <label class="form-check-label h5 mb-0" for="nondani">
+                            <!--Write Your text Here-->
+                        </label>
+                    </div>
+                </div>
+            </div>
 
-
-                                <div class="card-body" id="vitaran-form">
-
-                                    <form method="post" action="api/bank_bharane.php">
-                                        <input type="hidden" name="bank_bharane_id" id="bank_bharane_id" value="">
-
-
-
-                                        <!-- Main Form Fields -->
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label for="plan_name">योजनेचे नाव: <span
-                                                        class="text-danger">*</span></label>
-                                                <select class="form-control" name="plan_name" id="plan_name" required>
-                                                    <option value="">--निवडा--</option>
-                                                    <option value="ग्रामनिधी">ग्रामनिधी</option>
-                                                    <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
-                                                </select>
-                                            </div>
-                                            <input type="hidden" name="financial_year" id="financial_year"
-                                                class="form-control"
-                                                value="<?php echo $yearArray[$currentYearIndex];  ?>" />
-                                            <div class="form-group col-md-6">
-                                                <label for="date"> दिनांक :<span class="text-danger">*</span></label>
-                                                <input type="date" name="date" id="date" class="form-control"
-                                                    value="<?= date('Y-m-d') ?>" required>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="bank_name">बँकेचे नाव <span
-                                                        class="text-danger">*</span></label>
-                                                <select class="form-control mb-3" name="bank_name" id="bank_name"
-                                                    required>
-                                                    <option value=""> -- प्रथम योजना निवडा -- </option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="payer_name">पैसे भरणाऱ्याचे नाव : <span
-                                                        class="text-danger">*</span> </label>
-                                                <input type="text" name="payer_name" id="payer_name"
-                                                    class="form-control" required>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="account_balance">खात्यातील शिल्लक रक्कम :</label>
-                                                <input type="text" name="account_balance" id="account_balance"
-                                                    class="form-control">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="balance_inhand">हात शिल्लक :</label>
-                                                <input type="text" name="balance_inhand" id="balance_inhand"
-                                                    class="form-control">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="amount_to_pay">भरावयाची रक्कम :<span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" name="amount_to_pay" id="amount_to_pay"
-                                                    class="form-control" required>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="total_amount">एकूण रक्कम :</label>
-                                                <input type="text" name="total_amount" id="total_amount"
-                                                    class="form-control">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="shera">शेरा:<span class="text-danger">*</span></label>
-                                                <input type="text" name="shera" id="shera" class="form-control"
-                                                    required>
-                                            </div>
-
-                                        </div>
-
-                                        <button type="submit" name="save" class="btn btn-primary">साठवणे</button>
-                                        <button type="reset" class="btn btn-secondary">रद्द करणे</button>
-                                    </form>
-                                </div>
+            <div class="card-body" id="vitaran-form">
+                <form method="post" action="api/bank_bharane.php" class="needs-validation" novalidate>
+                    <input type="hidden" name="bank_bharane_id" id="bank_bharane_id" value="">
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" name="plan_name" id="plan_name" required>
+                                    <option value="">--निवडा--</option>
+                                    <option value="ग्रामनिधी">ग्रामनिधी</option>
+                                    <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
+                                </select>
+                                <label for="plan_name">योजनेचे नाव: <span class="text-danger">*</span></label>
                             </div>
                         </div>
-
-
-                        <div class="col-lg-12" id="vitaran-table">
-                            <div class="card">
-                                <div class="table-responsive">
-                                    <table class="table align-items-center table-flush">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>अ.क्र.</th>
-                                                <th>फंडाचे नाव</th>
-                                                <th>दिनांक</th>
-                                                <th>बॅंकेचे नाव</th>
-                                                <th>जमा रक्कम</th>
-                                                <th>भरणा-याचे नाव</th>
-                                                <th>शेरा</th>
-                                                <th>क्रिया</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php 
-                    $records = $fun->getBankBharane($_SESSION['district_code']);
-                    if(mysqli_num_rows($records) > 0): 
-                    ?>
-                                            <?php $i = 1; while($record = mysqli_fetch_assoc($records)): ?>
-                                            <tr>
-                                                <td><?= $i ?></td>
-                                                <td><?= $record['plan_name'] ?></td>
-                                                <td><?= date('d-m-Y', strtotime($record['date'])) ?></td>
-                                                <td><?= $fun->getBankName($record['bank_id']) ?></td>
-                                                <td><?= number_format($record['amount_to_pay'], 2) ?></td>
-                                                <td><?= $record['payer_name'] ?></td>
-                                                <td><?= $record['shera'] ?></td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-sm btn-primary" onclick="fillBankBharaneData(
-                                    '<?= $record['id'] ?>',
-                                    '<?= $record['plan_name'] ?>',
-                                    '<?= $record['financial_year'] ?>',
-                                    '<?= $record['date'] ?>',
-                                    '<?= $record['bank_id'] ?>',
-                                    '<?= $record['payer_name'] ?>',
-                                    '<?= $record['account_balance'] ?>',
-                                    '<?= $record['balance_inhand'] ?>',
-                                    '<?= $record['amount_to_pay'] ?>',
-                                    '<?= $record['total_amount'] ?>',
-                                    '<?= $record['shera'] ?>'
-                                )">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <a href="api/bank_bharane.php?delete=<?= $record['id'] ?>"
-                                                            class="btn btn-sm btn-danger"
-                                                            onclick="return confirm('तुम्हाला ही नोंद नक्की हटवायची आहे का?')">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <?php $i++; endwhile; ?>
-                                            <?php else: ?>
-                                            <tr>
-                                                <td colspan="8" class="text-center">नोंद सापडली नाही</td>
-                                            </tr>
-                                            <?php endif; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                        
+                        <input type="hidden" name="financial_year" id="financial_year" value="<?php echo $yearArray[$currentYearIndex];  ?>">
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="date" name="date" id="date" class="form-control" value="<?= date('Y-m-d') ?>" required>
+                                <label for="date">दिनांक :<span class="text-danger">*</span></label>
                             </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" name="bank_name" id="bank_name" required>
+                                    <option value=""> -- प्रथम योजना निवडा -- </option>
+                                </select>
+                                <label for="bank_name">बँकेचे नाव <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="payer_name" id="payer_name" class="form-control" required>
+                                <label for="payer_name">पैसे भरणाऱ्याचे नाव : <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="account_balance" id="account_balance" class="form-control">
+                                <label for="account_balance">खात्यातील शिल्लक रक्कम :</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="balance_inhand" id="balance_inhand" class="form-control">
+                                <label for="balance_inhand">हात शिल्लक :</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="amount_to_pay" id="amount_to_pay" class="form-control" required>
+                                <label for="amount_to_pay">भरावयाची रक्कम :<span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="total_amount" id="total_amount" class="form-control">
+                                <label for="total_amount">एकूण रक्कम :</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="shera" id="shera" class="form-control" required>
+                                <label for="shera">शेरा:<span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 text-center mt-3">
+                            <button type="submit" name="save" class="btn btn-primary px-4 me-2">
+                                <i class="fas fa-save me-2"></i>साठवणे
+                            </button>
+                            <button type="reset" class="btn btn-outline-secondary px-4">
+                                <i class="fas fa-times me-2"></i>रद्द करणे
+                            </button>
                         </div>
                     </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center bg-primary text-white">
+                <h6 class="m-0 font-weight-bold">बँक भरणे यादी</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>अ.क्र.</th>
+                                <th>फंडाचे नाव</th>
+                                <th>दिनांक</th>
+                                <th>बॅंकेचे नाव</th>
+                                <th>जमा रक्कम</th>
+                                <th>भरणा-याचे नाव</th>
+                                <th>शेरा</th>
+                                <th>क्रिया</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                            $records = $fun->getBankBharane($_SESSION['district_code']);
+                            if(mysqli_num_rows($records) > 0): 
+                            ?>
+                                <?php $i = 1; while($record = mysqli_fetch_assoc($records)): ?>
+                                <tr>
+                                    <td><?= $i ?></td>
+                                    <td><?= $record['plan_name'] ?></td>
+                                    <td><?= date('d-m-Y', strtotime($record['date'])) ?></td>
+                                    <td><?= $fun->getBankName($record['bank_id']) ?></td>
+                                    <td><?= number_format($record['amount_to_pay'], 2) ?></td>
+                                    <td><?= $record['payer_name'] ?></td>
+                                    <td><?= $record['shera'] ?></td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-primary" onclick="fillBankBharaneData(
+                                                '<?= $record['id'] ?>',
+                                                '<?= $record['plan_name'] ?>',
+                                                '<?= $record['financial_year'] ?>',
+                                                '<?= $record['date'] ?>',
+                                                '<?= $record['bank_id'] ?>',
+                                                '<?= $record['payer_name'] ?>',
+                                                '<?= $record['account_balance'] ?>',
+                                                '<?= $record['balance_inhand'] ?>',
+                                                '<?= $record['amount_to_pay'] ?>',
+                                                '<?= $record['total_amount'] ?>',
+                                                '<?= $record['shera'] ?>'
+                                            )">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <a href="api/bank_bharane.php?delete=<?= $record['id'] ?>"
+                                                class="btn btn-danger"
+                                                onclick="return confirm('तुम्हाला ही नोंद नक्की हटवायची आहे का?')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <?php $i++; endwhile; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="8" class="text-center">नोंद सापडली नाही</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                 </div>
                 <!---Container Fluid-->
             </div>

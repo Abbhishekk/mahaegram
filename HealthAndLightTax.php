@@ -71,261 +71,258 @@ $title = "आरोग्य व दिवाबत्ती कर माहि
                         </ol>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-lg-12">
-                            <div class="card mb-4">
-                                <?php
+                   <div class="row mb-3">
+    <div class="col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 bg-primary">
+                <h6 class="m-0 font-weight-bold text-white">आरोग्य व कर व्यवस्थापन</h6>
+            </div>
+            <div class="card-body">
+                <?php
+                if (isset($_SESSION['message'])) {
+                    $message = $_SESSION['message'];
+                    $message_type = $_SESSION['message_type'];
+                    echo "<div class='alert alert-$message_type'>$message</div>";
+                    unset($_SESSION['message']);
+                    unset($_SESSION['message_type']);
+                }
+                ?>
+                <form method="post" action="api/healthAndTax.php">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control border-primary" name="period" id="period" 
+                                       value="<?php echo $periods['total_period'] ?? null; ?>" readonly>
+                                <label for="period">नमुना ८ कालावधी करिता <span class="text-danger">*</span></label>
+                                <input type="number" value="" class="form-control d-none" name="update" id="update">
+                            </div>
+                        </div>
 
-if (isset($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    $message_type = $_SESSION['message_type'];
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    <input type="date" class="form-control border-primary" name="decisionDate" 
+                                           id="decisionDate" required>
+                                </div>
+                                <label for="decisionDate"> <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
 
-    echo "<div class='alert alert-$message_type'>$message</div>";
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control border-primary" name="descisionNo" 
+                                       value="<?php echo ($row == null? "" : $row['tharav_no'])?>"
+                                       <?php echo ($isTharavExists)?"disabled":"" ?> id="descisionNo">
+                                <label for="descisionNo">ठराव क्रमांक <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
 
-    // Unset the message so it doesn't persist after refresh
-    unset($_SESSION['message']);
-    unset($_SESSION['message_type']);
-}
-?>
+                        <div class="col-12 my-3"></div>
+
+                        <div class="col-md-2">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="healthTax" name="healthTax" 
+                                       value="healthTax" <?php echo ($isTharavExists)?"disabled":"" ?>>
+                                <label class="form-check-label" for="healthTax">आरोग्य कर नसल्यास</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="lightTax" name="lightTax" 
+                                       value="lightTax" <?php echo ($isTharavExists)?"disabled":"" ?>>
+                                <label class="form-check-label" for="lightTax">दिवाबत्ती कर नसल्यास</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="safaiTax" name="safaiTax" 
+                                       value="safaiTax" <?php echo ($isTharavExists)?"disabled":"" ?>>
+                                <label class="form-check-label" for="safaiTax">सफाई कर नसल्यास</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 my-4 p-3 bg-light rounded">
+                        <!-- क्षेत्रफळ -->
+                        <div class="col-md-3">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="text-center mb-0">क्षेत्रफळ चौ. फुट</h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <?php
+                                    if(count($ranges) > 0){
+                                        foreach($ranges as $row){
+                                            echo '<li class="list-group-item">'.$row.'</li>';
+                                        }
+                                    }else{
+                                        echo '<li class="list-group-item">क्षेत्रफळ माहिती उपलब्ध नाही</li>';
+                                    }
+                                    ?>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- आरोग्य कर -->
+                        <div class="col-md-3">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="text-center mb-0">आरोग्य कर</h5>
+                                </div>
                                 <div class="card-body">
-
-                                    <form method="post" action="api/healthAndTax.php">
-                                        <div class="row">
-                                            <div class="form-group col-md-3">
-                                                <label for="period">नमुना ८ कालावधी करिता <span
-                                                        class="text-danger">*</span>
-                                                </label>
-                                                <input type="text" name="period" id="period"
-                                                    value="<?php echo $periods['total_period'] ?? null; ?>" class="form-control"
-                                                    readonly>
-
-                                                <input type="number" value="" class="form-control d-none" name="update"
-                                                    id="update" aria-describedby="emailHelp">
-
-                                            </div>
-
-                                            <div class="form-group col-md-2" id="simple-date1">
-                                                <label for="decisionDate">ठराव दिनांक <span class="text-danger">*</span>
-                                                </label>
-                                                <div class="input-group date">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="fas fa-calendar"></i></span>
-                                                    </div>
-                                                    <input type="date" required class="form-control" name="decisionDate"
-                                                        value="" id="decisionDate">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-2" id="simple-date1">
-                                                <label for="durationEnd">ठराव क्रमांक <span class="text-danger">*</span>
-                                                </label>
-
-
-                                                <input type="text" class="form-control" name="descisionNo"
-                                                    value="<?php echo ($row == null? "" : $row['tharav_no'])?>"
-                                                    <?php echo ($isTharavExists)?"disabled":"" ?> id="descisionNo">
-
-                                            </div>
-                                            <div class="col-12 my-3" ></div>
-                                            <div class="form-group col-md-2" id="simple-date1">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="healthTax"
-                                                        name="healthTax" value="healthTax"
-                                                        <?php echo ($isTharavExists)?"disabled":"" ?>>
-                                                    <label class="custom-control-label" for="healthTax">आरोग्य कर
-                                                        नसल्यास</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-2" id="simple-date1">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="lightTax"
-                                                        <?php echo ($isTharavExists)?"disabled":"" ?> name="lightTax"
-                                                        value="lightTax">
-                                                    <label class="custom-control-label" for="lightTax">दिवाबत्ती कर
-                                                        नसल्यास</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-2" id="simple-date1">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="safaiTax"
-                                                        <?php echo ($isTharavExists)?"disabled":"" ?> name="safaiTax"
-                                                        value="safaiTax">
-                                                    <label class="custom-control-label" for="safaiTax">सफाई कर
-                                                        नसल्यास</label>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div
-                                            class="row g-3 d-flex align-items-end justify-content-between my-5 shadow p-3 mb-5 bg-body rounded mx-5">
-                                            <!-- क्षेत्रफळ -->
-                                            <div class="col-md-3">
-                                                <div class="">
-                                                    <h5 class="text-center">क्षेत्रफळ चौ. फुट</h5>
-                                                    <ul class="list-group list-group-flush">
-                                                        <?php
-                                                            if(count($ranges) > 0){
-                                                                foreach($ranges as $row){
-                                                                    echo '<li class="list-group-item">'.$row.'</li>';
-                                                                }
-                                                            }else{
-                                                                echo '<li class="list-group-item">क्षेत्रफळ माहिती उपलब्ध नाही</li>';
-                                                            }
-                                                        ?>
-
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <!-- आरोग्य कर -->
-                                       <!-- आरोग्य कर -->
-<div class="col-md-3">
-    <div class="">
-        <h5 class="text-center">आरोग्य कर</h5>
-        <div class="row">
-            <div class="col-4"><strong>किमान दर</strong></div>
-            <div class="col-4"><strong>कमाल दर</strong></div>
-            <div class="col-4"><strong>प्रा.पं. ठरवलेला दर</strong></div>
-        </div>
-        <?php
-        if(mysqli_num_rows($taxInfosAarogya) > 0){
-            $i = 0;
-            while($row = mysqli_fetch_assoc($taxInfosAarogya)){
-                $i = $row['id'];
-                echo '<div class="row g-2 mt-2">';
-                echo '<div class="col-4"><input type="text" name="health['.$i.'][kiman_rate]" class="form-control healthTax" value="'.$row['arogya_kiman_rate'].'" '.( $row['status']? "": "readonly").'></div>';
-                echo '<div class="col-4"><input type="text" name="health['.$i.'][kamal_rate]" class="form-control healthTax" value="'.$row['arogya_kamal_rate'].'" '.( $row['status']? "": "readonly").'></div>';
-                echo '<div class="col-4"><input type="text" name="health['.$i.'][tharabaila_rate]" class="form-control healthTax" value="'.$row['arogya_prap_tharabaila_rate'].'" '.( $row['status']? "": "readonly").'></div>';
-                echo '</div>';
-                $i++;
-            }
-            // Fill remaining rows if less than 3
-            for($j = $i; $j < 3; $j++) {
-                echo '<div class="row g-2 mt-2">';
-                echo '<div class="col-4"><input type="text" name="health['.$j.'][kiman_rate]" class="form-control healthTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="health['.$j.'][kamal_rate]" class="form-control healthTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="health['.$j.'][tharabaila_rate]" class="form-control healthTax" value=""></div>';
-                echo '</div>';
-            }
-        } else {
-            // Show 3 empty rows when no data
-            for($i = 0; $i < 3; $i++) {
-                echo '<div class="row g-2 mt-2">';
-                echo '<div class="col-4"><input type="text" name="health['.$i.'][kiman_rate]" class="form-control healthTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="health['.$i.'][kamal_rate]" class="form-control healthTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="health['.$i.'][tharabaila_rate]" class="form-control healthTax" value=""></div>';
-                echo '</div>';
-            }
-        }
-        ?>
-    </div>
-</div>
-
-<!-- दिवाबत्ती कर -->
-<div class="col-md-3">
-    <div class="">
-        <h5 class="text-center">दिवाबत्ती कर</h5>
-        <div class="row">
-            <div class="col-4"><strong>किमान दर</strong></div>
-            <div class="col-4"><strong>कमाल दर</strong></div>
-            <div class="col-4"><strong>प्रा.पं. ठरवलेला दर</strong></div>
-        </div>
-        <?php
-        if(mysqli_num_rows($taxInfosDivabatti) > 0){
-            $i = 0;
-            while($row = mysqli_fetch_assoc($taxInfosDivabatti)){
-                $i = $row['id'];
-                echo '<div class="row g-2 mt-2">';
-                echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][kiman_rate]" class="form-control incomeTax" value="'.$row['divabatti_kiman_rate'].'" '.( $row['status']? "": "readonly").'></div>';
-                echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][kamal_rate]" class="form-control incomeTax" value="'.$row['divabatti_kamal_rate'].'" '.( $row['status']? "": "readonly").'></div>';
-                echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][tharabaila_rate]" class="form-control incomeTax" value="'.$row['divabatti_prap_tharabaila_rate'].'" '.( $row['status']? "": "readonly").'></div>';
-                echo '</div>';
-                $i++;
-            }
-            // Fill remaining rows if less than 3
-            for($j = $i; $j < 3; $j++) {
-                echo '<div class="row g-2 mt-2">';
-                echo '<div class="col-4"><input type="text" name="divabatti['.$j.'][kiman_rate]" class="form-control incomeTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="divabatti['.$j.'][kamal_rate]" class="form-control incomeTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="divabatti['.$j.'][tharabaila_rate]" class="form-control incomeTax" value=""></div>';
-                echo '</div>';
-            }
-        } else {
-            // Show 3 empty rows when no data
-            for($i = 0; $i < 3; $i++) {
-                echo '<div class="row g-2 mt-2">';
-                echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][kiman_rate]" class="form-control incomeTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][kamal_rate]" class="form-control incomeTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][tharabaila_rate]" class="form-control incomeTax" value=""></div>';
-                echo '</div>';
-            }
-        }
-        ?>
-    </div>
-</div>
-
-<!-- सफाई कर -->
-<div class="col-md-3">
-    <div class="">
-        <h5 class="text-center">सफाई कर</h5>
-        <div class="row">
-            <div class="col-4"><strong>किमान दर</strong></div>
-            <div class="col-4"><strong>कमाल दर</strong></div>
-            <div class="col-4"><strong>प्रा.पं. ठरवलेला दर</strong></div>
-        </div>
-        <?php
-        if(mysqli_num_rows($taxInfosSafai) > 0){
-            $i = 0;
-            while($row = mysqli_fetch_assoc($taxInfosSafai)){
-                $i = $row['id'];
-                echo '<div class="row g-2 mt-2">';
-                echo '<div class="col-4"><input type="text" name="safai['.$i.'][kiman_rate]" class="form-control safaiTax" value="'.$row['safai_kiman_rate'].'" '.( $row['status']? "": "readonly").'></div>';
-                echo '<div class="col-4"><input type="text" name="safai['.$i.'][kamal_rate]" class="form-control safaiTax" value="'.$row['safai_kamal_rate'].'" '.( $row['status']? "": "readonly").'></div>';
-                echo '<div class="col-4"><input type="text" name="safai['.$i.'][tharabaila_rate]" class="form-control safaiTax" value="'.$row['safai_prap_tharabaila_rate'].'" '.( $row['status']? "": "readonly").'></div>';
-                echo '</div>';
-                $i++;
-            }
-            // Fill remaining rows if less than 3
-            for($j = $i; $j < 3; $j++) {
-                echo '<div class="row g-2 mt-2">';
-                echo '<div class="col-4"><input type="text" name="safai['.$j.'][kiman_rate]" class="form-control safaiTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="safai['.$j.'][kamal_rate]" class="form-control safaiTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="safai['.$j.'][tharabaila_rate]" class="form-control safaiTax" value=""></div>';
-                echo '</div>';
-            }
-        } else {
-            // Show 3 empty rows when no data
-            for($i = 0; $i < 3; $i++) {
-                echo '<div class="row g-2 mt-2">';
-                echo '<div class="col-4"><input type="text" name="safai['.$i.'][kiman_rate]" class="form-control safaiTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="safai['.$i.'][kamal_rate]" class="form-control safaiTax" value=""></div>';
-                echo '<div class="col-4"><input type="text" name="safai['.$i.'][tharabaila_rate]" class="form-control safaiTax" value=""></div>';
-                echo '</div>';
-            }
-        }
-        ?>
-    </div>
-</div>
-                                        </div>  
-
-                                        <!-- सूचना -->
-                                        <p class="my-5 text-center text-danger">
-                                            टीप: ग्रामपंचायती मध्ये आरोग्य व दिवाबत्ती कराची वसुली जर करत नसेल तर त्या
-                                            करिता आरोग्य व दिवाबत्ती कर नसल्याचा Check Box वर Click करावे.
-                                        </p>
-
-                                        <button type="submit" name="add" id="submit"
-                                            class="btn btn-primary">साठवणे</button>
-                                        <button type="reset" class="btn btn-secondary">रद्द करणे</button>
-                                        <button type="submit" name="update" id="update"
-                                            class="btn btn-primary">बदल</button>
-                                    </form>
+                                    <div class="row g-2">
+                                        <div class="col-4"><strong>किमान दर</strong></div>
+                                        <div class="col-4"><strong>कमाल दर</strong></div>
+                                        <div class="col-4"><strong>प्रा.पं. ठरवलेला दर</strong></div>
+                                    </div>
+                                    <?php
+                                    if(mysqli_num_rows($taxInfosAarogya) > 0){
+                                        $i = 0;
+                                        while($row = mysqli_fetch_assoc($taxInfosAarogya)){
+                                            $i = $row['id'];
+                                            echo '<div class="row g-2 mt-2">';
+                                            echo '<div class="col-4"><input type="text" name="health['.$i.'][kiman_rate]" class="form-control border-primary healthTax" value="'.$row['arogya_kiman_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                            echo '<div class="col-4"><input type="text" name="health['.$i.'][kamal_rate]" class="form-control border-primary healthTax" value="'.$row['arogya_kamal_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                            echo '<div class="col-4"><input type="text" name="health['.$i.'][tharabaila_rate]" class="form-control border-primary healthTax" value="'.$row['arogya_prap_tharabaila_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                            echo '</div>';
+                                            $i++;
+                                        }
+                                        for($j = $i; $j < 3; $j++) {
+                                            echo '<div class="row g-2 mt-2">';
+                                            echo '<div class="col-4"><input type="text" name="health['.$j.'][kiman_rate]" class="form-control border-primary healthTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="health['.$j.'][kamal_rate]" class="form-control border-primary healthTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="health['.$j.'][tharabaila_rate]" class="form-control border-primary healthTax" value=""></div>';
+                                            echo '</div>';
+                                        }
+                                    } else {
+                                        for($i = 0; $i < 3; $i++) {
+                                            echo '<div class="row g-2 mt-2">';
+                                            echo '<div class="col-4"><input type="text" name="health['.$i.'][kiman_rate]" class="form-control border-primary healthTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="health['.$i.'][kamal_rate]" class="form-control border-primary healthTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="health['.$i.'][tharabaila_rate]" class="form-control border-primary healthTax" value=""></div>';
+                                            echo '</div>';
+                                        }
+                                    }
+                                    ?>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- दिवाबत्ती कर -->
+                        <div class="col-md-3">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="text-center mb-0">दिवाबत्ती कर</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-2">
+                                        <div class="col-4"><strong>किमान दर</strong></div>
+                                        <div class="col-4"><strong>कमाल दर</strong></div>
+                                        <div class="col-4"><strong>प्रा.पं. ठरवलेला दर</strong></div>
+                                    </div>
+                                    <?php
+                                    if(mysqli_num_rows($taxInfosDivabatti) > 0){
+                                        $i = 0;
+                                        while($row = mysqli_fetch_assoc($taxInfosDivabatti)){
+                                            $i = $row['id'];
+                                            echo '<div class="row g-2 mt-2">';
+                                            echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][kiman_rate]" class="form-control border-primary incomeTax" value="'.$row['divabatti_kiman_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                            echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][kamal_rate]" class="form-control border-primary incomeTax" value="'.$row['divabatti_kamal_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                            echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][tharabaila_rate]" class="form-control border-primary incomeTax" value="'.$row['divabatti_prap_tharabaila_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                            echo '</div>';
+                                            $i++;
+                                        }
+                                        for($j = $i; $j < 3; $j++) {
+                                            echo '<div class="row g-2 mt-2">';
+                                            echo '<div class="col-4"><input type="text" name="divabatti['.$j.'][kiman_rate]" class="form-control border-primary incomeTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="divabatti['.$j.'][kamal_rate]" class="form-control border-primary incomeTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="divabatti['.$j.'][tharabaila_rate]" class="form-control border-primary incomeTax" value=""></div>';
+                                            echo '</div>';
+                                        }
+                                    } else {
+                                        for($i = 0; $i < 3; $i++) {
+                                            echo '<div class="row g-2 mt-2">';
+                                            echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][kiman_rate]" class="form-control border-primary incomeTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][kamal_rate]" class="form-control border-primary incomeTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="divabatti['.$i.'][tharabaila_rate]" class="form-control border-primary incomeTax" value=""></div>';
+                                            echo '</div>';
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- सफाई कर -->
+                        <div class="col-md-3">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="text-center mb-0">सफाई कर</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-2">
+                                        <div class="col-4"><strong>किमान दर</strong></div>
+                                        <div class="col-4"><strong>कमाल दर</strong></div>
+                                        <div class="col-4"><strong>प्रा.पं. ठरवलेला दर</strong></div>
+                                    </div>
+                                    <?php
+                                    if(mysqli_num_rows($taxInfosSafai) > 0){
+                                        $i = 0;
+                                        while($row = mysqli_fetch_assoc($taxInfosSafai)){
+                                            $i = $row['id'];
+                                            echo '<div class="row g-2 mt-2">';
+                                            echo '<div class="col-4"><input type="text" name="safai['.$i.'][kiman_rate]" class="form-control border-primary safaiTax" value="'.$row['safai_kiman_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                            echo '<div class="col-4"><input type="text" name="safai['.$i.'][kamal_rate]" class="form-control border-primary safaiTax" value="'.$row['safai_kamal_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                            echo '<div class="col-4"><input type="text" name="safai['.$i.'][tharabaila_rate]" class="form-control border-primary safaiTax" value="'.$row['safai_prap_tharabaila_rate'].'" '.( $row['status']? "": "readonly").'></div>';
+                                            echo '</div>';
+                                            $i++;
+                                        }
+                                        for($j = $i; $j < 3; $j++) {
+                                            echo '<div class="row g-2 mt-2">';
+                                            echo '<div class="col-4"><input type="text" name="safai['.$j.'][kiman_rate]" class="form-control border-primary safaiTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="safai['.$j.'][kamal_rate]" class="form-control border-primary safaiTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="safai['.$j.'][tharabaila_rate]" class="form-control border-primary safaiTax" value=""></div>';
+                                            echo '</div>';
+                                        }
+                                    } else {
+                                        for($i = 0; $i < 3; $i++) {
+                                            echo '<div class="row g-2 mt-2">';
+                                            echo '<div class="col-4"><input type="text" name="safai['.$i.'][kiman_rate]" class="form-control border-primary safaiTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="safai['.$i.'][kamal_rate]" class="form-control border-primary safaiTax" value=""></div>';
+                                            echo '<div class="col-4"><input type="text" name="safai['.$i.'][tharabaila_rate]" class="form-control border-primary safaiTax" value=""></div>';
+                                            echo '</div>';
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+
+                    <!-- सूचना -->
+                    <div class="alert alert-info mt-4 text-center">
+                        <strong>टीप:</strong> ग्रामपंचायती मध्ये आरोग्य व दिवाबत्ती कराची वसुली जर करत नसेल तर त्या करिता आरोग्य व दिवाबत्ती कर नसल्याचा Check Box वर Click करावे.
                     </div>
+
+                    <div class="d-flex gap-3 justify-content-center mt-4">
+                        <button type="submit" name="add" id="submit" class="btn btn-primary px-4">
+                            <i class="fas fa-save me-2"></i>साठवणे
+                        </button>
+                        <button type="reset" class="btn btn-outline-danger px-4">
+                            <i class="fas fa-times me-2"></i>रद्द करणे
+                        </button>
+                        <button type="submit" name="update" id="update" class="btn btn-primary px-4">
+                            <i class="fas fa-edit me-2"></i>बदल
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

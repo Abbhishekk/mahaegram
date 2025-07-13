@@ -1,5 +1,5 @@
 <?php
-require_once './include/auth_middleware.php';
+require_once './include/auth_middleware.php';   
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,11 +13,9 @@ $periods = $fun->getPeriodTotalPeriodsWithPeriodReason("नमुना नं�
 if (empty($periods)) {
     $_SESSION['message'] = "कालावधी उपलब्ध नाही.";
     $_SESSION['message_type'] = "danger";
-
 }
 $financialYears = $fun->getYearArray($periods);
 $wards = $fun->getWard($_SESSION['district_code']);
-
 ?>
 
 <body id="page-top">
@@ -26,7 +24,6 @@ $wards = $fun->getWard($_SESSION['district_code']);
         <?php
         $page = 'namuna7';
         $subpage = 'ahaval';
-        
         ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -37,119 +34,148 @@ $wards = $fun->getWard($_SESSION['district_code']);
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->
-
                 <div class="container-fluid border rounded p-3" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">नमुना नं.७ पावती रजिस्टर</h1>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="./">पंचायत पोर्टल</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 9</li>
+                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक ७</li>
                             <li class="breadcrumb-item active" aria-current="page">अहवाल</li>
                             <li class="breadcrumb-item active" aria-current="page">नमुना नं.७ पावती रजिस्टर</li>
                         </ol>
                     </div>
-                    <form action="">
-                        <?php
-                        if (isset($_SESSION['message'])) {
-                            echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
-                            unset($_SESSION['message']);
-                            unset($_SESSION['message_type']);
-                        }
-                        ?>
-                        <div class=" card row p-4">
-                            <div class="col-md-12 mb-3">
-                                <label class="me-4 col-md-3 fw-bold text-secondary d-inline-block me-3">
-                                    <input type="radio" name="bill_type" value="all_register" checked class="me-1">
-                                    संपूर्ण रजिस्टर
-                                </label>
-                                <label class="me-4 col-md-3 fw-bold text-secondary d-inline-block me-3">
-                                    <input type="radio" name="bill_type" value="book_number" class="me-1"> बुक नंबर
-                                    नुसार
-                                </label>
-                                <label class="fw-bold col-md-3 text-secondary d-inline-block">
-                                    <input type="radio" name="bill_type" value="jama_dinanknusar" class="me-1"> जमा
-                                    दिनांकानुसार
-                                </label>
-                                <label class="fw-bold col-md-3 text-secondary d-inline-block">
-                                    <input type="radio" name="bill_type" value="pavati_number_nusar" class="me-1"> पावती
-                                    नंबर नुसार
-                                </label>
-                            </div>
-
-
-                            <div class="row">
-
-                                <div class="col-md-4 my-2">
-                                    <label class="form-label fw-bold">आर्थिक वर्ष :</label>
-                                    <select class="form-control border-primary" name="financial_year"
-                                        id="financial_year">
-                                        <option value=""> --निवडा-- </option>
-                                        <?php foreach ($financialYears as $year): ?>
-                                            <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-3 my-2">
-                                    <label for="plan_name">फंडाचे नाव : <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="plan_name" id="plan_name">
-                                        <option value="">--निवडा--</option>
-                                        <option value="ग्रामनिधी">ग्रामनिधी</option>
-                                        <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-3 my-2" id="book_number_div">
-                                    <label for="book_number">बुक नंबर : <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="book_number" id="book_number">
-                                        <option value="">--निवडा--</option>
-
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-3 my-2" id="pavati_number_pasun_div">
-                                    <label for="pavati_number_pasun">पावती नंबर पासून : <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control" name="pavati_number_pasun" id="pavati_number_pasun">
-                                        <option value="">--निवडा--</option>
-
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-3 my-2" id="pavati_number_paryant_div">
-                                    <label for="pavati_number_paryant">पावती नंबर पर्यत : <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control" name="pavati_number_paryant"
-                                        id="pavati_number_paryant">
-                                        <option value="">--निवडा--</option>
-
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-3 my-2" id="jama_date_pasun_div">
-                                    <label for="jama_date_pasun">जमा दिनांक पासून : <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control" name="jama_date_pasun" id="jama_date_pasun">
-                                        <option value="">--निवडा--</option>
-
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-3 my-2" id="jama_date_paryant_div">
-                                    <label for="jama_date_paryant">पर्यत : <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="jama_date_paryant" id="jama_date_paryant">
-                                        <option value="">--निवडा--</option>
-
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mb-3 d-flex justify-content-center  ">
-                                <button type="submit" class="btn btn-primary me-2 mx-4">तपशील पहा</button>
-                                <button class="btn btn-danger">रद्द करणे</button>
-                            </div>
+                    
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 bg-primary">
+                            <h6 class="m-0 font-weight-bold text-white">रजिस्टर तपशील</h6>
                         </div>
-                    </form>
+                        <div class="card-body">
+                            <form action="">
+                                <?php
+                                if (isset($_SESSION['message'])) {
+                                    echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
+                                    unset($_SESSION['message']);
+                                    unset($_SESSION['message_type']);
+                                }
+                                ?>
+                                
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                                                    <div class="d-flex flex-wrap justify-content-center gap-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="bill_type" id="all_register" value="all_register" checked>
+                                    <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="all_register">
+                                        <i class="fas fa-book me-2"></i>संपूर्ण रजिस्टर
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="bill_type" id="book_number_radio" value="book_number">
+                                    <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="book_number_radio">
+                                        <i class="fas fa-bookmark me-2"></i>बुक नंबर नुसार
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="bill_type" id="jama_dinanknusar" value="jama_dinanknusar">
+                                    <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="jama_dinanknusar">
+                                        <i class="fas fa-calendar-alt me-2"></i>जमा दिनांकानुसार
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="bill_type" id="pavati_number_nusar" value="pavati_number_nusar">
+                                    <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="pavati_number_nusar">
+                                        <i class="fas fa-receipt me-2"></i>पावती नंबर नुसार
+                                    </label>
+                                </div>
+                            </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <select class="form-select border-primary" name="financial_year" id="financial_year" >
+                                                <option value="">--निवडा--</option>
+                                                <?php foreach ($financialYears as $year): ?>
+                                                    <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <label for="financial_year" class="fw-bold">आर्थिक वर्ष</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <select class="form-select border-primary" name="plan_name" id="plan_name" >
+                                                <option value="">--निवडा--</option>
+                                                <option value="ग्रामनिधी">ग्रामनिधी</option>
+                                                <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
+                                            </select>
+                                            <label for="plan_name" class="fw-bold">फंडाचे नाव</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4" id="book_number_div">
+                                        <div class="form-floating">
+                                            <select class="form-select border-primary" name="book_number" id="book_number">
+                                                <option value="">--निवडा--</option>
+                                            </select>
+                                            <label for="book_number" class="fw-bold">बुक नंबर</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" id="pavati_number_pasun_div">
+                                        <div class="form-floating">
+                                            <select class="form-select border-primary" name="pavati_number_pasun" id="pavati_number_pasun">
+                                                <option value="">--निवडा--</option>
+                                            </select>
+                                            <label for="pavati_number_pasun" class="fw-bold">पावती नंबर पासून</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" id="pavati_number_paryant_div">
+                                        <div class="form-floating">
+                                            <select class="form-select border-primary" name="pavati_number_paryant" id="pavati_number_paryant">
+                                                <option value="">--निवडा--</option>
+                                            </select>
+                                            <label for="pavati_number_paryant" class="fw-bold">पावती नंबर पर्यत</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" id="jama_date_pasun_div">
+                                        <div class="form-floating">
+                                            <select class="form-select border-primary" name="jama_date_pasun" id="jama_date_pasun">
+                                                <option value="">--निवडा--</option>
+                                            </select>
+                                            <label for="jama_date_pasun" class="fw-bold">जमा दिनांक पासून</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" id="jama_date_paryant_div">
+                                        <div class="form-floating">
+                                            <select class="form-select border-primary" name="jama_date_paryant" id="jama_date_paryant">
+                                                <option value="">--निवडा--</option>
+                                            </select>
+                                            <label for="jama_date_paryant" class="fw-bold">पर्यत</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-12 text-center">
+                                        <button type="submit" class="btn btn-primary px-4 me-3">
+                                            <i class="fas fa-eye me-2"></i>तपशील पहा
+                                        </button>
+                                        <button type="reset" class="btn btn-outline-danger px-4">
+                                            <i class="fas fa-times me-2"></i>रद्द करणे
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-
-
-
-
                 <!---Container Fluid-->
             </div>
             <!-- Footer -->
@@ -164,6 +190,25 @@ $wards = $fun->getWard($_SESSION['district_code']);
     </a>
 
     <?php include('include/scripts.php'); ?>
+    
+    <style>
+        /* Custom styles that won't affect other components */
+        #container-wrapper .form-floating > label {
+            font-weight: 500;
+            color: #495057;
+        }
+        #container-wrapper .form-select {
+            height: calc(3.5rem + 2px);
+        }
+        #container-wrapper .card {
+            border: none;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+        #container-wrapper .card-header {
+            border-radius: 0.35rem 0.35rem 0 0 !important;
+        }
+    </style>
+    
     <script>
         function filldata(id, person_name, nickname, mobile_no, aadhar_no, email, gender) {
             console.log(id, person_name, nickname, mobile_no, aadhar_no, email, gender);
@@ -176,7 +221,6 @@ $wards = $fun->getWard($_SESSION['district_code']);
             document.getElementById('email').value = email;
             document.getElementById('gender').value = gender;
         }
-
 
         $(document).ready(function () {
             // Show/hide fields based on selected report type
@@ -255,5 +299,4 @@ $wards = $fun->getWard($_SESSION['district_code']);
         });
     </script>
 </body>
-
 </html>

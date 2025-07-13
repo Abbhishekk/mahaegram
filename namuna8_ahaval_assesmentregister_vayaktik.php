@@ -28,6 +28,9 @@ $title = "मालमत्ता कर आकारणी";
 .highlight {
     background-color: #66ff66;
 }
+
+
+
 </style>
 
 <body id="page-top">
@@ -52,66 +55,82 @@ $title = "मालमत्ता कर आकारणी";
                         <h1 class="h3 mb-0 text-gray-800">मालमत्ता कर आकारणी</h1>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="./">पंचायत पोर्टल</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 8</li>
+                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक ८</li>
                             <li class="breadcrumb-item active" aria-current="page">अहवाल</li>
                             <li class="breadcrumb-item active" aria-current="page">मालमत्ता कर आकारणी</li>
                         </ol>
                     </div>
-                    <div class="border card  rounded p-3">
-                        <form action="" id="pdfForm" class="card-body">
-                            <div class="form-check mb-4">
-                                <input class="form-check-input" type="radio" name="option" id="milkat_no"
-                                    value="milkat_no" checked>
-                                <label class="form-check-label fw-bold text-primary" for="milkat_no">
-                                    मिळकत नंबर नुसार अहवाल
-                                </label>
-                            </div>
+                   <div class="card shadow mb-4">
+    <div class="card-header py-3 bg-primary">
+        <h6 class="m-0 font-weight-bold text-white">मालमत्ता कर आकारणी अहवाल</h6>
+    </div>
+    <div class="card-body">
+        <form action="" id="pdfForm">
+            <div class="d-flex flex-wrap justify-content-center gap-4 mb-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="option" id="milkat_no" value="milkat_no" checked>
+                    <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="milkat_no">
+                        <i class="fas fa-hashtag me-2"></i>मिळकत नंबर नुसार अहवाल
+                    </label>
+                </div>
+            </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-3 my-2" id="period_div">
-                                    <label class="form-label fw-bold" for="period">कालावधी</label>
-                                    <select class="form-control form-select border-primary" name="period" id="period"> >
-                                        <option value="">--निवडा--</option>
-                                        <?php if(mysqli_num_rows($periods) > 0) {
-                                            while($period = mysqli_fetch_assoc($periods)) {
-                                            ?>
-                                        <option value="<?php echo $period['id']; ?>">
-                                            <?php echo $period['total_period']; ?>
-                                        </option>
-                                        <?php }
-                                        } ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 my-2" id="malmatta_no_div">
-                                    <label class="form-label fw-bold" for="malmatta_no">मिळकत नंबर</label>
-                                    <select class="form-control form-select border-primary select2-single-placeholder" name="malmatta_no"
-                                        id="malmatta_no">
-                                        <option value="">--निवडा--</option>
-                                        <?php if(count($malmatta_propertyVerifications) > 0) {
-                                            foreach($malmatta_propertyVerifications as $property) {
-                                                // print_r($property);
-                                                $format = ($property['ward_name']!= "" ? $property['ward_name'] :"वॉर्ड नाव")." / ".($property['property_road_name'] != "" ? $property['property_road_name'] : "रस्त्याचे नाव")." / रजिस्टर नं- ".($property['register_no']!="" ? $property['register_no']:"0")." / खासरा नं- ".($property['khasara_no']!="" ? $property['khasara_no']:"0")." / मालमत्ता नं- ".$property['malmatta_no'];
-                                            ?>
-                                        <option value="<?php echo $property['malmatta_id']; ?>">
-                                            <?php echo $format; ?>
-                                        </option>
-                                        <?php }
-                                        } ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 d-none ">
-                                    <label class="form-label fw-bold">आर्थिक वर्ष</label>
-                                    <select class="form-control form-select border-primary">
-                                        <option>--निवडा--</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <button type="submit" class="btn btn-primary" id="generateReportBtn">अहवाल तयार
-                                    करा</button>
-                            </div>
-                        </form>
+            <div class="row g-3">
+                <div class="col-md-4" id="period_div">
+                    <div class="form-floating">
+                        <select class="form-select select2-single-placeholder border-primary" name="period" id="period">
+                            <option value="">--निवडा--</option>
+                            <?php if(mysqli_num_rows($periods) > 0) {
+                                while($period = mysqli_fetch_assoc($periods)) { ?>
+                            <option value="<?php echo $period['id']; ?>">
+                                <?php echo $period['total_period']; ?>
+                            </option>
+                            <?php }
+                            } ?>
+                        </select>
+                        <label for="period" class="fw-bold">कालावधी</label>
                     </div>
+                </div>
+
+                <div class="col-md-4" id="malmatta_no_div">
+                    <div class="form-floating border-primary  ">
+                        <select class="form-select select2 select2-single-placeholder border-primary " name="malmatta_no" id="malmatta_no">
+                            <option value="">--निवडा--</option>
+                            <?php if(count($malmatta_propertyVerifications) > 0) {
+                                foreach($malmatta_propertyVerifications as $property) {
+                                                                                $format = ($property['ward_name']!= "" ? $property['ward_name'] :"वॉर्ड नाव")." / ".($property['property_road_name'] != "" ? $property['property_road_name'] : "रस्त्याचे नाव")." / रजिस्टर नं- ".($property['register_no']!="" ? $property['register_no']:"0")." / खासरा नं- ".($property['khasara_no']!="" ? $property['khasara_no']:"0")." / मालमत्ता नं- ".$property['malmatta_no'];
+
+                                ?>
+                            <option value="<?php echo $property['malmatta_id']; ?>">
+                                <?php echo $format; ?>
+                            </option>
+                            <?php }
+                            } ?>
+                        </select>
+                        <label for="malmatta_no" class="fw-bold">मिळकत नंबर</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-none">
+                    <div class="form-floating">
+                        <select class="form-select border-primary">
+                            <option>--निवडा--</option>
+                        </select>
+                        <label class="fw-bold">आर्थिक वर्ष</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary px-4 me-3" id="generateReportBtn">
+                        <i class="fas fa-file-pdf me-2"></i>अहवाल तयार करा
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
                 </div>
 
 
@@ -235,6 +254,17 @@ th {
         printWindow.document.close();
     });
     </script>
+    
+    <!--this script for select 2-->
+    <script>
+$(document).ready(function () {
+  $('#malmatta_no').select2({
+    placeholder: "--निवडा--",
+    allowClear: true,
+    width: 'resolve'  // Auto-resolves to the container's width
+  });
+});
+</script>
 </body>
 
 </html>

@@ -21,7 +21,6 @@ if (mysqli_num_rows($periodsWithReasons) == 0) {
     $yearArray = $fun->getYearArray($periodsWithReasons);
     $currentYear = date('Y');
     $currentYearIndex = 0;
-    // print_r($yearArray);
     for ($i = 0; $i < count($yearArray); $i++) {
         $yearRange = explode("-", $yearArray[$i]);
         $startYear = $yearRange[0];
@@ -54,12 +53,12 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->
-                <div class="container-fluid" id="container-wrapper">
+                <div class="container-fluid border rounded p-3" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">पावती पुस्तक नोंदणी </h1>
+                        <h1 class="h3 mb-0 text-gray-800">पावती पुस्तक नोंदणी</h1>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="./">पंचायत पोर्टल</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 7</li>
+                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक ७</li>
                             <li class="breadcrumb-item active" aria-current="page">दैनंदिन कामकाज</li>
                             <li class="breadcrumb-item active" aria-current="page">पावती पुस्तक नोंदणी</li>
                         </ol>
@@ -67,310 +66,334 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
 
                     <div class="row mb-3">
                         <div class="col-lg-12">
-                            <div class="card mb-4">
+                            <div class="card mb-4 shadow-sm">
                                 <?php
                                 if (isset($_SESSION['message'])) {
-                                    echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
+                                    echo "<div class='alert alert-{$_SESSION['message_type']} text-center'>{$_SESSION['message']}</div>";
                                     unset($_SESSION['message']);
                                     unset($_SESSION['message_type']);
                                 }
                                 ?>
-                                <div
-                                    class="card-header py-3 d-flex flex-row justify-content-center align-items-center gap-5 ">
-                                    <div
-                                        class="form-check form-check-inline d-flex justify-content-start align-items-center mx-5">
-                                        <input type="radio" name="pavati_actions" id="nondani" value="nondani" checked>
-                                        <label for="nondani"
-                                            class="d-flex justify-content-start align-items-center h4">पावती पुस्तक
-                                            नोंदणी</label>
+                                <div class="card-header py-3 bg-primary text-white">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="form-check form-check-inline mx-4">
+                                            <input class="form-check-input" type="radio" name="pavati_actions" id="nondani" value="nondani" checked>
+                                            <label class="form-check-label h5 mb-0" for="nondani">
+                                                <i class="fas fa-book me-2"></i>पावती पुस्तक नोंदणी
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline mx-4">
+                                            <input class="form-check-input" type="radio" name="pavati_actions" id="vitaran" value="vitaran">
+                                            <label class="form-check-label h5 mb-0" for="vitaran">
+                                                <i class="fas fa-share-square me-2"></i>पुस्तक वितरण
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div
-                                        class="form-check form-check-inline  d-flex justify-content-start align-items-center mx-5 ">
-                                        <input type="radio" name="pavati_actions" id="vitaran" value="vitaran">
-                                        <label for="vitaran"
-                                            class="d-flex justify-content-start align-items-center h4">पुस्तक
-                                            वितरण</label>
-                                    </div>
-
                                 </div>
+                                
                                 <div class="card-body" id="nondani-form">
-
-                                    <form method="post" action="api/pavati_pustak.php">
+                                    <form method="post" action="api/pavati_pustak.php" class="needs-validation" novalidate>
                                         <input type="hidden" name="balance_id" id="balance_id" value="">
 
-
-
-                                        <!-- Main Form Fields -->
-                                        <div class="row">
-                                            <div class="form-group col-md-3">
-                                                <label for="buying_date">खरेदी दिनांक :<span
-                                                        class="text-danger">*</span></label>
-                                                <input type="date" name="buying_date" id="buying_date"
-                                                    class="form-control" value="<?= date('Y-m-d') ?>" required>
+                                        <div class="row g-3">
+                                            <div class="col-md-3">
+                                                <div class="form-floating">
+                                                    <input type="date" name="buying_date" id="buying_date" class="form-control" value="<?= date('Y-m-d') ?>" required>
+                                                    <label for="buying_date">खरेदी दिनांक <span class="text-danger">*</span></label>
+                                                </div>
                                             </div>
-                                            <div
-                                                class="form-group col-md-8 d-flex justify-content-start align-items-center">
-                                                <p class="font-weight-bold"> आर्थिक वर्ष :
-                                                    <?php echo $yearArray[$currentYearIndex ?? 0] ?? '';  ?>
-                                                </p>
-                                                <input type="hidden" name="financial_year" id="financial_year"
-                                                    class="form-control"
-                                                    value="<?php echo $yearArray[$currentYearIndex ?? 0] ?? '';  ?>">
+                                            
+                                            <div class="col-md-8 d-flex align-items-center">
+                                                <div class="form-floating flex-grow-1">
+                                                    <input type="text" class="form-control-plaintext" value="<?php echo $yearArray[$currentYearIndex ?? 0] ?? '';  ?>" readonly>
+                                                    <label>आर्थिक वर्ष</label>
+                                                </div>
+                                                <input type="hidden" name="financial_year" id="financial_year" value="<?php echo $yearArray[$currentYearIndex ?? 0] ?? '';  ?>">
                                             </div>
-                                            <div class="form-group col-md-3">
-                                                <label for="material_type">पा.पु/समान प्रकार :</label>
-                                                <select class="form-control" name="material_type" id="material_type">
-                                                    <option value="">--निवडा--</option>
-                                                    <?php
-                                                    if (mysqli_num_rows($materials) > 0):
-                                                        while ($record = mysqli_fetch_assoc($materials)):
-                                                    ?>
-                                                            <option value="<?php echo $record['material_name']; ?>">
-                                                                <?php echo $record['material_name']; ?></option>
-                                                    <?php
-                                                        endwhile;
-                                                    endif;
-                                                    ?>
-                                                </select>
+                                            
+                                            <div class="col-md-3">
+                                                <div class="form-floating">
+                                                    <select class="form-select" name="material_type" id="material_type">
+                                                        <option value="">--निवडा--</option>
+                                                        <?php
+                                                        if (mysqli_num_rows($materials) > 0):
+                                                            while ($record = mysqli_fetch_assoc($materials)):
+                                                        ?>
+                                                                <option value="<?php echo $record['material_name']; ?>">
+                                                                    <?php echo $record['material_name']; ?></option>
+                                                        <?php
+                                                            endwhile;
+                                                        endif;
+                                                        ?>
+                                                    </select>
+                                                    <label for="material_type">पा.पु/समान प्रकार</label>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-3">
-                                                <label for="material_number">पं.स.बांधणी क्रमांक :<span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" name="material_number" id="material_number"
-                                                    class="form-control">
+                                            
+                                            <div class="col-md-3">
+                                                <div class="form-floating">
+                                                    <input type="text" name="material_number" id="material_number" class="form-control" required>
+                                                    <label for="material_number">पं.स.बांधणी क्रमांक <span class="text-danger">*</span></label>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-3">
-                                                <label for="total_number">पा.पु./समान संख्या :<span
-                                                        class="text-danger">*</span></label>
-                                                <input type="number" name="total_number" id="total_number"
-                                                    class="form-control">
+                                            
+                                            <div class="col-md-3">
+                                                <div class="form-floating">
+                                                    <input type="number" name="total_number" id="total_number" class="form-control" required>
+                                                    <label for="total_number">पा.पु./समान संख्या <span class="text-danger">*</span></label>
+                                                </div>
                                             </div>
-
+                                            
+                                            <div class="col-12 text-center mt-3">
+                                                <button type="submit" name="save" class="btn btn-primary px-4 me-2" <?php echo $disabled ?>>
+                                                    <i class="fas fa-save me-2"></i>साठवणे
+                                                </button>
+                                                <button type="reset" class="btn btn-outline-secondary px-4">
+                                                    <i class="fas fa-times me-2"></i>रद्द करणे
+                                                </button>
+                                            </div>
                                         </div>
-
-                                        <button type="submit" name="save" class="btn btn-primary"
-                                            <?php echo $disabled ?>>साठवणे</button>
-                                        <button type="reset" class="btn btn-secondary">रद्द करणे</button>
                                     </form>
                                 </div>
-                                <div class="card-body" id="vitaran-form">
-
-                                    <form method="post" action="api/pavati_pustak_vitaran.php">
+                                
+                                <div class="card-body" id="vitaran-form" style="display: none;">
+                                    <form method="post" action="api/pavati_pustak_vitaran.php" class="needs-validation" novalidate>
                                         <input type="hidden" name="distribution_id" id="distribution_id" value="">
 
-
-
-                                        <!-- Main Form Fields -->
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label for="plan_name">फंडाचे नाव : <span
-                                                        class="text-danger">*</span></label>
-                                                <select class="form-control" name="plan_name" id="plan_name" required>
-                                                    <option value="">--निवडा--</option>
-                                                    <option value="ग्रामनिधी">ग्रामनिधी</option>
-                                                    <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
-                                                </select>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <select class="form-select" name="plan_name" id="plan_name" required>
+                                                        <option value="">--निवडा--</option>
+                                                        <option value="ग्रामनिधी">ग्रामनिधी</option>
+                                                        <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
+                                                    </select>
+                                                    <label for="plan_name">फंडाचे नाव <span class="text-danger">*</span></label>
+                                                </div>
                                             </div>
-                                            <input type="hidden" name="financial_year" id="financial_year"
-                                                class="form-control"
-                                                value="<?php echo $yearArray[$currentYearIndex];  ?>" />
-                                            <div class="form-group col-md-6">
-                                                <label for="material_number_pavati">पा.पु/समान नों.क्रमांक : <span
-                                                        class="text-danger">*</span> </label>
-                                                <select class="form-control" name="material_number_pavati"
-                                                    id="material_number_pavati" required>
-                                                    <option value="">--निवडा--</option>
-                                                    <?php
-                                                    if (mysqli_num_rows($pavati_pustak) > 0):
-                                                        while ($record = mysqli_fetch_assoc($pavati_pustak)):
-                                                    ?>
-                                                            <option value="<?php echo $record['id']; ?>">
-                                                                <?php echo $record['material_number']; ?></option>
-                                                    <?php
-                                                        endwhile;
-                                                    endif;
-                                                    ?>
-                                                </select>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <select class="form-select" name="material_number_pavati" id="material_number_pavati" required>
+                                                        <option value="">--निवडा--</option>
+                                                        <?php
+                                                        if (mysqli_num_rows($pavati_pustak) > 0):
+                                                            while ($record = mysqli_fetch_assoc($pavati_pustak)):
+                                                        ?>
+                                                                <option value="<?php echo $record['id']; ?>">
+                                                                    <?php echo $record['material_number']; ?></option>
+                                                        <?php
+                                                            endwhile;
+                                                        endif;
+                                                        ?>
+                                                    </select>
+                                                    <label for="material_number_pavati">पा.पु/समान नों.क्रमांक <span class="text-danger">*</span></label>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="namuna_number">बुक प्रकार: नमुना नं :</label>
-                                                <select class="form-control" name="namuna_number" id="namuna_number">
-                                                    <option value="">--निवडा--</option>
-                                                    <option value="7">7</option>
-                                                    <option value="10">10</option>
-                                                </select>
+                                            
+                                            <input type="hidden" name="financial_year" id="financial_year" value="<?php echo $yearArray[$currentYearIndex];  ?>" />
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <select class="form-select" name="namuna_number" id="namuna_number">
+                                                        <option value="">--निवडा--</option>
+                                                        <option value="7">7</option>
+                                                        <option value="10">10</option>
+                                                    </select>
+                                                    <label for="namuna_number">बुक प्रकार: नमुना नं</label>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="pavati_number">साठी पावती संख्या :<span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" name="pavati_number" id="pavati_number"
-                                                    class="form-control" required>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="text" name="pavati_number" id="pavati_number" class="form-control" required>
+                                                    <label for="pavati_number">साठी पावती संख्या <span class="text-danger">*</span></label>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="given_person_name">दिलेल्या व्यक्तीचे नाव :<span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" name="given_person_name" id="given_person_name"
-                                                    class="form-control" required>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="text" name="given_person_name" id="given_person_name" class="form-control" required>
+                                                    <label for="given_person_name">दिलेल्या व्यक्तीचे नाव <span class="text-danger">*</span></label>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="book_number">बुक नंबर :<span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" name="book_number" id="book_number"
-                                                    class="form-control" required readonly>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="text" name="book_number" id="book_number" class="form-control" required readonly>
+                                                    <label for="book_number">बुक नंबर <span class="text-danger">*</span></label>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="pavati_pasun">पावती पासून :<span
-                                                        class="text-danger">*</span></label>
-                                                <input type="number" name="pavati_pasun" id="pavati_pasun"
-                                                    class="form-control" required min="1">
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="number" name="pavati_pasun" id="pavati_pasun" class="form-control" required min="1">
+                                                    <label for="pavati_pasun">पावती पासून <span class="text-danger">*</span></label>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="pavati_paryant">पावती पर्यंत :<span
-                                                        class="text-danger">*</span></label>
-                                                <input type="number" name="pavati_paryant" id="pavati_paryant"
-                                                    class="form-control" required min="1" readonly>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="number" name="pavati_paryant" id="pavati_paryant" class="form-control" required min="1" readonly>
+                                                    <label for="pavati_paryant">पावती पर्यंत <span class="text-danger">*</span></label>
+                                                </div>
                                             </div>
-
+                                            
+                                            <div class="col-12 text-center mt-3">
+                                                <button type="submit" name="save" class="btn btn-primary px-4 me-2">
+                                                    <i class="fas fa-save me-2"></i>साठवणे
+                                                </button>
+                                                <button type="reset" class="btn btn-outline-secondary px-4">
+                                                    <i class="fas fa-times me-2"></i>रद्द करणे
+                                                </button>
+                                            </div>
                                         </div>
-
-                                        <button type="submit" name="save" class="btn btn-primary">साठवणे</button>
-                                        <button type="reset" class="btn btn-secondary">रद्द करणे</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Data Table -->
+                        <!-- Data Tables -->
                         <div class="col-lg-12" id="nondani-table">
-                            <div class="card">
-                                <div class="table-responsive">
-                                    <table class="table align-items-center table-flush">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>अ.क्र.</th>
-                                                <th>खरेदी दिनांक</th>
-                                                <th>आर्थिक वर्ष</th>
-                                                <th>पा.पु./सामान प्रकार</th>
-                                                <th>संख्या</th>
-                                                <th>पं.स. बांधणी क्रमांक</th>
-                                                <th>क्रिया</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $records = $fun->getPavatiPustak($_SESSION['district_code']);
-                                            if (mysqli_num_rows($records) > 0):
-                                            ?>
-                                                <?php $i = 1;
-                                                while ($record = mysqli_fetch_assoc($records)): ?>
-                                                    <tr>
-                                                        <td><?= $i ?></td>
-                                                        <td><?= date('d-m-Y', strtotime($record['buying_date'])) ?></td>
-                                                        <td><?= $record['financial_year'] ?></td>
-                                                        <td><?= $record['material_type'] ?></td>
-                                                        <td><?= $record['total_number'] ?></td>
-                                                        <td><?= $record['material_number'] ?></td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-sm btn-primary" onclick="fillFormData(
-                                    '<?= $record['id'] ?>',
-                                    '<?= $record['buying_date'] ?>',
-                                    '<?= $record['material_type'] ?>',
-                                    '<?= $record['material_number'] ?>',
-                                    '<?= $record['total_number'] ?>'
-                                )">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </button>
-                                                                <a href="api/pavati_pustak.php?delete=<?= $record['id'] ?>"
-                                                                    class="btn btn-sm btn-danger"
-                                                                    onclick="return confirm('तुम्हाला ही नोंद नक्की हटवायची आहे का?')">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                <?php $i++;
-                                                endwhile; ?>
-                                            <?php else: ?>
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex justify-content-between align-items-center bg-primary text-white">
+                                    <h6 class="m-0 font-weight-bold">पावती पुस्तक नोंदणी यादी</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-light">
                                                 <tr>
-                                                    <td colspan="7" class="text-center">नोंद सापडली नाही</td>
+                                                    <th>अ.क्र.</th>
+                                                    <th>खरेदी दिनांक</th>
+                                                    <th>आर्थिक वर्ष</th>
+                                                    <th>पा.पु./सामान प्रकार</th>
+                                                    <th>संख्या</th>
+                                                    <th>पं.स. बांधणी क्रमांक</th>
+                                                    <th>क्रिया</th>
                                                 </tr>
-                                            <?php endif; ?>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $records = $fun->getPavatiPustak($_SESSION['district_code']);
+                                                if (mysqli_num_rows($records) > 0):
+                                                ?>
+                                                    <?php $i = 1;
+                                                    while ($record = mysqli_fetch_assoc($records)): ?>
+                                                        <tr>
+                                                            <td><?= $i ?></td>
+                                                            <td><?= date('d-m-Y', strtotime($record['buying_date'])) ?></td>
+                                                            <td><?= $record['financial_year'] ?></td>
+                                                            <td><?= $record['material_type'] ?></td>
+                                                            <td><?= $record['total_number'] ?></td>
+                                                            <td><?= $record['material_number'] ?></td>
+                                                            <td>
+                                                                <div class="btn-group btn-group-sm">
+                                                                    <button class="btn btn-primary" onclick="fillFormData(
+                                        '<?= $record['id'] ?>',
+                                        '<?= $record['buying_date'] ?>',
+                                        '<?= $record['material_type'] ?>',
+                                        '<?= $record['material_number'] ?>',
+                                        '<?= $record['total_number'] ?>'
+                                    )">
+                                                                        <i class="fas fa-edit"></i>
+                                                                    </button>
+                                                                    <a href="api/pavati_pustak.php?delete=<?= $record['id'] ?>"
+                                                                        class="btn btn-danger"
+                                                                        onclick="return confirm('तुम्हाला ही नोंद नक्की हटवायची आहे का?')">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    <?php $i++;
+                                                    endwhile; ?>
+                                                <?php else: ?>
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">नोंद सापडली नाही</td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-12" id="vitaran-table">
-                            <div class="card">
-                                <div class="table-responsive">
-                                    <table class="table align-items-center table-flush">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>अ.क्र.</th>
-                                                <th>फंडाचे नाव</th>
-                                                <th>आर्थिक वर्ष</th>
-                                                <th>बुक प्रकार: नमुना नं</th>
-                                                <th>बुक नंबर</th>
-                                                <th>पावती संख्या</th>
-                                                <th>बुक दिलेल्या व्यक्तीचे नाव</th>
-                                                <th>पावती पासून</th>
-                                                <th>पावती पर्यंत</th>
-                                                <th>क्रिया</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $distributions = $fun->getPavatiPustakVitaran($_SESSION['district_code']);
-                                            if (mysqli_num_rows($distributions) > 0):
-                                            ?>
-                                                <?php $i = 1;
-                                                while ($record = mysqli_fetch_assoc($distributions)):
-                                                    // print_r($record);
-                                                ?>
-                                                    <tr>
-                                                        <td><?= $i ?></td>
-                                                        <td><?= $record['plan_name'] ?></td>
-                                                        <td><?= $record['financial_year'] ?></td>
-                                                        <td><?= $record['namuna_number'] ?></td>
-                                                        <td><?= $record['book_number'] ?></td>
-                                                        <td><?= $record['pavati_number'] ?></td>
-                                                        <td><?= $record['given_person_name'] ?></td>
-                                                        <td><?= $record['pavati_pasun'] ?></td>
-                                                        <td><?= $record['pavati_paryant'] ?></td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-sm btn-primary" onclick="fillDistributionFormData(
-                                    '<?= $record['id'] ?>',
-                                    '<?= $record['plan_name'] ?>',
-                                    '<?= $record['material_id'] ?>',
-                                    '<?= $record['namuna_number'] ?>',
-                                    '<?= $record['pavati_number'] ?>',
-                                    '<?= $record['given_person_name'] ?>',
-                                    '<?= $record['book_number'] ?>',
-                                    '<?= $record['pavati_pasun'] ?>',
-                                    '<?= $record['pavati_paryant'] ?>',
-                                    '<?= $record['financial_year'] ?>'
-                                )">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </button>
-                                                                <a href="api/pavati_pustak_vitaran.php?delete=<?= $record['id'] ?>"
-                                                                    class="btn btn-sm btn-danger"
-                                                                    onclick="return confirm('तुम्हाला ही नोंद नक्की हटवायची आहे का?')">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                <?php $i++;
-                                                endwhile; ?>
-                                            <?php else: ?>
+                        
+                        <div class="col-lg-12" id="vitaran-table" style="display: none;">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex justify-content-between align-items-center bg-primary text-white">
+                                    <h6 class="m-0 font-weight-bold">पुस्तक वितरण यादी</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-light">
                                                 <tr>
-                                                    <td colspan="10" class="text-center">वितरण नोंद सापडली नाही</td>
+                                                    <th>अ.क्र.</th>
+                                                    <th>फंडाचे नाव</th>
+                                                    <th>आर्थिक वर्ष</th>
+                                                    <th>बुक प्रकार: नमुना नं</th>
+                                                    <th>बुक नंबर</th>
+                                                    <th>पावती संख्या</th>
+                                                    <th>बुक दिलेल्या व्यक्तीचे नाव</th>
+                                                    <th>पावती पासून</th>
+                                                    <th>पावती पर्यंत</th>
+                                                    <th>क्रिया</th>
                                                 </tr>
-                                            <?php endif; ?>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $distributions = $fun->getPavatiPustakVitaran($_SESSION['district_code']);
+                                                if (mysqli_num_rows($distributions) > 0):
+                                                ?>
+                                                    <?php $i = 1;
+                                                    while ($record = mysqli_fetch_assoc($distributions)):
+                                                    ?>
+                                                        <tr>
+                                                            <td><?= $i ?></td>
+                                                            <td><?= $record['plan_name'] ?></td>
+                                                            <td><?= $record['financial_year'] ?></td>
+                                                            <td><?= $record['namuna_number'] ?></td>
+                                                            <td><?= $record['book_number'] ?></td>
+                                                            <td><?= $record['pavati_number'] ?></td>
+                                                            <td><?= $record['given_person_name'] ?></td>
+                                                            <td><?= $record['pavati_pasun'] ?></td>
+                                                            <td><?= $record['pavati_paryant'] ?></td>
+                                                            <td>
+                                                                <div class="btn-group btn-group-sm">
+                                                                    <button class="btn btn-primary" onclick="fillDistributionFormData(
+                                        '<?= $record['id'] ?>',
+                                        '<?= $record['plan_name'] ?>',
+                                        '<?= $record['material_id'] ?>',
+                                        '<?= $record['namuna_number'] ?>',
+                                        '<?= $record['pavati_number'] ?>',
+                                        '<?= $record['given_person_name'] ?>',
+                                        '<?= $record['book_number'] ?>',
+                                        '<?= $record['pavati_pasun'] ?>',
+                                        '<?= $record['pavati_paryant'] ?>',
+                                        '<?= $record['financial_year'] ?>'
+                                    )">
+                                                                        <i class="fas fa-edit"></i>
+                                                                    </button>
+                                                                    <a href="api/pavati_pustak_vitaran.php?delete=<?= $record['id'] ?>"
+                                                                        class="btn btn-danger"
+                                                                        onclick="return confirm('तुम्हाला ही नोंद नक्की हटवायची आहे का?')">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    <?php $i++;
+                                                    endwhile; ?>
+                                                <?php else: ?>
+                                                    <tr>
+                                                        <td colspan="10" class="text-center">वितरण नोंद सापडली नाही</td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -422,7 +445,6 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
             $('#material_number_pavati').val(materialId);
             console.log(materialId);
 
-
             $('#namuna_number').val(namunaNumber);
             $('#pavati_number').val(pavatiNumber);
             $('#given_person_name').val(givenPersonName);
@@ -467,6 +489,7 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                 }
             });
         });
+        
         // Add this script in your JavaScript section
         $(document).ready(function() {
             // When material or namuna number changes in vitaran form
@@ -507,12 +530,8 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                 console.log(start + parseInt(limit) - 1, "Calculated End Value");
                 var final_value = start + parseInt(limit) - 1;
 
-
                 end.val(final_value);
                 console.log(end.val(), "End Value");
-
-
-
             });
 
             $('#pavati_paryant').on('change', function() {
@@ -530,8 +549,6 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
                     $(this).val('');
                     return;
                 }
-
-                // You can add additional validation here if needed
             });
 
             // Auto-calculate pavati_paryant when pavati_number changes
@@ -566,7 +583,5 @@ $pavati_pustak = $fun->getPavatiPustak($_SESSION['district_code']);
             });
         }
     </script>
-
 </body>
-
 </html>

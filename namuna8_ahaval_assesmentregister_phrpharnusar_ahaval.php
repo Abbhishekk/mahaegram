@@ -57,37 +57,59 @@ $title = "नमुना क्रमांक ८ कर नोंद वह�
                                 (असेसमेन्ट रजिस्टर)</li>
                         </ol>
                     </div>
-                    <div class="border card rounded p-3">
-                        <form action="" class="card-body">
-                            <div class="form-check mb-4">
-                                <input class="form-check-input" type="radio" name="option" id="option1" checked>
-                                <label class="form-check-label fw-bold text-primary" for="option1">
-                                    फेरफार नुसार अहवाल
-                                </label>
-                            </div>
-                            <div class="form-check mb-4">
-                                <input class="form-check-input" type="radio" name="option" id="option1" checked>
-                                <label class="form-check-label fw-bold text-primary" for="option1">
-                                    कमी जादा पत्रक नुसार अहवाल
-                                </label>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold">कालावधी</label>
-                                    <select class="form-control form-select border-primary">
-                                        <option>--निवडा--</option>
-                                    </select>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 bg-primary">
+                            <h6 class="m-0 font-weight-bold text-white">अहवाल</h6>
+                        </div>
+                        <div class="card-body">
+                            <form action="">
+                                <div class="d-flex flex-wrap justify-content-center gap-4 mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="option" id="option1" checked>
+                                        <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="option1">
+                                            <i class="fas fa-exchange-alt me-2"></i>फेरफार नुसार अहवाल
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="option" id="option2">
+                                        <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="option2">
+                                            <i class="fas fa-balance-scale me-2"></i>कमी जादा पत्रक नुसार अहवाल
+                                        </label>
+                                    </div>
                                 </div>
-
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold">आर्थिक वर्ष</label>
-                                    <select class="form-control form-select border-primary">
-                                        <option>--निवडा--</option>
-                                    </select>
+                    
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <select class="form-select border-primary">
+                                                <option>--निवडा--</option>
+                                            </select>
+                                            <label class="fw-bold">कालावधी</label>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <select class="form-select border-primary">
+                                                <option>--निवडा--</option>
+                                            </select>
+                                            <label class="fw-bold">आर्थिक वर्ष</label>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                    
+                                <div class="row mt-4">
+                                    <div class="col-md-12 text-center">
+                                        <button type="submit" class="btn btn-primary px-4 me-3">
+                                            <i class="fas fa-file-pdf me-2"></i>अहवाल तयार करा
+                                        </button>
+                                        <button type="reset" class="btn btn-outline-danger px-4">
+                                            <i class="fas fa-times me-2"></i>रद्द करा
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
 

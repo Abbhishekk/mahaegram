@@ -254,10 +254,10 @@ $title = "Mahaegram Login";
     <!-- Government Information Section -->
     <div class="login-info">
       <h1 class="bounce">Panchayat Portal</h1>
-      <p>Official digital platform for Maharashtra Gram Panchayat administration and services.</p>
+      <p>The Panchayat Portal is not merely a technological tool; it is a catalyst for transforming access, accountability, and equity within agency governance. By leveraging digital innovation, it aims to empower organizations, enhance service delivery, and foster active citizen participation in governance processes</p>
       
       <ul class="govt-features">
-        <li><i class="fas fa-shield-alt"></i> Secure government authentication</li>
+        <li><i class="fas fa-shield-alt"></i> Secure Governance authentication</li>
         <li><i class="fas fa-file-alt"></i> Access official documents</li>
         <li><i class="fas fa-users"></i> Citizen services portal</li>
         <li><i class="fas fa-lock"></i> Encrypted data transmission</li>
@@ -290,7 +290,7 @@ $title = "Mahaegram Login";
       <form method="post" action="api/login.php">
         <div class="input-group">
           <label for="user_id">User ID</label>
-          <input type="text" id="user_id" name="user_id" placeholder="Enter your government ID" required />
+          <input type="text" id="user_id" name="user_id" placeholder="Enter your Agency ID" required />
         </div>
         
         <div class="input-group">

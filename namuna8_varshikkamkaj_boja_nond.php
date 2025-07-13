@@ -38,52 +38,80 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                     </div>
 
                     <!-- Form Section -->
-                    <div class="p-3 bg-light border rounded">
-                        <!-- मालमत्ता माहिती -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold"><i class="fa fa-circle" style="font-size: 8px;"></i>
-                                मालमत्ता माहिती</label>
-                            <div class="row align-items-end">
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold">मालमत्ता क्रमांक <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" placeholder="मालमत्ता क्रमांक">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 bg-primary">
+                            <h6 class="m-0 font-weight-bold text-white">मालमत्ता बोजा नोंद</h6>
+                        </div>
+                        <div class="card-body">
+                            <!-- मालमत्ता माहिती -->
+                            <div class="mb-4 p-3 border rounded bg-light">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-circle me-2" style="font-size: 8px;"></i>
+                                    <h6 class="m-0 fw-bold">मालमत्ता माहिती</h6>
                                 </div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-primary mt-2">शोधा</button>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label fw-bold">मालमत्ता धारकांचे नाव :</label>
-                                    <input type="text" class="form-control" placeholder="मालमत्ता धारकांचे नाव">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label fw-bold">कालावधी</label>
-                                    <select class="form-control">
-                                        <option selected>2023 - 2027</option>
-                                        <option>2024 - 2028</option>
-                                        <option>2025 - 2029</option>
-                                    </select>
+                                
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control border-primary" id="malmattaNumber" placeholder=" ">
+                                            <label for="malmattaNumber" class="fw-bold">मालमत्ता क्रमांक <span class="text-danger">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-primary h-100">
+                                            <i class="fas fa-search me-1"></i> शोधा
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control border-primary" id="ownerName" placeholder=" ">
+                                            <label for="ownerName" class="fw-bold">मालमत्ता धारकांचे नाव</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <select class="form-select border-primary" id="period">
+                                                <option selected>2023 - 2027</option>
+                                                <option>2024 - 2028</option>
+                                                <option>2025 - 2029</option>
+                                            </select>
+                                            <label for="period" class="fw-bold">कालावधी</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- नवीन बोजा नोंद करणे -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold"><i class="fa fa-circle" style="font-size: 8px;"></i> नवीन
-                                बोजा नोंद करणे <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="नवीन बोजा नोंद">
-                        </div>
-
-                        <!-- जुन्या बोजाची माहिती -->
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" type="radio" name="bojatype" id="oldboja">
-                            <label class="form-check-label" for="oldboja">जुना बोजा</label>
-                        </div>
-
-                        <!-- Buttons -->
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-primary">साठवा</button>
-                            <button class="btn btn-secondary">रद्द करा</button>
+                    
+                            <!-- नवीन बोजा नोंद करणे -->
+                            <div class="mb-4 p-3 border rounded bg-light">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-circle me-2" style="font-size: 8px;"></i>
+                                    <h6 class="m-0 fw-bold">नवीन बोजा नोंद करणे <span class="text-danger">*</span></h6>
+                                </div>
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-primary" id="newBoja" placeholder=" ">
+                                    <label for="newBoja">नवीन बोजा नोंद</label>
+                                </div>
+                            </div>
+                    
+                            <!-- जुन्या बोजाची माहिती -->
+                            <div class="mb-4 p-3 border rounded bg-light">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="bojatype" id="oldboja">
+                                    <label class="form-check-label fw-bold" for="oldboja">
+                                        <i class="fas fa-circle me-1" style="font-size: 8px;"></i> जुना बोजा
+                                    </label>
+                                </div>
+                            </div>
+                    
+                            <!-- Buttons -->
+                            <div class="d-flex gap-3 mt-4">
+                                <button class="btn btn-primary px-4">
+                                    <i class="fas fa-save me-2"></i> साठवा
+                                </button>
+                                <button class="btn btn-outline-danger px-4">
+                                    <i class="fas fa-times me-2"></i> रद्द करा
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -38,13 +38,15 @@ $title = "मालमत्ता माहिती प्रमाणिक�
                     <!-- Only कालावधी Filter Section -->
                     <div class="row mb-3">
                         <div class="col-md-3">
-                            <label class="form-label fw-bold">कालावधी <span class="text-danger">*</span></label>
-                            <select class="form-control">
-                                <option selected>--निवडा--</option>
-                                <option>2023 - 2027</option>
-                                <option>2024 - 2028</option>
-                                <!-- Add more options as needed -->
-                            </select>
+                            <div class="form-floating">
+                                <select class="form-select border-primary" id="periodSelect">
+                                    <option selected>--निवडा--</option>
+                                    <option>2023 - 2027</option>
+                                    <option>2024 - 2028</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                                <label for="periodSelect" class="fw-bold">कालावधी <span class="text-danger">*</span></label>
+                            </div>
                         </div>
                     </div>
                 </div>

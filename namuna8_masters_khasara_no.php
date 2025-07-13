@@ -40,101 +40,108 @@ $khasaraWardList = $fun->getKhasaraWardMappings($_SESSION['district_code']);
                         </ol>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-lg-12">
-                            <div class="card mb-4">
-                                <?php
-
-                                if (isset($_SESSION['message'])) {
-                                    $message = $_SESSION['message'];
-                                    $message_type = $_SESSION['message_type'];
-
-                                    echo "<div class='alert alert-$message_type'>$message</div>";
-
-                                    // Unset the message so it doesn't persist after refresh
-                                    unset($_SESSION['message']);
-                                    unset($_SESSION['message_type']);
-                                }
-                                ?>
-                                <div class="card-body">
-                                    <form id="khasaraWardForm">
-                                        <div class="row mb-3">
-                                            <div class="col-md-4">
-                                                <label>खसारा क्रमांक</label>
-                                                <input type="text" id="khasara_no" name="khasara_no"
-                                                    class="form-control" />
-                                            </div>
-                                            <div class="col-md-8 d-none">
-                                                <label>वार्ड निवडा</label>
-                                                <select id="ward_ids" name="ward_ids[]"
-                                                    class="form-control select2-multiple" multiple>
-                                                    <!-- options populated by PHP on page load -->
-                                                    <?php
-                                                    $allWards = $fun->getWard($_SESSION['district_code']);
-                                                    while ($w = mysqli_fetch_assoc($allWards)) {
-                                                        echo "<option value='{$w['id']}'>{$w['ward_no']} - {$w['ward_name']}</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <button type="button" id="saveBtn" class="btn btn-primary">साठवणे</button>
-                                    </form>
-
-                                </div>
+                   <div class="row mb-3">
+    <div class="col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 bg-primary">
+                <h6 class="m-0 font-weight-bold text-white">खसारा क्रमांक - वॉर्ड नोंद</h6>
+            </div>
+            <div class="card-body">
+                <?php
+                if (isset($_SESSION['message'])) {
+                    $message = $_SESSION['message'];
+                    $message_type = $_SESSION['message_type'];
+                    echo "<div class='alert alert-$message_type'>$message</div>";
+                    unset($_SESSION['message']);
+                    unset($_SESSION['message_type']);
+                }
+                ?>
+                <form id="khasaraWardForm">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input type="text" id="khasara_no" name="khasara_no" 
+                                       class="form-control border-primary" placeholder="खसारा क्रमांक">
+                                <label for="khasara_no">खसारा क्रमांक</label>
                             </div>
                         </div>
-                        <div class="col-lg-12">
-    <div class="card mt-3">
-        <div class="card-header">
-            <h5 class="mb-0">खसारा क्रमांक - वॉर्ड नोंदी</h5>
+                        <div class="col-md-8 d-none">
+                            <div class="form-floating">
+                                <select id="ward_ids" name="ward_ids[]" 
+                                        class="form-select border-primary select2-multiple" multiple>
+                                    <?php
+                                    $allWards = $fun->getWard($_SESSION['district_code']);
+                                    while ($w = mysqli_fetch_assoc($allWards)) {
+                                        echo "<option value='{$w['id']}'>{$w['ward_no']} - {$w['ward_name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <label for="ward_ids">वार्ड निवडा</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <button type="button" id="saveBtn" class="btn btn-primary px-4">
+                            <i class="fas fa-save me-2"></i>साठवणे
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-bordered mb-0 table-flush" id="dataTable">
-                <thead class="thead-light">
-                    <tr>
-                        <th>अ.क्र.</th>
-                        <th>खसारा क्रमांक</th>
-                      
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($khasaraWardList && mysqli_num_rows($khasaraWardList) > 0) {
-                        $i = 1;
-                        $currentKhasara = '';
-                        $rowspanMap = [];
-
-                        // Step 1: Group ward entries by khasara_no
-                        while ($row = mysqli_fetch_assoc($khasaraWardList)) {
-                            $rowspanMap[$row['khasara_no']][] = $row;
-                        }
-
-                        // Step 2: Display grouped data
-                        foreach ($rowspanMap as $khasara_no => $wards) {
-                            $first = true;
-                            foreach ($wards as $ward) {
-                                echo "<tr>";
-                                if ($first) {
-                                    echo "<td rowspan='" . count($wards) . "'>$i</td>";
-                                    echo "<td rowspan='" . count($wards) . "'>$khasara_no</td>";
-                                    $first = false;
-                                    $i++;
-                                }
-                                // echo "<td>{$ward['ward_no']}</td><td>{$ward['ward_name']}</td></tr>";
+    </div>
+    
+    <div class="col-lg-12">
+        <div class="card shadow">
+            <div class="card-header py-3 bg-primary">
+                <h6 class="m-0 font-weight-bold text-white">खसारा क्रमांक - वॉर्ड नोंदी</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-flush">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>अ.क्र.</th>
+                            <th>खसारा क्रमांक</th>
+                            <!--<th>वॉर्ड क्रमांक</th>-->
+                            <!--<th>वॉर्ड नाव</th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if ($khasaraWardList && mysqli_num_rows($khasaraWardList) > 0) {
+                            $i = 1;
+                            $currentKhasara = '';
+                            $rowspanMap = [];
+                           
+                            // Group ward entries by khasara_no
+                            while ($row = mysqli_fetch_assoc($khasaraWardList)) {
+                                $rowspanMap[$row['khasara_no']][] = $row;
                             }
+
+                            // Display grouped data
+                            foreach ($rowspanMap as $khasara_no => $wards) {
+                                $first = true;
+                                foreach ($wards as $ward) {
+                                    echo "<tr>";
+                                    if ($first) {
+                                        echo "<td rowspan='" . count($wards) . "'>$i</td>";
+                                        echo "<td rowspan='" . count($wards) . "'>$khasara_no</td>";
+                                        $first = false;
+                                        $i++;
+                                    }
+                                    // echo "<td>{$ward['ward_no']}</td><td>{$ward['ward_name']}</td></tr>";
+                                }
+                            }
+                        } else {
+                            //  print_r($khasaraWardList);
+                            echo "<tr><td colspan='4' class='text-center'>कोणतीही नोंद उपलब्ध नाही.</td></tr>";
                         }
-                    } else {
-                        echo "<tr><td colspan='4' class='text-center'>कोणतीही नोंद उपलब्ध नाही.</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-
-                    </div>
 
 
 

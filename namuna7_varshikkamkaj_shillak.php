@@ -33,218 +33,242 @@ $yearArray = $fun->getYearArray($periodsWithReasons);
                 <!-- Topbar -->
 
                 <!-- Container Fluid-->
-                <div class="container-fluid" id="container-wrapper">
+                <div class="container-fluid border rounded p-3" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">वर्षाच्या सुरवातीची शिल्लक</h1>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="./">पंचायत पोर्टल</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक 7</li>
+                            <li class="breadcrumb-item active" aria-current="page">नामुना क्रमांक ७</li>
                             <li class="breadcrumb-item active" aria-current="page">वार्षिक कामकाज</li>
                             <li class="breadcrumb-item active" aria-current="page">वर्षाच्या सुरवातीची शिल्लक</li>
                         </ol>
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col-lg-12">
-                            <div class="card mb-4">
-                                <?php
-                                if (isset($_SESSION['message'])) {
-                                    echo "<div class='alert alert-{$_SESSION['message_type']}'>{$_SESSION['message']}</div>";
-                                    unset($_SESSION['message']);
-                                    unset($_SESSION['message_type']);
-                                }
-                                ?>
-                                <div class="card-body">
-                                    <form method="post" action="api/year_start_balance.php">
-                                        <input type="hidden" name="balance_id" id="balance_id" value="">
-
-                                        <!-- Balance Type Selection -->
-                                        <div class="row mb-3">
-                                            <div class="col-md-3">
-                                                <div class="custom-control custom-radio">
-                                                    <input type="radio" id="balance_type1" name="balance_type"
-                                                        value="हात शिल्लक" class="custom-control-input" required>
-                                                    <label class="custom-control-label" for="balance_type1">हात
-                                                        शिल्लक</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="custom-control custom-radio">
-                                                    <input type="radio" id="balance_type2" name="balance_type"
-                                                        value="बँक शिल्लक" class="custom-control-input">
-                                                    <label class="custom-control-label" for="balance_type2">बँक
-                                                        शिल्लक</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="custom-control custom-radio">
-                                                    <input type="radio" id="balance_type3" name="balance_type"
-                                                        value="पोस्ट शिल्लक" class="custom-control-input">
-                                                    <label class="custom-control-label" for="balance_type3">पोस्ट
-                                                        शिल्लक</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="custom-control custom-radio">
-                                                    <input type="radio" id="balance_type4" name="balance_type"
-                                                        value="ठेवी" class="custom-control-input">
-                                                    <label class="custom-control-label" for="balance_type4">ठेवी</label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Main Form Fields -->
-                                        <div class="row">
-                                            <div class="form-group col-md-3">
-                                                <label for="financial_year">आर्थिक वर्ष <span
-                                                        class="text-danger">*</span></label>
-                                                <select class="form-control" name="financial_year" id="financial_year"
-                                                    required>
-                                                    <option value="">--निवडा--</option>
-                                                    <?php foreach ($yearArray as $year): ?>
-                                                        <option value="<?= $year ?>"><?= $year ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-
-                                            <div class="form-group col-md-3">
-                                                <label for="plan_name">फंडाचे नाव : <span
-                                                        class="text-danger">*</span></label>
-                                                <select class="form-control" name="plan_name" id="plan_name" required>
-                                                    <option value="">--निवडा--</option>
-                                                    <option value="ग्रामनिधी">ग्रामनिधी</option>
-                                                    <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="form-group col-md-6 bank-fields" style="display:none;">
-                                                <label for="bank_id">बँकेचे नाव</label>
-                                                <select class="form-control" name="bank_id" id="bank_id">
-                                                    <option value="">--निवडा--</option>
-                                                    <?php foreach ($banks['data'] as $bank): ?>
-                                                        <option value="<?= $bank['id'] ?>"><?= $bank['bank_name'] ?>
-                                                        </option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-
-                                            <div class="form-group col-md-6 post-fields" style="display:none;">
-                                                <label for="post_name">पोस्टाचे नाव</label>
-                                                <input type="text" class="form-control" name="post_name" id="post_name"
-                                                    placeholder="पोस्टाचे नाव">
-                                            </div>
-
-                                            <div class="form-group col-md-6 post-fields" style="display:none;">
-                                                <label for="post_branch">पोस्टाची शाखा</label>
-                                                <input type="text" class="form-control" name="post_branch"
-                                                    id="post_branch" placeholder="पोस्टाची शाखा">
-                                            </div>
-
-                                            <div class="form-group col-md-6 post-fields" style="display:none;">
-                                                <label for="account_no">खाते क्रमांक</label>
-                                                <input type="text" class="form-control" name="account_no"
-                                                    id="account_no" placeholder="खाते क्रमांक">
-                                            </div>
-
-                                            <div class="form-group col-md-6 post-fields" style="display:none;">
-                                                <label for="ifsc_code">IFSC कोड</label>
-                                                <input type="text" class="form-control" name="ifsc_code" id="ifsc_code"
-                                                    placeholder="IFSC कोड">
-                                            </div>
-                                            <div class="form-group col-md-6" id="theve_yojana" style="display:none;">
-                                                <label for="theve_yojana_name">ठेव योजनेचे नाव:</label>
-                                                <input type="text" class="form-control" name="theve_yojana_name"
-                                                    id="theve_yojana_name" placeholder="ठेव योजनेचे नाव">
-                                            </div>
-
-                                            <div class="form-group col-md-6">
-                                                <label for="amount">शिल्लक रक्कम (₹) <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="number" step="0.01" name="amount" id="amount"
-                                                    class="form-control" placeholder="शिल्लक रक्कम" required>
-                                            </div>
-                                        </div>
-
-                                        <button type="submit" name="save" class="btn btn-primary">साठवणे</button>
-                                        <button type="reset" class="btn btn-secondary">रद्द करणे</button>
-                                    </form>
-                                </div>
+    <div class="col-lg-12">
+        <div class="card mb-4 shadow-sm">
+            <?php
+            if (isset($_SESSION['message'])) {
+                echo "<div class='alert alert-{$_SESSION['message_type']} text-center'>{$_SESSION['message']}</div>";
+                unset($_SESSION['message']);
+                unset($_SESSION['message_type']);
+            }
+            ?>
+             <div class="card-header py-3 bg-primary text-white">
+                <div class="d-flex justify-content-center">
+                    <div class="form-check form-check-inline mx-4">
+                        <label class="form-check-label h5 mb-0" for="nondani">
+                            <!--Write Your text here-->
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post" action="api/year_start_balance.php" class="needs-validation" novalidate>
+                    <input type="hidden" name="balance_id" id="balance_id" value="">
+                    
+                    <!-- Balance Type Selection -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="balance_type1" name="balance_type" value="हात शिल्लक" required>
+                                <label class="form-check-label" for="balance_type1">हात शिल्लक</label>
                             </div>
                         </div>
-
-                        <!-- Data Table -->
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="table-responsive">
-                                    <table class="table align-items-center table-flush">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>अ.क्र.</th>
-                                                <th>फंडाचे नाव</th>
-                                                <th>आर्थिक वर्ष</th>
-                                                <th>हात शिल्लक /बँक शिल्लक</th>
-                                                <th>शिल्लक रक्कम</th>
-                                                <th>बँकेचे नाव</th>
-                                                <th>पोस्टाचे नाव</th>
-                                                <th>ठेव योजनेचे नाव</th>
-                                                <th>क्रिया</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if (mysqli_num_rows($balances) > 0): ?>
-                                                <?php $i = 1;
-                                                while ($balance = mysqli_fetch_assoc($balances)): ?>
-                                                    <tr>
-                                                        <td><?= $i ?></td>
-                                                        <td><?= $balance['plan_name'] ?></td>
-                                                        <td><?= $balance['financial_year'] ?></td>
-                                                        <td><?= $balance['balance_type'] ?></td>
-                                                        <td>₹<?= number_format($balance['amount'], 2) ?></td>
-                                                        <td> <?= $fun->getBankName($balance['bank_id']) == "" ? "-" : $fun->getBankName($balance['bank_id']) ?>
-                                                        </td>
-                                                        <td>
-
-                                                            <?= $balance['post_name'] == "" ? "-" : $balance['post_name'] ?>
-
-                                                        </td>
-                                                        <td><?= $balance['thev_yojana_name'] == "" ? "-" : $balance['thev_yojana_name'] ?>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-sm btn-primary" onclick="fillBalanceData(
-                                                                    '<?= $balance['id'] ?>',
-                                                                    '<?= $balance['balance_type'] ?>',
-                                                                    '<?= $balance['financial_year'] ?>',
-                                                                    '<?= $balance['plan_name'] ?>',
-                                                                    '<?= $balance['bank_id'] ?>',
-                                                                    '<?= $balance['post_name'] ?>',
-                                                                    '<?= $balance['post_branch'] ?>',
-                                                                    '<?= $balance['account_no'] ?>',
-                                                                    '<?= $balance['ifsc_code'] ?>',
-                                                                    '<?= $balance['amount'] ?>'
-                                                                )">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </button>
-                                                                <a href="api/year_start_balance.php?delete=<?= $balance['id'] ?>"
-                                                                    class="btn btn-sm btn-danger"
-                                                                    onclick="return confirm('तुम्हाला ही शिल्लक माहिती नक्की हटवायची आहे का?')">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <?php $i++; endwhile; ?>
-                                            <?php else: ?>
-                                                <tr>
-                                                    <td colspan="8" class="text-center">शिल्लक माहिती सापडली नाही</td>
-                                                </tr>
-                                            <?php endif; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                        <div class="col-md-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="balance_type2" name="balance_type" value="बँक शिल्लक">
+                                <label class="form-check-label" for="balance_type2">बँक शिल्लक</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="balance_type3" name="balance_type" value="पोस्ट शिल्लक">
+                                <label class="form-check-label" for="balance_type3">पोस्ट शिल्लक</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="balance_type4" name="balance_type" value="ठेवी">
+                                <label class="form-check-label" for="balance_type4">ठेवी</label>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Main Form Fields -->
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <select class="form-select" name="financial_year" id="financial_year" required>
+                                    <option value="">--निवडा--</option>
+                                    <?php foreach ($yearArray as $year): ?>
+                                        <option value="<?= $year ?>"><?= $year ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <label for="financial_year">आर्थिक वर्ष <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <select class="form-select" name="plan_name" id="plan_name" required>
+                                    <option value="">--निवडा--</option>
+                                    <option value="ग्रामनिधी">ग्रामनिधी</option>
+                                    <option value="ग्राम पाणीपुरवठा निधी">ग्राम पाणीपुरवठा निधी</option>
+                                </select>
+                                <label for="plan_name">फंडाचे नाव : <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                        
+                        <!-- Bank Fields (Hidden by default) -->
+                        <div class="col-md-6 bank-fields" style="display:none;">
+                            <div class="form-floating">
+                                <select class="form-select" name="bank_id" id="bank_id">
+                                    <option value="">--निवडा--</option>
+                                    <?php foreach ($banks['data'] as $bank): ?>
+                                        <option value="<?= $bank['id'] ?>"><?= $bank['bank_name'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <label for="bank_id">बँकेचे नाव</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Post Fields (Hidden by default) -->
+                        <div class="col-md-3 post-fields" style="display:none;">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="post_name" id="post_name" placeholder="पोस्टाचे नाव">
+                                <label for="post_name">पोस्टाचे नाव</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3 post-fields" style="display:none;">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="post_branch" id="post_branch" placeholder="पोस्टाची शाखा">
+                                <label for="post_branch">पोस्टाची शाखा</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3 post-fields" style="display:none;">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="account_no" id="account_no" placeholder="खाते क्रमांक">
+                                <label for="account_no">खाते क्रमांक</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3 post-fields" style="display:none;">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="ifsc_code" id="ifsc_code" placeholder="IFSC कोड">
+                                <label for="ifsc_code">IFSC कोड</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Theve Yojana Field (Hidden by default) -->
+                        <div class="col-md-6" id="theve_yojana" style="display:none;">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="theve_yojana_name" id="theve_yojana_name" placeholder="ठेव योजनेचे नाव">
+                                <label for="theve_yojana_name">ठेव योजनेचे नाव</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <input type="number" step="0.01" name="amount" id="amount" class="form-control" placeholder="शिल्लक रक्कम" required>
+                                <label for="amount">शिल्लक रक्कम (₹) <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 text-center mt-3">
+                            <button type="submit" name="save" class="btn btn-primary px-4 me-2">
+                                <i class="fas fa-save me-2"></i>साठवणे
+                            </button>
+                            <button type="reset" class="btn btn-outline-secondary px-4">
+                                <i class="fas fa-times me-2"></i>रद्द करणे
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="col-lg-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                     <div class="card-header py-3 bg-primary text-white">
+                <div class="d-flex justify-content-center">
+                    <div class="form-check form-check-inline mx-4">
+                        <label class="form-check-label h5 mb-0" for="nondani">
+                            <!--Write Your text here-->
+                        </label>
+                    </div>
+                </div>
+            </div>
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>अ.क्र.</th>
+                                <th>फंडाचे नाव</th>
+                                <th>आर्थिक वर्ष</th>
+                                <th>हात शिल्लक /बँक शिल्लक</th>
+                                <th>शिल्लक रक्कम</th>
+                                <th>बँकेचे नाव</th>
+                                <th>पोस्टाचे नाव</th>
+                                <th>ठेव योजनेचे नाव</th>
+                                <th>क्रिया</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (mysqli_num_rows($balances) > 0): ?>
+                                <?php $i = 1;
+                                while ($balance = mysqli_fetch_assoc($balances)): ?>
+                                    <tr>
+                                        <td><?= $i ?></td>
+                                        <td><?= $balance['plan_name'] ?></td>
+                                        <td><?= $balance['financial_year'] ?></td>
+                                        <td><?= $balance['balance_type'] ?></td>
+                                        <td>₹<?= number_format($balance['amount'], 2) ?></td>
+                                        <td><?= $fun->getBankName($balance['bank_id']) == "" ? "-" : $fun->getBankName($balance['bank_id']) ?></td>
+                                        <td><?= $balance['post_name'] == "" ? "-" : $balance['post_name'] ?></td>
+                                        <td><?= $balance['thev_yojana_name'] == "" ? "-" : $balance['thev_yojana_name'] ?></td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-primary" onclick="fillBalanceData(
+                                                    '<?= $balance['id'] ?>',
+                                                    '<?= $balance['balance_type'] ?>',
+                                                    '<?= $balance['financial_year'] ?>',
+                                                    '<?= $balance['plan_name'] ?>',
+                                                    '<?= $balance['bank_id'] ?>',
+                                                    '<?= $balance['post_name'] ?>',
+                                                    '<?= $balance['post_branch'] ?>',
+                                                    '<?= $balance['account_no'] ?>',
+                                                    '<?= $balance['ifsc_code'] ?>',
+                                                    '<?= $balance['amount'] ?>'
+                                                )">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <a href="api/year_start_balance.php?delete=<?= $balance['id'] ?>"
+                                                    class="btn btn-danger"
+                                                    onclick="return confirm('तुम्हाला ही शिल्लक माहिती नक्की हटवायची आहे का?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php $i++; endwhile; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="9" class="text-center">शिल्लक माहिती सापडली नाही</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                 </div>
                 <!---Container Fluid-->
             </div>

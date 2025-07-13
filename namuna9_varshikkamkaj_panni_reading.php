@@ -51,151 +51,163 @@ if ($periodCount == 0) {
                         </ol>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-lg-12">
-                            <div class="card mb-4">
-                                <?php
-
-                                if (isset($_SESSION['message'])) {
-                                    $message = $_SESSION['message'];
-                                    $message_type = $_SESSION['message_type'];
-
-                                    echo "<div class='alert alert-$message_type'>$message</div>";
-
-                                    // Unset the message so it doesn't persist after refresh
-                                    unset($_SESSION['message']);
-                                    unset($_SESSION['message_type']);
-                                }
-                                ?>
-                                <div class="card-body">
-                                    <form id="waterTaxForm">
-
-                                        <div class="row mb-3">
-                                             <div class="form-group col-md-4">
-                                                    <label for="khasara_no">खसारा क्रमांक </label>
-                                                    <select name="khasara_no" id="khasara_no"
-                                                        class="form-control">
-                                                        <option value="" selected>--निवडा--</option>
-                                                        <?php
-                                                        $khasaraNos = $fun->getKhasaraWard();
-                                                        if (mysqli_num_rows($khasaraNos) > 0) {
-                                                            while ($ward = mysqli_fetch_assoc($khasaraNos)) {
-                                                                echo '<option value="' . $ward['khasara_no'] . '">' . $ward['khasara_no'] . '</option>';
-                                                            }
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                    <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
-                                                </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label" for="malmatta_no">मालमत्ता क्रमांक</label>
-                                                <select class="form-select form-control select2-single-placeholder"
-                                                    name="malmatta_no" id="malmatta_no">
-                                                    <option>--निवडा--</option>
-                                                    <?php
-                                                    foreach ($property_verifications as $property) {
-                                                        if ($property['status'] != 0)
-                                                            continue; // Skip if malmatta_id is 0
-                                                        echo "<option value='{$property['malmatta_id']}'>{$property['malmatta_no']}</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label class="form-label">आर्थिक वर्ष </label>
-                                                <select class="form-select form-control" name="financial_year" required>
-                                                    <option value="">Select</option>
-                                                    <?php
-                                                    foreach ($yearArray as $year) {
-                                                        echo "<option value='$year'>$year</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label class="form-label">टाईपी </label>
-                                                <select class="form-select form-control" id="entryType"
-                                                    onchange="generateTable()" required>
-                                                    <option value="">Select</option>
-                                                    <option value="monthly">Monthly</option>
-                                                    <option value="yearly">Yearly</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label class="form-label">पाणीपट्टी प्रकार </label>
-                                                <select class="form-select form-control" id="pani_prakar"
-                                                    onchange="updateTaxRate()" name="pani_prakar" required>
-                                                    <option value="">Select</option>
-                                                    <?php
-                                                    if (mysqli_num_rows($waterTariffReading) > 0) {
-                                                        while ($water = mysqli_fetch_assoc($waterTariffReading)) {
-                                                            echo "<option value='{$water['id']}' data-rate='{$water['fixed_rate']}'>{$water['drainage_type']} - ₹{$water['fixed_rate']}/unit</option>";
-                                                        }
-                                                    } else {
-                                                        echo "<option value=''> पाणीपट्टी प्रकार डेटा उपलब्ध नाही </option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div id="readingsTableContainer"></div>
-
-                                        <div class="mt-3">
-                                            <strong>संपूर्ण टॅक्स :</strong> ₹<span id="totalTax">0</span>
-                                        </div>
-                                        <div class="mt-3 form-group col-md-4">
-                                            <label for="ittar_aakar">इतर आकार</label>
-                                            <input type="text" class="form-control" id="ittar_aakar"
-                                                name="ittar_aakar" placeholder="इतर आकार भरा">
-                                        </div>
-
-                                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
+                    <div class="card shadow mb-4">
+    <div class="card-header py-3 bg-primary">
+        <h6 class="m-0 font-weight-bold text-white">पाणीपट्टी कर नोंद</h6>
+    </div>
+    <div class="card-body">
+        <?php
+        if (isset($_SESSION['message'])) {
+            $message = $_SESSION['message'];
+            $message_type = $_SESSION['message_type'];
+            echo "<div class='alert alert-$message_type'>$message</div>";
+            unset($_SESSION['message']);
+            unset($_SESSION['message_type']);
+        }
+        ?>
+        
+        <form id="waterTaxForm">
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="khasara_no" id="khasara_no">
+                            <option value="">--निवडा--</option>
                             <?php
-                            $submittedWaterTax = $fun->getWaterTaxEntries($_SESSION['district_code']); // You’ll create this function
+                            $khasaraNos = $fun->getKhasaraWard();
+                            if (mysqli_num_rows($khasaraNos) > 0) {
+                                while ($ward = mysqli_fetch_assoc($khasaraNos)) {
+                                    echo '<option value="' . $ward['khasara_no'] . '">' . $ward['khasara_no'] . '</option>';
+                                }
+                            }
                             ?>
-                            <div class="card mt-4">
-                                <div class="card-header">
-                                    <h5 class="mb-0">नवीन भरलेली पाणीपट्टी नोंद</h5>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover mb-0">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>मालमत्ता क्रमांक</th>
-                                                <th>आर्थिक वर्ष</th>
-                                                <th>खसारा क्रमांक</th>
-                                                <th>पाण्याचा प्रकार</th>
-                                                <th>संपूर्ण टॅक्स </th>
-                                                <th>इतर आकार</th>
-                                                <th>April</th>
-                                                <th>May</th>
-                                                <th>Jun</th>
-                                                <th>Jul</th>
-                                                <th>Aug</th>
-                                                <th>Sep</th>
-                                                <th>Oct</th>
-                                                <th>Nov</th>
-                                                <th>Dec</th>
-                                                <th>Jan</th>
-                                                <th>Feb</th>
-                                                <th>Mar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            if ($submittedWaterTax && mysqli_num_rows($submittedWaterTax) > 0) {
-                                                while ($tax = mysqli_fetch_assoc($submittedWaterTax)) {
-                                                    // print_r($tax);
-                                                    echo "<tr>
+                        </select>
+                        <label for="khasara_no">खसारा क्रमांक</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select border-primary select2-single-placeholder" name="malmatta_no" id="malmatta_no">
+                            <option value="">--निवडा--</option>
+                            <?php
+                            foreach ($property_verifications as $property) {
+                                if ($property['status'] != 0) continue;
+                                echo "<option value='{$property['malmatta_id']}'>{$property['malmatta_no']}</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="malmatta_no">मालमत्ता क्रमांक</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" name="financial_year" required>
+                            <option value="">--निवडा--</option>
+                            <?php
+                            foreach ($yearArray as $year) {
+                                echo "<option value='$year'>$year</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="financial_year">आर्थिक वर्ष</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" id="entryType" onchange="generateTable()" required>
+                            <option value="">--निवडा--</option>
+                            <option value="monthly">मासिक</option>
+                            <option value="yearly">वार्षिक</option>
+                        </select>
+                        <label for="entryType">टाईपी</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select border-primary" id="pani_prakar" onchange="updateTaxRate()" name="pani_prakar" required>
+                            <option value="">--निवडा--</option>
+                            <?php
+                            if (mysqli_num_rows($waterTariffReading) > 0) {
+                                while ($water = mysqli_fetch_assoc($waterTariffReading)) {
+                                    echo "<option value='{$water['id']}' data-rate='{$water['fixed_rate']}'>{$water['drainage_type']} - ₹{$water['fixed_rate']}/unit</option>";
+                                }
+                            } else {
+                                echo "<option value=''>पाणीपट्टी प्रकार डेटा उपलब्ध नाही</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="pani_prakar">पाणीपट्टी प्रकार</label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="readingsTableContainer" class="mb-4"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <h6 class="text-primary fw-bold">संपूर्ण टॅक्स: ₹<span id="totalTax">0</span></h6>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control border-primary" id="ittar_aakar" name="ittar_aakar">
+                        <label for="ittar_aakar">इतर आकार</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <button type="submit" class="btn btn-primary px-4 me-3">
+                    <i class="fas fa-paper-plane me-2"></i>सबमिट करा
+                </button>
+                <button type="reset" class="btn btn-outline-secondary px-4">
+                    <i class="fas fa-times me-2"></i>रद्द करा
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow mt-4">
+    <div class="card-header py-3 bg-primary">
+        <h6 class="m-0 font-weight-bold text-white">नवीन भरलेली पाणीपट्टी नोंद</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>मालमत्ता क्रमांक</th>
+                        <th>आर्थिक वर्ष</th>
+                        <th>खसारा क्रमांक</th>
+                        <th>पाण्याचा प्रकार</th>
+                        <th>संपूर्ण टॅक्स</th>
+                        <th>इतर आकार</th>
+                        <th>April</th>
+                        <th>May</th>
+                        <th>Jun</th>
+                        <th>Jul</th>
+                        <th>Aug</th>
+                        <th>Sep</th>
+                        <th>Oct</th>
+                        <th>Nov</th>
+                        <th>Dec</th>
+                        <th>Jan</th>
+                        <th>Feb</th>
+                        <th>Mar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $submittedWaterTax = $fun->getWaterTaxEntries($_SESSION['district_code']);
+                    if ($submittedWaterTax && mysqli_num_rows($submittedWaterTax) > 0) {
+                        while ($tax = mysqli_fetch_assoc($submittedWaterTax)) {
+                            echo "<tr>
                                 <td>{$tax['malmatta_no_mde']}</td>
                                 <td>{$tax['year']}</td>
                                 <td>{$tax['khasara_no_wt']}</td>
@@ -215,18 +227,16 @@ if ($periodCount == 0) {
                                 <td>{$tax['feb_reading']}</td>
                                 <td>{$tax['mar_reading']}</td>
                             </tr>";
-                                                }
-                                            } else {
-                                                echo "<tr><td colspan='16' class='text-center'>कोणतीही नोंद उपलब्ध नाही.</td></tr>";
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
+                        }
+                    } else {
+                        echo "<tr><td colspan='18' class='text-center'>कोणतीही नोंद उपलब्ध नाही.</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 
 

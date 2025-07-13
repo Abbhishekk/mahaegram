@@ -68,7 +68,7 @@
                                 <li><a class="dropdown-item" href="namuna8_varshikkamkaj_namuna_8-9_madhi_pherphar.php">नमुना ८-९ मधील मिळकती मधील फरफार</a></li>
                                 <li><a class="dropdown-item d-none" href="namuna8_varshikkamkaj_namuna_8_assesment_ragister_auto.php">नमुना क्र. ८ असेसमेंट रजिस्टर (Auto)</a></li>
                                 <li><a class="dropdown-item" href="namuna8_varshikkamkaj_boja_nond.php">बोजा नोंद / कमी करणे</a></li>
-                                <!--<li><a class="dropdown-item" href="namuna8_varshikkamkaj_milkat_kar_aakarni.php">मिळकत कर आकारणी</a></li>-->
+                                <li><a class="dropdown-item" href="namuna8_varshikkamkaj_milkat_kar_aakarni.php">मिळकत कर आकारणी</a></li>
                             </ul>
                             </li>
                             <li class="dropdown-submenu">
@@ -85,8 +85,7 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="./wardMaster.php">वार्ड माहिती</a></li>
                                 <li><a class="dropdown-item" href="./roadMaster.php">रस्ते माहिती</a></li>
-                                                                <li><a class="dropdown-item" href="./namuna8_masters_khasara_no.php">खसारा माहिती</a></li>
-
+                                <li><a class="dropdown-item" href="./namuna8_masters_khasara_no.php">खसारा माहिती</a></li>
                                 <li><a class="dropdown-item" href="./durationMaster.php">कालावधी माहिती</a></li>
                                 <li><a class="dropdown-item" href="./HealthAndLightTax.php">आरोग्य व दिवाबत्ती कर माहिती</a></li>
                                 <li><a class="dropdown-item" href="./valmitkar_darMaster.php">मिळकत कर दर माहिती</a></li>
@@ -108,13 +107,15 @@
                             <li><a class="dropdown-item" href="namuna9_ahaval_karmagnibil_1.php">कर मागणी बिल (नमुना-९ क) १२९/१</a></li>
                             <li><a class="dropdown-item" href="namuna9_ahaval_karmagnibil_2.php">कर मागणी बिल नोटीस (२९) (ब) १२९/२</a></li>
                             <li><a class="dropdown-item" href="namuna9_ahaval_japticheadhipatra.php">जप्तीचे आधीपत्र १२९/३</a></li>
+                            <li><a class="dropdown-item" href="namuna9_ahaval_panivapar_bill.php">पाणीपट्टी बिल</a></li>
+                            <li><a class="dropdown-item" href="namuna9_ahaval_panivapar_register.php">पाणीपट्टी रेजिस्टर</a></li>
                             </ul>
                             </li>
                             <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle" href="#">वार्षिक कामकाज</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item"href="namuna9_varshikkamkaj_varshikkarmagni.php">वार्षिक कर मागणी (नमुना-९)</a></li>
-                                <li><a class="dropdown-item"href="namuna9_varshikkamkaj_panni_reading.php">पाणीपट्टी रीडिंग    </a></li>
+                                <li><a class="dropdown-item"href="namuna9_varshikkamkaj_panni_reading.php">पाणीपट्टी रेड़ीन्ग </a></li>
                             </ul>
                             </li>
                         </ul>
