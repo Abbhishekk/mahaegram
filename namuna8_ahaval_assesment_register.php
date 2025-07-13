@@ -115,8 +115,8 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                                                             </label>
                                                         </div>
                                                           <div class="form-check ">
-                                                            <!--<input class="form-check-input" type="radio" name="ahavalType" id="" value="आर्थिक वर्ष नुसार अहवाल">-->
-                                                            <label id="registerForm" class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="according_to_years">
+                                                            <input class="form-check-input" type="radio" name="ahavalType" id="according_to_register" value="रजिस्टर नुसार अहवाल">
+                                                            <label class="form-check-label fw-bold btn btn-outline-primary py-2 px-4 rounded-pill" for="according_to_register">
                                                                 <i class="fas fa-book me-2"></i>रजिस्टर वाईस अहवाल 
                                                             </label>
                                                           
@@ -214,8 +214,27 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                                                 </label>
                                                 </div>
                                                 
+                                                
                                                
 
+                                            </div>
+                                            <div class="form-group col-md-3" >
+                                                <div class="form-floating">
+                                                     <select name="register_no" id="register_no" class="form-control border-primary ">
+                                                    <option value="" selected>--निवडा--</option>
+                                                    <?php
+                                                    $registerNos = $fun->getRegister();
+                                                    if (mysqli_num_rows($registerNos) > 0) {
+                                                        while ($register = mysqli_fetch_assoc($registerNos)) {
+                                                            echo '<option value="' . $register['register_no'] . '">' . $register['register_no'] . '</option>';
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                                <label for="register_no">रजिस्टर क्रं<span
+                                                        class="text-danger">*</span>
+                                                </label>
+                                                </div>
                                             </div>
                                             
                                             <div class="form-group col-md-3">
@@ -269,6 +288,7 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
             const wardRadio = document.getElementById('according_to_ward');
             const roadRadio = document.getElementById('according_to_road');
             const yearsRadio = document.getElementById('according_to_years');
+            const registerWiseRadio = document.getElementById('according_to_register');
             const khasaraRadio = document.getElementById('according_to_khasara');
             const gavRadio = document.getElementById('according_to_gav');
 
@@ -278,6 +298,7 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
             const yearSelect = document.getElementById('financialYear').closest('.form-group');
             const khasaraSelect = document.getElementById('khasara_no').closest('.form-group');
             const gavSelect = document.getElementById('revenue_village').closest('.form-group');
+            const registerSelect = document.getElementById('register_no').closest('.form-group');
 
             function updateVisibility() {
                 if (allAhaval.checked) {
@@ -287,6 +308,8 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                     yearSelect.style.display = 'none';
                     khasaraSelect.style.display = 'none';
                     gavSelect.style.display = 'none';
+                    registerSelect.style.display = 'none';
+
 
                 } else if (khasaraRadio.checked) {
                     periodSelect.style.display = 'block';
@@ -295,6 +318,8 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                     yearSelect.style.display = 'none';
                     khasaraSelect.style.display = 'block';
                     gavSelect.style.display = 'none';
+                    registerSelect.style.display = 'none';
+
 
                 } else if (gavRadio.checked) {
                     periodSelect.style.display = 'block';
@@ -303,6 +328,8 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                     yearSelect.style.display = 'none';
                     khasaraSelect.style.display = 'none';
                     gavSelect.style.display = 'block';
+                    registerSelect.style.display = 'none';
+
 
                 } else if (wardRadio.checked) {
                     periodSelect.style.display = 'block';
@@ -311,6 +338,8 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                     yearSelect.style.display = 'none';
                     khasaraSelect.style.display = 'none';
                     gavSelect.style.display = 'none';
+                    registerSelect.style.display = 'none';
+
 
                 } else if (roadRadio.checked) {
                     periodSelect.style.display = 'block';
@@ -319,6 +348,8 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                     yearSelect.style.display = 'none';
                     khasaraSelect.style.display = 'none';
                     gavSelect.style.display = 'none';
+                    registerSelect.style.display = 'none';
+
                 } else if (yearsRadio.checked) {
                     periodSelect.style.display = 'block';
                     wardSelect.style.display = 'none';
@@ -326,7 +357,19 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                     yearSelect.style.display = 'block';
                     khasaraSelect.style.display = 'none';
                     gavSelect.style.display = 'none';
-                } else {
+                    registerSelect.style.display = 'none';
+
+                } else if (registerWiseRadio.checked) {
+                    periodSelect.style.display = 'block';
+                    wardSelect.style.display = 'none';
+                    roadSelect.style.display = 'none';
+                    yearSelect.style.display = 'none';
+                    khasaraSelect.style.display = 'none';
+                    gavSelect.style.display = 'none';
+                    registerSelect.style.display = 'block';
+                }
+                
+                else {
                     // Default: hide all optional selects
                     periodSelect.style.display = 'none';
                     wardSelect.style.display = 'none';
@@ -334,11 +377,12 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                     yearSelect.style.display = 'none';
                     khasaraSelect.style.display = 'none';
                     gavSelect.style.display = 'none';
+                    registerSelect.style.display = 'none';
                 }
             }
 
             // Attach event listeners
-            [allAhaval, wardRadio, roadRadio, yearsRadio, gavRadio, khasaraRadio].forEach(radio => {
+            [allAhaval, wardRadio, roadRadio, yearsRadio, gavRadio, khasaraRadio, registerWiseRadio].forEach(radio => {
                 radio.addEventListener('change', updateVisibility);
             });
 
@@ -356,12 +400,13 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
             const road = document.getElementById('road_name').value;
             const year = document.getElementById('financialYear').value;
             const khasara_no = document.getElementById('khasara_no').value;
+            const register_no = document.getElementById('register_no').value;
             const village = document.getElementById('revenue_village').value;
             const ahavalType = document.querySelector('input[name="ahavalType"]:checked').value;
 
             // 👇 Fetch table HTML from your PHP backend
             const res = await fetch(
-                `pdf/tax_report_template.php?period=${period}&ward=${ward}&road=${road}&year=${year}&type=${ahavalType}&khasara_no=${khasara_no}&village=${village}`, {
+                `pdf/tax_report_template.php?period=${period}&ward=${ward}&road=${road}&year=${year}&type=${ahavalType}&khasara_no=${khasara_no}&village=${village}&register_no=${register_no}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

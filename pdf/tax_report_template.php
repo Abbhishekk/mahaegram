@@ -26,6 +26,7 @@ $village = $_GET['village'] ?? '';
 $drainage_type = $_GET['drainage_type'] ?? '';
 $milkat_type = $_GET['income_type'] ?? '';
 $washroom_available = $_GET['washroom_available'] ?? '';
+$register_no = $_GET['register_no'] ?? '';
 
 // print_r($_GET);
 
@@ -55,7 +56,11 @@ if ($type == 'संपूर्ण अहवाल') {
     $malmatta = $fun->getMalmattaWithPropertiesAccordingToPeriodAndKhasara($period, $khasara_no);
 } else if ($type == "गावनुसार अहवाल") {
     $malmatta = $fun->getMalmattaWithPropertiesAccordingToPeriodAndVillage($period, $village);
-} else {
+}else if ($type == "रजिस्टर नुसार अहवाल"){
+    $malmatta = $fun->getMalmattaWithPropertiesAccordingToPeriodAndRegister($period, $register_no);
+}
+
+else {
     $malmatta = $fun->getMalmattaWithPropertiesAccordingToPeriod($period);
 }
 $locationData = $fun->getLgdTableWithVillageCode($_SESSION['village_code']);
