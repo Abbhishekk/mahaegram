@@ -238,7 +238,7 @@ if (isset($_GET['edit_id'])) {
                                                 </div>
                                             </div>
                                             
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="form-floating">
                                                     <select name="khasara_no" id="khasara_no" class="form-select border-primary">
                                                         <option value="" selected>--निवडा--</option>
@@ -255,13 +255,13 @@ if (isset($_GET['edit_id'])) {
                                                 </div>
                                             </div>
                                             
-                                            <div class="col-md-2 d-flex align-items-end">
+                                            <div class="col-md-1 d-flex align-items-center">
                                                 <a href="namuna8_masters_khasara_no.php" class="btn btn-primary bg-gradient-primary">
                                                     खसारा नोंद
                                                 </a>
                                             </div>
                                             
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="form-floating">
                                                     <select name="ward_name" id="ward_name" class="form-select border-primary">
                                                         <option value="" selected>--निवडा--</option>
@@ -276,10 +276,10 @@ if (isset($_GET['edit_id'])) {
                                                     <label for="ward_name">वॉर्ड क्रं</label>
                                                 </div>
                                             </div>
-                                             <div class="form-group col-md-4">
-                                                    <label for="register_no">रजिस्टर क्रमांक </label>
+                                             <div class="form-group col-md-3">
+                                                <div class="form-floating">
                                                     <select name="register_no" id="register_no"
-                                                        class="form-control">
+                                                        class="form-select">
                                                         <option value="" selected>--निवडा--</option>
                                                         <?php
                                                         $registerNos = $fun->getRegister();
@@ -290,9 +290,12 @@ if (isset($_GET['edit_id'])) {
                                                         }
                                                         ?>
                                                     </select>
+                                                    <label for="register_no">रजिस्टर क्रमांक </label>
+                                                </div>
+
                                                     <!-- <small id="malmattaNoHelp" class="form-text text-muted"></small> -->
                                                 </div>
-                                             <div class="form-group col-md-2 d-flex align-items-end">
+                                             <div class="form-group col-md-1 d-flex align-items-center">
                                                        <a href="namuna8_masters_register.php"
                                                            class="btn btn-primary bg-gradient-success ">
                                                            रजिस्टर नोंद </a>
