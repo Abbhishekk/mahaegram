@@ -122,7 +122,10 @@ if (isset($_SESSION['message'])) {
 
                                         <div class="w-100 mx-auto col-md-2">
                                             <button type="submit" name="add" class="btn btn-primary">साठवणे</button>
-                                            <button type="reset" class="btn btn-secondary">रद्द करणे</button>
+                                             <button type="button"class="btn btn-secondary px-4 ms-2" onclick="window.location.href='Form_Malmatta_N8.php'">
+                            <i class="fas fa-redo me-2"></i>रद्द करा
+
+                        </button>
 
                                         </div>
                                     </form>

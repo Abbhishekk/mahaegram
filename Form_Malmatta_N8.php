@@ -483,7 +483,7 @@ if (isset($_GET['edit_id'])) {
                                                                 <?php
                                                                 if (mysqli_num_rows($redyrecs) > 0) {
                                                                     while ($redyrec = mysqli_fetch_assoc($redyrecs)) {
-                                                                        echo '<option value="' . $redyrec['rid'] . '">' . $redyrec['land_type'] . '</option>';
+                                                                        echo '<option value="' . $redyrec['rid'] . '">' . $redyrec['land_type'].'-'. $redyrec['Village_Name'] . '</option>';
                                                                     }
                                                                 }
                                                                 ?>
@@ -932,6 +932,7 @@ if (isset($_GET['edit_id'])) {
                                                                                                 <td><?php echo $property['building_value']; ?></td>
                                                                                                 <?php echo $photoCell; ?>
                                                                                             </tr>
+                                                                                            <?php if($property['property_use'] != 'पडसर/खुली जागा') { ?>
                                                                                             <tr>
                                                                                                 <td colspan="17" >
                                                                                                     <p>भांडवली = क्षेत्रफळ * रेडीरेकनर दर + क्षेत्रफळ * बांधकाम दर * घसारा दर * भारांक = <?php echo $property['areaInMt'] ?> * <?php echo $property['yearly_tax'] ?>
@@ -942,11 +943,24 @@ if (isset($_GET['edit_id'])) {
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td colspan="17" >
-                                                                                                    <p>इमारत कर = (भांडवली*मिळकत कर दर) / 1000 = (<?php echo $property['bhandavali'] ?> * <?php echo $property['milkat_fixed_tax'] ?>) / 1000 </p>
+                                                                                                    <p>इमारत कर = ((भांडवली*मिळकत कर दर) / 1000) + दिवाबत्ती कर + आरोग्य कर + पा. पट्टी + सफाई कार = ((<?php echo $property['bhandavali'] ?> * <?php echo $property['milkat_fixed_tax'] ?>) / 1000) + <?php echo $property['light_tax'] ?> + <?php echo $property['health_tax'] ?> + <?php echo $property['water_tax'] ?> + <?php echo $property['safai_tax'] ?> </p>
                                                                                                   
                                                                                                     <p>इमारत कर = <?php echo $property['building_value'] ?></p>
                                                                                                 </td>
                                                                                             </tr>
+                                                                                            <?php
+                                                                                            }else {
+                                                                                            ?>
+                                                                                            <tr>
+                                                                                                <td colspan="17" >
+                                                                                                    <p>पडसर/खुली जागा = (क्षेत्रफळ * मिळकत कर दर) + दिवाबत्ती कर + आरोग्य कर + पा. पट्टी + सफाई कार = (<?php echo $property['areaInMt'] ?> * <?php echo $property['milkat_fixed_tax'] ?>) +<?php echo $property['light_tax'] ?> + <?php echo $property['health_tax'] ?> + <?php echo $property['water_tax'] ?> + <?php echo $property['safai_tax'] ?></p>
+                                                                                                    
+                                                                                                    <p>पडसर/खुली जागा = <?php echo $property['building_value'] ?></p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <?php
+                                                                                            }
+                                                                                            ?>
                                                                                             <?php
                                                                                         }
                                                                                     } else {

@@ -1142,8 +1142,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * number_format($ghasaraTax / 100,2) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -1172,6 +1174,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
 
                 ];
             }
@@ -1310,8 +1316,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -1340,6 +1348,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
 
                 ];
             }
@@ -1478,8 +1490,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -1508,6 +1522,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
 
                 ];
             }
@@ -1646,8 +1664,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -1676,6 +1696,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
 
                 ];
             }
@@ -1814,8 +1838,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -1844,6 +1870,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
 
                 ];
             }
@@ -1982,8 +2012,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -2012,6 +2044,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
 
                 ];
             }
@@ -2150,8 +2186,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -2180,6 +2218,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
 
                 ];
             }
@@ -2318,8 +2360,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -2348,6 +2392,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
 
                 ];
             }
@@ -2486,8 +2534,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -2516,6 +2566,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
 
                 ];
             }
@@ -2654,8 +2708,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -2684,6 +2740,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
 
                 ];
             }
@@ -2824,8 +2884,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -2854,6 +2916,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
                 ];
             }
             $malmattas[$id]['total_bhandavali'] = round($total_bhandavali);
@@ -2923,6 +2989,7 @@ class Fun
 
         $malmattas = [];
         while ($row = mysqli_fetch_assoc($result)) {
+            // print_r($row);
             $id = $row['malmatta_id']; // malmatta id
             //    print_r($row);
             $malmatta_use_tax = [
@@ -2955,6 +3022,7 @@ class Fun
                     'light_tax' => $row['light_tax'],
                     'water_tax' => $row['water_tax'],
                     'health_tax' => $row['health_tax'],
+                    'safai_tax' => $row['safai_tax']
                 ];
             }
 
@@ -2996,12 +3064,15 @@ class Fun
                 // echo $area . "*". $row['yearly_tax'] . " + " . $area . "*" . $constructionTax . "*(" . $ghasaraTax / 100 . ")*" . $bharank . "<br>";
                 // echo "bhandavali: " . $bhandavali . "<br>";
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 // echo "(" . $bhandavali . "*" . $milkatFixedTax . ")/1000<br>";
                 // echo "building_value: " . $building_value . "<br>";
                 // echo "milkatFixedTax: " . $milkatFixedTax . "<br>";
                 
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -3030,6 +3101,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
                 ];
             }
             $malmattas[$id]['total_bhandavali'] = round($total_bhandavali);
@@ -3099,6 +3174,7 @@ class Fun
         $building_total_value = 0;
         $padsar_total_value = 0;
         while ($row = mysqli_fetch_assoc($result)) {
+            // print_r($row);
             $id = $row['malmatta_id']; // malmatta id
             $malmatta_use_tax = [
                 "रहिवाशी" => 1,
@@ -3166,8 +3242,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += ($row["light_tax"] ??0) + ($row["water_tax"]??0) + ($row["health_tax"]??0) + ($row["safai_tax"]??0);
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + ($row["light_tax"]??0) + ($row["water_tax"]??0) + ($row["health_tax"]??0) + ($row["safai_tax"]??0);
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -3199,7 +3277,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
-
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
                 ];
             }
             $malmattas[$id]['total_bhandavali'] = round($total_bhandavali);
@@ -3300,6 +3381,10 @@ class Fun
                     'ward_name' => $row['ward_name'],
                     'properties' => [],
                     'readyrec_type' => $row['readyrec_type'],
+                    'light_tax' => $row['light_tax'] ?? 0,
+                    'water_tax' => $row['water_tax'] ?? 0,
+                    'health_tax' => $row['health_tax'] ?? 0,
+                    'safai_tax' => $row['safai_tax'] ?? 0
 
                 ];
             }
@@ -3340,8 +3425,10 @@ class Fun
                 $bharank = $malmatta_use_tax[$row["malmatta_use"]];
                 $bhandavali = $area * $row['yearly_tax'] + $area * $constructionTax * ($ghasaraTax / 100) * $bharank;
                 $building_value = ($bhandavali * $milkatFixedTax) / 1000;
+                $building_value += $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                 $total_bhandavali += $bhandavali;
                 if ($row['property_use'] == 'पडसर/खुली जागा') {
+                    $building_value = $area * $milkatFixedTax + $row["light_tax"] + $row["water_tax"] + $row["health_tax"] + $row["safai_tax"];
                     $padsar_total_value += $building_value;
                 } else {
                     $building_total_value += $building_value;
@@ -3370,6 +3457,10 @@ class Fun
                     "building_value" => round($building_value, 2),
                     "milkat_fixed_tax" => $milkatFixedTax,
                     "property_photo_path" => $row['property_photo_path'],
+                    "light_tax" => $row['light_tax'] ?? 0,
+                    "water_tax" => $row['water_tax'] ?? 0,
+                    "health_tax" => $row['health_tax'] ?? 0,
+                    "safai_tax" => $row['safai_tax'] ?? 0
 
                 ];
             }

@@ -84,6 +84,10 @@ $khasaraWardList = $fun->getKhasaraWardMappings($_SESSION['district_code']);
                         <button type="button" id="saveBtn" class="btn btn-primary px-4">
                             <i class="fas fa-save me-2"></i>साठवणे
                         </button>
+                        <button type="button"class="btn btn-secondary px-4 ms-2" onclick="window.location.href='Form_Malmatta_N8.php'">
+                            <i class="fas fa-redo me-2"></i>रद्द करा
+
+                        </button>
                     </div>
                 </form>
             </div>

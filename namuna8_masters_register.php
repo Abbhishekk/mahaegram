@@ -84,6 +84,10 @@ $khasaraWardList = $fun->getRegisterMalmattaMappings();
                                             
                                         </div>
                                         <button type="button" id="saveBtn" class="btn btn-primary">साठवणे</button>
+                                         <button type="button"class="btn btn-secondary px-4 ms-2" onclick="window.location.href='Form_Malmatta_N8.php'">
+                            <i class="fas fa-redo me-2"></i>रद्द करा
+
+                        </button>
                                     </form>
 
                                 </div>
