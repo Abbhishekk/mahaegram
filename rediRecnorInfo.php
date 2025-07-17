@@ -91,7 +91,7 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                         <div class="col-md-4">
                             <div class="form-floating p-3">
                                 <select class="form-select border-primary select2 select2-single-placeholder" name="village_name" id="village_name" required>
-                                    <option value="" selected>--निवडा--</option>
+                                    <option value="" >--निवडा--</option>
                                     <?php
                                     if(mysqli_num_rows($lgdVillages) > 0){
                                         while($village = mysqli_fetch_assoc($lgdVillages)){
@@ -100,7 +100,7 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                                     }
                                     ?>
                                 </select>
-                                <label for="village_name">महसूल गावाचे नाव <span class="text-danger">*</span></label>
+                                <label for="village_name"> गावाचे नाव <span class="text-danger">*</span></label>
                             </div>
                         </div>
 
@@ -211,7 +211,7 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                         <tr>
                             <th>अ.क्र.</th>
                             <th>आर्थिक वर्ष</th>
-                            <th>महसूल गावाचे नाव</th>
+                            <th>गावाचे नाव</th>
                             <th>रेडीरेकनर प्रमाणे भाग/उपविभाग</th>
                             <th>जमिनीचा प्रकार</th>
                             <th>वार्षिक मूल्य दर</th>
@@ -233,7 +233,7 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
                             <td><?php echo $readyRec['yearly_tax']; ?></td>
                             <td>
                                 <a href="#" class="text-primary" 
-                                   onclick="filldata('<?php echo $readyRec['id']; ?>', '<?php echo $readyRec['financial_years']; ?>', '<?php echo $readyRec['revenue_village']; ?>', '<?php echo $readyRec['readyrec_type']; ?>', '<?php echo $readyRec['land_type']; ?>', '<?php echo $readyRec['yearly_tax']; ?>', '<?php echo $readyRec['recordings']; ?>')">
+                                   onclick="filldata('<?php echo $readyRec['rid']; ?>', '<?php echo $readyRec['financial_years']; ?>', '<?php echo $readyRec['revenue_village']; ?>', '<?php echo $readyRec['readyrec_type']; ?>', '<?php echo $readyRec['land_type']; ?>', '<?php echo $readyRec['yearly_tax']; ?>', '<?php echo $readyRec['recordings']; ?>')">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             </td>
@@ -274,8 +274,13 @@ $lgdVillages = $fun->getVillagesWithPanchayat($_SESSION['panchayat_code']);
     <script>
     function filldata(id, financialYear, revenueVillage, readyrecPart, landType, yearlyTax, recordings) {
         document.getElementById('update').value = id;
+
         document.getElementById('financialYear').value = financialYear;
+        console.log(financialYear);
+        
         document.getElementById('village_name').value = revenueVillage;
+        console.log(revenueVillage);
+        
         document.getElementById('readyrec_part').value = readyrecPart;
         document.getElementById('land_type').value = landType;
         document.getElementById('yearly_tax').value = yearlyTax;

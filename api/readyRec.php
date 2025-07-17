@@ -18,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Check if it's an update or new entry
         $updateId = isset($_POST['update']) && !empty($_POST['update']) ? $_POST['update'] : null;
-
+        print_r($_POST);
         if ($updateId) {
             // Update existing record
             $updated = $fun->updateReadyrecInfo($updateId, $financialYear, $villageName, $readyRecPart, $landType, $recordingType, $yearlyTax);
-
+            print_r($updated);
             if ($updated) {
                 $_SESSION['message'] = "माहिती यशस्वीरित्या अद्ययावत केली!";
                 $_SESSION['message_type'] = "success";
